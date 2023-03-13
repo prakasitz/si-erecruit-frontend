@@ -8,6 +8,17 @@ export default defineNuxtPlugin((nuxtApp) => {
         ssr: true,
         components,
         directives,
+        theme: {
+            defaultTheme: 'myCustomTheme',
+            themes: {
+                myCustomTheme: {
+                    dark: false,
+                    colors: {
+                        "main-background": '#1e88e5',
+                    },
+                },
+            },
+        },
     })
 
     nuxtApp.vueApp.use(vuetify)
