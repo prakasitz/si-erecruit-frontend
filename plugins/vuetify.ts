@@ -5,7 +5,7 @@ import * as directives from 'vuetify/directives'
 export default defineNuxtPlugin((nuxtApp) => {
     const vuetify = createVuetify({
         // your config will come here
-        ssr: true,
+        ssr: false,
         components,
         directives,
         theme: {
@@ -14,7 +14,7 @@ export default defineNuxtPlugin((nuxtApp) => {
                 myCustomTheme: {
                     dark: false,
                     colors: {
-                        "main-background": '#1e88e5',
+                        'main-background': '#1e88e5',
                     },
                 },
             },
