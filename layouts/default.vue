@@ -1,6 +1,65 @@
 <template>
-    <div>
-        Some default layout shared across all pages
-        <slot />
-    </div>
+    <v-card>
+        <v-layout>
+            <v-app-bar height="70" color="main-background" prominent elevation="4">
+                <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+
+                <v-toolbar-title>
+                    <v-row no-gutters>
+                        <v-col cols="1">
+                            <v-img :width="33" src="/images/MU_Th_Color.png"></v-img>
+                        </v-col>
+                        <v-col>
+                            <v-img :width="120" src="/images/logo_text.png"></v-img>
+                        </v-col>
+                    </v-row>
+                </v-toolbar-title>
+
+                <v-spacer></v-spacer>
+
+                <v-btn size="x-large" variant="text" icon="mdi-cog-outline"></v-btn>
+            </v-app-bar>
+
+            <v-navigation-drawer v-model="drawer" location="left">
+                <v-list class="text-xl" :items="items"></v-list>
+            </v-navigation-drawer>
+
+            <v-main style="height: 100%">
+                <slot></slot>
+                <v-footer class="bg-grey-lighten-1 text-center d-flex flex-column">
+                    <div class="pt-0">
+                        ทดสอบ Si-ERecruit Nuxt3 <br />
+                        V.0.0.1 (Development)
+                    </div>
+
+                    <v-divider></v-divider>
+
+                    <div>©{{ new Date().getFullYear() }} — <strong>HRIT</strong></div>
+                </v-footer>
+            </v-main>
+        </v-layout>
+    </v-card>
 </template>
+
+<script setup>
+const drawer = ref(false)
+const group = ref(null)
+const items = [
+    {
+        title: 'หน้าหลัก',
+        value: 'foo',
+    },
+    {
+        title: 'นำเข้าไฟล์',
+        value: 'bar',
+    },
+    {
+        title: 'จัดการงาน',
+        value: 'fizz',
+    },
+]
+
+watch(group, () => {
+    drawer.value = false
+})
+</script>
