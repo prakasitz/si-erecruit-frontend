@@ -1,8 +1,25 @@
 @font-face {
-  font-family: 'Krub-Bold';
+  font-family: 'Krub-Regular';
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
   src: url('./fonts/Krub-Regular.ttf') format('truetype');
 }
 
+@font-face {
+  font-family: 'Krub-Bold';
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+  src: url('./fonts/Krub-Bold.ttf') format('truetype');
+}
+
+
 html {
-  font-family: "Krub-Bold";
+  font-family: 'Krub-Regular', sans-serif;
+}
+
+.a {
+  font-family: 'Krub-Bold', sans-serif !important;
+  color: red;
 }

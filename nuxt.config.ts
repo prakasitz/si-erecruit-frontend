@@ -2,7 +2,6 @@
 
 import { createResolver } from '@nuxt/kit'
 import vuetify from 'vite-plugin-vuetify'
-
 const { resolve } = createResolver(import.meta.url)
 
 export default defineNuxtConfig({
