@@ -1,7 +1,7 @@
 <template>
-    <v-card>
+    <v-app>
         <v-layout>
-            <v-app-bar height="70" color="main-background" prominent elevation="4">
+            <v-app-bar height="70" color="main-color" prominent elevation="4">
                 <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
                 <v-toolbar-title>
@@ -24,21 +24,20 @@
                 <v-list class="text-xl" :items="items"></v-list>
             </v-navigation-drawer>
 
-            <v-main style="height: 100%">
+            <v-main style="min-height: 100%" class="bg-background-color">
                 <slot></slot>
-                <v-footer class="bg-grey-lighten-1 text-center d-flex flex-column">
-                    <div class="pt-0">
-                        ทดสอบ Si-ERecruit Nuxt3 <br />
-                        V.0.0.1 (Development)
-                    </div>
-
-                    <v-divider></v-divider>
-
-                    <div>©{{ new Date().getFullYear() }} — <strong>HRIT</strong></div>
-                </v-footer>
             </v-main>
+
+            <v-footer app style="font-size: 0.95rem" class="bg-grey-lighten-1 text-center d-flex flex-column">
+                <div class="pt-0">
+                    ทดสอบ Si-ERecruit Nuxt3 <br />
+                    V.0.0.1 (Development)
+                </div>
+
+                <div>©{{ new Date().getFullYear() }} — <strong>HRIT</strong></div>
+            </v-footer>
         </v-layout>
-    </v-card>
+    </v-app>
 </template>
 
 <script setup>
