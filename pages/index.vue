@@ -16,4 +16,11 @@
     </NuxtLayout>
 </template>
 
-<script setup></script>
+<script setup>
+definePageMeta({
+    title: 'My home page',
+})
+
+const route = useRoute()
+console.log(route.meta.title) // My home page
+</script>

@@ -6,23 +6,22 @@ const { resolve } = createResolver(import.meta.url)
 
 export default defineNuxtConfig({
     typescript: {
-        strict: true,
-        typeCheck: true,
+        shim: false,
     },
     css: [
-        'vuetify/lib/styles/main.sass',
+        'vuetify/styles',
         '@mdi/font/css/materialdesignicons.min.css',
         '@/assets/_fonts.css',
         '@/assets/main.css',
     ], // vuetify ships precompiled css, no need to import sass
     modules: [
         async (option, nuxt) => {
-            nuxt.hooks.hook('vite:extendConfig', (config, { isClient, isServer }) => {
+            nuxt.hooks.hook('vite:extendConfig', (config) => {
                 config.plugins?.push(
                     vuetify({
                         autoImport: true,
                         styles: {
-                            configFile: resolve('./assets/settings.scss'),
+                            configFile: resolve('assets/settings.scss'),
                         },
                     })
                 )
@@ -33,6 +32,9 @@ export default defineNuxtConfig({
         transpile: ['vuetify'],
     },
     vite: {
+        ssr: {
+            noExternal: ["vuetify"]
+        },
         define: {
             'process.env.DEBUG': false,
         },

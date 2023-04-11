@@ -21,14 +21,17 @@
             </v-app-bar>
 
             <v-navigation-drawer v-model="drawer" location="left">
-                <v-list class="text-xl" :items="items"></v-list>
+                <v-list class="text-xl">
+                    <v-list-item v-for="item in items" active-color="main-color" :key="item.title" :value="item.value">
+                        <v-list-item-title v-text="item.title"></v-list-item-title>
+                    </v-list-item>
+                </v-list>
             </v-navigation-drawer>
-
             <v-main style="min-height: 100%" class="bg-background-color">
                 <slot></slot>
             </v-main>
 
-            <v-footer app style="font-size: 0.95rem" class="bg-grey-lighten-1 text-center d-flex flex-column">
+            <v-footer app style="font-size: 0.95rem" class="bg-footer-color text-center d-flex flex-column">
                 <div class="pt-0">
                     ทดสอบ Si-ERecruit Nuxt3 <br />
                     V.0.0.1 (Development)
