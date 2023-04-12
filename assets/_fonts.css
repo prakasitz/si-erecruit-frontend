@@ -19,7 +19,12 @@ html {
   font-family: 'Krub-Regular', sans-serif;
 }
 
-.a {
+span, b, strong {
   font-family: 'Krub-Bold', sans-serif !important;
+}
+
+.a {
   color: red;
 }
+
+

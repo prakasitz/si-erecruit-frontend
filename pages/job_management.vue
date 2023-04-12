@@ -6,7 +6,6 @@
                 <v-card-title :style="{ 'font-weight': 'bold', 'font-size': '16px !important' }"
                     >
                     <span
-                        :style="['font-family: \'Krub-Bold\' !important']"
                         class="text-h5 font-weight-bold text-main-color"
                     >
                         รายชื่องานที่นำข้อมูลเข้า
