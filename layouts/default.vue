@@ -32,7 +32,7 @@
                         </v-list-item>
                         <v-list-group fluid v-else>
                             <template v-slot:activator="{ props }">
-                                <v-list-item v-bind="props" title="Admin"></v-list-item>
+                                <v-list-item v-bind="props" :title="item.title"></v-list-item>
                             </template>
 
                             <v-list-item
@@ -83,7 +83,7 @@ const items = [
         to: '/job_management',
     },
     {
-        title: 'Admin',
+        title: 'ผู้ดูแลระบบ',
         value: 'Admin',
     },
 ]
