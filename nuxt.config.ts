@@ -13,6 +13,7 @@ export default defineNuxtConfig({
     css: ['vuetify/styles', '@mdi/font/css/materialdesignicons.min.css', '@/assets/_fonts.css', '@/assets/main.css'],
 
     modules: [
+        '@nuxtjs/tailwindcss',
         '@nuxt/devtools',
         async (option, nuxt) => {
             nuxt.hooks.hook('vite:extendConfig', (config) => {
