@@ -2,7 +2,7 @@
     <v-app>
         <v-layout>
             <v-app-bar height="70" color="main-color" prominent elevation="4">
-                <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"> </v-app-bar-nav-icon>
+                <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer" />
                 <v-toolbar-title>
                     <v-row no-gutters>
                         <v-col cols="1">
@@ -20,15 +20,31 @@
             </v-app-bar>
             <v-navigation-drawer v-model="drawer" location="left" permanent>
                 <v-list class="text-xl">
-                    <v-list-item
-                        v-for="item in items"
-                        active-color="main-color"
-                        :key="item.title"
-                        :value="item.value"
-                        :to="item.to"
-                    >
-                        <v-list-item-title v-text="item.title"></v-list-item-title>
-                    </v-list-item>
+                    <div v-for="item in items">
+                        <v-list-item
+                            v-if="item.value != 'Admin'"
+                            active-color="main-color"
+                            :key="item.title"
+                            :value="item.value"
+                            :to="item.to"
+                        >
+                            <v-list-item-title v-text="item.title"></v-list-item-title>
+                        </v-list-item>
+                        <v-list-group fluid v-else>
+                            <template v-slot:activator="{ props }">
+                                <v-list-item v-bind="props" title="Admin"></v-list-item>
+                            </template>
+
+                            <v-list-item
+                                class="ml-5"
+                                v-for="([title, icon], i) in admins"
+                                :key="i"
+                                :title="title"
+                                :prepend-icon="icon"
+                                :value="title"
+                            ></v-list-item>
+                        </v-list-group>
+                    </div>
                 </v-list>
             </v-navigation-drawer>
             <v-main style="min-height: 100%" class="bg-background-color">
@@ -66,6 +82,14 @@ const items = [
         value: 'fizz',
         to: '/job_management',
     },
+    {
+        title: 'Admin',
+        value: 'Admin',
+    },
+]
+const admins = [
+    ['Management', 'mdi-account-multiple-outline'],
+    ['Settings', 'mdi-cog-outline'],
 ]
 
 watch(group, () => {
