@@ -10,12 +10,7 @@ export default defineNuxtConfig({
     },
 
     // vuetify ships precompiled css, no need to import sass
-    css: [
-        'vuetify/styles',
-        '@mdi/font/css/materialdesignicons.min.css',
-        '@/assets/_fonts.css',
-        '@/assets/main.css',
-    ],
+    css: ['vuetify/styles', '@mdi/font/css/materialdesignicons.min.css', '@/assets/_fonts.css', '@/assets/main.css'],
 
     modules: [
         '@nuxt/devtools',
@@ -39,7 +34,7 @@ export default defineNuxtConfig({
 
     vite: {
         ssr: {
-            noExternal: ["vuetify"]
+            noExternal: ['vuetify'],
         },
         define: {
             'process.env.DEBUG': false,
@@ -50,6 +45,11 @@ export default defineNuxtConfig({
     components: true,
 
     app: {
+        head: {
+            title: 'Si-ERecruit',
+            charset: 'utf-8',
+            viewport: 'width=device-width, initial-scale=1',
+        },
         // global transition
         pageTransition: { name: 'page', mode: 'out-in' },
         layoutTransition: { name: 'layout', mode: 'out-in' },
@@ -57,5 +57,5 @@ export default defineNuxtConfig({
 
     devtools: {
         enabled: true,
-    }
+    },
 })
