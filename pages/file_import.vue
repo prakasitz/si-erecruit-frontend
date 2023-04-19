@@ -1,6 +1,6 @@
 <template>
     <div>
-        <TopicBar />
+        <TopicBar :labels="['นำเข้าไฟล์']" />
         <v-card class="mx-auto" width="90%">
             <v-card-title :style="{ 'font-weight': 'bold', 'font-size': '16px !important' }">
                 <span class="text-h5 font-weight-bold text-main-color">Import File (*.xlsx)</span><br />

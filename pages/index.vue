@@ -1,6 +1,6 @@
 <template>
     <div>
-        <TopicBar />
+        <TopicBar :labels="['หนัาหลัก']" />
         <v-card class="mx-auto" width="90%">
             <v-card-title :style="{ 'font-weight': 'bold', 'font-size': '16px !important' }"
                 >ยินดีต้อนรับคุณ นาย ประกาศิต ช่วยรักษา</v-card-title

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <TopicBar />
+        <TopicBar :labels="['จัดการงาน']" />
         <v-card class="mx-auto" width="90%">
             <v-card-title :style="{ 'font-weight': 'bold', 'font-size': '16px !important' }">
                 <span class="text-h5 font-weight-bold text-main-color"> รายชื่องานที่นำข้อมูลเข้า </span><br />

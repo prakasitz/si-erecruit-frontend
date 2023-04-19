@@ -9,9 +9,20 @@
                     >
                         เมนูทั่วไป
                     </span>
-                    <v-breadcrumbs divider=">" :items="['Foo', 'Bar', 'Fizz']"></v-breadcrumbs>
+                    <v-breadcrumbs divider=">" :items="props.labels"></v-breadcrumbs>
                 </v-sheet>
             </v-col>
         </v-row>
     </v-sheet>
 </template>
+<script setup lang="ts">
+export interface Props {
+    msg?: string
+    labels?: string[]
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    msg: 'hello',
+    labels: () => ['one', 'two'],
+})
+</script>
