@@ -2,8 +2,7 @@
     <v-app>
         <v-layout>
             <v-app-bar height="70" color="main-color" prominent elevation="4">
-                <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer">
-                </v-app-bar-nav-icon>
+                <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"> </v-app-bar-nav-icon>
                 <v-toolbar-title>
                     <v-row no-gutters>
                         <v-col cols="1">
@@ -19,13 +18,15 @@
 
                 <v-btn size="x-large" variant="text" icon="mdi-cog-outline"></v-btn>
             </v-app-bar>
-            <v-navigation-drawer v-model="drawer" location="left" permanent >
+            <v-navigation-drawer v-model="drawer" location="left" permanent>
                 <v-list class="text-xl">
-                    <v-list-item v-for="item in items" active-color="main-color" 
-                        :key="item.title" 
+                    <v-list-item
+                        v-for="item in items"
+                        active-color="main-color"
+                        :key="item.title"
                         :value="item.value"
                         :to="item.to"
-                        >
+                    >
                         <v-list-item-title v-text="item.title"></v-list-item-title>
                     </v-list-item>
                 </v-list>
@@ -53,18 +54,17 @@ const items = [
     {
         title: 'หน้าหลัก',
         value: 'foo',
-        to: '/'
+        to: '/',
     },
     {
         title: 'นำเข้าไฟล์',
         value: 'bar',
-        to: '/about'
+        to: '/file_import',
     },
     {
         title: 'จัดการงาน',
         value: 'fizz',
-        to: '/job_management'
-
+        to: '/job_management',
     },
 ]
 
