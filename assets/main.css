@@ -1,4 +1,13 @@
+
+b, strong {
+    font-family: 'Krub-Bold';
+}
+
 .font-menu-size {
     font-style: normal;
     color: red !important;
 }
+
+.a {
+    color: red;
+  }

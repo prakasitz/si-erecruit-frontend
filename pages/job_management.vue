@@ -3,12 +3,10 @@
         <TopicBar :labels="['หน้าหลัก', 'จัดการงาน']" />
         <v-card class="mx-auto" width="90%">
             <v-card-item>
-                <v-card-title :style="{ 'font-weight': 'bold', 'font-size': '16px !important' }">
-                    <span class="text-h5 font-weight-bold text-main-color"> รายชื่องานที่นำข้อมูลเข้า </span><br />
+                <v-card-title :style="{ 'font-size': '18px !important' }">
+                    <b class="text-h6 text-main-color"> รายชื่องานที่นำข้อมูลเข้า </b><br />
 
-                    <span :style="['font-family: \'Krub-Bold\' !important']" class="text-h6 font-weight-bold">
-                        ได้ทำการนำข้อมูลเข้าแล้ว <span style="color: red">79</span> รายการ
-                    </span>
+                    <b> ได้ทำการนำข้อมูลเข้าแล้ว <span style="color: red">79</span> รายการ </b>
                 </v-card-title>
             </v-card-item>
         </v-card>

@@ -10,7 +10,7 @@ export default defineNuxtConfig({
     },
 
     // vuetify ships precompiled css, no need to import sass
-    css: ['vuetify/styles', '@mdi/font/css/materialdesignicons.min.css', '@/assets/_fonts.css', '@/assets/main.css'],
+    css: ['@mdi/font/css/materialdesignicons.min.css', '@/assets/_fonts.css', '@/assets/main.css', 'vuetify/styles'],
 
     modules: [
         '@nuxtjs/tailwindcss',
