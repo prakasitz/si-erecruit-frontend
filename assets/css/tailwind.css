@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+div.v-field__outline__notch, ::before, ::after{
+    border-style: unset;
+  }

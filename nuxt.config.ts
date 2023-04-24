@@ -13,7 +13,6 @@ export default defineNuxtConfig({
     css: ['@mdi/font/css/materialdesignicons.min.css', '@/assets/_fonts.css', '@/assets/main.css', 'vuetify/styles'],
 
     modules: [
-        '@nuxtjs/tailwindcss',
         '@nuxt/devtools',
         async (option, nuxt) => {
             nuxt.hooks.hook('vite:extendConfig', (config) => {
@@ -27,6 +26,7 @@ export default defineNuxtConfig({
                 )
             })
         },
+        // '@nuxtjs/tailwindcss',
     ],
 
     build: {
@@ -54,6 +54,10 @@ export default defineNuxtConfig({
         // global transition
         pageTransition: { name: 'page', mode: 'out-in' },
         layoutTransition: { name: 'layout', mode: 'out-in' },
+    },
+
+    tailwindcss: {
+        cssPath: '~/assets/css/tailwind.css',
     },
 
     devtools: {
