@@ -57,6 +57,12 @@
             <StatusBar :status="'active'"></StatusBar>
         </v-col>
     </v-row>
+    <v-row>
+        <v-divider class="my-3"></v-divider>
+        <v-col class="d-flex justify-end">
+            <v-btn class="btn blue text-body-1" color="main-color"> นำเข้าข้อมูลตั้งต้น </v-btn>
+        </v-col>
+    </v-row>
 </template>
 
 <script setup lang="ts">

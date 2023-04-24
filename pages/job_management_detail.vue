@@ -1,6 +1,8 @@
 <template>
     <div>
-        <TopicBar :labels="['หนัาหลัก', 'นำเข้าไฟล์']" />
+        <TopicBar
+            :labels="[{ title: 'หนัาหลัก', href: '/' }, { title: 'จัดการงาน', to: '/job_management' }, 'รายละเอียดงาน']"
+        />
         <v-card class="mx-auto" width="90%">
             <v-toolbar density="compact" color="main-color">
                 <v-card-title :style="{ 'font-size': '16px !important' }">
@@ -13,11 +15,20 @@
                 </v-container>
             </v-card-text>
         </v-card>
-        <br />
-        <v-card class="mx-auto" width="400" prepend-icon="mdi-home">
-            <template v-slot:title>Hello from Vuetify!</template>
-            <v-card-text>When you see this inside a card, it worked!</v-card-text>
+
+        <v-card class="mx-auto my-5" width="90%">
+            <v-toolbar density="compact" color="amber-darken-2">
+                <v-card-title :style="{ 'font-size': '16px !important' }">
+                    <span class="text-h6 text-white">รายละเอียดผู้สมัคร</span><br />
+                </v-card-title>
+            </v-toolbar>
+            <v-card-text class="d-flex justify-center">
+                <v-container>
+                    <h1 class="test-h1 text-center">ฝากด้วยครับ</h1>
+                </v-container>
+            </v-card-text>
         </v-card>
+        <br />
     </div>
 </template>
 
