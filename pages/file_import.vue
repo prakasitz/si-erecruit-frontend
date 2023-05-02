@@ -8,12 +8,8 @@
                 </v-card-title>
             </v-toolbar>
             <v-card-text class="d-flex justify-center">
-                <v-sheet
-                    rounded
-                    class="d-flex justify-center align-center mb-6 bg-surface-variant"
-                    width="80%"
-                    height="200"
-                >
+                <v-sheet rounded class="d-flex justify-center align-center mb-6 bg-surface-variant" width="80%"
+                    height="200">
                     <DropZone class="d-flex justify-center align-center" @files-dropped="onFilesDropped">
                         <!-- use the scoped slot to show the drop zone status -->
                         <template #default="{ dropZoneActive }">
@@ -30,10 +26,6 @@
             </v-card-text>
         </v-card>
         <br />
-        <v-card class="mx-auto" width="400" prepend-icon="mdi-home">
-            <template v-slot:title>Hello from Vuetify!</template>
-            <v-card-text>When you see this inside a card, it worked!</v-card-text>
-        </v-card>
     </div>
 </template>
 

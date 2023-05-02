@@ -1,9 +1,7 @@
 <template>
     <v-app>
-        <div>
-            Some *custom* layout
-            <slot />
-        </div>
+        <v-main style="min-height: 100%" class="bg-background-color">
+            <slot></slot>
+        </v-main>
     </v-app>
-
 </template>

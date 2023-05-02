@@ -21,13 +21,8 @@
             <v-navigation-drawer v-model="drawer" location="left" permanent>
                 <v-list class="text-xl">
                     <div v-for="item in items">
-                        <v-list-item
-                            v-if="item.value != 'Admin'"
-                            active-color="main-color"
-                            :key="item.title"
-                            :value="item.value"
-                            :to="item.to"
-                        >
+                        <v-list-item v-if="item.value != 'Admin'" active-color="main-color" :key="item.title"
+                            :value="item.value" :to="item.to">
                             <v-list-item-title v-text="item.title"></v-list-item-title>
                         </v-list-item>
                         <v-list-group fluid v-else>
@@ -35,14 +30,8 @@
                                 <v-list-item v-bind="props" :title="item.title"></v-list-item>
                             </template>
 
-                            <v-list-item
-                                class="ml-5"
-                                v-for="([title, icon], i) in admins"
-                                :key="i"
-                                :title="title"
-                                :prepend-icon="icon"
-                                :value="title"
-                            ></v-list-item>
+                            <v-list-item class="ml-5" v-for="item2 in admins" :key="item2.title" :title="item2.title"
+                                :prepend-icon="item2.icon" :value="item2.value" :to="item2.to"></v-list-item>
                         </v-list-group>
                     </div>
                 </v-list>
@@ -88,8 +77,9 @@ const items = [
     },
 ]
 const admins = [
-    ['Management', 'mdi-account-multiple-outline'],
-    ['Settings', 'mdi-cog-outline'],
+    { title: 'Management', icon: 'mdi-account-multiple-outline', to: "/user_management" },
+    { title: 'Settings', icon: 'mdi-cog-outline', to: "/settings" },
+
 ]
 
 watch(group, () => {
