@@ -15,5 +15,21 @@
 }
 
 
+@font-face {
+  font-family: 'THSarabun';
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+  src: url('./fonts/THSarabun.ttf')  format('truetype');
+}
+
+@font-face {
+  font-family: 'THSarabun-Bold';
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+  src: url('./fonts/THSarabun-Bold.ttf')  format('truetype');
+}
+
 
 
