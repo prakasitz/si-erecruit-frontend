@@ -13,7 +13,7 @@
 <script setup lang="ts">
 export interface Props {
     msg?: string
-    labels?: unknown[]
+    labels?: any[]
 }
 
 const props = withDefaults(defineProps<Props>(), {

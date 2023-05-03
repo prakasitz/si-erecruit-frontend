@@ -56,10 +56,6 @@ export default defineNuxtConfig({
         layoutTransition: { name: 'layout', mode: 'out-in' },
     },
 
-    tailwindcss: {
-        cssPath: '~/assets/css/tailwind.css',
-    },
-
     devtools: {
         enabled: true,
     },
