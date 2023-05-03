@@ -17,8 +17,9 @@
                                     รายการ
                                 </p>
                             </v-col>
-                            <v-col cols="6">
-                                <v-text-field v-model="search" label="ค้นหา" append-inner-icon="mdi-magnify"></v-text-field>
+                            <v-col cols="5">
+                                <v-text-field v-model="search" density="compact" class="pa-4" small variant="outlined"
+                                    label="ค้นหา" append-inner-icon="mdi-magnify"></v-text-field>
                             </v-col>
                         </v-row>
                     </template>
