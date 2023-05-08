@@ -34,7 +34,7 @@
                     <v-menu activator="#settings-menu">
                         <v-list>
                             <v-list-item
-                                v-for="item in ['admin', 'chosen']"
+                                v-for="item in ['admin', 'candidate']"
                                 :key="item"
                                 :value="item"
                                 @click="setRole(item)"
@@ -48,8 +48,13 @@
             <v-navigation-drawer v-model="drawer" location="left" permanent>
                 <v-list class="text-xl">
                     <div v-for="item in items">
-                        <v-list-item v-if="item.value != 'Admin'" active-color="main-color" :key="item.title"
-                            :value="item.value" :to="item.to">
+                        <v-list-item
+                            v-if="item.value != 'Admin'"
+                            active-color="main-color"
+                            :key="item.title"
+                            :value="item.value"
+                            :to="item.to"
+                        >
                             <v-list-item-title v-text="item.title"></v-list-item-title>
                         </v-list-item>
 
@@ -92,7 +97,7 @@ const drawer = ref(true)
 const group = ref(null)
 const role = ref(null)
 
-const items = computed(() => (role.value == 'admin' ? items4Admin : items4Chosen))
+const items = computed(() => (role.value == 'admin' ? items4Admin : items4Candidate))
 
 const setRole = (newRole) => {
     role.value = newRole
@@ -123,7 +128,7 @@ const items4Admin = reactive([
         ],
     },
 ])
-const items4Chosen = reactive([
+const items4Candidate = reactive([
     {
         title: 'หน้าหลัก',
         value: 'foo',
