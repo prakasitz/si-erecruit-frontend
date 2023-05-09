@@ -1,7 +1,9 @@
 <template>
     <div class="candidate-form">
         <TopicBar :labels="['หนัาหลัก', 'จัดการข้อมูลผู้สมัคร']" />
+
         <v-row>
+
             <v-col cols="12">
                 <v-card class="mx-auto" width="90%">
                     <v-expansion-panels v-model="panelShow">
@@ -166,6 +168,42 @@
                         </v-card-text>
                     </v-container>
                 </v-card>
+            </v-col>
+
+            <v-col cols="12">
+                <section id="hello">
+                    <LazyCandidateJobPosition></LazyCandidateJobPosition>
+                </section>
+            </v-col>
+
+            <v-col cols="12">
+                <section id="hello2">
+                    <LazyCandidatePersonal></LazyCandidatePersonal>
+                </section>
+            </v-col>
+
+            <v-col cols="12">
+                <LazyCandidateAddressAndBanking></LazyCandidateAddressAndBanking>
+            </v-col>
+
+            <v-col cols="12">
+                <LazyCandidateParent></LazyCandidateParent>
+            </v-col>
+
+            <v-col cols="12">
+                <LazyCandidateMarriage></LazyCandidateMarriage>
+            </v-col>
+
+            <v-col cols="12">
+                <LazyCandidateEducationAndJob></LazyCandidateEducationAndJob>
+            </v-col>
+
+            <v-col cols="12">
+                <LazyCandidateTax></LazyCandidateTax>
+            </v-col>
+
+            <v-col cols="12">
+                <LazyCandidateTalent></LazyCandidateTalent>
             </v-col>
         </v-row>
 

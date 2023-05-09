@@ -1,7 +1,7 @@
 <template>
-    <v-app class="abc">
+    <v-app>
         <v-layout>
-            <v-app-bar height="70" color="main-color" prominent elevation="4">
+            <v-app-bar height="70" scroll-behavior="elevate" color="main-color">
                 <template v-slot:prepend>
                     <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer" />
                 </template>
@@ -49,7 +49,7 @@
                 <v-list class="text-xl">
                     <div v-for="item in items">
                         <v-list-item
-                            v-if="item.value != 'Admin'"
+                            v-if="!item.subgroups"
                             active-color="main-color"
                             :key="item.title"
                             :value="item.value"
@@ -58,24 +58,26 @@
                             <v-list-item-title v-text="item.title"></v-list-item-title>
                         </v-list-item>
 
-                        <v-list-group fluid v-else>
+                        <v-list-group @click="'asdasd'" fluid v-else>
                             <template v-slot:activator="{ props }">
                                 <v-list-item v-bind="props" :title="item.title"></v-list-item>
                             </template>
 
                             <v-list-item
                                 class="ml-5"
-                                v-for="([title, icon], i) in item.subgroups"
-                                :key="i"
-                                :title="title"
-                                :prepend-icon="icon"
-                                :value="title"
+                                v-for="subitem in item.subgroups"
+                                active-color="main-color"
+                                :key="subitem.value"
+                                :title="subitem.title"
+                                :prepend-icon="subitem.icon"
+                                :value="subitem.value"
+                                :to="subitem.to ?? undefined"
+                                :href="subitem.href ?? undefined"
                             ></v-list-item>
                         </v-list-group>
                     </div>
                 </v-list>
             </v-navigation-drawer>
-
             <v-main style="min-height: 100%" class="bg-background-color">
                 <slot></slot>
             </v-main>
@@ -112,19 +114,27 @@ const items4Admin = reactive([
     {
         title: 'นำเข้าไฟล์',
         value: 'bar',
-        to: '/file_import',
+        to: '/file_import/',
     },
     {
         title: 'จัดการงาน',
         value: 'fizz',
-        to: '/job_management',
+        to: '/job_management/',
     },
     {
         title: 'ผู้ดูแลระบบ',
         value: 'Admin',
         subgroups: [
-            ['Management', 'mdi-account-multiple-outline'],
-            ['Settings', 'mdi-cog-outline'],
+            {
+                title: 'Management',
+                icon: 'mdi-account-multiple-outline',
+                value: 'Management',
+            },
+            {
+                title: 'Settings',
+                icon: 'mdi-cog-outline',
+                value: 'Settings',
+            },
         ],
     },
 ])
@@ -132,12 +142,12 @@ const items4Candidate = reactive([
     {
         title: 'หน้าหลัก',
         value: 'foo',
-        to: '/candidate',
+        to: '/candidate/',
     },
     {
         title: 'จัดการข้อมูลผู้สมัคร',
         value: 'bar',
-        to: '/candidate/form',
+        to: '/candidate/form/',
     },
 ])
 

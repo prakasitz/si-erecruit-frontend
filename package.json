@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "sass": "^1.62.1",
+    "vee-validate": "^4.9.0",
     "vuetify": "^3.2.2"
   }
 }
