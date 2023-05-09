@@ -16,16 +16,23 @@
                             <v-form v-model="valid" @submit.prevent="userLogin">
                                 หมายเลขบัตรประจำตัวประชาชน
                                 <div class="text-center">
-                                    <v-text-field class="mt-1" variant="outlined"
-                                        prepend-inner-icon="mdi-account"></v-text-field>
+                                    <v-text-field v-model="pid" :rules="numberRule" class="mt-1" variant="outlined"
+                                        prepend-inner-icon="mdi-account" counter="13" maxLength="13"
+                                        hint="x-xx-xx-xxxxx-xx-xx"></v-text-field>
                                     <p> กรุณากรอกหมายเลขบัตรประจำตัวประชาชน (ตัวเลข 13 หลัก ไม่ต้องมี -)</p>
-                                    <p> เพื่อตรวจสอบและลงทะเบียนข้อมูลบุคลากร ด้วยหมายเลขดังกล่าว</p>
-                                    <v-btn class="mt-5 btn-candidate" type="submit">
+                                    <p> เพื่อตรวจสอบและลงทะเบียนข้อมูลบุคลากร ด้วยหมายเลขดังกล่าว </p>
+                                    <v-btn class="mt-5 btn-candidate" @click="onClick_CheckingPID(pid)">
                                         ตรวจสอบข้อมูล
                                     </v-btn>
+                                    <!-- <DialogsPasswordDialog :id_card="pid" :btn_disabled="btn_disabled" /> -->
+                                    <DialogsPasswordDialog :id_card="pid" :btn_disabled="btn_disabled" :show="show_dialog"
+                                        :showError="show_dialog_error" :error_detail="error_detail"
+                                        @update:show="(v) => (show_dialog = v)"
+                                        @update:show_error="(e) => (show_dialog_error = e)" />
                                 </div>
                             </v-form>
                         </v-col>
+
                     </v-row>
                     <p class="text-center mt-15 mb-0">
                         <v-icon left>mdi-copyright</v-icon>2023 คณะแพทยศาสตร์ศิริราชพยาบาล มหาวิทยาลัยมหิดล
@@ -37,13 +44,36 @@
 </template>
 
 <script setup lang="ts">
-import { parseCommandLine } from 'typescript';
 
-// This will work in both `<script setup>` and `<script>`
+const pid = ref();
+const btn_disabled = ref();
+const show_dialog = ref(false);
+const show_dialog_error = ref(false);
+
+const error_detail = ref('');
+const numberRule = [
+    (v: string) => v.split('-').length > 1 ? 'ไม่ต้องใส่ -' : v.length != 13 ? 'กรุณากรอกเลขบัตรประจำตัวประชาชนให้ครบ 13 หลัก' : true
+]
+
+
+// This will work in both `<script stup>` and `<script>`
 definePageMeta({
     pageTransition: {
         name: 'rotate',
     },
     layout: 'logincandidate',
+
 })
+
+
+function onClick_CheckingPID(_id: string) {
+    if (pid.value.length < 13
+    ) {
+        show_dialog_error.value = true;
+        error_detail.value = "กรุณาตรวจสอบหมายเลขบัตรประจำตัวประชาชนอีกครั้ง";
+    } else {
+        show_dialog.value = true;
+    }
+}
+
 </script>

@@ -17,7 +17,7 @@
                                 <v-text-field variant="outlined" prepend-inner-icon="mdi-account" v-model="username"
                                     :rules="usernameRule" label="ชื่อผู้ใช้งาน" hint="ชื่อ.นามสกุล 3 ตัว" required
                                     autofocus></v-text-field>
-                                <v-text-field variant="outlined" prepend-inner-icon="mdi-lock" v-model="password"
+                                <v-text-field variant="o0.utlined" prepend-inner-icon="mdi-lock" v-model="password"
                                     :rules="passwordRule" label="รหัสผ่าน" type="password" required></v-text-field>
 
                                 <p class="text-right">
