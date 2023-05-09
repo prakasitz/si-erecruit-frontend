@@ -136,7 +136,7 @@
             </v-col>
             <v-col cols="12">
                 <section id="test21">
-                    <v-window v-model="onboarding">
+                    <v-window class="py-1" v-model="onboarding">
                         <v-window-item v-for="item in candidateForms" :key="`card-${item.id}`" :value="item.id">
                             <v-card v-if="item.id == 1" class="mx-auto" width="90%">
                                 <v-container>
