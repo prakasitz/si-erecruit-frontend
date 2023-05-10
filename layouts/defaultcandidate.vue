@@ -174,4 +174,9 @@ watch(group, () => {
 .text-main-color {
     color: #5c7b9c !important;
 }
+
+.text-main {
+    background: #fff;
+    color: #5c7b9c !important;
+}
 </style>
