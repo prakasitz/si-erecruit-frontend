@@ -26,6 +26,7 @@
                                                 :append-icon="eye1 ? 'mdi-eye' : 'mdi-eye-off'"
                                                 @click:append="eye1 = !eye1"
                                                 hide-details
+                                                class="secret"
                                             >
                                                 <template v-slot:prepend>
                                                     <p :style="{ 'font-size': '1.12rem !important' }">
@@ -44,6 +45,7 @@
                                                 :type="eye2 ? 'text' : 'password'"
                                                 @click:append="eye2 = !eye2"
                                                 hide-details
+                                                class="secret"
                                             >
                                                 <template v-slot:prepend>
                                                     <p :style="{ 'font-size': '1.12rem !important' }">
@@ -243,7 +245,7 @@
 </template>
 
 <style>
-.candidate-form input {
+.candidate-form .secret input {
     font-size: 17px;
     font-weight: bold;
     letter-spacing: 1.5px;
