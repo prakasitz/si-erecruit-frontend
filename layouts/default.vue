@@ -33,8 +33,12 @@
                     <v-btn size="x-large" variant="text" icon="mdi-cog-outline" id="settings-menu"> </v-btn>
                     <v-menu activator="#settings-menu">
                         <v-list>
-                            <v-list-item v-for="item in ['admin', 'candidate']" :key="item" :value="item"
-                                @click="setRole(item)">
+                            <v-list-item
+                                v-for="item in ['admin', 'candidate']"
+                                :key="item"
+                                :value="item"
+                                @click="setRole(item)"
+                            >
                                 <v-list-item-title>{{ item }}</v-list-item-title>
                             </v-list-item>
                         </v-list>
@@ -44,8 +48,13 @@
             <v-navigation-drawer v-model="drawer" location="left" permanent>
                 <v-list class="text-xl">
                     <div v-for="item in items">
-                        <v-list-item v-if="!item.subgroups" active-color="main-color" :key="item.title" :value="item.value"
-                            :to="item.to">
+                        <v-list-item
+                            v-if="!item.subgroups"
+                            active-color="main-color"
+                            :key="item.title"
+                            :value="item.value"
+                            :to="item.to"
+                        >
                             <v-list-item-title v-text="item.title"></v-list-item-title>
                         </v-list-item>
 
@@ -54,15 +63,22 @@
                                 <v-list-item v-bind="props" :title="item.title"></v-list-item>
                             </template>
 
-                            <v-list-item class="ml-5" v-for="subitem in item.subgroups" active-color="main-color"
-                                :key="subitem.value" :title="subitem.title" :prepend-icon="subitem.icon"
-                                :value="subitem.value" :to="subitem.to ?? undefined"
-                                :href="subitem.href ?? undefined"></v-list-item>
+                            <v-list-item
+                                class="ml-5"
+                                v-for="subitem in item.subgroups"
+                                active-color="main-color"
+                                :key="subitem.value"
+                                :title="subitem.title"
+                                :prepend-icon="subitem.icon"
+                                :value="subitem.value"
+                                :to="subitem.to ?? undefined"
+                                :href="subitem.href ?? undefined"
+                            ></v-list-item>
                         </v-list-group>
                     </div>
                 </v-list>
             </v-navigation-drawer>
-            <v-main style="min-height: 100%" class="bg-background-color">
+            <v-main :style="{ 'min-height': '100%' }" class="bg-background-color">
                 <slot></slot>
             </v-main>
 
