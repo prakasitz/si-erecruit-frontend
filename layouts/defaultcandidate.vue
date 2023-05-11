@@ -191,4 +191,10 @@ watch(group, () => {
     background: #fff;
     color: #5c7b9c !important;
 }
+
+.box-detail {
+    border: 1px solid #74c0f2;
+    border-radius: 5px;
+    padding: 15px;
+}
 </style>
