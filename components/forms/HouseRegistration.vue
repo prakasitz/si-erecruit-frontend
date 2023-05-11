@@ -1,5 +1,5 @@
 <template>
-    <v-card variant="outlined" :disabled="props.isDisabled">
+    <v-card flat :disabled="props.isDisabled">
         <v-card-text class="text-body-1">
             <v-row>
                 <v-col md="3" sm="12" cols="12">

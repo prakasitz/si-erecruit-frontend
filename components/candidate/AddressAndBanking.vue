@@ -4,7 +4,7 @@
             <v-container class="text-body-1">
                 <v-row>
                     <v-col cols="3">
-                        <p>ที่อยู่ตามทะเบียนบ้าน <span class="text-red">*</span></p>
+                        <b>ที่อยู่ตามทะเบียนบ้าน <span class="text-red">*</span></b>
                     </v-col>
                     <v-col cols="8">
                         <FormsHouseRegistration />
@@ -13,7 +13,7 @@
 
                 <v-row>
                     <v-col cols="3">
-                        <p>ที่อยู่ปัจจุบัน <span class="text-red">*</span></p>
+                        <b>ที่อยู่ปัจจุบัน <span class="text-red">*</span></b>
                     </v-col>
                     <v-col cols="8">
                         <v-row>
@@ -43,7 +43,7 @@
 
                 <v-row>
                     <v-col cols="3">
-                        <p>ที่อยู่ฉุกเฉิน <span class="text-red">*</span></p>
+                        <b>ที่อยู่ฉุกเฉิน <span class="text-red">*</span></b>
                         <p class="text-caption">(ที่สามารถติดต่อได้)</p>
                     </v-col>
                     <v-col cols="8">
@@ -114,7 +114,7 @@
             <v-container class="text-body-1">
                 <v-row>
                     <v-col cols="3">
-                        <p>หมายเลขใบประกอบวิชาชีพ</p>
+                        <b>หมายเลข<br />ใบประกอบวิชาชีพ</b>
                     </v-col>
                     <v-col cols="8">
                         <v-text-field density="compact" variant="outlined" hide-details></v-text-field>
@@ -150,10 +150,10 @@
             <v-container class="text-body-1">
                 <v-row>
                     <v-col cols="3" class="pb-0">
-                        <p>
+                        <b>
                             บัตรรับรองสิทธิ<br />การรักษาพยาบาล<br />/ เลขที่บัตรประกันสังคม
                             <span class="text-red">*</span>
-                        </p>
+                        </b>
                     </v-col>
                     <v-col cols="8" class="pb-0">
                         <v-radio-group style="position: relative; top: -6.5px" hide-details v-model="hasSocialSecurity">
@@ -249,7 +249,7 @@
             <v-container class="mb-6 text-body-1">
                 <v-row>
                     <v-col cols="3">
-                        <p>ข้อมูลบัญชีธนาคาร <span class="text-red">*</span></p>
+                        <b>ข้อมูลบัญชีธนาคาร <span class="text-red">*</span></b>
                     </v-col>
                     <v-col cols="8">
                         <v-row>

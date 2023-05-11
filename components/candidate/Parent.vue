@@ -10,12 +10,12 @@
                 :text="parentDescription"
             >
             </v-alert>
-            <v-container class="text-body-1">
+            <v-container class="text-body-1 my-6">
                 <v-row>
                     <v-col cols="12">
                         <v-row>
                             <v-col cols="3">
-                                <p>ข้อมูลบิดา <span class="text-red">*</span></p>
+                                <b>ข้อมูลบิดา <span class="text-red">*</span></b>
                             </v-col>
                             <v-col cols="8">
                                 <FormsParentForm></FormsParentForm>
@@ -25,7 +25,7 @@
                     <v-col cols="12">
                         <v-row>
                             <v-col cols="3">
-                                <p>ข้อมูลมารดา <span class="text-red">*</span></p>
+                                <b>ข้อมูลมารดา <span class="text-red">*</span></b>
                             </v-col>
                             <v-col cols="8">
                                 <FormsParentForm></FormsParentForm>
@@ -35,10 +35,11 @@
                 </v-row>
                 <v-row>
                     <v-col cols="3">
-                        <p>บิดา-มารดา</p>
+                        <b>บิดา-มารดา</b>
                     </v-col>
                     <v-col cols="4"
                         ><v-text-field
+                            hide-details
                             persistent-hint
                             label="เลขที่ทะเบียนสมรส"
                             density="compact"
@@ -47,6 +48,7 @@
                     </v-col>
                     <v-col cols="4">
                         <v-text-field
+                            hide-details
                             type="date"
                             persistent-hint
                             label="เลขที่ทะเบียนสมรส"
@@ -56,8 +58,7 @@
                     </v-col>
                 </v-row>
             </v-container>
-
-            <v-divider class="my-2"></v-divider>
+            
         </template>
     </CandidateBaseCard>
 </template>

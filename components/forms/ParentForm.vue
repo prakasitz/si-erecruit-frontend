@@ -1,5 +1,5 @@
 <template>
-    <v-card variant="outlined">
+    <v-card flat>
         <v-card-text class="text-body-1">
             <v-row>
                 <v-col cols="12">
@@ -21,16 +21,26 @@
                     ></v-select>
                 </v-col>
                 <v-col cols="6">
-                    <v-text-field label="ชื่อ (ภาษาไทย) *" density="compact" variant="outlined"></v-text-field>
+                    <v-text-field
+                        hide-details
+                        label="ชื่อ (ภาษาไทย) *"
+                        density="compact"
+                        variant="outlined"
+                    ></v-text-field>
                 </v-col>
                 <v-col cols="6">
-                    <v-text-field label="นามสกุล (ภาษาไทย) *" density="compact" variant="outlined"></v-text-field>
+                    <v-text-field
+                        hide-details
+                        label="นามสกุล (ภาษาไทย) *"
+                        density="compact"
+                        variant="outlined"
+                    ></v-text-field>
                 </v-col>
                 <v-col cols="12">
                     <v-radio-group style="position: relative; top: -6.5px" inline hide-details>
                         <template #prepend>
                             <div style="position: relative; top: -8.5px">
-                                <v-label>สถานภาพ: </v-label>
+                                <v-label>สถานภาพ: *</v-label>
                             </div>
                         </template>
                         <v-radio class="mr-4" label="มีชีวิตอยู่" value="1"></v-radio>
@@ -38,10 +48,11 @@
                     </v-radio-group>
                 </v-col>
                 <v-col cols="12">
-                    <v-text-field label="อาชีพ" density="compact" variant="outlined"></v-text-field>
+                    <v-text-field hide-details label="อาชีพ" density="compact" variant="outlined"></v-text-field>
                 </v-col>
                 <v-col cols="12">
                     <v-text-field
+                        hide-details
                         label="หมายเลขบัตรประชาชน"
                         density="compact"
                         variant="outlined"
@@ -49,17 +60,14 @@
                         :hint="hints.personalID"
                     ></v-text-field>
                 </v-col>
-                <v-col cols="12">
-                    <v-text-field label="สถานภาพ *" density="compact" variant="outlined"></v-text-field>
+                <v-col cols="6">
+                    <v-text-field hide-details label="สัญชาติ *" density="compact" variant="outlined"></v-text-field>
                 </v-col>
                 <v-col cols="6">
-                    <v-text-field label="สัญชาติ *" density="compact" variant="outlined"></v-text-field>
-                </v-col>
-                <v-col cols="6">
-                    <v-text-field label="เชื่อชาติ *" density="compact" variant="outlined"></v-text-field>
+                    <v-text-field hide-details label="เชื้อชาติ *" density="compact" variant="outlined"></v-text-field>
                 </v-col>
                 <v-col>
-                    <v-radio-group label="ศาสนา *" style="position: relative; top: -6.5px" inline hide-details>
+                    <v-radio-group label="ศาสนา: *" style="position: relative; top: -6.5px" inline hide-details>
                         <v-radio class="mr-4" label="พุทธ" value="1"></v-radio>
                         <v-radio class="mr-4" label="คริสต์" value="2"></v-radio>
                         <v-radio class="mr-4" label="อิสลาม" value="3"></v-radio>
