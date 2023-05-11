@@ -1,6 +1,9 @@
 <template>
     <CandidateBaseCard :title="'ข้อมูลภาษี'">
         <template #card-body>
+            <v-alert border="start" type="info" variant="outlined" icon="mdi-information-outline"
+                text="ข้อมูลภาษี (ถ้ามี) กรุณาระบุค่าลดหย่อนภาษีบุตร และค่าลดหย่อนอื่น ๆ">
+            </v-alert>
             <v-container class="text-body-1">
                 <p class="pb-6 text-h6"> ค่าลดหย่อนภาษีบุตร </p>
                 <v-row>
@@ -57,7 +60,7 @@
                     <v-col cols="4">
                         <p> ดอกเบี้ยเงินกู้ยืม <span class="text-red-darken-1"> *</span> </p>
                     </v-col>
-                    <v-col cols="2">
+                    <v-col cols="3">
                         <v-radio-group v-model="_other_tax.loan" inline>
                             <v-radio label="ไม่มี" value="N"></v-radio>
                             <v-radio label="มี" value="Y"></v-radio>
@@ -75,7 +78,7 @@
                     <v-col cols="4">
                         <p> เบี้ยประกันชีวิต (เจ้าตัว) <span class="text-red-darken-1"> *</span> </p>
                     </v-col>
-                    <v-col cols="2">
+                    <v-col cols="3">
                         <v-radio-group v-model="_other_tax.insurance" inline>
                             <v-radio label="ไม่มี" value="N"></v-radio>
                             <v-radio label="มี" value="Y"></v-radio>
@@ -93,7 +96,7 @@
                     <v-col cols="4">
                         <p> เบี้ยประกันชีวิต (เจ้าตัว) <span class="text-red-darken-1"> *</span> </p>
                     </v-col>
-                    <v-col cols="2">
+                    <v-col cols="3">
                         <v-radio-group v-model="_other_tax.donate" inline>
                             <v-radio label="ไม่มี" value="N"></v-radio>
                             <v-radio label="มี" value="Y"></v-radio>
@@ -112,7 +115,7 @@
                         <p> เงินบริจาค <span class="text-red-darken-1"> *</span>
                         </p>
                     </v-col>
-                    <v-col cols="2">
+                    <v-col cols="3">
                         <v-radio-group v-model="_other_tax.fund" inline>
                             <v-radio label="ไม่มี" value="N"></v-radio>
                             <v-radio label="มี" value="Y"></v-radio>
@@ -142,7 +145,7 @@
                 <v-row v-if="_other_tax.marriage_income == '1'">
                     <v-col cols="4"> เบี้ยประกันชีวิต (คู่สมรส) กรณีไม่มีเงินรายได้ <span class="text-red-darken-1">
                             *</span></v-col>
-                    <v-col cols="2">
+                    <v-col cols="3">
                         <v-radio-group v-model="_other_tax.marriage_insurance" inline>
                             <v-radio label="ไม่มี" value="N"></v-radio>
                             <v-radio label="มี" value="Y"></v-radio>
