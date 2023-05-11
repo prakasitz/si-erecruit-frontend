@@ -361,12 +361,7 @@
                                 <p>หมู่โลหิต <span class="text-red">*</span></p>
                             </v-col>
                             <v-col cols="8">
-                                <v-radio-group
-                                    style="position: relative; top: -6.5px"
-                                    inline
-                                    persistent-hint
-                                    hint="กรุณาเลือกหมู่โลหิต"
-                                >
+                                <v-radio-group style="position: relative; top: -6.5px" inline hide-details>
                                     <v-radio class="mr-4" label="A" value="1"></v-radio>
                                     <v-radio class="mr-4" label="AB" value="2"></v-radio>
                                     <v-radio class="mr-4" label="B" value="3"></v-radio>
@@ -419,12 +414,7 @@
                                 <p>ศาสนา <span class="text-red">*</span></p>
                             </v-col>
                             <v-col>
-                                <v-radio-group
-                                    style="position: relative; top: -6.5px"
-                                    inline
-                                    persistent-hint
-                                    hint="กรุณาเลือกศาสนา"
-                                >
+                                <v-radio-group style="position: relative; top: -6.5px" inline hide-details>
                                     <v-radio class="mr-4" label="พุทธ" value="1"></v-radio>
                                     <v-radio class="mr-4" label="คริสต์" value="2"></v-radio>
                                     <v-radio class="mr-4" label="อิสลาม" value="3"></v-radio>
@@ -439,3 +429,10 @@
         </template>
     </CandidateBaseCard>
 </template>
+
+<script setup lang="ts">
+const hints = {
+    bloodInfo: 'hint: กรุณาเลือกหมู่โลหิต',
+    religionInfo: 'hint: กรุณาเลือกศาสนา',
+}
+</script>
