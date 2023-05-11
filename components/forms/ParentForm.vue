@@ -1,0 +1,78 @@
+<template>
+    <v-card variant="outlined">
+        <v-card-text class="text-body-1">
+            <v-row>
+                <v-col cols="12">
+                    <v-select
+                        label="ยศ/ราชทินนาม"
+                        :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                        variant="outlined"
+                        density="compact"
+                        hide-details
+                    ></v-select>
+                </v-col>
+                <v-col cols="12">
+                    <v-select
+                        label="คำนำหน้า *"
+                        :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                        variant="outlined"
+                        density="compact"
+                        hide-details
+                    ></v-select>
+                </v-col>
+                <v-col cols="6">
+                    <v-text-field label="ชื่อ (ภาษาไทย) *" density="compact" variant="outlined"></v-text-field>
+                </v-col>
+                <v-col cols="6">
+                    <v-text-field label="นามสกุล (ภาษาไทย) *" density="compact" variant="outlined"></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                    <v-radio-group style="position: relative; top: -6.5px" inline hide-details>
+                        <template #prepend>
+                            <div style="position: relative; top: -8.5px">
+                                <v-label>สถานภาพ: </v-label>
+                            </div>
+                        </template>
+                        <v-radio class="mr-4" label="มีชีวิตอยู่" value="1"></v-radio>
+                        <v-radio class="mr-4" label="ถึงแก่กรรม" value="2"></v-radio>
+                    </v-radio-group>
+                </v-col>
+                <v-col cols="12">
+                    <v-text-field label="อาชีพ" density="compact" variant="outlined"></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                    <v-text-field
+                        label="หมายเลขบัตรประชาชน"
+                        density="compact"
+                        variant="outlined"
+                        persistent-hint
+                        :hint="hints.personalID"
+                    ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                    <v-text-field label="สถานภาพ *" density="compact" variant="outlined"></v-text-field>
+                </v-col>
+                <v-col cols="6">
+                    <v-text-field label="สัญชาติ *" density="compact" variant="outlined"></v-text-field>
+                </v-col>
+                <v-col cols="6">
+                    <v-text-field label="เชื่อชาติ *" density="compact" variant="outlined"></v-text-field>
+                </v-col>
+                <v-col>
+                    <v-radio-group label="ศาสนา *" style="position: relative; top: -6.5px" inline hide-details>
+                        <v-radio class="mr-4" label="พุทธ" value="1"></v-radio>
+                        <v-radio class="mr-4" label="คริสต์" value="2"></v-radio>
+                        <v-radio class="mr-4" label="อิสลาม" value="3"></v-radio>
+                        <v-radio class="mr-4" label="ฮินดู" value="4"></v-radio>
+                        <v-radio class="mr-4" label="ไม่ระบุ" value="5"></v-radio>
+                    </v-radio-group>
+                </v-col>
+            </v-row>
+        </v-card-text>
+    </v-card>
+</template>
+<script setup lang="ts">
+const hints = {
+    personalID: 'hint: ไม่มี ให้ปล่อยว่าง',
+}
+</script>
