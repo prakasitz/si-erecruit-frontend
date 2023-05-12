@@ -16,13 +16,13 @@
     "nuxt": "^3.4.3",
     "typescript": "^5.0.4",
     "vite-plugin-vuetify": "^1.0.2",
-    "vue-tsc": "^1.7.0"
+    "vue-tsc": "^1.7.1"
   },
   "dependencies": {
     "@pinia/nuxt": "^0.4.10",
     "pinia": "^2.0.36",
     "sass": "^1.62.1",
-    "vee-validate": "^4.9.1",
-    "vuetify": "^3.2.2"
+    "vee-validate": "^4.9.3",
+    "vuetify": "^3.2.4"
   }
 }
