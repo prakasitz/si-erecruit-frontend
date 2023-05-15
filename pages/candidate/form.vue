@@ -64,7 +64,10 @@
                                             <v-alert height="100%" border="start" variant="tonal">
                                                 <div
                                                     class="text-red-darken-1"
-                                                    :style="{ 'font-size': '0.9rem', lineHeight: '1.4rem !important' }"
+                                                    :style="{
+                                                        'font-size': '0.9rem',
+                                                        lineHeight: '1.4rem !important',
+                                                    }"
                                                 >
                                                     <v-row no-gutters>
                                                         <v-col><b>เข้าสู่ระบบครั้งล่าสุด</b></v-col>
@@ -77,7 +80,10 @@
                                             <v-alert height="100%" border="start" variant="tonal">
                                                 <div
                                                     class="text-blue-darken-1"
-                                                    :style="{ 'font-size': '0.9rem', lineHeight: '1.4rem !important' }"
+                                                    :style="{
+                                                        'font-size': '0.9rem',
+                                                        lineHeight: '1.4rem !important',
+                                                    }"
                                                 >
                                                     <v-row no-gutters class="d-flex align-center">
                                                         <v-col cols="3"><b>บันทึกครั้งล่าสุด</b></v-col>
