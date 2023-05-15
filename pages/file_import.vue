@@ -1,6 +1,5 @@
 <template>
     <div>
-        <TopicBar :labels="['หนัาหลัก', 'นำเข้าไฟล์']" />
         <v-card class="mx-auto" width="90%">
             <v-toolbar density="compact" color="main-color">
                 <v-card-title :style="{ 'font-size': '16px !important' }">
@@ -8,8 +7,12 @@
                 </v-card-title>
             </v-toolbar>
             <v-card-text class="d-flex justify-center">
-                <v-sheet rounded class="d-flex justify-center align-center mb-6 bg-surface-variant" width="80%"
-                    height="200">
+                <v-sheet
+                    rounded
+                    class="d-flex justify-center align-center mb-6 bg-surface-variant"
+                    width="80%"
+                    height="200"
+                >
                     <DropZone class="d-flex justify-center align-center" @files-dropped="onFilesDropped">
                         <!-- use the scoped slot to show the drop zone status -->
                         <template #default="{ dropZoneActive }">

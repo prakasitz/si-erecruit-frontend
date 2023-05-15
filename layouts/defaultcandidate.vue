@@ -32,8 +32,12 @@
                 <v-btn size="x-large" variant="text" color="white" icon="mdi-cog-outline" id="settings-menu"> </v-btn>
                 <v-menu activator="#settings-menu">
                     <v-list>
-                        <v-list-item v-for="item in ['admin', 'candidate']" :key="item" :value="item"
-                            @click="setRole(item)">
+                        <v-list-item
+                            v-for="item in ['admin', 'candidate']"
+                            :key="item"
+                            :value="item"
+                            @click="setRole(item)"
+                        >
                             <v-list-item-title>{{ item }}</v-list-item-title>
                         </v-list-item>
                     </v-list>
@@ -42,9 +46,15 @@
         </v-app-bar>
         <v-navigation-drawer v-model="drawer" location="left" permanent>
             <v-list class="text-xl">
-                <div v-for="item in items">
-                    <v-list-item v-if="!item.subgroups" active-color="main-color" :key="item.title" :value="item.value"
-                        :to="item.to">
+                <div v-for="item in items4Candidate">
+                    <v-list-item
+                        v-if="!item.subgroups"
+                        active-color="main-color"
+                        :key="item.title"
+                        :value="item.value"
+                        :to="item.to"
+                        @click="onListItemSelected(item)"
+                    >
                         <v-list-item-title v-text="item.title"></v-list-item-title>
                     </v-list-item>
 
@@ -53,13 +63,23 @@
                             <v-list-item v-bind="props" :title="item.title"></v-list-item>
                         </template>
 
-                        <v-list-item class="ml-5" v-for="subitem in item.subgroups" active-color="main-color"
-                            :key="subitem.value" :title="subitem.title" :prepend-icon="subitem.icon" :value="subitem.value"
-                            :to="subitem.to ?? undefined" :href="subitem.href ?? undefined"></v-list-item>
+                        <v-list-item
+                            class="ml-5"
+                            v-for="subitem in item.subgroups"
+                            active-color="main-color"
+                            :key="subitem.value"
+                            :title="subitem.title"
+                            :prepend-icon="subitem.icon"
+                            :value="subitem.value"
+                            :to="subitem.to ?? undefined"
+                            :href="subitem.href ?? undefined"
+                        ></v-list-item>
                     </v-list-group>
                 </div>
             </v-list>
         </v-navigation-drawer>
+
+        <TopicBar :labels="navDirections.value" />
 
         <v-main :style="{ 'min-height': '90%', 'margin-top': '36px' }" class="bg-background-color">
             <slot> </slot>
@@ -104,36 +124,44 @@
     </v-app>
 </template>
 
-<style>
-.swing-enter-active,
-.swing-leave-active {
-    transition: transform 0.2 linear;
-}
-
-.swing-enter-to {
-    transform-style: preserve-3D;
-    transform: scale(1);
-}
-
-.swing-leave-to {
-    transform-style: preserve-3D;
-    transform: scale(0);
-}
-
-.pointer-events-none {
-    pointer-events: none;
-}
-.pointer-events-initial {
-    pointer-events: initial;
-}
-</style>
+<style></style>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 
+const emit = defineEmits(['changeRole'])
+
 // define a ref to store the scroll position
 const scrollPosition = ref(0)
 const scrollButton = ref(null)
+
+const drawer = ref(true)
+const group = ref(null)
+
+const role = ref(null)
+
+const navDirections = reactive([])
+
+const items4Candidate = [
+    {
+        title: 'หน้าหลัก',
+        value: 'foo',
+        to: '/candidate/',
+        nav: ['หนัาหลัก'],
+    },
+    {
+        title: 'จัดการข้อมูลผู้สมัคร',
+        value: 'bar',
+        to: '/candidate/form/',
+        nav: [
+            {
+                title: 'หน้าหลัก',
+                href: '/candidate/',
+            },
+            'จัดการข้อมูลผู้สมัคร',
+        ],
+    },
+]
 
 // define a function to scroll to the top of the page
 function scrollToTop() {
@@ -143,11 +171,17 @@ function scrollToTop() {
     })
 }
 
-function setButtonDisplayNone() {
-    scrollButton.value.style.display = 'none'
+const shouldShowButton = computed(() => scrollPosition.value < 50)
+
+const onListItemSelected = (item) => {
+    navDirections.value = item.nav
+    // perform other actions based on the selected item
 }
 
-const shouldShowButton = computed(() => scrollPosition.value < 50)
+const setRole = (newRole) => {
+    role.value = newRole
+    emit('changeRole', role.value)
+}
 
 onMounted(() => {
     window.addEventListener('scroll', () => {
@@ -155,67 +189,16 @@ onMounted(() => {
     })
 })
 
+onUpdated(() => {
+    const route = useRoute()
+    console.log(route.fullPath)
+})
+
 onUnmounted(() => {
     window.removeEventListener('scroll', () => {
         scrollPosition.value = window.pageYOffset
     })
 })
-
-const drawer = ref(true)
-const group = ref(null)
-const role = ref(null)
-
-const items = computed(() => (role.value == 'admin' ? items4Admin : items4Candidate))
-
-const setRole = (newRole) => {
-    role.value = newRole
-}
-
-const items4Admin = reactive([
-    {
-        title: 'หน้าหลัก',
-        value: 'foo',
-        to: '/',
-    },
-    {
-        title: 'นำเข้าไฟล์',
-        value: 'bar',
-        to: '/file_import/',
-    },
-    {
-        title: 'จัดการงาน',
-        value: 'fizz',
-        to: '/job_management/',
-    },
-    {
-        title: 'ผู้ดูแลระบบ',
-        value: 'Admin',
-        subgroups: [
-            {
-                title: 'Management',
-                icon: 'mdi-account-multiple-outline',
-                value: 'Management',
-            },
-            {
-                title: 'Settings',
-                icon: 'mdi-cog-outline',
-                value: 'Settings',
-            },
-        ],
-    },
-])
-const items4Candidate = reactive([
-    {
-        title: 'หน้าหลัก',
-        value: 'foo',
-        to: '/candidate/',
-    },
-    {
-        title: 'จัดการข้อมูลผู้สมัคร',
-        value: 'bar',
-        to: '/candidate/form/',
-    },
-])
 
 watch(group, () => {
     drawer.value = false
@@ -260,7 +243,6 @@ watch(group, () => {
     color: red !important;
     border: 1px solid red;
 }
-
 
 .v-layout:deep() .text-main-color {
     color: #5c7b9c !important;

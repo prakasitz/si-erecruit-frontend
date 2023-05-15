@@ -1,12 +1,17 @@
 <template>
     <div>
-        <TopicBar :labels="['หน้าหลัก', 'ผู้ดูแลระบบ', 'User Managemaent']" />
         <v-card class="mx-auto" width="90%">
             <v-card-item>
-                <v-card-title :style="{ 'font-size': '18px !important' }">
-                </v-card-title>
-                <v-data-table v-model:items-per-page="itemsPerPage" :headers="headers" :items="desserts" item-value="name"
-                    class="elevation-1" show-select :search="search">
+                <v-card-title :style="{ 'font-size': '18px !important' }"> </v-card-title>
+                <v-data-table
+                    v-model:items-per-page="itemsPerPage"
+                    :headers="headers"
+                    :items="desserts"
+                    item-value="name"
+                    class="elevation-1"
+                    show-select
+                    :search="search"
+                >
                     <template v-slot:top>
                         <v-row>
                             <v-col class="mx-4 my-3">
@@ -18,8 +23,15 @@
                                 </p>
                             </v-col>
                             <v-col cols="5">
-                                <v-text-field v-model="search" density="compact" class="pa-4" small variant="outlined"
-                                    label="ค้นหา" append-inner-icon="mdi-magnify"></v-text-field>
+                                <v-text-field
+                                    v-model="search"
+                                    density="compact"
+                                    class="pa-4"
+                                    small
+                                    variant="outlined"
+                                    label="ค้นหา"
+                                    append-inner-icon="mdi-magnify"
+                                ></v-text-field>
                             </v-col>
                         </v-row>
                     </template>
@@ -28,12 +40,8 @@
                         <v-chip v-if="item.raw.status == 1" color="black">Closed</v-chip>
                     </template>
                     <template v-slot:[`item.action`]="{ item }">
-                        <v-icon size="small" class="me-2" @click="editItem(item.raw)">
-                            mdi-pencil
-                        </v-icon>
-                        <v-icon size="small" @click="deleteItem(item.raw)" color="red">
-                            mdi-delete
-                        </v-icon>
+                        <v-icon size="small" class="me-2" @click="editItem(item.raw)"> mdi-pencil </v-icon>
+                        <v-icon size="small" @click="deleteItem(item.raw)" color="red"> mdi-delete </v-icon>
                     </template>
                 </v-data-table>
             </v-card-item>
@@ -61,7 +69,7 @@ const headers = [
     { title: 'แก้ไข/ลบ', align: 'start', key: 'action' },
 ]
 
-const search = ref();
+const search = ref()
 
 const desserts = [
     {
@@ -70,7 +78,7 @@ const desserts = [
         role: 0,
         last_login: 0,
         remark: 0,
-        action: false
+        action: false,
     },
     {
         name: 'Frozen Yogurt',
@@ -78,38 +86,41 @@ const desserts = [
         role: 0,
         last_login: 0,
         remark: 0,
-        action: false
-    }, {
+        action: false,
+    },
+    {
         name: 'Frozen Yogurt',
         type: 'Super Admin',
         role: 0,
         last_login: 0,
         remark: 0,
-        action: false
-    }, {
+        action: false,
+    },
+    {
         name: 'Frozen Yogurt',
         type: 'Admin',
         role: 0,
         last_login: 0,
         remark: 0,
-        action: false
-    }, {
+        action: false,
+    },
+    {
         name: 'Frozen Yogurt',
         type: 'Admin',
         role: 0,
         last_login: 0,
         remark: 0,
-        action: false
-    }, {
+        action: false,
+    },
+    {
         name: 'Frozen Yogurt',
         type: 'User',
         role: 0,
         last_login: 0,
         remark: 0,
-        action: false
+        action: false,
     },
 ]
-
 
 console.log(route.meta.title) // My home page
 </script>

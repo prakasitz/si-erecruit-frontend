@@ -1,5 +1,5 @@
 <template>
-    <NuxtLayout>
+    <NuxtLayout @changeRole="(r) => (roles = r)" :name="layoutByRole">
         <NuxtPage />
     </NuxtLayout>
 </template>
@@ -18,4 +18,34 @@
     filter: blur(10px);
     transition: opacity 0.2s ease-in-out, filter 0.2s ease-in-out;
 }
+
+.swing-enter-active,
+.swing-leave-active {
+    transition: transform 0.2 linear;
+}
+
+.swing-enter-to {
+    transform-style: preserve-3D;
+    transform: scale(1);
+}
+
+.swing-leave-to {
+    transform-style: preserve-3D;
+    transform: scale(0);
+}
+
+.pointer-events-none {
+    pointer-events: none;
+}
+.pointer-events-initial {
+    pointer-events: initial;
+}
 </style>
+
+<script setup lang="ts">
+const roles = ref(null)
+const layoutByRole = computed(() => {
+    if (roles.value == 'admin') return 'default'
+    if (roles.value == 'candidate') return 'defaultcandidate'
+})
+</script>

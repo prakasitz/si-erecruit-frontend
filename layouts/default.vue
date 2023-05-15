@@ -46,13 +46,14 @@
         </v-app-bar>
         <v-navigation-drawer v-model="drawer" location="left" permanent>
             <v-list class="text-xl">
-                <div v-for="item in items">
+                <div v-for="item in items4Admin">
                     <v-list-item
                         v-if="!item.subgroups"
                         active-color="main-color"
                         :key="item.title"
                         :value="item.value"
                         :to="item.to"
+                        @click="onListItemSelected(item)"
                     >
                         <v-list-item-title v-text="item.title"></v-list-item-title>
                     </v-list-item>
@@ -72,14 +73,45 @@
                             :value="subitem.value"
                             :to="subitem.to ?? undefined"
                             :href="subitem.href ?? undefined"
+                            @click="onListItemSelected(subitem)"
                         ></v-list-item>
                     </v-list-group>
                 </div>
             </v-list>
         </v-navigation-drawer>
+        <TopicBar :labels="navDirections.value" />
         <v-main :style="{ 'min-height': '90%', 'margin-top': '36px' }" class="bg-background-color">
             <slot></slot>
         </v-main>
+
+        <v-layout-item
+            class="text-end pointer-events-none"
+            style="
+                z-index: 1007;
+                transform: translateY(0%);
+                position: fixed;
+                height: inherit;
+                bottom: 1.25rem;
+                width: calc((100% - 0px) - 0px);
+                left: -1.25rem;
+            "
+            position="bottom"
+        >
+            <Transition name="swing">
+                <v-btn
+                    ref="scrollButton"
+                    v-if="!shouldShowButton"
+                    size="large"
+                    color="main-color"
+                    elevation="8"
+                    class="pointer-events-initial"
+                    density="default"
+                    icon="mdi-chevron-up"
+                    style="transform-origin: center center"
+                    @click="scrollToTop"
+                ></v-btn>
+            </Transition>
+        </v-layout-item>
 
         <v-footer app absolute style="font-size: 0.95rem" class="bg-footer-color text-center d-flex flex-column">
             <div class="pt-0">
@@ -93,31 +125,48 @@
 </template>
 
 <script setup>
+const emit = defineEmits(['changeRole'])
+
 const drawer = ref(true)
 const group = ref(null)
+
 const role = ref(null)
 
-const items = computed(() => (role.value == 'admin' ? items4Admin : items4Candidate))
+const navDirections = reactive([])
 
-const setRole = (newRole) => {
-    role.value = newRole
-}
+const scrollPosition = ref(0)
+const scrollButton = ref(null)
 
-const items4Admin = reactive([
+const items4Admin = [
     {
         title: 'หน้าหลัก',
         value: 'foo',
         to: '/',
+        nav: ['หน้าหลัก'],
     },
     {
         title: 'นำเข้าไฟล์',
         value: 'bar',
         to: '/file_import/',
+        nav: [
+            {
+                title: 'หนัาหลัก',
+                href: '/',
+            },
+            'นำเข้าไฟล์',
+        ],
     },
     {
         title: 'จัดการงาน',
         value: 'fizz',
         to: '/job_management/',
+        nav: [
+            {
+                title: 'หนัาหลัก',
+                href: '/',
+            },
+            'จัดการงาน',
+        ],
     },
     {
         title: 'ผู้ดูแลระบบ',
@@ -127,27 +176,67 @@ const items4Admin = reactive([
                 title: 'Management',
                 icon: 'mdi-account-multiple-outline',
                 value: 'Management',
+                to: '/user_management/',
+                nav: [
+                    {
+                        title: 'หนัาหลัก',
+                        href: '/',
+                    },
+                    'Management',
+                ],
             },
             {
                 title: 'Settings',
                 icon: 'mdi-cog-outline',
                 value: 'Settings',
+                to: '/settings/',
+                nav: [
+                    {
+                        title: 'หนัาหลัก',
+                        href: '/',
+                    },
+                    'Settings',
+                ],
             },
         ],
     },
-])
-const items4Candidate = reactive([
-    {
-        title: 'หน้าหลัก',
-        value: 'foo',
-        to: '/candidate/',
-    },
-    {
-        title: 'จัดการข้อมูลผู้สมัคร',
-        value: 'bar',
-        to: '/candidate/form/',
-    },
-])
+]
+
+const shouldShowButton = computed(() => scrollPosition.value < 50)
+
+const onListItemSelected = (item) => {
+    navDirections.value = item.nav
+}
+
+const setRole = (newRole) => {
+    role.value = newRole
+    emit('changeRole', role.value)
+}
+
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+    })
+}
+
+//hooks
+onMounted(() => {
+    window.addEventListener('scroll', () => {
+        scrollPosition.value = window.pageYOffset
+    })
+})
+
+onUpdated(() => {
+    const route = useRoute()
+    console.log(route.fullPath)
+})
+
+onUnmounted(() => {
+    window.removeEventListener('scroll', () => {
+        scrollPosition.value = window.pageYOffset
+    })
+})
 
 watch(group, () => {
     drawer.value = false

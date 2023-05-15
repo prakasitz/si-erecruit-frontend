@@ -1,7 +1,5 @@
 <template>
     <div class="candidate-form">
-        <TopicBar :labels="['หนัาหลัก', 'จัดการข้อมูลผู้สมัคร']" />
-
         <v-row>
             <v-col cols="12">
                 <v-card class="mx-auto" width="90%">
@@ -17,10 +15,17 @@
                                 <v-card-text>
                                     <v-row>
                                         <v-col cols="7">
-                                            <v-text-field readonly density="compact" variant="outlined"
-                                                value="1 4098 00357 95 0" :type="eye1 ? 'text' : 'password'"
-                                                :append-icon="eye1 ? 'mdi-eye' : 'mdi-eye-off'" @click:append="eye1 = !eye1"
-                                                hide-details class="secret">
+                                            <v-text-field
+                                                readonly
+                                                density="compact"
+                                                variant="outlined"
+                                                value="1 4098 00357 95 0"
+                                                :type="eye1 ? 'text' : 'password'"
+                                                :append-icon="eye1 ? 'mdi-eye' : 'mdi-eye-off'"
+                                                @click:append="eye1 = !eye1"
+                                                hide-details
+                                                class="secret"
+                                            >
                                                 <template v-slot:prepend>
                                                     <p :style="{ 'font-size': '1.12rem !important' }">
                                                         <b>เลขบัตรประชาชน</b>
@@ -29,10 +34,17 @@
                                             </v-text-field>
                                         </v-col>
                                         <v-col cols="4">
-                                            <v-text-field readonly density="compact" variant="outlined" value="12345"
+                                            <v-text-field
+                                                readonly
+                                                density="compact"
+                                                variant="outlined"
+                                                value="12345"
                                                 :append-icon="eye2 ? 'mdi-eye' : 'mdi-eye-off'"
-                                                :type="eye2 ? 'text' : 'password'" @click:append="eye2 = !eye2" hide-details
-                                                class="secret">
+                                                :type="eye2 ? 'text' : 'password'"
+                                                @click:append="eye2 = !eye2"
+                                                hide-details
+                                                class="secret"
+                                            >
                                                 <template v-slot:prepend>
                                                     <p :style="{ 'font-size': '1.12rem !important' }">
                                                         <b>รหัสผ่าน</b>
@@ -98,15 +110,25 @@
                         <v-col>
                             <v-item-group v-model="onboarding" class="text-center" mandatory>
                                 <v-row no-gutters>
-                                    <v-item v-for="item in candidateForms" :key="`btn-${item.id}`"
-                                        v-slot="{ isSelected, toggle }" :value="item.id">
+                                    <v-item
+                                        v-for="item in candidateForms"
+                                        :key="`btn-${item.id}`"
+                                        v-slot="{ isSelected, toggle }"
+                                        :value="item.id"
+                                    >
                                         <v-col>
-                                            <v-btn block class="px-lg-5 px-md-2 px-sm-1"
+                                            <v-btn
+                                                block
+                                                class="px-lg-5 px-md-2 px-sm-1"
                                                 :class="isSelected ? 'btn-candidate font-weight-black ' : ''"
-                                                :selected-class="'main-color'" :variant="isSelected ? 'text' : 'text'"
-                                                size="small" @click="toggle"><span>
+                                                :selected-class="'main-color'"
+                                                :variant="isSelected ? 'text' : 'text'"
+                                                size="small"
+                                                @click="toggle"
+                                                ><span>
                                                     {{ item.title }}
-                                                </span></v-btn>
+                                                </span></v-btn
+                                            >
                                         </v-col>
                                     </v-item>
                                 </v-row>
@@ -124,20 +146,26 @@
                         <v-window-item v-for="item in candidateForms" :key="`card-${item.id}`" :value="item.id">
                             <v-card v-if="item.id == 1" class="mx-auto" width="90%">
                                 <v-container>
-                                    <v-card-title class="pa-auto text-h5 text-red-darken-2">โปรดสนใจเป็นพิเศษ</v-card-title>
+                                    <v-card-title class="pa-auto text-h5 text-red-darken-2"
+                                        >โปรดสนใจเป็นพิเศษ</v-card-title
+                                    >
                                     <v-card-text>
                                         <div class="text-h5 text-indigo-darken-2 mb-2">
                                             คำอธิบายสำหรับการกรอกข้อมูล SiRecruit สำหรับตำแหน่งทั่วไป
                                         </div>
-                                        <v-alert class="mb-2" border-color="indigo-darken-2" border="start" variant="text">
+                                        <v-alert
+                                            class="mb-2"
+                                            border-color="indigo-darken-2"
+                                            border="start"
+                                            variant="text"
+                                        >
                                             <v-alert-title class="mb-2 text-h6 text-indigo-darken-2">
                                                 การเข้าสู่ระบบและการบันทึกข้อมูล
                                             </v-alert-title>
                                             <div :style="{ 'font-size': '0.9rem', lineHeight: '1.4rem !important' }">
                                                 <p class="mb-4">
-                                                    ผู้ใช้งาน จะต้อง<b
-                                                        class="text-decoration-underline">จำรหัสผ่าน</b>ที่ระบบได้กำหนดให้
-                                                    เป็นตัวเลข 6 ตัว (ดังแสดงด้านบน)
+                                                    ผู้ใช้งาน จะต้อง<b class="text-decoration-underline">จำรหัสผ่าน</b
+                                                    >ที่ระบบได้กำหนดให้ เป็นตัวเลข 6 ตัว (ดังแสดงด้านบน)
                                                     เพื่อใช้สำหรับการเข้าสู่ระบบ คู่กับ หมายเลขบัตรประชาชนของท่าน
                                                     หากผู้ใช้งานลืมรหัสผ่าน จะต้องติดต่อผู้ดูแลระบบ โทร 02-419-8783
                                                     ในวันและเวลาราชการเท่านั้น
@@ -147,12 +175,18 @@
                                                     ระบบจะบันทึกข้อมูลทั้งหมดให้ในทุก ๆ ส่วน
                                                 </p>
                                                 <p class="mb-4">
-                                                    <b class="font-italic text-decoration-underline">ระบบจะบันทึกข้อมูลทั้งหมดให้อัตโนมัติทุก
-                                                        ๆ 3 นาที</b>
+                                                    <b class="font-italic text-decoration-underline"
+                                                        >ระบบจะบันทึกข้อมูลทั้งหมดให้อัตโนมัติทุก ๆ 3 นาที</b
+                                                    >
                                                 </p>
                                             </div>
                                         </v-alert>
-                                        <v-alert class="mb-2" border-color="indigo-darken-2" border="start" variant="text">
+                                        <v-alert
+                                            class="mb-2"
+                                            border-color="indigo-darken-2"
+                                            border="start"
+                                            variant="text"
+                                        >
                                             <v-alert-title class="mb-2 text-h6 text-indigo-darken-2">
                                                 การส่งข้อมูล
                                             </v-alert-title>
@@ -174,14 +208,17 @@
                                                 <p>
                                                     หากต้องการแก้ไขข้อมูลที่ได้กดส่งไปแล้ว จะต้องติดต่อผู้ดูแลระบบ โทร
                                                     02-419-8783 ในวันและเวลาราชการ เพื่อ
-                                                    <b class="text-decoration-underline text-blue-darken-2">เปิดสิทธิ์</b>
+                                                    <b class="text-decoration-underline text-blue-darken-2"
+                                                        >เปิดสิทธิ์</b
+                                                    >
                                                     ในการเข้ามาแก้ไขข้อมูลในลำดับต่อไป
                                                 </p>
                                             </div>
                                         </v-alert>
                                         <v-alert border-color="indigo-darken-2" border="start" variant="text">
                                             <v-alert-title class="mb-2 text-h6 text-indigo-darken-2">
-                                                การพิมพ์แบบฟอร์มและเอกสารแนบ</v-alert-title>
+                                                การพิมพ์แบบฟอร์มและเอกสารแนบ</v-alert-title
+                                            >
                                             <div :style="{ 'font-size': '0.9rem', lineHeight: '1.4rem !important' }">
                                                 <p class="mb-4">
                                                     เมื่อผู้ใช้งาน ได้ทำการส่งข้อมูลแล้ว
