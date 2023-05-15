@@ -77,7 +77,7 @@
                 </div>
             </v-list>
         </v-navigation-drawer>
-        <v-main :style="{ 'min-height': '90%' }" class="bg-background-color">
+        <v-main :style="{ 'min-height': '90%', 'margin-top': '36px' }" class="bg-background-color">
             <slot></slot>
         </v-main>
 
