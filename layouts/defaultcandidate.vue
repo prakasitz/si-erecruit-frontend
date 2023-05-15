@@ -78,9 +78,38 @@
             </v-list>
         </v-navigation-drawer>
 
-        <v-main style="min-height: 90%" class="bg-background-color">
-            <slot></slot>
+        <v-main :style="{ 'min-height': '90%', 'margin-top': '36px' }" class="bg-background-color">
+            <slot> </slot>
         </v-main>
+        <v-layout-item
+            class="text-end pointer-events-none"
+            style="
+                z-index: 1007;
+                transform: translateY(0%);
+                position: fixed;
+                height: inherit;
+                bottom: 1.25rem;
+                width: calc((100% - 0px) - 0px);
+                left: -1.25rem;
+            "
+            position="bottom"
+        >
+            <Transition name="swing">
+                <v-btn
+                    ref="scrollButton"
+                    v-if="!shouldShowButton"
+                    size="large"
+                    color="main-color"
+                    elevation="8"
+                    class="pointer-events-initial"
+                    density="default"
+                    icon="mdi-chevron-up"
+                    style="transform-origin: center center"
+                    @click="scrollToTop"
+                ></v-btn>
+            </Transition>
+        </v-layout-item>
+
         <v-footer app absolute style="font-size: 0.95rem" class="bg-footer-color text-center d-flex flex-column">
             <div class="pt-0">
                 ทดสอบ Si-ERecruit Nuxt3 <br />
@@ -92,7 +121,63 @@
     </v-app>
 </template>
 
+<style>
+.swing-enter-active,
+.swing-leave-active {
+    transition: transform 0.2 linear;
+}
+
+.swing-enter-to {
+    transform-style: preserve-3D;
+    transform: scale(1);
+}
+
+.swing-leave-to {
+    transform-style: preserve-3D;
+    transform: scale(0);
+}
+
+.pointer-events-none {
+    pointer-events: none;
+}
+.pointer-events-initial {
+    pointer-events: initial;
+}
+</style>
+
 <script setup>
+import { ref, onMounted } from 'vue'
+
+// define a ref to store the scroll position
+const scrollPosition = ref(0)
+const scrollButton = ref(null)
+
+// define a function to scroll to the top of the page
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+    })
+}
+
+function setButtonDisplayNone() {
+    scrollButton.value.style.display = 'none'
+}
+
+const shouldShowButton = computed(() => scrollPosition.value < 50)
+
+onMounted(() => {
+    window.addEventListener('scroll', () => {
+        scrollPosition.value = window.pageYOffset
+    })
+})
+
+onUnmounted(() => {
+    window.removeEventListener('scroll', () => {
+        scrollPosition.value = window.pageYOffset
+    })
+})
+
 const drawer = ref(true)
 const group = ref(null)
 const role = ref(null)
