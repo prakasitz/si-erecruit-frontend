@@ -11,19 +11,19 @@
                         <p> จำนวนบุตร <span class="text-red-darken-1"> *</span> </p>
                     </v-col>
                     <v-col cols="6">
-                        <v-text-field v-model="_child_tax.num_of_child" label="จำนวนบุตร" hint="หากไม่มีใส่ 0"
-                            density="compact" variant="outlined" maxLength="1">
+                        <v-text-field v-model="_tax.num_of_child" label="จำนวนบุตร" hint="หากไม่มีใส่ 0" density="compact"
+                            variant="outlined" maxLength="1">
                             <template #append>คน</template>
                         </v-text-field>
                     </v-col>
                 </v-row>
-                <div id="had_chlids" v-if="_child_tax.num_of_child > 0">
+                <div id="had_chlids" v-if="_tax.num_of_child > 0">
                     <v-row>
                         <v-col cols="4">
                             <p>จำนวนบุตรที่ยังไม่เข้าโรงเรียน <span class="text-red-darken-1">*</span> </p>
                         </v-col>
                         <v-col cols="6">
-                            <v-text-field v-model="_child_tax.chlid_nonschool" label="จำนวน" hint="หากไม่มีใส่ 0"
+                            <v-text-field v-model="_tax.chlid_nonschool" label="จำนวน" hint="หากไม่มีใส่ 0"
                                 density="compact" variant="outlined" maxLength="1">
                                 <template #append>คน</template></v-text-field>
                         </v-col>
@@ -35,9 +35,8 @@
                             <p> จำนวนบุตรที่กำลังศึกษาอยู่ <span class="text-red-darken-1">* </span></p>
                         </v-col>
                         <v-col cols="6">
-                            <v-text-field v-model="_child_tax.chlid_school" label="จำนวน" hint="หากไม่มีใส่ 0"
-                                density="compact" variant="outlined" maxLength="1"> <template
-                                    #append>คน</template></v-text-field>
+                            <v-text-field v-model="_tax.chlid_school" label="จำนวน" hint="หากไม่มีใส่ 0" density="compact"
+                                variant="outlined" maxLength="1"> <template #append>คน</template></v-text-field>
                         </v-col>
                     </v-row>
                     <v-row>
@@ -45,8 +44,8 @@
                             <p> จำนวนบุตรที่จบการศึกษาแล้ว <span class="text-red-darken-1">* </span></p>
                         </v-col>
                         <v-col cols="6">
-                            <v-text-field v-model="_child_tax.chlid_nonschool" l label="จำนวน" hint="หากไม่มีใส่ 0"
-                                density="compact" variant="outlined" maxLength="1">
+                            <v-text-field v-model="_tax.chlid_school" label="จำนวน" hint="หากไม่มีใส่ 0" density="compact"
+                                variant="outlined" maxLength="1">
                                 <template #append>คน</template>
                             </v-text-field>
                         </v-col>
@@ -61,14 +60,14 @@
                         <p> ดอกเบี้ยเงินกู้ยืม <span class="text-red-darken-1"> *</span> </p>
                     </v-col>
                     <v-col cols="3">
-                        <v-radio-group v-model="_other_tax.loan" inline>
+                        <v-radio-group v-model="_tax.loan" inline>
                             <v-radio label="ไม่มี" value="N"></v-radio>
                             <v-radio label="มี" value="Y"></v-radio>
                         </v-radio-group>
                     </v-col>
-                    <v-col v-if="_other_tax.loan == 'Y'">
-                        <v-text-field v-model="_other_tax.loan_amount" label="จำนวนเงิน (บาท)" hint="โปรดระบุ"
-                            density="compact" variant="outlined" maxLength="10">
+                    <v-col v-if="_tax.loan == 'Y'">
+                        <v-text-field v-model="_tax.loan_amount" label="จำนวนเงิน (บาท)" hint="โปรดระบุ" density="compact"
+                            variant="outlined" maxLength="10">
                             <template #append>บาท</template>
                         </v-text-field>
                     </v-col>
@@ -79,13 +78,13 @@
                         <p> เบี้ยประกันชีวิต (เจ้าตัว) <span class="text-red-darken-1"> *</span> </p>
                     </v-col>
                     <v-col cols="3">
-                        <v-radio-group v-model="_other_tax.insurance" inline>
+                        <v-radio-group v-model="_tax.insurance" inline>
                             <v-radio label="ไม่มี" value="N"></v-radio>
                             <v-radio label="มี" value="Y"></v-radio>
                         </v-radio-group>
                     </v-col>
-                    <v-col v-if="_other_tax.insurance == 'Y'">
-                        <v-text-field v-model="_other_tax.insurance_amount" label="จำนวนเงิน (บาท)" hint="โปรดระบุ"
+                    <v-col v-if="_tax.insurance == 'Y'">
+                        <v-text-field v-model="_tax.insurance_amount" label="จำนวนเงิน (บาท)" hint="โปรดระบุ"
                             density="compact" variant="outlined" maxLength="10">
                             <template #append>บาท</template>
                         </v-text-field>
@@ -94,17 +93,17 @@
 
                 <v-row id="donated">
                     <v-col cols="4">
-                        <p> เบี้ยประกันชีวิต (เจ้าตัว) <span class="text-red-darken-1"> *</span> </p>
+                        <p> เงินบริจาค <span class="text-red-darken-1"> *</span> </p>
                     </v-col>
                     <v-col cols="3">
-                        <v-radio-group v-model="_other_tax.donate" inline>
+                        <v-radio-group v-model="_tax.donate" inline>
                             <v-radio label="ไม่มี" value="N"></v-radio>
                             <v-radio label="มี" value="Y"></v-radio>
                         </v-radio-group>
                     </v-col>
-                    <v-col v-if="_other_tax.donate == 'Y'">
-                        <v-text-field v-model="_other_tax.donate_amount" label="จำนวนเงิน (บาท)" hint="โปรดระบุ"
-                            density="compact" variant="outlined" maxLength="10">
+                    <v-col v-if="_tax.donate == 'Y'">
+                        <v-text-field v-model="_tax.donate_amount" label="จำนวนเงิน (บาท)" hint="โปรดระบุ" density="compact"
+                            variant="outlined" maxLength="10">
                             <template #append>บาท</template>
                         </v-text-field>
                     </v-col>
@@ -112,18 +111,18 @@
 
                 <v-row id="fund">
                     <v-col cols="4">
-                        <p> เงินบริจาค <span class="text-red-darken-1"> *</span>
+                        <p> เงินกองทุน <span class="text-red-darken-1"> *</span>
                         </p>
                     </v-col>
                     <v-col cols="3">
-                        <v-radio-group v-model="_other_tax.fund" inline>
+                        <v-radio-group v-model="_tax.fund" inline>
                             <v-radio label="ไม่มี" value="N"></v-radio>
                             <v-radio label="มี" value="Y"></v-radio>
                         </v-radio-group>
                     </v-col>
-                    <v-col v-if="_other_tax.fund == 'Y'">
-                        <v-text-field v-model="_other_tax.fund_amount" label="จำนวนเงิน (บาท)" hint="โปรดระบุ"
-                            density="compact" variant="outlined" maxLength="10">
+                    <v-col v-if="_tax.fund == 'Y'">
+                        <v-text-field v-model="_tax.fund_amount" label="จำนวนเงิน (บาท)" hint="โปรดระบุ" density="compact"
+                            variant="outlined" maxLength="10">
                             <template #append>บาท</template>
                         </v-text-field>
                     </v-col>
@@ -135,24 +134,24 @@
                         </p>
                     </v-col>
                     <v-col cols="6">
-                        <v-radio-group v-model="_other_tax.marriage_income">
+                        <v-radio-group v-model="_tax.marriage_income">
                             <v-radio label="คู่สมรสไม่มีรายได้" value="1"></v-radio>
                             <v-radio label="คู่สมรสมีรายได้ ไม่ลดหย่อนบุตร" value="2"></v-radio>
                             <v-radio label="คู่สมรสมีรายได้ ลดหย่อนบุตร" value="3"></v-radio>
                         </v-radio-group>
                     </v-col>
                 </v-row>
-                <v-row v-if="_other_tax.marriage_income == '1'">
+                <v-row v-if="_tax.marriage_income == '1'">
                     <v-col cols="4"> เบี้ยประกันชีวิต (คู่สมรส) กรณีไม่มีเงินรายได้ <span class="text-red-darken-1">
                             *</span></v-col>
                     <v-col cols="3">
-                        <v-radio-group v-model="_other_tax.marriage_insurance" inline>
+                        <v-radio-group v-model="_tax.marriage_insurance" inline>
                             <v-radio label="ไม่มี" value="N"></v-radio>
                             <v-radio label="มี" value="Y"></v-radio>
                         </v-radio-group>
                     </v-col>
-                    <v-col v-if="_other_tax.marriage_insurance == 'Y'">
-                        <v-text-field v-model="_other_tax.marriage_insurance_amount" label="จำนวนเงิน (บาท)" hint="โปรดระบุ"
+                    <v-col v-if="_tax.marriage_insurance == 'Y'">
+                        <v-text-field v-model="_tax.marriage_insurance_amount" label="จำนวนเงิน (บาท)" hint="โปรดระบุ"
                             density="compact" variant="outlined" maxLength="10">
                             <template #append>บาท</template>
                         </v-text-field>
@@ -164,55 +163,13 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { reactive } from 'vue';
+import { usePersonalStore } from '../../stores/personal.store';
+import { ITax } from '~/stores/interface/personal_information.interface';
 
-
-
-const _child_tax: _child_tax = reactive({
-    num_of_child: 0,
-    chlid_nonschool: 0,
-    chlid_school: 0,
-    chlid_endschool: 0,
+const personalStore = usePersonalStore();
+const _tax: ITax = reactive({
+    ...personalStore.$state.tax
 })
-
-
-const _other_tax: other_tax = reactive({
-    loan: "N",
-    loan_amount: 0,
-    insurance: "N",
-    insurance_amount: 0,
-    donate: "N",
-    donate_amount: 0,
-    fund: "N",
-    fund_amount: 0,
-    marriage_income: '1',
-    marriage_insurance: "N",
-    marriage_insurance_amount: 0,
-    parent_support: "N",
-    parent_support_amount: 0,
-})
-
-interface _child_tax {
-    num_of_child: number
-    chlid_nonschool: number
-    chlid_school: number
-    chlid_endschool: number
-}
-
-interface other_tax {
-    loan: string
-    loan_amount: number
-    insurance: string
-    insurance_amount: number
-    donate: string
-    donate_amount: number
-    fund: string
-    fund_amount: number
-    marriage_income: string //(1= มีรายได้ 2=คู่สมรสมีรายได้ ไม่ลดหย่อนบุตร 3=คู่สมรสมีรายได้ ลดหย่อนบุตร)
-    marriage_insurance: string
-    marriage_insurance_amount: number
-    parent_support: string
-    parent_support_amount: number
-}
 
 </script>

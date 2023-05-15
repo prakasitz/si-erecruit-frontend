@@ -4,7 +4,7 @@ export interface IEducation {
 }
 
 export interface IJob {
-    had_job: boolean
+    had_job: string
     had_job_list: job[]
 
     had_job_mahidol: string
@@ -22,7 +22,7 @@ export interface IJob {
 
 export interface IMarriage {
     status: string
-    num_of_chlid: number
+    num_of_chlid: string
     children_list: children_info[]
     ref_person: ref_person
 }
@@ -91,7 +91,7 @@ interface current_job {
     company_province: string
 }
 
-interface education {
+export interface education {
     id: number
     education_level: string
     degree: string
@@ -102,13 +102,14 @@ interface education {
     graduate_date: string
 }
 
-interface job {
+export interface job {
     company_name: string
     position_name: string
     start_date: string
     still_doing: boolean
     end_date: string
     reason: string
+    salary: string
 }
 
 interface job_mahidol {
