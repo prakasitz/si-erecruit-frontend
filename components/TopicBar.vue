@@ -1,5 +1,5 @@
 <template>
-    <v-app-bar>
+    <v-app-bar scroll-behavior="elevate">
         <v-row no-gutters>
             <v-col cols="12">
                 <v-sheet class="ma-0s pa-0" max-height="70">

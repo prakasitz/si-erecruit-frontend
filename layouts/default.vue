@@ -82,34 +82,7 @@
             <slot></slot>
         </v-main>
 
-        <v-layout-item
-            class="text-end pointer-events-none"
-            style="
-                z-index: 1007;
-                transform: translateY(0%);
-                position: fixed;
-                height: inherit;
-                bottom: 1.25rem;
-                width: calc((100% - 0px) - 0px);
-                left: -1.25rem;
-            "
-            position="bottom"
-        >
-            <Transition name="swing">
-                <v-btn
-                    ref="scrollButton"
-                    v-if="!shouldShowButton"
-                    size="large"
-                    color="main-color"
-                    elevation="8"
-                    class="pointer-events-initial"
-                    density="default"
-                    icon="mdi-chevron-up"
-                    style="transform-origin: center center"
-                    @click="scrollToTop"
-                ></v-btn>
-            </Transition>
-        </v-layout-item>
+        <BtnScrollToTop :position4show="300" />
 
         <v-footer app absolute style="font-size: 0.95rem" class="bg-footer-color text-center d-flex flex-column">
             <div class="pt-0">
@@ -138,9 +111,6 @@ const drawer = ref(true)
 const group = ref(null)
 
 const role = ref(null)
-
-const scrollPosition = ref(0)
-const scrollButton = ref(null)
 
 const items4Admin = [
     {
@@ -207,35 +177,15 @@ const items4Admin = [
     },
 ]
 
-const shouldShowButton = computed(() => scrollPosition.value < 50)
-
 const setRole = (newRole) => {
     role.value = newRole
     emit('changeRole', role.value)
 }
 
-function scrollToTop() {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-    })
-}
-
 //hooks
-onMounted(() => {
-    window.addEventListener('scroll', () => {
-        scrollPosition.value = window.pageYOffset
-    })
-})
 
 onUpdated(() => {
     console.log(route.fullPath)
-})
-
-onUnmounted(() => {
-    window.removeEventListener('scroll', () => {
-        scrollPosition.value = window.pageYOffset
-    })
 })
 
 watch(group, () => {
