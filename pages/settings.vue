@@ -35,11 +35,11 @@
                             </v-col>
                         </v-row>
                     </template>
-                    <template v-slot:[`item.status`]="{ item }">
+                    <template v-slot:item.status="{ item }">
                         <v-chip v-if="item.raw.status == 0" color="red">Imported</v-chip>
                         <v-chip v-if="item.raw.status == 1" color="black">Closed</v-chip>
                     </template>
-                    <template v-slot:[`item.action`]="{ item }">
+                    <template v-slot:item.action="{ item }">
                         <v-icon size="small" class="me-2" @click="editItem(item.raw)"> mdi-pencil </v-icon>
                         <v-icon size="small" @click="deleteItem(item.raw)" color="red"> mdi-delete </v-icon>
                     </template>

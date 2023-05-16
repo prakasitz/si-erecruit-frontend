@@ -34,11 +34,11 @@
                             </v-col>
                         </v-row>
                     </template>
-                    <template v-slot:[`item.status`]="{ item }">
+                    <template v-slot:item.status="{ item }">
                         <v-chip v-if="item.raw.status == 0" color="red">Imported</v-chip>
                         <v-chip v-if="item.raw.status == 1" color="black">Closed</v-chip>
                     </template>
-                    <template v-slot:[`item.action`]="{ item }">
+                    <template v-slot:item.action="{ item }">
                         <NuxtLink :to="`/job_management/${item.raw.source}`"
                             ><v-icon size="small" class="me-2" @click="editItem(item.raw)"> mdi-pencil </v-icon>
                         </NuxtLink>
