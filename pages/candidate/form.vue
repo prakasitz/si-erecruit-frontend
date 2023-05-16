@@ -238,6 +238,7 @@
                             <CandidateEducationAndJob v-if="item.id == 7"></CandidateEducationAndJob>
                             <CandidateTax v-if="item.id == 8"></CandidateTax>
                             <CandidateTalent v-if="item.id == 9"></CandidateTalent>
+                            <CandidateFiles v-if="item.id == 10"></CandidateFiles>
                         </v-window-item>
                     </v-window>
                 </section>
@@ -294,6 +295,14 @@ const candidateForms = reactive([
     {
         id: 8,
         title: 'ภาษี',
+    },
+    {
+        id: 9,
+        title: 'ความสามารถพิเศษ',
+    },
+    {
+        id: 10,
+        title: 'เอกสารอื่นๆ',
     },
 ])
 const onboarding = ref(0)

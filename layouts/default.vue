@@ -5,27 +5,10 @@
                 <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer" />
             </template>
             <v-app-bar-title>
-                <div class="d-inline-flex flex-wrap" no-gutters v-if="role == 'admin'">
+                <div class="d-inline-flex flex-wrap" no-gutters>
                     <v-img :width="45" src="/images/MU_Th_Color.png"></v-img>
                     <v-img class="ml-1" :width="120" src="/images/logo_text.png"></v-img>
                 </div>
-                <template v-else>
-                    <v-row no-gutters class="d-flex align-center">
-                        <v-col cols="2">
-                            <v-img else :width="220" src="/images/Si_Th_H_Color.png"></v-img>
-                        </v-col>
-                        <v-col class="ml-5">
-                            <div class="d-inline-flex align-end">
-                                <v-img :width="150" src="/images/logo_text.png"></v-img>
-                                <p class="ml-2">สำหรับตำแหน่งงานทั่วไป</p>
-                            </div>
-                            <p class="mb-1 text-subtitle-1">
-                                แบบฟอร์มกรอกข้อมูลออนไลน์ สำหรับผู้ผ่านการคัดเลือกเพื่อขอบรรจุพนักงานมหาวิทยาลัย
-                                (คณะแพทยศาสตร์ศิริราชพยาบาล)
-                            </p>
-                        </v-col>
-                    </v-row>
-                </template>
             </v-app-bar-title>
 
             <template v-slot:append>
