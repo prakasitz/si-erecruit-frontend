@@ -11,10 +11,15 @@
 
 <script setup>
 definePageMeta({
-    title: 'My home page',
+    title: 'หน้าหลัก',
     pageTransition: {
         name: 'rotate',
     },
+    breadcrumbs: [
+        {
+            title: 'หน้าหลัก',
+        },
+    ],
 })
 
 const route = useRoute()

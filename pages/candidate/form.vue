@@ -243,7 +243,6 @@
                 </section>
             </v-col>
         </v-row>
-
         <br />
     </div>
 </template>
@@ -308,10 +307,21 @@ const prev = () => {
 }
 
 definePageMeta({
-    title: 'แบบฟอร์มกรอกข้อมูลผู้สมัคร',
+    title: 'จัดการข้อมูลผู้สมัคร',
     pageTransition: {
         name: 'rotate',
     },
     layout: 'defaultcandidate',
+    breadcrumbs: [
+        {
+            title: 'หน้าหลัก',
+            href: '/candidate/',
+        },
+        {
+            title: 'จัดการข้อมูลผู้สมัคร',
+        },
+    ],
 })
+
+console.log(useRoute().name)
 </script>

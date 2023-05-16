@@ -17,10 +17,15 @@
 <script setup lang="ts">
 // This will work in both `<script setup>` and `<script>`
 definePageMeta({
-    title: 'แบบฟอร์มกรอกข้อมูลผู้สมัคร',
+    title: 'หน้าหลัก',
     pageTransition: {
         name: 'rotate',
     },
     layout: 'defaultcandidate',
+    breadcrumbs: [
+        {
+            title: 'หน้าหลัก',
+        },
+    ],
 })
 </script>

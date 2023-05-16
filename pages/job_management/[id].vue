@@ -3,7 +3,7 @@
         <v-card class="mx-auto" width="90%">
             <v-toolbar density="compact" color="main-color">
                 <v-card-title :style="{ 'font-size': '16px !important' }">
-                    <span class="text-h6">รายละเอียดงาน</span><br />
+                    <span class="text-h6">รายละเอียดงาน (ID: {{ route.params.id }})</span><br />
                 </v-card-title>
             </v-toolbar>
             <v-card-text class="d-flex justify-center">
@@ -49,6 +49,23 @@ definePageMeta({
     pageTransition: {
         name: 'rotate',
     },
+
+    pageTransition: {
+        name: 'rotate',
+    },
+    breadcrumbs: [
+        {
+            title: 'หน้าหลัก',
+            href: '/',
+        },
+        {
+            title: 'จัดการงาน',
+            href: '/job_management/',
+        },
+        {
+            title: 'รายละเอียดงาน',
+        },
+    ],
 })
 
 const headers = [

@@ -53,7 +53,6 @@
                         :key="item.title"
                         :value="item.value"
                         :to="item.to"
-                        @click="onListItemSelected(item)"
                     >
                         <v-list-item-title v-text="item.title"></v-list-item-title>
                     </v-list-item>
@@ -79,7 +78,7 @@
             </v-list>
         </v-navigation-drawer>
 
-        <TopicBar :labels="navDirections.value" />
+        <TopicBar :labels="route.meta.breadcrumbs" />
 
         <v-main :style="{ 'min-height': '90%', 'margin-top': '36px' }" class="bg-background-color">
             <slot> </slot>
@@ -129,7 +128,16 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
+const route = useRoute()
 const emit = defineEmits(['changeRole'])
+
+useHead({
+    titleTemplate: (productCategory) => {
+        console.log('breadcrumbs >>', route.meta.breadcrumbs)
+        return productCategory ? `${productCategory} - ${route.meta.title}` : 'Site Title'
+    },
+    // meta: [{ property: 'og:title', content: `App Name - ${route.meta.title}` }],
+})
 
 // define a ref to store the scroll position
 const scrollPosition = ref(0)
@@ -139,8 +147,6 @@ const drawer = ref(true)
 const group = ref(null)
 
 const role = ref(null)
-
-const navDirections = reactive([])
 
 const items4Candidate = [
     {
@@ -173,11 +179,6 @@ function scrollToTop() {
 
 const shouldShowButton = computed(() => scrollPosition.value < 50)
 
-const onListItemSelected = (item) => {
-    navDirections.value = item.nav
-    // perform other actions based on the selected item
-}
-
 const setRole = (newRole) => {
     role.value = newRole
     emit('changeRole', role.value)
@@ -190,8 +191,7 @@ onMounted(() => {
 })
 
 onUpdated(() => {
-    const route = useRoute()
-    console.log(route.fullPath)
+    console.log('route on update: ', route.fullPath)
 })
 
 onUnmounted(() => {

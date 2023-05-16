@@ -52,10 +52,19 @@
 
 <script setup>
 definePageMeta({
-    title: 'รายชื่องานที่นำข้อมูลเข้า',
+    title: 'ตั้งค่า',
     pageTransition: {
         name: 'rotate',
     },
+    breadcrumbs: [
+        {
+            title: 'หน้าหลัก',
+            href: '/',
+        },
+        {
+            title: 'ตั้งค่า',
+        },
+    ],
 })
 
 const route = useRoute()

@@ -34,10 +34,19 @@
 
 <script setup>
 definePageMeta({
-    title: 'Import File',
+    title: 'นำเข้าไฟล์',
     pageTransition: {
         name: 'rotate',
     },
+    breadcrumbs: [
+        {
+            title: 'หน้าหลัก',
+            href: '/',
+        },
+        {
+            title: 'นำเข้าไฟล์',
+        },
+    ],
 })
 
 const route = useRoute()

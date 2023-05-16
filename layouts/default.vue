@@ -53,7 +53,6 @@
                         :key="item.title"
                         :value="item.value"
                         :to="item.to"
-                        @click="onListItemSelected(item)"
                     >
                         <v-list-item-title v-text="item.title"></v-list-item-title>
                     </v-list-item>
@@ -73,13 +72,12 @@
                             :value="subitem.value"
                             :to="subitem.to ?? undefined"
                             :href="subitem.href ?? undefined"
-                            @click="onListItemSelected(subitem)"
                         ></v-list-item>
                     </v-list-group>
                 </div>
             </v-list>
         </v-navigation-drawer>
-        <TopicBar :labels="navDirections.value" />
+        <TopicBar :labels="route.meta.breadcrumbs" />
         <v-main :style="{ 'min-height': '90%', 'margin-top': '36px' }" class="bg-background-color">
             <slot></slot>
         </v-main>
@@ -125,14 +123,21 @@
 </template>
 
 <script setup>
+const route = useRoute()
+
+useHead({
+    titleTemplate: (productCategory) => {
+        return productCategory ? `${productCategory} - ${route.meta.title}` : 'Site Title'
+    },
+    // meta: [{ property: 'og:title', content: `App Name - ${route.meta.title}` }],
+})
+
 const emit = defineEmits(['changeRole'])
 
 const drawer = ref(true)
 const group = ref(null)
 
 const role = ref(null)
-
-const navDirections = reactive([])
 
 const scrollPosition = ref(0)
 const scrollButton = ref(null)
@@ -204,10 +209,6 @@ const items4Admin = [
 
 const shouldShowButton = computed(() => scrollPosition.value < 50)
 
-const onListItemSelected = (item) => {
-    navDirections.value = item.nav
-}
-
 const setRole = (newRole) => {
     role.value = newRole
     emit('changeRole', role.value)
@@ -228,7 +229,6 @@ onMounted(() => {
 })
 
 onUpdated(() => {
-    const route = useRoute()
     console.log(route.fullPath)
 })
 
