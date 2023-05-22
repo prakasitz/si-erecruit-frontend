@@ -1,3 +1,63 @@
+export interface IJobPosition {}
+
+export interface IPersonalInfo {
+    title_conferrend?: string
+    title_academic?: string
+    title_milirtary?: string
+    title_spacial?: string
+
+    title_th: string
+    first_name_th: string
+    last_name_th: string
+    nickname_th: string
+
+    title_en: string
+    first_name_en: string
+    last_name_en: string
+
+    email_address: string
+    birth_date: Date
+    province_when: string
+
+    age_year: number
+    age_month: number
+
+    id_card_number: number
+    id_card_amphur: string
+    id_card_province: string
+    id_card_issue_date: Date
+    id_card_expire_date: Date
+
+    height: number
+    weight: number
+    blood_type: string
+
+    race: string
+    nationality: string
+    religion: string
+
+    military_status: string
+}
+
+export interface IAddressInfo {
+    reg_address: address
+    cur_address: address
+    emer_address: address
+
+    cur_telephone?: string
+    cur_mobile: string
+
+    license_number: string
+    license_begin_date: Date
+    license_expire_date: Date
+}
+
+export interface IBankingInfo {}
+
+export interface IParent {}
+
+export interface IPersonalInfo {}
+
 export interface IEducation {
     education_select: string
     education_list: education[]
@@ -10,7 +70,7 @@ export interface IJob {
     had_job_mahidol: string
     had_job_mahidol_detail: job_mahidol
 
-    job_status: string // 1= กำลังทำงาน 2 = กำลังศึกษาต่อ 3 = ว่างงาน 
+    job_status: string // 1= กำลังทำงาน 2 = กำลังศึกษาต่อ 3 = ว่างงาน
     current_job: current_job
     current_education: current_education
     current_unemployee: {
@@ -47,7 +107,6 @@ export interface ITax {
     parent_support: string
     parent_support_amount: number
 }
-
 
 interface address {
     id: number

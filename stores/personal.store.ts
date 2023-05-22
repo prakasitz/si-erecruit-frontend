@@ -1,41 +1,53 @@
-import { IEducation, IJob, IMarriage, ITax } from './interface/personal_information.interface';
+import { IEducation, IJob, IMarriage, ITax } from './interface/personal_information.interface'
 
 import { defineStore } from 'pinia'
 
 interface State {
+    job_position: any
+    personal_info: any
+    address: any
+    banking: any
     education: IEducation
     job: IJob
-    marriage: IMarriage,
+    marriage: IMarriage
     tax: ITax
 }
 
 export const usePersonalStore = defineStore('personal', {
     state: (): State => {
         return {
+            job_position: {},
+            personal_info: {},
+            address: {},
+            banking: {},
             education: {
                 education_select: '1',
-                education_list: [{
-                    id: 0,
-                    education_level: '',
-                    degree: '',
-                    major: '',
-                    school: '',
-                    gpa: '',
-                    start_date: '',
-                    graduate_date: '',
-                }],
+                education_list: [
+                    {
+                        id: 0,
+                        education_level: '',
+                        degree: '',
+                        major: '',
+                        school: '',
+                        gpa: '',
+                        start_date: '',
+                        graduate_date: '',
+                    },
+                ],
             },
             job: {
                 had_job: 'N',
-                had_job_list: [{
-                    company_name: '',
-                    end_date: '',
-                    position_name: '',
-                    reason: '',
-                    salary: '',
-                    still_doing: false,
-                    start_date: '',
-                }],
+                had_job_list: [
+                    {
+                        company_name: '',
+                        end_date: '',
+                        position_name: '',
+                        reason: '',
+                        salary: '',
+                        still_doing: false,
+                        start_date: '',
+                    },
+                ],
 
                 had_job_mahidol: 'N',
                 had_job_mahidol_detail: {
@@ -94,7 +106,7 @@ export const usePersonalStore = defineStore('personal', {
                     relationship: '',
                     title: '',
                     id: 0,
-                }
+                },
             },
             tax: {
                 chlid_endschool: 0,
@@ -114,16 +126,17 @@ export const usePersonalStore = defineStore('personal', {
                 marriage_insurance_amount: 0,
                 parent_support: 'N',
                 parent_support_amount: 0,
-            }
+            },
         }
-    }, actions: {
+    },
+    actions: {
         removeJobList(index: number) {
-            index -= 1;
+            index -= 1
             this.job.had_job_list.splice(index, 1)
         },
         removeEducationList(index: number) {
-            index -= 1;
+            index -= 1
             this.education.education_list.splice(index, 1)
-        }
-    }
-});
+        },
+    },
+})
