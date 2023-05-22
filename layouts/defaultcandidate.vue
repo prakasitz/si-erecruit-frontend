@@ -49,7 +49,7 @@
                 <div v-for="item in items4Candidate">
                     <v-list-item
                         v-if="!item.subgroups"
-                        active-color="main-color"
+                        color="main-color"
                         :key="item.title"
                         :value="item.value"
                         :to="item.to"
@@ -65,7 +65,7 @@
                         <v-list-item
                             class="ml-5"
                             v-for="subitem in item.subgroups"
-                            active-color="main-color"
+                            color="main-color"
                             :key="subitem.value"
                             :title="subitem.title"
                             :prepend-icon="subitem.icon"
