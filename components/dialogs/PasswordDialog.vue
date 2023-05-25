@@ -1,4 +1,4 @@
-<template >
+<template>
     <v-row justify="space-around">
         <v-col cols="auto">
             <v-dialog v-model="props.show" transition="dialog-top-transition" width="700">
@@ -8,13 +8,26 @@
                         <v-card-text>
                             <div class="">
                                 <p>
-                                    <v-text-field v-model="props.id_card" class="mt-1" variant="outlined" readonly
-                                        prepend-inner-icon="mdi-account" maxLength="13"
-                                        hint="x-xx-xx-xxxxx-xx-xx"></v-text-field>
+                                    <v-text-field
+                                        v-model="props.id_card"
+                                        class="mt-1"
+                                        variant="outlined"
+                                        readonly
+                                        prepend-inner-icon="mdi-account"
+                                        maxLength="13"
+                                        hint="x-xx-xx-xxxxx-xx-xx"
+                                    ></v-text-field>
                                 </p>
                                 <p>
-                                    <v-text-field v-model="password" class="mt-1" variant="outlined" label="รหัสผ่าน"
-                                        prepend-inner-icon="mdi-key" maxLength="8" type="password"></v-text-field>
+                                    <v-text-field
+                                        v-model="password"
+                                        class="mt-1"
+                                        variant="outlined"
+                                        label="รหัสผ่าน"
+                                        prepend-inner-icon="mdi-key"
+                                        maxLength="8"
+                                        type="password"
+                                    ></v-text-field>
                                 </p>
                             </div>
                         </v-card-text>
@@ -49,16 +62,12 @@
     </v-row>
 </template>
 
-
 <script setup lang="ts">
+const props = defineProps(['id_card', 'btn_disabled', 'show', 'showError', 'error_detail'])
+const emit = defineEmits(['update:show', 'update:show_error'])
 
-const props = defineProps(['id_card', 'btn_disabled', 'show', 'showError', 'error_detail']);
-const emit = defineEmits(['update:show', 'update:show_error']);
-
-const password = ref();
+const password = ref()
 function loginCandidate(pid: string, password: string) {
     console.log(props.btn_disabled)
 }
-
 </script>
-
