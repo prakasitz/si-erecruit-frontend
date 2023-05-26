@@ -17,6 +17,7 @@
                                     variant="outlined"
                                     density="compact"
                                     hide-details
+                                    v-model="personal_info.title_conferrend"
                                 >
                                 </v-select>
                             </v-col>
@@ -34,6 +35,7 @@
                                     variant="outlined"
                                     density="compact"
                                     hide-details
+                                    v-model="personal_info.title_spacial"
                                 >
                                 </v-select>
                             </v-col>
@@ -51,6 +53,7 @@
                                     variant="outlined"
                                     density="compact"
                                     hide-details
+                                    v-model="personal_info.title_academic"
                                 >
                                 </v-select>
                             </v-col>
@@ -68,6 +71,7 @@
                                     variant="outlined"
                                     density="compact"
                                     hide-details
+                                    v-model="personal_info.title_milirtary"
                                 >
                                 </v-select>
                             </v-col>
@@ -107,7 +111,11 @@
                                 <p>ชื่อ (ภาษาไทย) <span class="text-red">*</span></p>
                             </v-col>
                             <v-col cols="8">
-                                <v-text-field density="compact" variant="outlined"></v-text-field>
+                                <v-text-field
+                                    v-model="personal_info.first_name_th"
+                                    density="compact"
+                                    variant="outlined"
+                                ></v-text-field>
                             </v-col>
                         </v-row>
                     </v-col>
@@ -218,10 +226,21 @@
                                 <p>วัน/เดือน/ปี เกิด<span class="text-red">*</span></p>
                             </v-col>
                             <v-col cols="3">
-                                <v-text-field density="compact" variant="outlined" value="20/04/2566"></v-text-field>
+                                <VueDatePicker
+                                    :flow="flow"
+                                    :max-date="getMaxBirthDate()"
+                                    :start-date="getMaxBirthDate()"
+                                    :enable-time-picker="false"
+                                    v-model="personal_info.birth_date"
+                                />
                             </v-col>
                             <v-col cols="3">
-                                <v-text-field density="compact" variant="outlined" value="26" readonly>
+                                <v-text-field
+                                    density="compact"
+                                    variant="outlined"
+                                    :value="calculateAge().years"
+                                    readonly
+                                >
                                     <template #prepend>
                                         <div style="position: relative; top: -6.5px">อายุ</div>
                                     </template>
@@ -231,7 +250,12 @@
                                 </v-text-field>
                             </v-col>
                             <v-col cols="2">
-                                <v-text-field density="compact" variant="outlined" value="11" readonly>
+                                <v-text-field
+                                    density="compact"
+                                    variant="outlined"
+                                    :value="calculateAge().months"
+                                    readonly
+                                >
                                     <template #append>
                                         <div style="position: relative; top: -6.5px">เดือน</div>
                                     </template>
@@ -269,7 +293,11 @@
                                 <p>บัตรประจำตัวประชาชน<span class="text-red">*</span></p>
                             </v-col>
                             <v-col cols="8">
-                                <v-text-field density="compact" variant="outlined"></v-text-field>
+                                <v-text-field
+                                    v-model="personal_info.id_card_number"
+                                    density="compact"
+                                    variant="outlined"
+                                ></v-text-field>
                             </v-col>
                         </v-row>
                     </v-col>
@@ -280,7 +308,11 @@
                                 <p>สถานที่ออกบัตร<span class="text-red">*</span></p>
                             </v-col>
                             <v-col cols="4">
-                                <v-text-field density="compact" variant="outlined">
+                                <v-text-field
+                                    v-model="personal_info.id_card_amphur"
+                                    density="compact"
+                                    variant="outlined"
+                                >
                                     <template #prepend>
                                         <div style="position: relative; top: -6.5px">อำเภอ/เขต</div>
                                     </template>
@@ -288,6 +320,7 @@
                             </v-col>
                             <v-col cols="4">
                                 <v-autocomplete
+                                    v-model="personal_info.id_card_province"
                                     label="กรุณาเลือก"
                                     variant="outlined"
                                     density="compact"
@@ -306,7 +339,11 @@
                                 <p>วันที่ออกบัตร <span class="text-red">*</span></p>
                             </v-col>
                             <v-col cols="8">
-                                <v-text-field density="compact" variant="outlined"></v-text-field>
+                                <v-text-field
+                                    v-model="personal_info.id_card_issue_date"
+                                    density="compact"
+                                    variant="outlined"
+                                ></v-text-field>
                             </v-col>
                         </v-row>
                     </v-col>
@@ -316,7 +353,11 @@
                                 <p>วันที่บัตรหมดอายุ <span class="text-red">*</span></p>
                             </v-col>
                             <v-col cols="8">
-                                <v-text-field density="compact" variant="outlined"></v-text-field>
+                                <v-text-field
+                                    v-model="personal_info.id_card_expire_date"
+                                    density="compact"
+                                    variant="outlined"
+                                ></v-text-field>
                             </v-col>
                         </v-row>
                     </v-col>
@@ -335,6 +376,7 @@
                             </v-col>
                             <v-col cols="4">
                                 <v-text-field
+                                    v-model="personal_info.height"
                                     density="compact"
                                     placeholder="0.00"
                                     variant="outlined"
@@ -350,7 +392,13 @@
                                 <p>น้ำหนัก <span class="text-red">*</span></p>
                             </v-col>
                             <v-col cols="4">
-                                <v-text-field density="compact" placeholder="0.00" variant="outlined" suffix="กิโลกรัม">
+                                <v-text-field
+                                    v-model="personal_info.weight"
+                                    density="compact"
+                                    placeholder="0.00"
+                                    variant="outlined"
+                                    suffix="กิโลกรัม"
+                                >
                                 </v-text-field>
                             </v-col>
                         </v-row>
@@ -385,6 +433,7 @@
                             </v-col>
                             <v-col cols="8">
                                 <v-autocomplete
+                                    v-model="personal_info.nationality"
                                     label="กรุณาเลือก"
                                     variant="outlined"
                                     density="compact"
@@ -400,6 +449,7 @@
                             </v-col>
                             <v-col cols="8">
                                 <v-autocomplete
+                                    v-model="personal_info.race"
                                     label="กรุณาเลือก"
                                     variant="outlined"
                                     density="compact"
@@ -414,7 +464,12 @@
                                 <p>ศาสนา <span class="text-red">*</span></p>
                             </v-col>
                             <v-col>
-                                <v-radio-group style="position: relative; top: -6.5px" inline hide-details>
+                                <v-radio-group
+                                    v-model="personal_info.religion"
+                                    style="position: relative; top: -6.5px"
+                                    inline
+                                    hide-details
+                                >
                                     <v-radio class="mr-4" label="พุทธ" value="1"></v-radio>
                                     <v-radio class="mr-4" label="คริสต์" value="2"></v-radio>
                                     <v-radio class="mr-4" label="อิสลาม" value="3"></v-radio>
@@ -431,6 +486,20 @@
 </template>
 
 <script setup lang="ts">
+import { usePersonalStore } from '../../stores/personal.store'
+import { storeToRefs } from 'pinia'
+
+const personalStore = usePersonalStore()
+const { calculateAge } = storeToRefs(personalStore)
+const { personal_info } = personalStore
+
+const flow = useDatePickerFlow()
+const getMaxBirthDate = () => {
+    let fifteenYearsAgo = new Date()
+    fifteenYearsAgo.setFullYear(fifteenYearsAgo.getFullYear() - 15)
+    return fifteenYearsAgo
+}
+
 const hints = {
     bloodInfo: 'hint: กรุณาเลือกหมู่โลหิต',
     religionInfo: 'hint: กรุณาเลือกศาสนา',
