@@ -11,14 +11,14 @@
             </v-alert>
             <v-container class="text-body-1">
                 <v-row>
-                    <v-col cols="3">
+                    <v-col cols="2">
                         <b>ความสามารถพิเศษ</b>
                     </v-col>
                     <v-col>
                         <v-row>
-                            <v-col cols="2"> พิมพ์ดีด </v-col>
-                            <v-col cols="5">
-                                <v-text-field density="compact" hide-details variant="outlined">
+                            <v-col cols="3"> พิมพ์ดีด </v-col>
+                            <v-col cols="4">
+                                <v-text-field density="compact" type="number" hide-details variant="outlined">
                                     <template #prepend>
                                         <div class="label-field-top">ไทย</div>
                                     </template>
@@ -27,10 +27,10 @@
                                     </template>
                                 </v-text-field>
                             </v-col>
-                            <v-col cols="5">
-                                <v-text-field density="compact" hide-details variant="outlined">
+                            <v-col cols="4">
+                                <v-text-field density="compact" type="number" hide-details variant="outlined">
                                     <template #prepend>
-                                        <div class="label-field-top">ไทย</div>
+                                        <div class="label-field-top">อังกฤษ</div>
                                     </template>
                                     <template #append>
                                         <div class="label-field-top">คำ/นาที</div>
@@ -38,9 +38,102 @@
                                 </v-text-field>
                             </v-col>
                         </v-row>
+                        <v-row>
+                            <v-col cols="3">โปรแกรมคอมพิวเตอร์</v-col>
+                            <v-col>
+                                <v-textarea density="compact" variant="outlined" hide-details></v-textarea>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col cols="3"
+                                ><b>ภาษาอังกฤษ <span class="text-red">*</span></b>
+                            </v-col>
+                            <v-col>
+                                <CandidateLanguageForm></CandidateLanguageForm>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col cols="3"><b>คะแนนการทดสอบภาษาอังกฤษ</b> </v-col>
+                            <v-col>
+                                <v-text-field density="compact" variant="outlined" hide-details>
+                                    <template #prepend> ทำได้ </template>
+                                    <template #append> คะแนน </template>
+                                </v-text-field>
+                            </v-col>
+                            <v-col>
+                                <v-text-field density="compact" variant="outlined" hide-details>
+                                    <template #prepend> จาก </template>
+                                    <template #append> คะแนน </template>
+                                </v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col cols="3"><b>ภาษาอื่น</b> </v-col>
+                            <v-col>
+                                <v-row>
+                                    <v-col cols="3"> โปรดระบุ </v-col>
+                                    <v-col>
+                                        <v-text-field density="compact" variant="outlined" hide-details></v-text-field>
+                                    </v-col>
+                                </v-row>
+                                <CandidateLanguageForm></CandidateLanguageForm>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col cols="3">กีฬา</v-col>
+                            <v-col>
+                                <v-textarea density="compact" variant="outlined" hide-details></v-textarea>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col cols="3">ใบขับขี่รถยนต์</v-col>
+                            <v-col>
+                                <v-text-field density="compact" variant="outlined" hide-details></v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col cols="3">ความสามารถพิเศษอื่นๆ</v-col>
+                            <v-col>
+                                <v-textarea density="compact" variant="outlined" hide-details></v-textarea>
+                            </v-col>
+                        </v-row>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col cols="2"><b>ผลงานทางวิชาการ</b></v-col>
+                    <v-col>
+                        <v-row>
+                            <v-col>
+                                <v-alert
+                                    border="start"
+                                    type="info"
+                                    variant="outlined"
+                                    icon="mdi-information-outline"
+                                    text="ผลงานแสดงความรู้ความเชี่ยวชาญที่เกี่ยวข้องกับตำแหน่งที่สมัคร หรืออื่นๆ (ถ้ามี)"
+                                >
+                                </v-alert>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col>
+                                <v-textarea density="compact" variant="outlined" hide-details></v-textarea>
+                            </v-col>
+                        </v-row>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col cols="2"><b>ทราบประกาศรับสมัครจาก</b></v-col>
+                    <v-col>
+                        <v-radio-group v-model="announced_from">
+                            <v-radio label="บุคคลภายในมหาวิทยาลัย" value="hello"></v-radio>
+                        </v-radio-group>
                     </v-col>
                 </v-row>
             </v-container>
         </template>
     </CandidateBaseCard>
 </template>
+
+<script setup lang="ts">
+const announced_from = 'hello'
+</script>
