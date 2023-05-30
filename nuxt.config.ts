@@ -43,7 +43,6 @@ export default defineNuxtConfig({
         },
     },
 
-    // auto import components
     components: true,
 
     app: {
