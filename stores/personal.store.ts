@@ -1,10 +1,10 @@
-import { IEducation, IJob, IMarriage, ITax } from './interface/personal_information.interface'
+import { IEducation, IJob, IMarriage, IPersonalInfo, ITax } from './interface/personal_information.interface'
 
 import { defineStore } from 'pinia'
 
 interface State {
     job_position: any
-    personal_info: any
+    personal_info: IPersonalInfo
     address: any
     banking: any
     education: IEducation
@@ -17,7 +17,32 @@ export const usePersonalStore = defineStore('personal', {
     state: (): State => {
         return {
             job_position: {},
-            personal_info: {},
+            personal_info: {
+                title_th: '',
+                first_name_th: 'TEST',
+                last_name_th: '',
+                nickname_th: '',
+                title_en: '',
+                first_name_en: '',
+                last_name_en: '',
+                email_address: '',
+                birth_date: '',
+                province_when: '',
+                age_year: 0,
+                age_month: 0,
+                id_card_number: 0,
+                id_card_amphur: '',
+                id_card_province: '',
+                id_card_issue_date: '',
+                id_card_expire_date: '',
+                height: 0,
+                weight: 0,
+                blood_type: '',
+                race: '',
+                nationality: '',
+                religion: '',
+                military_status: '',
+            },
             address: {},
             banking: {},
             education: {
@@ -128,6 +153,27 @@ export const usePersonalStore = defineStore('personal', {
                 parent_support_amount: 0,
             },
         }
+    },
+    getters: {
+        calculateAge: ({ personal_info }) => {
+            return () => {
+                let today = new Date()
+                let birthDate = new Date(personal_info.birth_date)
+
+                let years = today.getFullYear() - birthDate.getFullYear()
+                let months = today.getMonth() - birthDate.getMonth()
+
+                if (months < 0) {
+                    years--
+                    months += 12
+                }
+
+                return {
+                    years: years,
+                    months: months,
+                }
+            }
+        },
     },
     actions: {
         removeJobList(index: number) {

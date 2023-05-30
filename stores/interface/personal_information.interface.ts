@@ -16,7 +16,7 @@ export interface IPersonalInfo {
     last_name_en: string
 
     email_address: string
-    birth_date: Date
+    birth_date: string
     province_when: string
 
     age_year: number
@@ -25,8 +25,8 @@ export interface IPersonalInfo {
     id_card_number: number
     id_card_amphur: string
     id_card_province: string
-    id_card_issue_date: Date
-    id_card_expire_date: Date
+    id_card_issue_date: string
+    id_card_expire_date: string
 
     height: number
     weight: number
@@ -46,17 +46,36 @@ export interface IAddressInfo {
 
     cur_telephone?: string
     cur_mobile: string
+}
 
+export interface ILisence {
     license_number: string
     license_begin_date: Date
     license_expire_date: Date
 }
 
-export interface IBankingInfo {}
+export interface ISocailSecurityOfficeInfo {
+    ss_have: boolean
+    ss_same_number: boolean
+    ss_card_number: number
+    ss_card_issue_date: Date
+    ss_card_expire_date: Date
+    ss_card_hospital: string
+    ss_card_province: string
+}
 
-export interface IParent {}
+export interface IBankingInfo {
+    bank_account_name: string
+    bank_account_number: string
+}
 
-export interface IPersonalInfo {}
+export interface IParent {
+    father: parent_info
+    mother: parent_info
+
+    mf_no_marriage: string
+    mf_date_of_marriage: Date
+}
 
 export interface IEducation {
     education_select: string
@@ -181,6 +200,19 @@ interface job_mahidol {
     end_date: string
     reason: string
     got_compensation: boolean
+}
+
+interface parent_info {
+    title_special: string
+    title_name: string
+    first_name: string
+    last_name: string
+    career: string
+    id_card_number: string
+    living: boolean
+    race: string
+    nationality: string
+    religion: string
 }
 
 interface ref_person {
