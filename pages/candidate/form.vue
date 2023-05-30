@@ -330,6 +330,7 @@ definePageMeta({
             title: 'จัดการข้อมูลผู้สมัคร',
         },
     ],
+    middleware: ['candidate-auth'],
 })
 
 console.log(useRoute().name)
