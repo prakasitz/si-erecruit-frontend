@@ -92,12 +92,7 @@
                                 <p>คำนำหน้า <span class="text-red">*</span></p>
                             </v-col>
                             <v-col cols="8">
-                                <v-radio-group
-                                    style="position: relative; top: -6.5px"
-                                    inline
-                                    persistent-hint
-                                    hint="กรุณาเลือกคำนำหน้า"
-                                >
+                                <v-radio-group class="label-field-top" inline persistent-hint hint="กรุณาเลือกคำนำหน้า">
                                     <v-radio class="mr-4" label="นาย" value="1"></v-radio>
                                     <v-radio class="mr-4" label="นาง" value="2"></v-radio>
                                     <v-radio class="mr-4" label="นางสาว" value="3"></v-radio>
@@ -154,12 +149,7 @@
                                 <p>คำนำหน้า <span class="text-red">*</span></p>
                             </v-col>
                             <v-col cols="8">
-                                <v-radio-group
-                                    style="position: relative; top: -6.5px"
-                                    inline
-                                    persistent-hint
-                                    hint="กรุณาเลือกคำนำหน้า"
-                                >
+                                <v-radio-group class="label-field-top" inline persistent-hint hint="กรุณาเลือกคำนำหน้า">
                                     <v-radio class="mr-4" label="Mr." value="1"></v-radio>
                                     <v-radio class="mr-4" label="Mrs." value="2"></v-radio>
                                     <v-radio class="mr-4" label="Miss" value="3"></v-radio>
@@ -242,10 +232,10 @@
                                     readonly
                                 >
                                     <template #prepend>
-                                        <div style="position: relative; top: -6.5px">อายุ</div>
+                                        <div class="label-field-top">อายุ</div>
                                     </template>
                                     <template #append>
-                                        <div style="position: relative; top: -6.5px">ปี</div>
+                                        <div class="label-field-top">ปี</div>
                                     </template>
                                 </v-text-field>
                             </v-col>
@@ -257,7 +247,7 @@
                                     readonly
                                 >
                                     <template #append>
-                                        <div style="position: relative; top: -6.5px">เดือน</div>
+                                        <div class="label-field-top">เดือน</div>
                                     </template>
                                 </v-text-field>
                             </v-col>
@@ -314,7 +304,7 @@
                                     variant="outlined"
                                 >
                                     <template #prepend>
-                                        <div style="position: relative; top: -6.5px">อำเภอ/เขต</div>
+                                        <div class="label-field-top">อำเภอ/เขต</div>
                                     </template>
                                 </v-text-field>
                             </v-col>
@@ -327,7 +317,7 @@
                                     :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
                                 >
                                     <template #prepend>
-                                        <div style="position: relative; top: -6.5px">จังหวัด</div>
+                                        <div class="label-field-top">จังหวัด</div>
                                     </template>
                                 </v-autocomplete>
                             </v-col>
@@ -409,7 +399,7 @@
                                 <p>หมู่โลหิต <span class="text-red">*</span></p>
                             </v-col>
                             <v-col cols="8">
-                                <v-radio-group style="position: relative; top: -6.5px" inline hide-details>
+                                <v-radio-group class="label-field-top" inline hide-details>
                                     <v-radio class="mr-4" label="A" value="1"></v-radio>
                                     <v-radio class="mr-4" label="AB" value="2"></v-radio>
                                     <v-radio class="mr-4" label="B" value="3"></v-radio>
@@ -466,7 +456,7 @@
                             <v-col>
                                 <v-radio-group
                                     v-model="personal_info.religion"
-                                    style="position: relative; top: -6.5px"
+                                    class="label-field-top"
                                     inline
                                     hide-details
                                 >
