@@ -99,6 +99,9 @@
                         </v-row>
                     </v-col>
                 </v-row>
+            </v-container>
+            <v-divider class="my-2"></v-divider>
+            <v-container class="text-body-1">
                 <v-row>
                     <v-col cols="2"><b>ผลงานทางวิชาการ</b></v-col>
                     <v-col>
@@ -121,6 +124,9 @@
                         </v-row>
                     </v-col>
                 </v-row>
+            </v-container>
+            <v-divider class="my-2"></v-divider>
+            <v-container class="text-body-1">
                 <v-row>
                     <v-col cols="2"><b>ทราบประกาศรับสมัครจาก</b></v-col>
                     <v-col>
