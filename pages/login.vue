@@ -14,11 +14,23 @@
                     <v-row justify="center" class="mt-10">
                         <v-col cols="12" sm="8">
                             <v-form v-model="valid" @submit.prevent="userLogin">
-                                <v-text-field variant="outlined" prepend-inner-icon="mdi-account" v-model="username"
-                                    :rules="usernameRule" label="ชื่อผู้ใช้งาน" hint="ชื่อ.นามสกุล 3 ตัว" required
-                                    autofocus></v-text-field>
-                                <v-text-field variant="o0.utlined" prepend-inner-icon="mdi-lock" v-model="password"
-                                    :rules="passwordRule" label="รหัสผ่าน" type="password" required></v-text-field>
+                                <v-text-field
+                                    variant="outlined"
+                                    prepend-inner-icon="mdi-account"
+                                    v-model="username"
+                                    label="ชื่อผู้ใช้งาน"
+                                    hint="ชื่อ.นามสกุล 3 ตัว"
+                                    required
+                                    autofocus
+                                ></v-text-field>
+                                <v-text-field
+                                    variant="outlined"
+                                    prepend-inner-icon="mdi-lock"
+                                    v-model="password"
+                                    label="รหัสผ่าน"
+                                    type="password"
+                                    required
+                                ></v-text-field>
 
                                 <p class="text-right">
                                     <NuxtLink href="https://si-eservice3.si.mahidol.ac.th/selfservice/">
@@ -26,7 +38,6 @@
                                     </NuxtLink>
                                 </p>
                                 <v-btn :disabled="!valid" x-large color="main-color" class="btn_lg" block type="submit">
-
                                     เข้าสู่ระบบ
                                 </v-btn>
                             </v-form>
@@ -42,7 +53,11 @@
 </template>
 
 <script setup lang="ts">
-// This will work in both `<script setup>` and `<script>`
+const valid = ref(false)
+const userLogin = ref()
+const username = ref('')
+const password = ref('')
+
 definePageMeta({
     pageTransition: {
         name: 'rotate',

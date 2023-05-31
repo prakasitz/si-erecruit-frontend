@@ -1,4 +1,4 @@
-<template >
+<template>
     <v-row justify="space-around">
         <v-col cols="auto">
             <v-dialog v-model="props.show" transition="dialog-top-transition" width="700">
@@ -8,18 +8,36 @@
                         <v-card-text>
                             <div class="">
                                 <p>
-                                    <v-text-field v-model="props.id_card" class="mt-1" variant="outlined" readonly
-                                        prepend-inner-icon="mdi-account" maxLength="13"
-                                        hint="x-xx-xx-xxxxx-xx-xx"></v-text-field>
+                                    <v-text-field
+                                        v-model="props.id_card"
+                                        class="mt-1"
+                                        variant="outlined"
+                                        readonly
+                                        prepend-inner-icon="mdi-account"
+                                        maxLength="13"
+                                        hint="x-xx-xx-xxxxx-xx-xx"
+                                    ></v-text-field>
                                 </p>
                                 <p>
-                                    <v-text-field v-model="password" class="mt-1" variant="outlined" label="รหัสผ่าน"
-                                        prepend-inner-icon="mdi-key" maxLength="8" type="password"></v-text-field>
+                                    <v-text-field
+                                        v-model="password"
+                                        class="mt-1"
+                                        variant="outlined"
+                                        label="รหัสผ่าน"
+                                        prepend-inner-icon="mdi-key"
+                                        maxLength="8"
+                                        type="password"
+                                    ></v-text-field>
                                 </p>
                             </div>
+                            <v-label
+                                v-if="invalidPassword"
+                                text="**กรุณาตรวจสอบรหัสผ่านอีกครั้ง"
+                                class="mx-3 text-red"
+                            ></v-label>
                         </v-card-text>
                         <v-card-actions class="justify-end">
-                            <v-btn variant="text" @click="loginCandidate(props.id_card, '')">เข้าสู่ระบบ</v-btn>
+                            <v-btn variant="text" @click="loginCandidate(props.id_card, password)">เข้าสู่ระบบ</v-btn>
                             <v-btn variant="text" @click="emit('update:show', false)">ยกเลิก</v-btn>
                         </v-card-actions>
                     </v-card>
@@ -49,16 +67,27 @@
     </v-row>
 </template>
 
-
 <script setup lang="ts">
+import { CandidateAuth } from '~/auth/candidate.auth'
+import useCookie from '~/composable/useCookie'
 
-const props = defineProps(['id_card', 'btn_disabled', 'show', 'showError', 'error_detail']);
-const emit = defineEmits(['update:show', 'update:show_error']);
+const cookie = useCookie()
+const auth = new CandidateAuth()
+const props = defineProps(['id_card', 'btn_disabled', 'show', 'showError', 'error_detail'])
+const emit = defineEmits(['update:show', 'update:show_error'])
+const password = ref('')
+const invalidPassword = ref(false)
 
-const password = ref();
-function loginCandidate(pid: string, password: string) {
-    console.log(props.btn_disabled)
+async function loginCandidate(pid: string, password: string) {
+    try {
+        invalidPassword.value = false
+        await auth.signIn({ pid: pid, password: password })
+        navigateTo('/candidate')
+    } catch (er: any) {
+        console.log(er.status)
+        if ((er.status = 401)) {
+            invalidPassword.value = !invalidPassword.value
+        }
+    }
 }
-
 </script>
-

@@ -8,7 +8,6 @@ export default defineNuxtConfig({
     typescript: {
         shim: false,
     },
-
     // vuetify ships precompiled css, no need to import sass
     css: ['@mdi/font/css/materialdesignicons.min.css', '@/assets/_fonts.css', '@/assets/main.css', 'vuetify/styles'],
 
@@ -22,18 +21,23 @@ export default defineNuxtConfig({
                         styles: {
                             configFile: resolve('assets/settings.scss'),
                         },
-                    })
+                    }),
                 )
             })
         },
         '@pinia/nuxt',
-        // '@nuxtjs/tailwindcss',
     ],
+    sourcemap: false,
+    runtimeConfig: {
+        baseApi: 'http://172.27.150.169.:3010',
+        public: {
+            baseApi: 'http://172.27.150.169:3010',
+        },
 
+    },
     build: {
         transpile: ['vuetify'],
     },
-
     vite: {
         ssr: {
             noExternal: ['vuetify', '@vuepic/vue-datepicker'],

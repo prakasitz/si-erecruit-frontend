@@ -54,7 +54,7 @@
 </style>
 
 <script setup lang="ts">
-import { ref, defineEmits, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 
 export interface Props {
     width: string
