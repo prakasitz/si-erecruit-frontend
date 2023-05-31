@@ -41,7 +41,7 @@
                 <v-row>
                     <v-col cols="6"> เคยมีประวัติการทำงาน </v-col>
                     <v-col cols="6">
-                        <v-radio-group v-model="_job.had_job" hide-details="" inline>
+                        <v-radio-group v-model="_job.had_job" hide-details inline>
                             <v-radio label="ไม่เคย" value="N"></v-radio>
                             <v-radio label="เคย" value="Y"></v-radio>
                         </v-radio-group>
@@ -72,7 +72,7 @@
                 <v-row>
                     <v-col cols="6"> เคยมีประวัติการทำงานในมหาวิทยาลัยมหิดล </v-col>
                     <v-col cols="6">
-                        <v-radio-group v-model="_job.had_job_mahidol" hide-details="" inline>
+                        <v-radio-group v-model="_job.had_job_mahidol" hide-details inline>
                             <v-radio label="ไม่เคย" value="N"></v-radio>
                             <v-radio label="เคย" value="Y"></v-radio>
                         </v-radio-group>
@@ -169,11 +169,7 @@
                     <v-row>
                         <v-col cols="4"> เงินชดเชย <span class="text-red-darken-1"> *</span> </v-col>
                         <v-col cols="6">
-                            <v-radio-group
-                                v-model="_job.had_job_mahidol_detail.got_compensation"
-                                hide-details=""
-                                inline
-                            >
+                            <v-radio-group v-model="_job.had_job_mahidol_detail.got_compensation" hide-details inline>
                                 <v-radio label="ได้รับแล้ว" value="N"></v-radio>
                                 <v-radio label="ยังไม่ได้รับ" value="Y"></v-radio>
                             </v-radio-group>
@@ -270,7 +266,7 @@
                         <v-col cols="6">
                             <v-text-field
                                 v-model="_job.current_education.education_level"
-                                hide-details=""
+                                hide-details
                                 density="compact"
                                 variant="outlined"
                                 maxLength="100"
@@ -282,7 +278,7 @@
                         <v-col cols="6">
                             <v-text-field
                                 v-model="_job.current_education.school"
-                                hide-details=""
+                                hide-details
                                 density="compact"
                                 variant="outlined"
                                 maxLength="120"
@@ -294,7 +290,7 @@
                         <v-col cols="6">
                             <v-text-field
                                 v-model="_job.current_education.major"
-                                hide-details=""
+                                hide-details
                                 density="compact"
                                 variant="outlined"
                                 maxLength="120"
@@ -306,7 +302,7 @@
                         <v-col cols="6">
                             <v-text-field
                                 v-model="_job.current_education.graduate_date"
-                                hide-details=""
+                                hide-details
                                 density="compact"
                                 variant="outlined"
                                 maxLength="120"
