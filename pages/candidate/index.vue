@@ -27,6 +27,6 @@ definePageMeta({
             title: 'หน้าหลัก',
         },
     ],
-    middleware: ['candidate-auth'],
+    //middleware: ['candidate-auth'],
 })
 </script>

@@ -156,7 +156,7 @@
                         </b>
                     </v-col>
                     <v-col cols="8" class="pb-0">
-                        <v-radio-group style="position: relative; top: -6.5px" hide-details v-model="hasSocialSecurity">
+                        <v-radio-group class="label-field-top" hide-details v-model="hasSocialSecurity">
                             <v-radio class="mr-4" label="ยังไม่มีประกันสังคม" :value="false"></v-radio>
                             <v-radio class="mr-4" label="มีประกันสังคมอยู่แล้ว" :value="true"></v-radio>
                         </v-radio-group>

@@ -40,14 +40,13 @@ export default defineNuxtConfig({
     },
     vite: {
         ssr: {
-            noExternal: ['vuetify'],
+            noExternal: ['vuetify', '@vuepic/vue-datepicker'],
         },
         define: {
             'process.env.DEBUG': false,
         },
     },
 
-    // auto import components
     components: true,
 
     app: {
@@ -62,6 +61,6 @@ export default defineNuxtConfig({
     },
 
     devtools: {
-        enabled: true,
+        enabled: false,
     },
 })

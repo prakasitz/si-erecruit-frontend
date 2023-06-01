@@ -37,7 +37,7 @@
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                    <v-radio-group style="position: relative; top: -6.5px" inline hide-details>
+                    <v-radio-group class="label-field-top" inline hide-details>
                         <template #prepend>
                             <div style="position: relative; top: -8.5px">
                                 <v-label>สถานภาพ: *</v-label>
@@ -67,7 +67,7 @@
                     <v-text-field hide-details label="เชื้อชาติ *" density="compact" variant="outlined"></v-text-field>
                 </v-col>
                 <v-col>
-                    <v-radio-group label="ศาสนา: *" style="position: relative; top: -6.5px" inline hide-details>
+                    <v-radio-group label="ศาสนา: *" class="label-field-top" inline hide-details>
                         <v-radio class="mr-4" label="พุทธ" value="1"></v-radio>
                         <v-radio class="mr-4" label="คริสต์" value="2"></v-radio>
                         <v-radio class="mr-4" label="อิสลาม" value="3"></v-radio>

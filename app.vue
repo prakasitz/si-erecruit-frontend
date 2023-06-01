@@ -1,5 +1,5 @@
 <template>
-    <NuxtLayout @changeRole="(r) => (roles = r)" :name="layoutByRole">
+    <NuxtLayout>
         <NuxtPage />
     </NuxtLayout>
 </template>
@@ -44,8 +44,5 @@
 
 <script setup lang="ts">
 const roles = ref(null)
-const layoutByRole = computed(() => {
-    if (roles.value == 'admin') return 'default'
-    if (roles.value == 'candidate') return 'defaultcandidate'
-})
+const route = useRoute()
 </script>

@@ -6,6 +6,8 @@
     </v-app>
 </template>
 
+<script setup lang="ts"></script>
+
 <style>
 .bg-candidate {
     background: linear-gradient(135deg, #b6dbde, #74c0f2);
@@ -33,6 +35,5 @@
 .btn-candidate {
     color: #fff !important;
     background: #5c7b9c !important;
-
 }
 </style>

@@ -298,7 +298,7 @@ const candidateForms = reactive([
     },
     {
         id: 9,
-        title: 'ความสามารถพิเศษ',
+        title: 'ข้อมูลอื่นๆ',
     },
     {
         id: 10,

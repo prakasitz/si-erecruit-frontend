@@ -5,27 +5,21 @@
                 <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer" />
             </template>
             <v-app-bar-title>
-                <div class="d-inline-flex flex-wrap" no-gutters v-if="role == 'admin'">
-                    <v-img :width="45" src="/images/MU_Th_Color.png"></v-img>
-                    <v-img class="ml-1" :width="120" src="/images/logo_text.png"></v-img>
-                </div>
-                <template v-else>
-                    <v-row no-gutters class="d-flex align-center">
-                        <v-col cols="2">
-                            <v-img else :width="220" src="/images/Si_Th_H_Color.png"></v-img>
-                        </v-col>
-                        <v-col class="ml-5">
-                            <div class="d-inline-flex align-end">
-                                <v-img :width="150" src="/images/logo_text.png"></v-img>
-                                <p class="ml-2">สำหรับตำแหน่งงานทั่วไป</p>
-                            </div>
-                            <p class="mb-1 text-subtitle-1">
-                                แบบฟอร์มกรอกข้อมูลออนไลน์ สำหรับผู้ผ่านการคัดเลือกเพื่อขอบรรจุพนักงานมหาวิทยาลัย
-                                (คณะแพทยศาสตร์ศิริราชพยาบาล)
-                            </p>
-                        </v-col>
-                    </v-row>
-                </template>
+                <v-row no-gutters class="d-flex align-center">
+                    <v-col cols="2">
+                        <v-img else :width="220" src="/images/Si_Th_H_Color.png"></v-img>
+                    </v-col>
+                    <v-col class="ml-5">
+                        <div class="d-inline-flex align-end">
+                            <v-img :width="150" src="/images/logo_text.png"></v-img>
+                            <p class="ml-2">สำหรับตำแหน่งงานทั่วไป</p>
+                        </div>
+                        <p class="mb-1 text-subtitle-1">
+                            แบบฟอร์มกรอกข้อมูลออนไลน์ สำหรับผู้ผ่านการคัดเลือกเพื่อขอบรรจุพนักงานมหาวิทยาลัย
+                            (คณะแพทยศาสตร์ศิริราชพยาบาล)
+                        </p>
+                    </v-col>
+                </v-row>
             </v-app-bar-title>
 
             <template v-slot:append>
@@ -36,7 +30,7 @@
                             v-for="item in ['admin', 'candidate']"
                             :key="item"
                             :value="item"
-                            @click="setRole(item)"
+                            @click="useNavigateTo(item)"
                         >
                             <v-list-item-title>{{ item }}</v-list-item-title>
                         </v-list-item>
@@ -53,6 +47,7 @@
                         :key="item.title"
                         :value="item.value"
                         :to="item.to"
+                        :active="useActiveMenu(item.to)"
                     >
                         <v-list-item-title v-text="item.title"></v-list-item-title>
                     </v-list-item>
@@ -72,6 +67,7 @@
                             :value="subitem.value"
                             :to="subitem.to ?? undefined"
                             :href="subitem.href ?? undefined"
+                            :active="useActiveMenu(subitem.to)"
                         ></v-list-item>
                     </v-list-group>
                 </div>
@@ -103,7 +99,6 @@
 import { ref, onMounted } from 'vue'
 
 const route = useRoute()
-const emit = defineEmits(['changeRole'])
 
 useHead({
     titleTemplate: (productCategory) => {
@@ -114,13 +109,9 @@ useHead({
 })
 
 // define a ref to store the scroll position
-const scrollPosition = ref(0)
-const scrollButton = ref(null)
 
 const drawer = ref(true)
 const group = ref(null)
-
-const role = ref(null)
 
 const items4Candidate = [
     {
@@ -144,34 +135,9 @@ const items4Candidate = [
 ]
 
 // define a function to scroll to the top of the page
-function scrollToTop() {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-    })
-}
-
-const shouldShowButton = computed(() => scrollPosition.value < 50)
-
-const setRole = (newRole) => {
-    role.value = newRole
-    emit('changeRole', role.value)
-}
-
-onMounted(() => {
-    window.addEventListener('scroll', () => {
-        scrollPosition.value = window.pageYOffset
-    })
-})
 
 onUpdated(() => {
-    console.log('route on update: ', route.fullPath)
-})
-
-onUnmounted(() => {
-    window.removeEventListener('scroll', () => {
-        scrollPosition.value = window.pageYOffset
-    })
+    console.log('route on update: ', route.fullPath, route.path)
 })
 
 watch(group, () => {
