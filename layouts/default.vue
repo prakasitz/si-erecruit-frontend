@@ -19,7 +19,7 @@
                             v-for="item in ['admin', 'candidate']"
                             :key="item"
                             :value="item"
-                            @click="setRole(item)"
+                            @click="useNavigateTo(item)"
                         >
                             <v-list-item-title>{{ item }}</v-list-item-title>
                         </v-list-item>
@@ -36,6 +36,7 @@
                         :key="item.title"
                         :value="item.value"
                         :to="item.to"
+                        :active="useActiveMenu(item.to)"
                     >
                         <v-list-item-title v-text="item.title"></v-list-item-title>
                     </v-list-item>
@@ -55,6 +56,7 @@
                             :value="subitem.value"
                             :to="subitem.to ?? undefined"
                             :href="subitem.href ?? undefined"
+                            :active="useActiveMenu(subitem.to)"
                         ></v-list-item>
                     </v-list-group>
                 </div>
@@ -88,12 +90,8 @@ useHead({
     // meta: [{ property: 'og:title', content: `App Name - ${route.meta.title}` }],
 })
 
-const emit = defineEmits(['changeRole'])
-
 const drawer = ref(true)
 const group = ref(null)
-
-const role = ref(null)
 
 const items4Admin = [
     {
@@ -159,12 +157,6 @@ const items4Admin = [
         ],
     },
 ]
-
-const setRole = (newRole) => {
-    role.value = newRole
-    emit('changeRole', role.value)
-}
-
 //hooks
 
 onUpdated(() => {

@@ -69,9 +69,7 @@
 
 <script setup lang="ts">
 import { CandidateAuth } from '~/auth/candidate.auth'
-import useCookie from '~/composable/useCookie'
 
-const cookie = useCookie()
 const auth = new CandidateAuth()
 const props = defineProps(['id_card', 'btn_disabled', 'show', 'showError', 'error_detail'])
 const emit = defineEmits(['update:show', 'update:show_error'])
