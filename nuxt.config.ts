@@ -29,9 +29,9 @@ export default defineNuxtConfig({
     ],
     sourcemap: false,
     runtimeConfig: {
-        baseApi: 'http://172.27.150.169.:3010',
+        baseApi: process.env.API_ERI,
         public: {
-            baseApi: 'http://172.27.150.169:3010',
+            baseApi: process.env.API_ERI,
         },
 
     },
