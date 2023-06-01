@@ -6,6 +6,6 @@ export declare class IAuth {
 
 
 export interface UserLogin {
-    pid: string
+    username: string
     password: string
 }

@@ -11,9 +11,10 @@
                             <h1 class="font-weight-regular primary--text">Si eRecruit</h1>
                         </v-col>
                     </v-row>
+
                     <v-row justify="center" class="mt-10">
                         <v-col cols="12" sm="8">
-                            <v-form v-model="valid" @submit.prevent="userLogin">
+                            <v-form @submit.prevent="signIn()">
                                 <v-text-field
                                     variant="outlined"
                                     prepend-inner-icon="mdi-account"
@@ -22,6 +23,7 @@
                                     hint="ชื่อ.นามสกุล 3 ตัว"
                                     required
                                     autofocus
+                                    maxLength="50"
                                 ></v-text-field>
                                 <v-text-field
                                     variant="outlined"
@@ -30,6 +32,7 @@
                                     label="รหัสผ่าน"
                                     type="password"
                                     required
+                                    maxLength="50"
                                 ></v-text-field>
 
                                 <p class="text-right">
@@ -37,7 +40,7 @@
                                         ลืมรหัสผ่าน?
                                     </NuxtLink>
                                 </p>
-                                <v-btn :disabled="!valid" x-large color="main-color" class="btn_lg" block type="submit">
+                                <v-btn x-large color="main-color" class="btn_lg" block type="submit">
                                     เข้าสู่ระบบ
                                 </v-btn>
                             </v-form>
@@ -50,11 +53,15 @@
             </v-card>
         </v-col>
     </v-row>
+    <DialogsUserLoginFailed />
 </template>
 
 <script setup lang="ts">
-const valid = ref(false)
-const userLogin = ref()
+import { UserAuth } from '~/auth/user.auth'
+
+const topDialog = useTopDialog()
+const auth = new UserAuth()
+
 const username = ref('')
 const password = ref('')
 
@@ -64,4 +71,13 @@ definePageMeta({
     },
     layout: 'custom',
 })
+
+async function signIn() {
+    try {
+        await auth.signIn({ username: username.value, password: password.value })
+        navigateTo('/')
+    } catch {
+        topDialog.value = true
+    }
+}
 </script>

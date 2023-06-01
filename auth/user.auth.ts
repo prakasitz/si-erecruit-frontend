@@ -4,34 +4,33 @@ import cookieHelper from '~/helper/cookie.helper'
 
 const cookie = cookieHelper()
 
-export class CandidateAuth implements IAuth {
+export class UserAuth implements IAuth {
 
     constructor() {
 
     }
+
     async signIn(userLogin: UserLogin): Promise<string> {
         const runtimeConfig = useRuntimeConfig()
 
         try {
             let { data } = await axios({
                 method: 'POST',
-                url: `${runtimeConfig.public.baseApi}/cadidate/auth`,
+                url: `${runtimeConfig.public.baseApi}/hr-user/auth`,
                 data: {
-                    pid: userLogin.username,
+                    username: userLogin.username,
                     password: userLogin.password
                 }
             });
             cookie.setCookie('access_token', data);
-            this.getUser();
             return data
         } catch (err: any) {
+            console.log(err)
             throw err.response;
         }
     }
 
     signOut(): boolean {
-        cookie.setCookie('access_token', '');
-        navigateTo('/login_candidate')
         return false
     }
 
@@ -42,26 +41,16 @@ export class CandidateAuth implements IAuth {
 
         let { data } = await axios({
             method: 'POST',
-            url: `${runtimeConfig.public.baseApi}/cadidate/auth/userInfo`,
+            url: `${runtimeConfig.public.baseApi}/hr-user/auth/userinfo`,
             data: {
                 access_token: access_token
             }
         });
 
-        const { commonid, commonname, displayname, role, secret } = data;
 
-        const userInfo: UserInfo = {
-            name: displayname,
-            pid: commonname,
-            profile_id: commonid,
-            role: role,
-            secret: secret,
-        };
 
-        return userInfo;
-
+        return data
     }
-
 }
 
 export interface UserInfo {

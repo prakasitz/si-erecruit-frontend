@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 
-export default function useCookie() {
+export default function cookieHelper() {
     const cookieValue = ref(null);
     const access_token = ref('')
 
