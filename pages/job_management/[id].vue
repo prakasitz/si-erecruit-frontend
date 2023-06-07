@@ -34,7 +34,9 @@
                         <v-chip v-if="item.raw.status == 1" color="black">Closed</v-chip>
                     </template>
                     <template v-slot:item.action="{ item }">
-                        <v-icon size="small" class="me-2" @click="editItem(item.raw)"> mdi-eye </v-icon>
+                        <NuxtLink :to="`/candidate/form/`">
+                            <v-icon size="small" class="me-2" @click="editItem(item.raw)"> mdi-eye </v-icon>
+                        </NuxtLink>
                     </template>
                 </v-data-table>
             </v-card-text>
