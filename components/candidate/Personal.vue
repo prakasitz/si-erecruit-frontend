@@ -92,7 +92,13 @@
                                 <p>คำนำหน้า <span class="text-red">*</span></p>
                             </v-col>
                             <v-col cols="8">
-                                <v-radio-group class="label-field-top" inline persistent-hint hint="กรุณาเลือกคำนำหน้า">
+                                <v-radio-group
+                                    v-model="personal_info.title_name_th"
+                                    class="label-field-top"
+                                    inline
+                                    persistent-hint
+                                    hint="กรุณาเลือกคำนำหน้า"
+                                >
                                     <v-radio class="mr-4" label="นาย" value="1"></v-radio>
                                     <v-radio class="mr-4" label="นาง" value="2"></v-radio>
                                     <v-radio class="mr-4" label="นางสาว" value="3"></v-radio>

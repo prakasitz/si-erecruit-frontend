@@ -1,12 +1,25 @@
-import { IEducation, IJob, IMarriage, IPersonalInfo, ITax } from './interface/personal_information.interface'
+import {
+    IAddressInfo,
+    IBankingInfo,
+    IEducation,
+    IJob,
+    ILisence,
+    IMarriage,
+    IPersonalInfo,
+    ISocailSecurityOfficeInfo,
+    ITax,
+    address,
+} from './interface/personal_information.interface'
 
 import { defineStore } from 'pinia'
 
 interface State {
     job_position: any
     personal_info: IPersonalInfo
-    address: any
-    banking: any
+    address: IAddressInfo
+    banking: IBankingInfo
+    license: ILisence
+    ss: ISocailSecurityOfficeInfo
     education: IEducation
     job: IJob
     marriage: IMarriage
@@ -18,11 +31,11 @@ export const usePersonalStore = defineStore('personal', {
         return {
             job_position: {},
             personal_info: {
-                title_th: '',
+                title_name_th: '',
                 first_name_th: 'TEST',
                 last_name_th: '',
                 nickname_th: '',
-                title_en: '',
+                title_name_en: '',
                 first_name_en: '',
                 last_name_en: '',
                 email_address: '',
@@ -43,8 +56,60 @@ export const usePersonalStore = defineStore('personal', {
                 religion: '',
                 military_status: '',
             },
-            address: {},
-            banking: {},
+            address: {
+                reg_address: {
+                    address_no: '',
+                    address_moo: '',
+                    address_village: '',
+                    address_soi: '',
+                    address_road: '',
+                    address_district: '',
+                    address_city: '',
+                    address_province: '',
+                    address_postcode: '',
+                },
+                cur_address: {
+                    address_no: '',
+                    address_moo: '',
+                    address_village: '',
+                    address_soi: '',
+                    address_road: '',
+                    address_district: '',
+                    address_city: '',
+                    address_province: '',
+                    address_postcode: '',
+                },
+                emer_address: {
+                    address_no: '',
+                    address_moo: '',
+                    address_village: '',
+                    address_soi: '',
+                    address_road: '',
+                    address_district: '',
+                    address_city: '',
+                    address_province: '',
+                    address_postcode: '',
+                },
+                cur_mobile: '',
+            },
+            license: {
+                license_begin_date: '',
+                license_expire_date: '',
+                license_number: '',
+            },
+            ss: {
+                ss_have: false,
+                ss_card_expire_date: '',
+                ss_card_hospital: '',
+                ss_card_number: null,
+                ss_card_issue_date: '',
+                ss_card_province: '',
+                ss_same_number: false,
+            },
+            banking: {
+                bank_account_name: '',
+                bank_account_number: '',
+            },
             education: {
                 education_select: '1',
                 education_list: [
@@ -183,6 +248,15 @@ export const usePersonalStore = defineStore('personal', {
         removeEducationList(index: number) {
             index -= 1
             this.education.education_list.splice(index, 1)
+        },
+        useRegAddressOnCurAddress() {
+            this.address.cur_address = deepCopy(this.address.reg_address)
+        },
+        useRegAddressOnEmerAddress() {
+            this.address.emer_address = deepCopy(this.address.reg_address)
+        },
+        useCurAddressOnEmerAddress() {
+            this.address.emer_address = deepCopy(this.address.cur_address)
         },
     },
 })

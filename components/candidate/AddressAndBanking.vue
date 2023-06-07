@@ -7,7 +7,7 @@
                         <b>ที่อยู่ตามทะเบียนบ้าน <span class="text-red">*</span></b>
                     </v-col>
                     <v-col cols="8">
-                        <FormsHouseRegistration />
+                        <FormsHouseRegistration :address-model="address.reg_address" />
                     </v-col>
                 </v-row>
 
@@ -33,7 +33,7 @@
                             <v-col cols="12" class="pt-0">
                                 <v-expand-transition>
                                     <div v-if="!currIsHomeland">
-                                        <FormsHouseRegistration />
+                                        <FormsHouseRegistration :address-model="address.cur_address" />
                                     </div>
                                 </v-expand-transition>
                             </v-col>
@@ -78,7 +78,7 @@
                             <v-col cols="12">
                                 <v-expand-transition>
                                     <div v-if="!emerIsCurrent && !emerIsHomeland">
-                                        <FormsHouseRegistration />
+                                        <FormsHouseRegistration :address-model="address.emer_address" />
                                     </div>
                                 </v-expand-transition>
                             </v-col>
@@ -92,7 +92,12 @@
                                 <p>โทรศัพท์ (บ้าน)</p>
                             </v-col>
                             <v-col cols="8">
-                                <v-text-field density="compact" hide-details variant="outlined"></v-text-field>
+                                <v-text-field
+                                    v-model="address.cur_telephone"
+                                    density="compact"
+                                    hide-details
+                                    variant="outlined"
+                                ></v-text-field>
                             </v-col>
                         </v-row>
                     </v-col>
@@ -104,7 +109,11 @@
                                 <p>โทรศัพท์ (มือถือ) <span class="text-red">*</span></p>
                             </v-col>
                             <v-col cols="8">
-                                <v-text-field density="compact" variant="outlined"></v-text-field>
+                                <v-text-field
+                                    v-model="address.cur_mobile"
+                                    density="compact"
+                                    variant="outlined"
+                                ></v-text-field>
                             </v-col>
                         </v-row>
                     </v-col>
@@ -117,12 +126,18 @@
                         <b>หมายเลข<br />ใบประกอบวิชาชีพ</b>
                     </v-col>
                     <v-col cols="8">
-                        <v-text-field density="compact" variant="outlined" hide-details></v-text-field>
+                        <v-text-field
+                            v-model="license.license_number"
+                            density="compact"
+                            variant="outlined"
+                            hide-details
+                        ></v-text-field>
                     </v-col>
                     <v-col cols="8" offset="3">
                         <v-row>
                             <v-col cols="6">
                                 <v-text-field
+                                    v-model="license.license_begin_date"
                                     type="date"
                                     label="ออกให้ ณ วันที่"
                                     variant="outlined"
@@ -133,6 +148,7 @@
                             </v-col>
                             <v-col cols="6">
                                 <v-text-field
+                                    v-model="license.license_expire_date"
                                     type="date"
                                     variant="outlined"
                                     label="วันที่หมดอายุ"
@@ -156,18 +172,19 @@
                         </b>
                     </v-col>
                     <v-col cols="8" class="pb-0">
-                        <v-radio-group class="label-field-top" hide-details v-model="hasSocialSecurity">
+                        <v-radio-group class="label-field-top" hide-details v-model="ss.ss_have">
                             <v-radio class="mr-4" label="ยังไม่มีประกันสังคม" :value="false"></v-radio>
                             <v-radio class="mr-4" label="มีประกันสังคมอยู่แล้ว" :value="true"></v-radio>
                         </v-radio-group>
                     </v-col>
                     <v-col cols="12" class="pt-0">
                         <v-expand-transition>
-                            <v-card flat v-if="hasSocialSecurity">
+                            <v-card flat v-if="ss.ss_have">
                                 <v-container fluid class="pt-1 py-0">
                                     <v-row no-gutters>
                                         <v-col cols="8" offset="3" class="pb-2">
                                             <v-text-field
+                                                v-model="ss.ss_card_number"
                                                 variant="outlined"
                                                 hide-details
                                                 label="เลขที่บัตรประกันสังคม"
@@ -190,6 +207,7 @@
                                             <v-row>
                                                 <v-col>
                                                     <v-text-field
+                                                        v-model="ss.ss_card_issue_date"
                                                         variant="outlined"
                                                         type="date"
                                                         hide-details
@@ -200,6 +218,7 @@
                                                 </v-col>
                                                 <v-col>
                                                     <v-text-field
+                                                        v-model="ss.ss_card_expire_date"
                                                         variant="outlined"
                                                         hide-details
                                                         type="date"
@@ -214,6 +233,7 @@
                                             <v-row>
                                                 <v-col>
                                                     <v-text-field
+                                                        v-model="ss.ss_card_hospital"
                                                         variant="outlined"
                                                         hide-details
                                                         label="โรงพยาบาล *"
@@ -223,6 +243,7 @@
                                                 </v-col>
                                                 <v-col>
                                                     <v-autocomplete
+                                                        v-model="ss.ss_card_province"
                                                         label="จังหวัด *"
                                                         variant="outlined"
                                                         density="compact"
@@ -271,11 +292,13 @@
                                     density="compact"
                                     persistent-hint
                                     :hint="hints.bankName"
+                                    v-model="banking.bank_account_name"
                                 >
                                 </v-text-field>
                             </v-col>
                             <v-col cols="6">
                                 <v-text-field
+                                    v-model="banking.bank_account_number"
                                     variant="outlined"
                                     label="เลขที่บัญชีเงินฝากออมทรัพย์ *"
                                     density="compact"
@@ -291,6 +314,12 @@
 </template>
 
 <script setup lang="ts">
+import { usePersonalStore } from '../../stores/personal.store'
+import { storeToRefs } from 'pinia'
+
+const personalStore = usePersonalStore()
+const { address, banking, license, ss } = personalStore
+
 const hints = {
     followHomeland: 'hint: กรุณากรอก ที่อยู่ตามทะเบียนบ้าน *',
     followCurrent: 'hint: กรุณากรอก ที่อยู่ปัจจุบัน *',
@@ -315,14 +344,32 @@ const ForDisabledCheckBox = reactive({
     'persistent-hint': true,
 })
 
+watch(isSamePersonalID, (newValue) => {
+    if (newValue === true) {
+        ss.ss_same_number = true
+        ss.ss_card_number = personalStore.personal_info.id_card_number
+    } else {
+        ss.ss_same_number = false
+        ss.ss_card_number = null
+    }
+})
+
+watch(currIsHomeland, (newValue) => {
+    if (newValue === true) {
+        personalStore.useRegAddressOnCurAddress()
+    }
+})
+
 watch(emerIsHomeland, (newValue) => {
     if (newValue === true) {
         emerIsCurrent.value = false
+        personalStore.useRegAddressOnEmerAddress()
     }
 })
 
 watch(emerIsCurrent, (newValue) => {
     if (newValue === true) {
+        personalStore.useCurAddressOnEmerAddress()
         emerIsHomeland.value = false
     }
 })

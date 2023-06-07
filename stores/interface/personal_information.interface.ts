@@ -6,12 +6,12 @@ export interface IPersonalInfo {
     title_milirtary?: string
     title_spacial?: string
 
-    title_th: string
+    title_name_th: string
     first_name_th: string
     last_name_th: string
     nickname_th: string
 
-    title_en: string
+    title_name_en: string
     first_name_en: string
     last_name_en: string
 
@@ -50,16 +50,16 @@ export interface IAddressInfo {
 
 export interface ILisence {
     license_number: string
-    license_begin_date: Date
-    license_expire_date: Date
+    license_begin_date: string
+    license_expire_date: string
 }
 
 export interface ISocailSecurityOfficeInfo {
     ss_have: boolean
     ss_same_number: boolean
-    ss_card_number: number
-    ss_card_issue_date: Date
-    ss_card_expire_date: Date
+    ss_card_number: number | null
+    ss_card_issue_date: string
+    ss_card_expire_date: string
     ss_card_hospital: string
     ss_card_province: string
 }
@@ -127,8 +127,8 @@ export interface ITax {
     parent_support_amount: number
 }
 
-interface address {
-    id: number
+export interface address {
+    id?: number
     address_no: string
     address_moo: string
     address_village: string
