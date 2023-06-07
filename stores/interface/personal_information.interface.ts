@@ -140,16 +140,16 @@ export interface address {
     address_postcode: string
 }
 
-interface children_info {
+export interface children_info {
     id: number
     title: string
     frist_name: string
     last_name: string
     id_card: string
     birth_date: string
-    birth_province: string
-    nationality: string
-    ethnicity: string
+    birth_province: string | null
+    nationality: string | null
+    ethnicity: string | null
     religion: string
     child_welfare: string
 }

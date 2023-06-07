@@ -13,7 +13,7 @@
                 <v-row>
                     <v-col cols="4"> สถานภาพการสมรส <span class="text-red-darken-1"> *</span></v-col>
                     <v-col>
-                        <v-radio-group v-model="_marriage.status" inline>
+                        <v-radio-group v-model="marriage.status" inline>
                             <v-radio label="โสด" value="โสด"></v-radio>
                             <v-radio label="สมรส" value="สมรส"></v-radio>
                             <v-radio label="หย่า" value="หย่า"></v-radio>
@@ -26,7 +26,7 @@
                     <v-col cols="4"> จำนวนบุตร (เจ้าตัว) <span class="text-red-darken-1"> *</span></v-col>
                     <v-col cols="6">
                         <v-text-field
-                            v-model="_marriage.num_of_chlid"
+                            v-model="marriage.num_of_chlid"
                             label="จำนวน"
                             hint="ไม่มีใส่ 0"
                             density="compact"
@@ -37,7 +37,7 @@
                         </v-text-field>
                     </v-col>
                 </v-row>
-                <FormsChildForm class="my-4" v-for="i in parseInt(_marriage.num_of_chlid)" :key="i" :index="i" />
+                <FormsChildForm class="my-4" v-for="i in parseInt(marriage.num_of_chlid)" :key="i" :index="i" />
             </v-container>
             <v-container class="text-body-1">
                 <p class="text-h6">บุคคลอ้างอิง</p>
@@ -46,7 +46,7 @@
                     <v-col cols="4"> คำนำหน้า <span class="text-red-darken-1"> *</span></v-col>
                     <v-col cols="6">
                         <v-select
-                            v-model="_marriage.ref_person.title"
+                            v-model="marriage.ref_person.title"
                             density="compact"
                             variant="outlined"
                             :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
@@ -58,7 +58,7 @@
                     <v-col cols="4"> ชื่อ-นามสกุล (ไทย) <span class="text-red-darken-1"> *</span></v-col>
                     <v-col cols="4">
                         <v-text-field
-                            v-model="_marriage.ref_person.frist_name"
+                            v-model="marriage.ref_person.frist_name"
                             label="ชื่อ"
                             hint="โปรดระบุ"
                             density="compact"
@@ -69,7 +69,7 @@
                     </v-col>
                     <v-col cols="4">
                         <v-text-field
-                            v-model="_marriage.ref_person.last_name"
+                            v-model="marriage.ref_person.last_name"
                             label="นามสกุล"
                             hint="โปรดระบุ"
                             density="compact"
@@ -84,7 +84,7 @@
                     <v-col cols="3"> ความสัมพันธ์ <span class="text-red-darken-1"> *</span></v-col>
                     <v-col cols="3">
                         <v-text-field
-                            v-model="_marriage.ref_person.relationship"
+                            v-model="marriage.ref_person.relationship"
                             label=""
                             hint="โปรดระบุ"
                             density="compact"
@@ -96,7 +96,7 @@
                     <v-col cols="2"> เบอร์ติดต่อ <span class="text-red-darken-1"> *</span></v-col>
                     <v-col cols="4">
                         <v-text-field
-                            v-model="_marriage.ref_person.phone_number"
+                            v-model="marriage.ref_person.phone_number"
                             label=""
                             hint="โปรดระบุ"
                             density="compact"
@@ -109,7 +109,7 @@
                 <v-row>
                     <v-col cols="3">ที่อยู่บุคคลอ้างอิง<span class="text-red-darken-1"> *</span></v-col>
                     <v-col cols="6">
-                        <v-radio-group v-model="_marriage.ref_person.address_option">
+                        <v-radio-group v-model="marriage.ref_person.address_option">
                             <v-radio
                                 label="ใช้ที่อยู่เดียวกันกับ ที่อยู่ตามทะเบียนบ้าน"
                                 value="ใช้ที่อยู่เดียวกันกับ ที่อยู่ตามทะเบียนบ้าน"
@@ -123,12 +123,12 @@
                     </v-col>
                 </v-row>
 
-                <div id="addintional_address" v-if="_marriage.ref_person.address_option == 'กำหนดเอง'">
+                <div id="addintional_address" v-if="marriage.ref_person.address_option == 'กำหนดเอง'">
                     <v-row>
                         <v-col cols="3"> กำหนดเอง <span class="text-red-darken-1"> *</span></v-col>
                         <v-col cols="2">
                             <v-text-field
-                                v-model="_marriage.ref_person.address_detail.address_no"
+                                v-model="marriage.ref_person.address_detail.address_no"
                                 label="บ้านเลขที่ *"
                                 hint="โปรดระบุ"
                                 density="compact"
@@ -139,7 +139,7 @@
                         </v-col>
                         <v-col cols="2"
                             ><v-text-field
-                                v-model="_marriage.ref_person.address_detail.address_moo"
+                                v-model="marriage.ref_person.address_detail.address_moo"
                                 label="หมู่ "
                                 density="compact"
                                 variant="outlined"
@@ -149,7 +149,7 @@
                         </v-col>
                         <v-col cols="2">
                             <v-text-field
-                                v-model="_marriage.ref_person.address_detail.address_soi"
+                                v-model="marriage.ref_person.address_detail.address_soi"
                                 label="ซอย"
                                 density="compact"
                                 variant="outlined"
@@ -159,7 +159,7 @@
                         ></v-col>
                         <v-col cols="2">
                             <v-text-field
-                                v-model="_marriage.ref_person.address_detail.address_village"
+                                v-model="marriage.ref_person.address_detail.address_village"
                                 label="หมู่บ้าน"
                                 density="compact"
                                 variant="outlined"
@@ -172,7 +172,7 @@
                         <v-col cols="3"></v-col>
                         <v-col cols="4">
                             <v-text-field
-                                v-model="_marriage.ref_person.address_detail.address_road"
+                                v-model="marriage.ref_person.address_detail.address_road"
                                 label="ถนน"
                                 hint=" โปรดระบุ"
                                 density="compact"
@@ -183,7 +183,7 @@
                         </v-col>
                         <v-col cols="4"
                             ><v-text-field
-                                v-model="_marriage.ref_person.address_detail.address_district"
+                                v-model="marriage.ref_person.address_detail.address_district"
                                 label="ตำบล/แขวง *"
                                 density="compact"
                                 variant="outlined"
@@ -196,7 +196,7 @@
                         <v-col cols="3"></v-col>
                         <v-col cols="4">
                             <v-text-field
-                                v-model="_marriage.ref_person.address_detail.address_city"
+                                v-model="marriage.ref_person.address_detail.address_city"
                                 label="อำเภอ/เขต *"
                                 hint=" โปรดระบุ"
                                 density="compact"
@@ -207,7 +207,7 @@
                         </v-col>
                         <v-col cols="4"
                             ><v-text-field
-                                v-model="_marriage.ref_person.address_detail.address_province"
+                                v-model="marriage.ref_person.address_detail.address_province"
                                 label="จังหวัด *"
                                 density="compact"
                                 variant="outlined"
@@ -220,7 +220,7 @@
                         <v-col cols="3"></v-col>
                         <v-col cols="4">
                             <v-text-field
-                                v-model="_marriage.ref_person.address_detail.address_postcode"
+                                v-model="marriage.ref_person.address_detail.address_postcode"
                                 label="รหัสไปรษณีย์ *"
                                 hint=" โปรดระบุ"
                                 density="compact"
@@ -240,9 +240,8 @@
 import { reactive } from 'vue'
 import { usePersonalStore } from '../../stores/personal.store'
 import { IMarriage } from '~/stores/interface/personal_information.interface'
+import { storeToRefs } from 'pinia'
 
 const personalStore = usePersonalStore()
-const _marriage: IMarriage = reactive({
-    ...personalStore.$state.marriage,
-})
+const { marriage } = personalStore
 </script>
