@@ -18,7 +18,7 @@
                                 <b>ข้อมูลบิดา <span class="text-red">*</span></b>
                             </v-col>
                             <v-col cols="8">
-                                <FormsParentForm></FormsParentForm>
+                                <FormsParentForm :parent-form-model="parent.father"></FormsParentForm>
                             </v-col>
                         </v-row>
                     </v-col>
@@ -28,7 +28,7 @@
                                 <b>ข้อมูลมารดา <span class="text-red">*</span></b>
                             </v-col>
                             <v-col cols="8">
-                                <FormsParentForm></FormsParentForm>
+                                <FormsParentForm :parent-form-model="parent.mother"></FormsParentForm>
                             </v-col>
                         </v-row>
                     </v-col>
@@ -39,6 +39,7 @@
                     </v-col>
                     <v-col cols="4"
                         ><v-text-field
+                            v-model="parent.mf_date_of_marriage"
                             hide-details
                             persistent-hint
                             label="เลขที่ทะเบียนสมรส"
@@ -48,6 +49,7 @@
                     </v-col>
                     <v-col cols="4">
                         <v-text-field
+                            v-model="parent.mf_no_marriage"
                             hide-details
                             type="date"
                             persistent-hint
@@ -58,11 +60,17 @@
                     </v-col>
                 </v-row>
             </v-container>
-            
         </template>
     </CandidateBaseCard>
 </template>
 
 <script setup lang="ts">
+import { usePersonalStore } from '../../stores/personal.store'
+import { storeToRefs } from 'pinia'
+
+const personalStore = usePersonalStore()
+const { calculateAge } = storeToRefs(personalStore)
+const { parent } = personalStore
+
 const parentDescription = 'ข้อมูลบิดา, มารดา ไว้ใช้ในการอ้างอิงกรณีการเบิกสวัสดิการให้แก่บุคคลดังกล่าว'
 </script>

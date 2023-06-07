@@ -5,6 +5,7 @@ import {
     IJob,
     ILisence,
     IMarriage,
+    IParent,
     IPersonalInfo,
     ISocailSecurityOfficeInfo,
     ITax,
@@ -22,6 +23,7 @@ interface State {
     ss: ISocailSecurityOfficeInfo
     education: IEducation
     job: IJob
+    parent: IParent
     marriage: IMarriage
     tax: ITax
 }
@@ -124,6 +126,34 @@ export const usePersonalStore = defineStore('personal', {
                         graduate_date: '',
                     },
                 ],
+            },
+            parent: {
+                father: {
+                    title_special: null,
+                    title_name: null,
+                    first_name: '',
+                    last_name: '',
+                    career: '',
+                    id_card_number: '',
+                    living: true,
+                    race: '',
+                    nationality: '',
+                    religion: '',
+                },
+                mother: {
+                    title_special: null,
+                    title_name: null,
+                    first_name: '',
+                    last_name: '',
+                    career: '',
+                    id_card_number: '',
+                    living: true,
+                    race: '',
+                    nationality: '',
+                    religion: '',
+                },
+                mf_date_of_marriage: '',
+                mf_no_marriage: '',
             },
             job: {
                 had_job: 'N',

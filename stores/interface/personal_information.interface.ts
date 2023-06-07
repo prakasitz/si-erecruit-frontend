@@ -73,8 +73,8 @@ export interface IParent {
     father: parent_info
     mother: parent_info
 
-    mf_no_marriage: string
-    mf_date_of_marriage: Date
+    mf_no_marriage?: string
+    mf_date_of_marriage?: string
 }
 
 export interface IEducation {
@@ -202,9 +202,9 @@ interface job_mahidol {
     got_compensation: boolean
 }
 
-interface parent_info {
-    title_special: string
-    title_name: string
+export interface parent_info {
+    title_special: string | null
+    title_name: string | null
     first_name: string
     last_name: string
     career: string

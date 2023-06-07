@@ -9,6 +9,7 @@
                         variant="outlined"
                         density="compact"
                         hide-details
+                        v-model="props.parentFormModel.title_special"
                     ></v-select>
                 </v-col>
                 <v-col cols="12">
@@ -18,6 +19,7 @@
                         variant="outlined"
                         density="compact"
                         hide-details
+                        v-model="props.parentFormModel.title_name"
                     ></v-select>
                 </v-col>
                 <v-col cols="6">
@@ -26,6 +28,7 @@
                         label="ชื่อ (ภาษาไทย) *"
                         density="compact"
                         variant="outlined"
+                        v-model="props.parentFormModel.first_name"
                     ></v-text-field>
                 </v-col>
                 <v-col cols="6">
@@ -34,10 +37,11 @@
                         label="นามสกุล (ภาษาไทย) *"
                         density="compact"
                         variant="outlined"
+                        v-model="props.parentFormModel.last_name"
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                    <v-radio-group class="label-field-top" inline hide-details>
+                    <v-radio-group v-model="props.parentFormModel.living" class="label-field-top" inline hide-details>
                         <template #prepend>
                             <div style="position: relative; top: -8.5px">
                                 <v-label>สถานภาพ: *</v-label>
@@ -48,10 +52,17 @@
                     </v-radio-group>
                 </v-col>
                 <v-col cols="12">
-                    <v-text-field hide-details label="อาชีพ" density="compact" variant="outlined"></v-text-field>
+                    <v-text-field
+                        v-model="props.parentFormModel.career"
+                        hide-details
+                        label="อาชีพ"
+                        density="compact"
+                        variant="outlined"
+                    ></v-text-field>
                 </v-col>
                 <v-col cols="12">
                     <v-text-field
+                        v-model="props.parentFormModel.id_card_number"
                         hide-details
                         label="หมายเลขบัตรประชาชน"
                         density="compact"
@@ -61,13 +72,31 @@
                     ></v-text-field>
                 </v-col>
                 <v-col cols="6">
-                    <v-text-field hide-details label="สัญชาติ *" density="compact" variant="outlined"></v-text-field>
+                    <v-text-field
+                        v-model="props.parentFormModel.race"
+                        hide-details
+                        label="สัญชาติ *"
+                        density="compact"
+                        variant="outlined"
+                    ></v-text-field>
                 </v-col>
                 <v-col cols="6">
-                    <v-text-field hide-details label="เชื้อชาติ *" density="compact" variant="outlined"></v-text-field>
+                    <v-text-field
+                        v-model="props.parentFormModel.nationality"
+                        hide-details
+                        label="เชื้อชาติ *"
+                        density="compact"
+                        variant="outlined"
+                    ></v-text-field>
                 </v-col>
                 <v-col>
-                    <v-radio-group label="ศาสนา: *" class="label-field-top" inline hide-details>
+                    <v-radio-group
+                        v-model="props.parentFormModel.religion"
+                        label="ศาสนา: *"
+                        class="label-field-top"
+                        inline
+                        hide-details
+                    >
                         <v-radio class="mr-4" label="พุทธ" value="1"></v-radio>
                         <v-radio class="mr-4" label="คริสต์" value="2"></v-radio>
                         <v-radio class="mr-4" label="อิสลาม" value="3"></v-radio>
@@ -80,6 +109,14 @@
     </v-card>
 </template>
 <script setup lang="ts">
+import { parent_info } from '~/stores/interface/personal_information.interface'
+
+export interface Props {
+    parentFormModel: parent_info
+}
+
+const props = defineProps<Props>()
+
 const hints = {
     personalID: 'hint: ไม่มี ให้ปล่อยว่าง',
 }
