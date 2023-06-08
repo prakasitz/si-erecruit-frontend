@@ -78,7 +78,7 @@ export interface IParent {
 }
 
 export interface IEducation {
-    education_select: string
+    education_select: number
     education_list: education[]
 }
 
@@ -190,7 +190,7 @@ export interface job {
     salary: string
 }
 
-interface job_mahidol {
+export interface job_mahidol {
     department: string
     sap_type: string
     position_name: string
@@ -199,7 +199,7 @@ interface job_mahidol {
     still_doing: boolean
     end_date: string
     reason: string
-    got_compensation: boolean
+    got_compensation: 'Y' | 'N' | ''
 }
 
 export interface parent_info {

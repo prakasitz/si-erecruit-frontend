@@ -10,6 +10,8 @@ import {
     ISocailSecurityOfficeInfo,
     ITax,
     address,
+    job,
+    job_mahidol,
 } from './interface/personal_information.interface'
 
 import { defineStore } from 'pinia'
@@ -113,7 +115,7 @@ export const usePersonalStore = defineStore('personal', {
                 bank_account_number: '',
             },
             education: {
-                education_select: '1',
+                education_select: 1,
                 education_list: [
                     {
                         id: 0,
@@ -173,7 +175,7 @@ export const usePersonalStore = defineStore('personal', {
                 had_job_mahidol_detail: {
                     department: '',
                     end_date: '',
-                    got_compensation: false,
+                    got_compensation: '',
                     position_name: '',
                     reason: '',
                     salary: '',
@@ -269,6 +271,11 @@ export const usePersonalStore = defineStore('personal', {
                 }
             }
         },
+        HasJob: ({ job }): boolean => job.had_job == 'Y',
+        IsWorking: ({ job }): boolean => job.job_status == 'กำลังทำงาน',
+        IsStudying: ({ job }): boolean => job.job_status == 'กำลังศึกษาต่อ',
+        IsUnemployed: ({ job }): boolean => job.job_status == 'ว่างงาน',
+        IsHasJobMahidol: ({ job }): boolean => job.had_job_mahidol == 'Y',
     },
     actions: {
         removeJobList(index: number) {
