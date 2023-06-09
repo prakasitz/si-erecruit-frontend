@@ -69,7 +69,6 @@
 
 <script setup lang="ts">
 import { CandidateAuth } from '~/auth/candidate.auth'
-
 const auth = new CandidateAuth()
 const props = defineProps(['id_card', 'btn_disabled', 'show', 'showError', 'error_detail'])
 const emit = defineEmits(['update:show', 'update:show_error'])
@@ -79,7 +78,7 @@ const invalidPassword = ref(false)
 async function loginCandidate(pid: string, password: string) {
     try {
         invalidPassword.value = false
-        await auth.signIn({ pid: pid, password: password })
+        await auth.signIn({ username: pid, password: password })
         navigateTo('/candidate')
     } catch (er: any) {
         console.log(er.status)

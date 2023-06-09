@@ -82,7 +82,9 @@ definePageMeta({
 })
 
 async function onClick_CheckingPID(_id: string) {
-    useFetch('http://172.27.150.169:3010/candidate-information/getCandidateInformation', {
+    const runtimeConfig = useRuntimeConfig()
+
+    useFetch(`${runtimeConfig.public.baseApi}/candidate-information/getCandidateInformation`, {
         method: 'POST',
         body: { pid: pid.value },
     }).then((d: any) => {

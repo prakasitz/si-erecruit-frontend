@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 
 export default function cookieHelper() {
-    const cookieValue = ref(null);
+    const cookieValue = ref(null)
     const access_token = ref('')
 
     function setCookie(name: string, value: string, options = {}) {
