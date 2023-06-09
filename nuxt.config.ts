@@ -21,7 +21,7 @@ export default defineNuxtConfig({
                         styles: {
                             configFile: resolve('assets/settings.scss'),
                         },
-                    }),
+                    })
                 )
             })
         },
@@ -29,11 +29,10 @@ export default defineNuxtConfig({
     ],
     sourcemap: false,
     runtimeConfig: {
-        baseApi: 'http://172.27.150.169.:3010',
+        baseApi: `${process.env.API_URL}`,
         public: {
-            baseApi: 'http://172.27.150.169:3010',
+            baseApi: `${process.env.API_URL}`,
         },
-
     },
     build: {
         transpile: ['vuetify'],
@@ -48,6 +47,10 @@ export default defineNuxtConfig({
     },
 
     components: true,
+
+    pinia: {
+        autoImports: ['defineStore', 'acceptHMRUpdate'],
+    },
 
     app: {
         head: {
