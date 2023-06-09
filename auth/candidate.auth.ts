@@ -1,13 +1,11 @@
-import { IAuth, UserLogin } from "./auth.interface";
-import axios from 'axios';
-import useCookie from '~/composable/useCookie'
+import { IAuth, UserLogin } from './auth.interface'
+import axios from 'axios'
+import cookieHelper from '~/helper/cookie.helper'
 
-const cookie = useCookie()
+const cookie = cookieHelper()
 
 export class CandidateAuth implements IAuth {
-    constructor() {
-
-    }
+    constructor() {}
     async signIn(userLogin: UserLogin): Promise<string> {
         const runtimeConfig = useRuntimeConfig()
 
@@ -16,13 +14,12 @@ export class CandidateAuth implements IAuth {
                 method: 'POST',
                 url: `${runtimeConfig.public.baseApi}/cadidate/auth`,
                 data: {
-                    pid: userLogin.pid,
-                    password: userLogin.password
-                }
-            });
-            cookie.setCookie('access_token', data);
-            this.getUser();
-
+                    pid: userLogin.username,
+                    password: userLogin.password,
+                },
+            })
+            cookie.setCookie('access_token', data)
+            this.getUser()
             return data
         } catch (err: any) {
             throw err.response
@@ -30,7 +27,7 @@ export class CandidateAuth implements IAuth {
     }
 
     signOut(): boolean {
-        cookie.setCookie('access_token', '');
+        cookie.setCookie('access_token', '')
         navigateTo('/login_candidate')
         return false
     }
