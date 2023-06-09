@@ -1,3 +1,5 @@
+import { TalentLevel, YesNo } from '~/utils/types'
+
 export interface IJobPosition {}
 
 export interface IPersonalInfo {
@@ -199,7 +201,7 @@ export interface job_mahidol {
     still_doing: boolean
     end_date: string
     reason: string
-    got_compensation: 'Y' | 'N' | ''
+    got_compensation: YesNo
 }
 
 export interface parent_info {
@@ -214,6 +216,43 @@ export interface parent_info {
     nationality: string
     religion: string
 }
+
+export interface ITalent {
+    typing_th: number | null
+    typing_en: number | null
+    computer_programs: string
+
+    eng_language_details: language
+
+    language_test: number | null
+    language_score: number | null
+
+    other_language: string
+
+    other_language_details: language
+    
+    sports: string
+
+    driver_license: string
+
+    other_talents: string
+
+    specialization: string
+
+    announced_from: string
+}
+
+export interface language {
+    language_speak: TalentLevel
+    txt_language_speak: string
+
+    language_read: TalentLevel
+    txt_language_read: string
+
+    language_write: TalentLevel
+    txt_language_write: string
+}
+
 
 interface ref_person {
     id: number

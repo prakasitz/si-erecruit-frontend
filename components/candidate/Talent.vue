@@ -18,7 +18,13 @@
                         <v-row>
                             <v-col cols="3"> พิมพ์ดีด </v-col>
                             <v-col cols="4">
-                                <v-text-field density="compact" type="number" hide-details variant="outlined">
+                                <v-text-field
+                                    v-model="talent.typing_th"
+                                    density="compact"
+                                    type="number"
+                                    hide-details
+                                    variant="outlined"
+                                >
                                     <template #prepend>
                                         <div class="label-field-top">ไทย</div>
                                     </template>
@@ -28,7 +34,13 @@
                                 </v-text-field>
                             </v-col>
                             <v-col cols="4">
-                                <v-text-field density="compact" type="number" hide-details variant="outlined">
+                                <v-text-field
+                                    v-model="talent.typing_en"
+                                    density="compact"
+                                    type="number"
+                                    hide-details
+                                    variant="outlined"
+                                >
                                     <template #prepend>
                                         <div class="label-field-top">อังกฤษ</div>
                                     </template>
@@ -41,7 +53,12 @@
                         <v-row>
                             <v-col cols="3">โปรแกรมคอมพิวเตอร์</v-col>
                             <v-col>
-                                <v-textarea density="compact" variant="outlined" hide-details></v-textarea>
+                                <v-textarea
+                                    v-model="talent.computer_programs"
+                                    density="compact"
+                                    variant="outlined"
+                                    hide-details
+                                ></v-textarea>
                             </v-col>
                         </v-row>
                         <v-row>
@@ -49,19 +66,31 @@
                                 ><b>ภาษาอังกฤษ <span class="text-red">*</span></b>
                             </v-col>
                             <v-col>
-                                <CandidateLanguageForm></CandidateLanguageForm>
+                                <FormsLanguageForm
+                                    :language-form-model="talent.eng_language_details"
+                                ></FormsLanguageForm>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col cols="3"><b>คะแนนการทดสอบภาษาอังกฤษ</b> </v-col>
                             <v-col>
-                                <v-text-field density="compact" variant="outlined" hide-details>
+                                <v-text-field
+                                    v-model="talent.language_test"
+                                    density="compact"
+                                    variant="outlined"
+                                    hide-details
+                                >
                                     <template #prepend> ทำได้ </template>
                                     <template #append> คะแนน </template>
                                 </v-text-field>
                             </v-col>
                             <v-col>
-                                <v-text-field density="compact" variant="outlined" hide-details>
+                                <v-text-field
+                                    v-model="talent.language_score"
+                                    density="compact"
+                                    variant="outlined"
+                                    hide-details
+                                >
                                     <template #prepend> จาก </template>
                                     <template #append> คะแนน </template>
                                 </v-text-field>
@@ -73,28 +102,50 @@
                                 <v-row>
                                     <v-col cols="3"> โปรดระบุ </v-col>
                                     <v-col>
-                                        <v-text-field density="compact" variant="outlined" hide-details></v-text-field>
+                                        <v-text-field
+                                            v-model="talent.other_language"
+                                            density="compact"
+                                            variant="outlined"
+                                            hide-details
+                                        ></v-text-field>
                                     </v-col>
                                 </v-row>
-                                <CandidateLanguageForm></CandidateLanguageForm>
+                                <FormsLanguageForm
+                                    :language-form-model="talent.other_language_details"
+                                ></FormsLanguageForm>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col cols="3">กีฬา</v-col>
                             <v-col>
-                                <v-textarea density="compact" variant="outlined" hide-details></v-textarea>
+                                <v-textarea
+                                    v-model="talent.sports"
+                                    density="compact"
+                                    variant="outlined"
+                                    hide-details
+                                ></v-textarea>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col cols="3">ใบขับขี่รถยนต์</v-col>
                             <v-col>
-                                <v-text-field density="compact" variant="outlined" hide-details></v-text-field>
+                                <v-text-field
+                                    v-model="talent.driver_license"
+                                    density="compact"
+                                    variant="outlined"
+                                    hide-details
+                                ></v-text-field>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col cols="3">ความสามารถพิเศษอื่นๆ</v-col>
                             <v-col>
-                                <v-textarea density="compact" variant="outlined" hide-details></v-textarea>
+                                <v-textarea
+                                    v-model="talent.other_talents"
+                                    density="compact"
+                                    variant="outlined"
+                                    hide-details
+                                ></v-textarea>
                             </v-col>
                         </v-row>
                     </v-col>
@@ -119,7 +170,12 @@
                         </v-row>
                         <v-row>
                             <v-col>
-                                <v-textarea density="compact" variant="outlined" hide-details></v-textarea>
+                                <v-textarea
+                                    v-model="talent.specialization"
+                                    density="compact"
+                                    variant="outlined"
+                                    hide-details
+                                ></v-textarea>
                             </v-col>
                         </v-row>
                     </v-col>
@@ -130,7 +186,7 @@
                 <v-row>
                     <v-col cols="2"><b>ทราบประกาศรับสมัครจาก</b></v-col>
                     <v-col>
-                        <v-radio-group v-model="announced_from">
+                        <v-radio-group v-model="talent.announced_from">
                             <v-radio label="บุคคลภายในมหาวิทยาลัย" value="hello"></v-radio>
                         </v-radio-group>
                     </v-col>
@@ -141,5 +197,9 @@
 </template>
 
 <script setup lang="ts">
+import { usePersonalStore } from '~/stores/personal.store'
+
 const announced_from = 'hello'
+const personalStore = usePersonalStore()
+const { talent } = personalStore
 </script>

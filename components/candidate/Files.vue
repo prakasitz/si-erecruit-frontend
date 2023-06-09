@@ -93,6 +93,9 @@
 </template>
 
 <script setup>
+const personalStore = usePersonalStore()
+const {} = personalStore
+
 const attach_personal_list = ref([
     { menu: 'สำเนาบัตรประจำตัวประชาชนตนเอง *', filename: 'สำเนาบัตรประจำตัวประชาชนตนเอง.pdf' },
     { menu: 'สำเนาทะเบียนบ้านตนเอง *', filename: '' },

@@ -8,6 +8,7 @@ import {
     IParent,
     IPersonalInfo,
     ISocailSecurityOfficeInfo,
+    ITalent,
     ITax,
     address,
     job,
@@ -24,6 +25,7 @@ interface State {
     license: ILisence
     ss: ISocailSecurityOfficeInfo
     education: IEducation
+    talent: ITalent
     job: IJob
     parent: IParent
     marriage: IMarriage
@@ -156,6 +158,46 @@ export const usePersonalStore = defineStore('personal', {
                 },
                 mf_date_of_marriage: '',
                 mf_no_marriage: '',
+            },
+            talent: {
+                typing_th: null,
+                typing_en: null,
+                computer_programs: '',
+
+                eng_language_details: {
+                    language_read: '',
+                    language_speak: '',
+                    language_write: '',
+
+                    txt_language_read: '',
+                    txt_language_speak: '',
+                    txt_language_write: '',
+                },
+
+                language_test: null,
+                language_score: null,
+
+                other_language: '',
+
+                other_language_details: {
+                    language_read: '',
+                    language_speak: '',
+                    language_write: '',
+
+                    txt_language_read: '',
+                    txt_language_speak: '',
+                    txt_language_write: '',
+                },
+
+                sports: '',
+
+                driver_license: '',
+
+                other_talents: '',
+
+                specialization: '',
+
+                announced_from: '',
             },
             job: {
                 had_job: 'N',
