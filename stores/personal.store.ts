@@ -46,12 +46,12 @@ export const usePersonalStore = defineStore('personal', {
                 last_name_en: '',
                 email_address: '',
                 birth_date: '',
-                province_when: '',
+                province_when: null,
                 age_year: 0,
                 age_month: 0,
                 id_card_number: 0,
                 id_card_amphur: '',
-                id_card_province: '',
+                id_card_province: null,
                 id_card_issue_date: '',
                 id_card_expire_date: '',
                 height: 0,
@@ -71,7 +71,7 @@ export const usePersonalStore = defineStore('personal', {
                     address_road: '',
                     address_district: '',
                     address_city: '',
-                    address_province: '',
+                    address_province: null,
                     address_postcode: '',
                 },
                 cur_address: {
@@ -82,7 +82,7 @@ export const usePersonalStore = defineStore('personal', {
                     address_road: '',
                     address_district: '',
                     address_city: '',
-                    address_province: '',
+                    address_province: null,
                     address_postcode: '',
                 },
                 emer_address: {
@@ -93,7 +93,7 @@ export const usePersonalStore = defineStore('personal', {
                     address_road: '',
                     address_district: '',
                     address_city: '',
-                    address_province: '',
+                    address_province: null,
                     address_postcode: '',
                 },
                 cur_mobile: '',
@@ -109,7 +109,7 @@ export const usePersonalStore = defineStore('personal', {
                 ss_card_hospital: '',
                 ss_card_number: null,
                 ss_card_issue_date: '',
-                ss_card_province: '',
+                ss_card_province: null,
                 ss_same_number: false,
             },
             banking: {
@@ -228,7 +228,7 @@ export const usePersonalStore = defineStore('personal', {
                 job_status: '1',
                 current_job: {
                     company_name: '',
-                    company_province: '',
+                    company_province: null,
                     duration_m: '',
                     duration_y: '',
                     job_type: '',
@@ -257,7 +257,7 @@ export const usePersonalStore = defineStore('personal', {
                         address_moo: '',
                         address_no: '',
                         address_postcode: '',
-                        address_province: '',
+                        address_province: null,
                         address_road: '',
                         address_soi: '',
                         address_village: '',
@@ -294,25 +294,6 @@ export const usePersonalStore = defineStore('personal', {
         }
     },
     getters: {
-        calculateAge: ({ personal_info }) => {
-            return () => {
-                let today = new Date()
-                let birthDate = new Date(personal_info.birth_date)
-
-                let years = today.getFullYear() - birthDate.getFullYear()
-                let months = today.getMonth() - birthDate.getMonth()
-
-                if (months < 0) {
-                    years--
-                    months += 12
-                }
-
-                return {
-                    years: years,
-                    months: months,
-                }
-            }
-        },
         HasJob: ({ job }): boolean => job.had_job == 'Y',
         IsWorking: ({ job }): boolean => job.job_status == 'กำลังทำงาน',
         IsStudying: ({ job }): boolean => job.job_status == 'กำลังศึกษาต่อ',
@@ -320,6 +301,31 @@ export const usePersonalStore = defineStore('personal', {
         IsHasJobMahidol: ({ job }): boolean => job.had_job_mahidol == 'Y',
     },
     actions: {
+        setBirthDate(birth_date: string) {
+            this.personal_info.birth_date = birth_date
+            this.calculateAge()
+        },
+        calculateAge() {
+            if (!this.personal_info.birth_date) {
+                this.personal_info.age_year = null
+                this.personal_info.age_month = null
+                return
+            }
+
+            let today = new Date()
+            let birthDate = new Date(this.personal_info.birth_date)
+
+            let years = today.getFullYear() - birthDate.getFullYear()
+            let months = today.getMonth() - birthDate.getMonth()
+
+            if (months < 0) {
+                years--
+                months += 12
+            }
+
+            this.personal_info.age_year = years
+            this.personal_info.age_month = months
+        },
         removeJobList(index: number) {
             index -= 1
             this.job.had_job_list.splice(index, 1)
