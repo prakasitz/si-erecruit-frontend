@@ -126,7 +126,11 @@
                                 <p>นามสกุล (ภาษาไทย) <span class="text-red">*</span></p>
                             </v-col>
                             <v-col cols="8">
-                                <v-text-field density="compact" variant="outlined"></v-text-field>
+                                <v-text-field
+                                    v-model="personal_info.last_name_th"
+                                    density="compact"
+                                    variant="outlined"
+                                ></v-text-field>
                             </v-col>
                         </v-row>
                     </v-col>
@@ -136,7 +140,11 @@
                                 <p>ชื่อเล่น <span class="text-red">*</span></p>
                             </v-col>
                             <v-col cols="8">
-                                <v-text-field density="compact" variant="outlined"></v-text-field>
+                                <v-text-field
+                                    v-model="personal_info.nickname_th"
+                                    density="compact"
+                                    variant="outlined"
+                                ></v-text-field>
                             </v-col>
                         </v-row>
                     </v-col>
@@ -155,7 +163,9 @@
                                 <p>คำนำหน้า <span class="text-red">*</span></p>
                             </v-col>
                             <v-col cols="8">
-                                <v-radio-group class="label-field-top" inline persistent-hint hint="กรุณาเลือกคำนำหน้า">
+                                <v-radio-group 
+                                v-model="personal_info.title_name_en"
+                                class="label-field-top" inline persistent-hint hint="กรุณาเลือกคำนำหน้า">
                                     <v-radio class="mr-4" label="Mr." value="1"></v-radio>
                                     <v-radio class="mr-4" label="Mrs." value="2"></v-radio>
                                     <v-radio class="mr-4" label="Miss" value="3"></v-radio>
@@ -170,6 +180,7 @@
                             </v-col>
                             <v-col cols="8">
                                 <v-text-field
+                                    v-model="personal_info.first_name_en"
                                     density="compact"
                                     variant="outlined"
                                     persistent-hint
@@ -185,6 +196,7 @@
                             </v-col>
                             <v-col cols="8">
                                 <v-text-field
+                                    v-model="personal_info.last_name_en"
                                     density="compact"
                                     variant="outlined"
                                     persistent-hint
@@ -208,6 +220,7 @@
                             </v-col>
                             <v-col cols="8">
                                 <v-text-field
+                                    v-model="personal_info.email_address"
                                     type="email"
                                     placeholder="siriraj@gmail.com"
                                     density="compact"
@@ -232,9 +245,10 @@
                             </v-col>
                             <v-col cols="3">
                                 <v-text-field
+                            
                                     density="compact"
                                     variant="outlined"
-                                    :value="calculateAge().years"
+                                    :value="calculateAge().years"            
                                     readonly
                                 >
                                     <template #prepend>
@@ -247,9 +261,12 @@
                             </v-col>
                             <v-col cols="2">
                                 <v-text-field
+                                    
                                     density="compact"
                                     variant="outlined"
+                                    
                                     :value="calculateAge().months"
+                                    
                                     readonly
                                 >
                                     <template #append>
@@ -267,6 +284,7 @@
                             </v-col>
                             <v-col cols="8">
                                 <v-autocomplete
+                                    v-model="personal_info.province_when"
                                     label="กรุณาเลือก"
                                     variant="outlined"
                                     density="compact"
@@ -405,7 +423,9 @@
                                 <p>หมู่โลหิต <span class="text-red">*</span></p>
                             </v-col>
                             <v-col cols="8">
-                                <v-radio-group class="label-field-top" inline hide-details>
+                                <v-radio-group 
+                                v-model="personal_info.blood_type" 
+                                class="label-field-top" inline hide-details>
                                     <v-radio class="mr-4" label="A" value="1"></v-radio>
                                     <v-radio class="mr-4" label="AB" value="2"></v-radio>
                                     <v-radio class="mr-4" label="B" value="3"></v-radio>
@@ -488,6 +508,7 @@ import { storeToRefs } from 'pinia'
 const personalStore = usePersonalStore()
 const { calculateAge } = storeToRefs(personalStore)
 const { personal_info } = personalStore
+
 
 const flow = useDatePickerFlow()
 const getMaxBirthDate = () => {
