@@ -19,14 +19,14 @@ export interface IPersonalInfo {
 
     email_address: string
     birth_date: string
-    province_when: string
+    province_when: string | null
 
-    age_year: number
-    age_month: number
+    age_year: number | null
+    age_month: number | null
 
     id_card_number: number
     id_card_amphur: string
-    id_card_province: string
+    id_card_province: string | null
     id_card_issue_date: string
     id_card_expire_date: string
 
@@ -63,7 +63,7 @@ export interface ISocailSecurityOfficeInfo {
     ss_card_issue_date: string
     ss_card_expire_date: string
     ss_card_hospital: string
-    ss_card_province: string
+    ss_card_province: string | null
 }
 
 export interface IBankingInfo {
@@ -138,7 +138,7 @@ export interface address {
     address_road: string
     address_district: string
     address_city: string
-    address_province: string
+    address_province: string | null
     address_postcode: string
 }
 
@@ -168,7 +168,7 @@ interface current_job {
     duration_y: string
     duration_m: string
     company_name: string
-    company_province: string
+    company_province: string | null
 }
 
 export interface education {
@@ -230,7 +230,7 @@ export interface ITalent {
     other_language: string
 
     other_language_details: language
-    
+
     sports: string
 
     driver_license: string
@@ -252,7 +252,6 @@ export interface language {
     language_write: TalentLevel
     txt_language_write: string
 }
-
 
 interface ref_person {
     id: number
