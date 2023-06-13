@@ -79,11 +79,16 @@
                 <v-col md="6" sm="12" cols="12">
                     <v-autocomplete
                         v-model="props.addressModel.address_province"
+                        v-model:search="search"
+                        :loading="loading"
+                        :items="searchItems"
+                        hide-no-data
+                        hide-details
                         label="จังหวัด *"
                         variant="outlined"
                         density="compact"
-                        hide-details
-                        :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                        item-title="province_name"
+                        item-value="province_code"
                     ></v-autocomplete>
                 </v-col>
             </v-row>
@@ -114,6 +119,9 @@
 
 <script setup lang="ts">
 import { address } from '~/stores/interface/personal_information.interface'
+import { useMasterDataStore } from '~/stores/master.store'
+
+const { provinces } = useMasterDataStore()
 
 export interface Props {
     isDisabled: boolean
@@ -123,4 +131,6 @@ export interface Props {
 const props = withDefaults(defineProps<Props>(), {
     isDisabled: false,
 })
+
+const { search, loading, searchItems, select } = useSearchAutoComplete(provinces, 'province_name')
 </script>

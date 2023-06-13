@@ -244,17 +244,16 @@
                                                 <v-col>
                                                     <v-autocomplete
                                                         v-model="ss.ss_card_province"
+                                                        v-model:search="ProvinceSearchBox.search.value"
+                                                        :loading="ProvinceSearchBox.loading.value"
+                                                        :items="ProvinceSearchBox.searchItems.value"
+                                                        hide-no-data
+                                                        hide-details
                                                         label="จังหวัด *"
                                                         variant="outlined"
                                                         density="compact"
-                                                        :items="[
-                                                            'California',
-                                                            'Colorado',
-                                                            'Florida',
-                                                            'Georgia',
-                                                            'Texas',
-                                                            'Wyoming',
-                                                        ]"
+                                                        item-title="province_name"
+                                                        item-value="province_code"
                                                     ></v-autocomplete>
                                                 </v-col>
                                             </v-row>
@@ -314,10 +313,15 @@
 </template>
 
 <script setup lang="ts">
+import { MasterProvince } from '~/utils/types'
 import { usePersonalStore } from '../../stores/personal.store'
+import { useMasterDataStore } from '~/stores/master.store'
 import { storeToRefs } from 'pinia'
 
+const masterDataStore = useMasterDataStore()
+
 const personalStore = usePersonalStore()
+const { provinces } = useMasterDataStore()
 const { address, banking, license, ss } = personalStore
 
 const hints = {
@@ -328,6 +332,8 @@ const hints = {
 
 const bankInfoDescription =
     'เป็นบัญชีที่ใช้สำหรับรับเงินเดือนและค่าตอบแทนต่าง ๆ ธนาคารไทยพาณิชย์ (บัญชีออมทรัพย์) สาขาศิริราช หรือ สาขาในเขตกรุงเทพฯ เท่านั้น (บัญชีที่เปิด ต้องไม่ใช่สาขาในห้างสรรพสินค้า และต้องเป็นชื่อบัญชีของตนเองเท่านั้น)'
+
+const isLoaded = ref(false)
 
 const hasSocialSecurity = ref(false)
 const isSamePersonalID = ref(false)
@@ -343,6 +349,8 @@ const ForDisabledCheckBox = reactive({
     'hide-details': false,
     'persistent-hint': true,
 })
+
+const ProvinceSearchBox = useSearchAutoComplete(provinces, 'province_name')
 
 watch(isSamePersonalID, (newValue) => {
     if (newValue === true) {
