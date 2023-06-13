@@ -258,6 +258,15 @@
 
 <script setup lang="ts">
 // This will work in both `<script setup>` and `<script>`
+
+import { useMasterDataStore } from '../../stores/master.store'
+
+import { storeToRefs } from 'pinia'
+
+const masterDataStore = useMasterDataStore()
+
+const { fetchProvince, fetchTitleConferred } = useMaster()
+
 const message = ref('Hey!')
 const eye1 = ref(false)
 const eye2 = ref(false)
@@ -331,6 +340,42 @@ definePageMeta({
         },
     ],
     //middleware: ['candidate-auth'],
+})
+
+async function loadMasterData() {
+    try {
+        const promises = [fetchProvince(), fetchTitleConferred()]
+
+        const results = await Promise.all(promises)
+        const [provinceResult, titleConferredResult] = results
+
+        const { error: provinceError, data: provinceData } = provinceResult
+        const { error: titleError, data: titleConferredData } = titleConferredResult
+
+        console.log('results', results)
+
+        masterDataStore.provinces = provinceData.value
+        masterDataStore.title_conferends = titleConferredData.value
+
+        console.log('.....')
+
+        // Handle provinceData and titleData as needed
+
+        if (provinceError) {
+            // Handle provinceError
+        }
+
+        if (titleError) {
+            // Handle titleError
+        }
+    } catch (error) {
+        // Handle error if any of the promises reject
+        throw error
+    }
+}
+
+onBeforeMount(async () => {
+    await loadMasterData()
 })
 
 console.log(useRoute().name)
