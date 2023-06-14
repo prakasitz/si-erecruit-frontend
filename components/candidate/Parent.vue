@@ -69,7 +69,7 @@ import { usePersonalStore } from '../../stores/personal.store'
 import { storeToRefs } from 'pinia'
 
 const personalStore = usePersonalStore()
-const { calculateAge } = storeToRefs(personalStore)
+
 const { parent } = personalStore
 
 const parentDescription = 'ข้อมูลบิดา, มารดา ไว้ใช้ในการอ้างอิงกรณีการเบิกสวัสดิการให้แก่บุคคลดังกล่าว'

@@ -375,7 +375,7 @@ async function loadMasterData() {
 }
 
 onBeforeMount(async () => {
-    await loadMasterData()
+    // await loadMasterData()
 })
 
 console.log(useRoute().name)
