@@ -366,11 +366,12 @@
                                 <p>วันที่ออกบัตร <span class="text-red">*</span></p>
                             </v-col>
                             <v-col cols="8">
-                                <v-text-field
+                                <VueDatePicker
+                                    :flow="flow"
+                                    :enable-time-picker="false"
                                     v-model="personal_info.id_card_issue_date"
-                                    density="compact"
-                                    variant="outlined"
-                                ></v-text-field>
+                                    model-type="yyyy/MM/dd"
+                                />
                             </v-col>
                         </v-row>
                     </v-col>
@@ -380,11 +381,12 @@
                                 <p>วันที่บัตรหมดอายุ <span class="text-red">*</span></p>
                             </v-col>
                             <v-col cols="8">
-                                <v-text-field
+                                <VueDatePicker
+                                    :flow="flow"
+                                    :enable-time-picker="false"
                                     v-model="personal_info.id_card_expire_date"
-                                    density="compact"
-                                    variant="outlined"
-                                ></v-text-field>
+                                    model-type="yyyy/MM/dd"
+                                />
                             </v-col>
                         </v-row>
                     </v-col>

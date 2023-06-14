@@ -73,6 +73,8 @@ export const usePersonalStore = defineStore('personal', {
                     address_city: '',
                     address_province: null,
                     address_postcode: '',
+                    address_country: '',
+                    
                 },
                 cur_address: {
                     address_no: '',
@@ -84,6 +86,7 @@ export const usePersonalStore = defineStore('personal', {
                     address_city: '',
                     address_province: null,
                     address_postcode: '',
+                    address_country: '',
                 },
                 emer_address: {
                     address_no: '',
@@ -95,6 +98,7 @@ export const usePersonalStore = defineStore('personal', {
                     address_city: '',
                     address_province: null,
                     address_postcode: '',
+                    address_country: '',
                 },
                 cur_mobile: '',
             },
@@ -261,6 +265,7 @@ export const usePersonalStore = defineStore('personal', {
                         address_road: '',
                         address_soi: '',
                         address_village: '',
+                        address_country: '',
                         id: 0,
                     },
                     address_option: '',

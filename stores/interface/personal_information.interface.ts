@@ -140,6 +140,7 @@ export interface address {
     address_city: string
     address_province: string | null
     address_postcode: string
+    address_country: string
 }
 
 export interface children_info {

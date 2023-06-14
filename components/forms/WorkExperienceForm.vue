@@ -48,32 +48,33 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-col cols="4"> ระยะเวลา <span class="text-red-darken-1"> *</span> </v-col>
+            <v-col cols="4"> วันที่เข้าทำงาน <span class="text-red-darken-1"> *</span> </v-col>
             <v-col cols="3">
-                <v-text-field
-                    v-model="workExperienceFormModel.start_date"
+        
+                <VueDatePicker
                     label="วันที่เข้าทำงาน"
-                    hide-details
-                    density="compact"
-                    variant="outlined"
-                    maxLength="100"
-                ></v-text-field>
+                    :flow="flow"
+                    :enable-time-picker="false"
+                    v-model="workExperienceFormModel.start_date"
+                    hide-details                                
+                    model-type="yyyy/MM/dd"
+                />
             </v-col>
             <v-col cols="2">
                 <v-checkbox v-model="workExperienceFormModel.still_doing" hide-details label="ถึงปัจจุบัน"></v-checkbox>
             </v-col>
         </v-row>
         <v-row class="m-0 p-0" v-if="!workExperienceFormModel.still_doing">
-            <v-col cols="4"> </v-col>
+            <v-col cols="4"> วันที่ออกจากงาน <span class="text-red-darken-1"> *</span></v-col>
             <v-col cols="3">
-                <v-text-field
-                    v-model="workExperienceFormModel.end_date"
+                <VueDatePicker
                     label="วันที่ออกจากงาน"
-                    hide-details
-                    density="compact"
-                    variant="outlined"
-                    maxLength="100"
-                ></v-text-field>
+                    :flow="flow"
+                    :enable-time-picker="false"
+                    v-model="workExperienceFormModel.end_date"
+                    hide-details                                
+                    model-type="yyyy/MM/dd"
+                />
             </v-col>
         </v-row>
         <v-row>
@@ -96,14 +97,14 @@ import { usePersonalStore } from '../../stores/personal.store'
 import { IJob, job, job_mahidol } from '~/stores/interface/personal_information.interface'
 
 const personalStore = usePersonalStore()
-
 export interface Props {
     index: number
     workExperienceFormModel: job
 }
 
-const props = defineProps<Props>()
 
+const props = defineProps<Props>()
+const flow = useDatePickerFlow()
 const emit = defineEmits(['update:trash', 'get:isFilled'])
 
 const IsOtherStillDoing = toRef(props.workExperienceFormModel, 'still_doing')
