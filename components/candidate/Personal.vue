@@ -163,9 +163,13 @@
                                 <p>คำนำหน้า <span class="text-red">*</span></p>
                             </v-col>
                             <v-col cols="8">
-                                <v-radio-group 
-                                v-model="personal_info.title_name_en"
-                                class="label-field-top" inline persistent-hint hint="กรุณาเลือกคำนำหน้า">
+                                <v-radio-group
+                                    v-model="personal_info.title_name_en"
+                                    class="label-field-top"
+                                    inline
+                                    persistent-hint
+                                    hint="กรุณาเลือกคำนำหน้า"
+                                >
                                     <v-radio class="mr-4" label="Mr." value="1"></v-radio>
                                     <v-radio class="mr-4" label="Mrs." value="2"></v-radio>
                                     <v-radio class="mr-4" label="Miss" value="3"></v-radio>
@@ -240,15 +244,15 @@
                                     :max-date="getMaxBirthDate()"
                                     :start-date="getMaxBirthDate()"
                                     :enable-time-picker="false"
-                                    v-model="personal_info.birth_date"
+                                    v-model="birtDate"
+                                    model-type="yyyy/MM/dd"
                                 />
                             </v-col>
                             <v-col cols="3">
                                 <v-text-field
-                            
                                     density="compact"
                                     variant="outlined"
-                                    :value="calculateAge().years"            
+                                    v-model="personal_info.age_year"
                                     readonly
                                 >
                                     <template #prepend>
@@ -261,12 +265,9 @@
                             </v-col>
                             <v-col cols="2">
                                 <v-text-field
-                                    
                                     density="compact"
                                     variant="outlined"
-                                    
-                                    :value="calculateAge().months"
-                                    
+                                    v-model="personal_info.age_month"
                                     readonly
                                 >
                                     <template #append>
@@ -286,9 +287,15 @@
                                 <v-autocomplete
                                     v-model="personal_info.province_when"
                                     label="กรุณาเลือก"
+                                    v-model:search="search"
+                                    :loading="loading"
+                                    :items="searchItems"
+                                    hide-no-data
+                                    hide-details
                                     variant="outlined"
                                     density="compact"
-                                    :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                                    item-title="province_name"
+                                    item-value="province_code"
                                 ></v-autocomplete>
                             </v-col>
                         </v-row>
@@ -335,10 +342,16 @@
                             <v-col cols="4">
                                 <v-autocomplete
                                     v-model="personal_info.id_card_province"
-                                    label="กรุณาเลือก"
+                                    v-model:search="search"
+                                    :loading="loading"
+                                    :items="searchItems"
+                                    hide-no-data
+                                    hide-details
+                                    label="จังหวัด *"
                                     variant="outlined"
                                     density="compact"
-                                    :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                                    item-title="province_name"
+                                    item-value="province_code"
                                 >
                                     <template #prepend>
                                         <div class="label-field-top">จังหวัด</div>
@@ -423,9 +436,12 @@
                                 <p>หมู่โลหิต <span class="text-red">*</span></p>
                             </v-col>
                             <v-col cols="8">
-                                <v-radio-group 
-                                v-model="personal_info.blood_type" 
-                                class="label-field-top" inline hide-details>
+                                <v-radio-group
+                                    v-model="personal_info.blood_type"
+                                    class="label-field-top"
+                                    inline
+                                    hide-details
+                                >
                                     <v-radio class="mr-4" label="A" value="1"></v-radio>
                                     <v-radio class="mr-4" label="AB" value="2"></v-radio>
                                     <v-radio class="mr-4" label="B" value="3"></v-radio>
@@ -503,14 +519,25 @@
 
 <script setup lang="ts">
 import { usePersonalStore } from '../../stores/personal.store'
+import { useMasterDataStore } from '../../stores/master.store'
 import { storeToRefs } from 'pinia'
 
-const personalStore = usePersonalStore()
-const { calculateAge } = storeToRefs(personalStore)
-const { personal_info } = personalStore
-
-
 const flow = useDatePickerFlow()
+const personalStore = usePersonalStore()
+const { provinces } = useMasterDataStore()
+const { personal_info, setBirthDate } = personalStore
+
+const { search, loading, searchItems } = useSearchAutoComplete(provinces, 'province_name')
+
+const birtDate = computed({
+    set(v: string) {
+        setBirthDate(v)
+    },
+    get() {
+        return personal_info.birth_date
+    },
+})
+
 const getMaxBirthDate = () => {
     let fifteenYearsAgo = new Date()
     fifteenYearsAgo.setFullYear(fifteenYearsAgo.getFullYear() - 15)
