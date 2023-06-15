@@ -49,7 +49,9 @@ export default defineNuxtConfig({
     components: true,
 
     pinia: {
-        autoImports: ['defineStore', 'acceptHMRUpdate'],
+        autoImports: [
+            'defineStore', // import { defineStore } from 'pinia'
+        ],
     },
 
     app: {
