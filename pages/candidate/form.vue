@@ -257,17 +257,26 @@
 </style>
 
 <script setup lang="ts">
-// This will work in both `<script setup>` and `<script>`
+definePageMeta({
+    title: 'จัดการข้อมูลผู้สมัคร',
+    pageTransition: {
+        name: 'rotate',
+    },
+    layout: 'defaultcandidate',
+    breadcrumbs: [
+        {
+            title: 'หน้าหลัก',
+            href: '/candidate/',
+        },
+        {
+            title: 'จัดการข้อมูลผู้สมัคร',
+        },
+    ],
+    //middleware: ['candidate-auth'],
+})
 
-import { useMasterDataStore } from '../../stores/master.store'
+const { loadMasterData } = useMaster()
 
-import { storeToRefs } from 'pinia'
-
-const masterDataStore = useMasterDataStore()
-
-const { fetchProvince, fetchTitleConferred } = useMaster()
-
-const message = ref('Hey!')
 const eye1 = ref(false)
 const eye2 = ref(false)
 const panelShow = ref('secret')
@@ -324,58 +333,10 @@ const prev = () => {
     onboarding.value = onboarding.value - 1 <= 0 ? 1 : onboarding.value - 1
 }
 
-definePageMeta({
-    title: 'จัดการข้อมูลผู้สมัคร',
-    pageTransition: {
-        name: 'rotate',
-    },
-    layout: 'defaultcandidate',
-    breadcrumbs: [
-        {
-            title: 'หน้าหลัก',
-            href: '/candidate/',
-        },
-        {
-            title: 'จัดการข้อมูลผู้สมัคร',
-        },
-    ],
-    //middleware: ['candidate-auth'],
-})
-
-async function loadMasterData() {
-    try {
-        const promises = [fetchProvince(), fetchTitleConferred()]
-
-        const results = await Promise.all(promises)
-        const [provinceResult, titleConferredResult] = results
-
-        const { error: provinceError, data: provinceData } = provinceResult
-        const { error: titleError, data: titleConferredData } = titleConferredResult
-
-        console.log('results', results)
-
-        masterDataStore.provinces = provinceData.value
-        masterDataStore.title_conferends = titleConferredData.value
-
-        console.log('.....')
-
-        // Handle provinceData and titleData as needed
-
-        if (provinceError) {
-            // Handle provinceError
-        }
-
-        if (titleError) {
-            // Handle titleError
-        }
-    } catch (error) {
-        // Handle error if any of the promises reject
-        throw error
-    }
-}
-
-onBeforeMount(async () => {
-    // await loadMasterData()
+onMounted(async () => {
+    console.groupCollapsed('onMount')
+    await loadMasterData()
+    console.groupEnd()
 })
 
 console.log(useRoute().name)
