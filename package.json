@@ -31,6 +31,6 @@
         "pinia": "^2.1.4",
         "sass": "^1.63.4",
         "vee-validate": "^4.9.6",
-        "vuetify": "^3.3.4"
+        "vuetify": "3.3.3"
     }
 }

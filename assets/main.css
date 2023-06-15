@@ -18,3 +18,21 @@ b, strong {
     top: -6.5px
 }
 
+:root {
+    /*General*/
+    --dp-font-family: "Krub-Regular", sans-serif !important
+}
+
+/* For DatePicker Customization */
+
+input[class^="dp__"]::placeholder,
+input[aria-label="Datepicker input"]::placeholder {
+  /* Add your desired CSS styles for the placeholder */
+  font-size: 0.95em;
+  /* Add any other desired styles */
+}
+
+.dp__outer_menu_wrap div {
+    font-size: .99em;
+}
+

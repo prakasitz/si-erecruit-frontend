@@ -83,8 +83,6 @@ export type MasterProvince = {
 }
 
 export type MasterTitleConferred = {
-    name_affix: string,
+    name_affix: string
     output_text: string
 }
-
-
