@@ -256,7 +256,7 @@
                         <v-col cols="4">
                             <v-autocomplete
                                 v-model="job.current_job.company_province"
-                                label="กรุณาเลือก"
+                                label="จังหวัด"
                                 variant="outlined"
                                 density="compact"
                                 :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
