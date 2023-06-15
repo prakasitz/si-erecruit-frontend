@@ -23,3 +23,5 @@ export const compareObjects = (obj1: any, obj2: any) => {
     // All properties have the same values
     return true
 }
+
+export const isTrue = (obj: any) => Object.values(obj).every((item) => item)

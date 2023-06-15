@@ -1,15 +1,54 @@
 import { MasterProvince, MasterTitleConferred } from '~/utils/types'
 
+export type MasterState = {
+    provinces: MasterProvince[]
+    marital_status: any[]
+    military: any[]
+    blood: any[]
+    title: any[]
+    titleTH: any[]
+    titleEN: any[]
+    title_specials: any[]
+    title_academics: any[]
+    title_military: any[]
+    title_conferrends: MasterTitleConferred[]
+    religions: any[]
+    levels: any[]
+    certificates: any[]
+    majors: any[]
+    institutes: any[]
+    races: any[]
+    positions: any[]
+
+    isLoaded: {
+        provinces: boolean
+        marital_status: boolean
+        military: boolean
+        blood: boolean
+        title: boolean
+        titleTH: boolean
+        titleEN: boolean
+        title_specials: boolean
+        title_academics: boolean
+        title_military: boolean
+        title_conferrends: boolean
+        religions: boolean
+        levels: boolean
+        certificates: boolean
+        majors: boolean
+        institutes: boolean
+        races: boolean
+        positions: boolean
+    }
+}
+
 export const useMasterDataStore = defineStore('master_data', {
-    state: () => {
+    state: (): MasterState => {
         return {
             provinces: [] as MasterProvince[],
-
             marital_status: [] as any[],
             military: [] as any[],
-
             blood: [] as any[],
-
             title: [] as any[],
             titleTH: [] as any[],
             titleEN: [] as any[],
@@ -17,7 +56,6 @@ export const useMasterDataStore = defineStore('master_data', {
             title_academics: [] as any[],
             title_military: [] as any[],
             title_conferrends: [] as MasterTitleConferred[],
-
             religions: [] as any[],
             levels: [] as any[],
             certificates: [] as any[],
@@ -25,7 +63,31 @@ export const useMasterDataStore = defineStore('master_data', {
             institutes: [] as any[],
             races: [] as any[],
             positions: [] as any[],
+
+            isLoaded: {
+                provinces: false as boolean,
+                marital_status: false as boolean,
+                military: false as boolean,
+                blood: false as boolean,
+                title: false as boolean,
+                titleTH: false as boolean,
+                titleEN: false as boolean,
+                title_specials: false as boolean,
+                title_academics: false as boolean,
+                title_military: false as boolean,
+                title_conferrends: false as boolean,
+                religions: false as boolean,
+                levels: false as boolean,
+                certificates: false as boolean,
+                majors: false as boolean,
+                institutes: false as boolean,
+                races: false as boolean,
+                positions: false as boolean,
+            },
         }
+    },
+    getters: {
+        isItemsLoaded: (state) => isTrue(state.isLoaded),
     },
     actions: {
         async setProvince(data: any) {

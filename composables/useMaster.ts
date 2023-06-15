@@ -1,9 +1,9 @@
 import { JSONResponse } from '~/utils/types'
 
-import { useMasterDataStore } from '~/stores/master.store'
+import { MasterState, useMasterDataStore } from '~/stores/master.store'
+import { StateTree, Store, StoreDefinition, StoreGeneric } from 'pinia'
 
 export default function useMaster() {
-    const masterDataStore = useMasterDataStore()
     return {
         loadMasterData,
         fetchProvince,
@@ -25,156 +25,232 @@ export default function useMaster() {
     }
 }
 
-async function fetchProvince() {
-    const masterDataStore = useMasterDataStore()
-    const response = await useApi('/master-data/province', { method: 'GET' })
-    console.log('helloworsld')
-    masterDataStore.setProvince(response.data.value)
+async function fetchProvince(mStore: Store<'master-data', MasterState, any, any>) {
+    const response = await useApi('/master-data/province', {
+        method: 'GET',
+        callback: (responseStatus: boolean) => {
+            mStore.$state.isLoaded.provinces = responseStatus
+        },
+    })
+    mStore.setProvince(response.data.value)
     return response
 }
 
-async function fetchMaritalSatatus() {
-    const masterDataStore = useMasterDataStore()
-    const response = await useApi('/master-data/marital-status', { method: 'GET' })
-    masterDataStore.setMaritalStatus(response.data.value)
+async function fetchMaritalSatatus(mStore: Store<'master-data', MasterState, any, any>) {
+    const response = await useApi('/master-data/marital-status', {
+        method: 'GET',
+        callback: (responseStatus: boolean) => {
+            mStore.$state.isLoaded.marital_status = responseStatus
+        },
+    })
+    mStore.setMaritalStatus(response.data.value)
     return response
 }
 
-async function fetchBlood() {
-    const masterDataStore = useMasterDataStore()
-    const response = await useApi('/master-data/blood', { method: 'GET' })
-    masterDataStore.setBlood(response.data.value)
+async function fetchBlood(mStore: Store<'master-data', MasterState, any, any>) {
+    const response = await useApi('/master-data/blood', {
+        method: 'GET',
+        callback: (responseStatus: boolean) => {
+            mStore.$state.isLoaded.blood = responseStatus
+        },
+    })
+    mStore.setBlood(response.data.value)
     return response
 }
 
-async function fetchTitle() {
-    const masterDataStore = useMasterDataStore()
-    const response = await useApi('/master-data/title', { method: 'GET' })
-    masterDataStore.setTitle(response.data.value)
+async function fetchTitle(mStore: Store<'master-data', MasterState, any, any>) {
+    const response = await useApi('/master-data/title', {
+        method: 'GET',
+        callback: (responseStatus: boolean) => {
+            mStore.$state.isLoaded.title = responseStatus
+        },
+    })
+    mStore.setTitle(response.data.value)
     return response
 }
 
-async function fetchTitleAcademic() {
-    const masterDataStore = useMasterDataStore()
-    const response = await useApi('/master-data/title-academic', { method: 'GET' })
-    masterDataStore.setTitleAcademic(response.data.value)
+async function fetchTitleAcademic(mStore: Store<'master-data', MasterState, any, any>) {
+    const response = await useApi('/master-data/title-academic', {
+        method: 'GET',
+        callback: (responseStatus: boolean) => {
+            mStore.$state.isLoaded.title_academics = responseStatus
+        },
+    })
+    mStore.setTitleAcademic(response.data.value)
     return response
 }
 
-async function fetchTitleSpecial() {
-    const masterDataStore = useMasterDataStore()
-    const response = await useApi('/master-data/title-special', { method: 'GET' })
-    masterDataStore.setTitleSpecial(response.data.value)
+async function fetchTitleSpecial(mStore: Store<'master-data', MasterState, any, any>) {
+    const response = await useApi('/master-data/title-special', {
+        method: 'GET',
+        callback: (responseStatus: boolean) => {
+            mStore.$state.isLoaded.title_specials = responseStatus
+        },
+    })
+    mStore.setTitleSpecial(response.data.value)
     return response
 }
 
-async function fetchTitleConferred() {
-    const masterDataStore = useMasterDataStore()
-    const response = await useApi('/master-data/title-conferred', { method: 'GET' })
-    masterDataStore.setTitleConferrend(response.data.value)
+async function fetchTitleConferred(mStore: Store<'master-data', MasterState, any, any>) {
+    const response = await useApi('/master-data/title-conferred', {
+        method: 'GET',
+        callback: (responseStatus: boolean) => {
+            mStore.$state.isLoaded.title_conferrends = responseStatus
+        },
+    })
+    mStore.setTitleConferrend(response.data.value)
     return response
 }
 
-async function fetchTitleMilitary() {
-    const masterDataStore = useMasterDataStore()
-    const response = await useApi('/master-data/title-military', { method: 'GET' })
-    masterDataStore.setTitleMilitary(response.data.value)
+async function fetchTitleMilitary(mStore: Store<'master-data', MasterState, any, any>) {
+    const response = await useApi('/master-data/title-military', {
+        method: 'GET',
+        callback: (responseStatus: boolean) => {
+            mStore.$state.isLoaded.title_military = responseStatus
+        },
+    })
+    mStore.setTitleMilitary(response.data.value)
     return response
 }
 
-async function fetchTitleTH() {
-    const masterDataStore = useMasterDataStore()
-    const response = await useApi('/master-data/titleTH', { method: 'GET' })
-    masterDataStore.setTitleTH(response.data.value)
+async function fetchTitleTH(mStore: Store<'master-data', MasterState, any, any>) {
+    const response = await useApi('/master-data/titleTH', {
+        method: 'GET',
+        callback: (responseStatus: boolean) => {
+            mStore.$state.isLoaded.titleTH = responseStatus
+        },
+    })
+    mStore.setTitleTH(response.data.value)
     return response
 }
 
-async function fetchTitleEN() {
-    const masterDataStore = useMasterDataStore()
-    const response = await useApi('/master-data/titleEN', { method: 'GET' })
-    masterDataStore.setTitleEN(response.data.value)
+async function fetchTitleEN(mStore: Store<'master-data', MasterState, any, any>) {
+    const response = await useApi('/master-data/titleEN', {
+        method: 'GET',
+        callback: (responseStatus: boolean) => {
+            mStore.$state.isLoaded.titleEN = responseStatus
+        },
+    })
+    mStore.setTitleEN(response.data.value)
     return response
 }
 
-async function fetchMilitary() {
-    const masterDataStore = useMasterDataStore()
-    const response = await useApi('/master-data/military', { method: 'GET' })
-    masterDataStore.setMilitary(response.data.value)
+async function fetchMilitary(mStore: Store<'master-data', MasterState, any, any>) {
+    const response = await useApi('/master-data/military', {
+        method: 'GET',
+        callback: (responseStatus: boolean) => {
+            mStore.$state.isLoaded.military = responseStatus
+        },
+    })
+    mStore.setMilitary(response.data.value)
     return response
 }
 
-async function fetchReligion() {
-    const masterDataStore = useMasterDataStore()
-    const response = await useApi('/master-data/religion', { method: 'GET' })
-    masterDataStore.setReligion(response.data.value)
+async function fetchReligion(mStore: Store<'master-data', MasterState, any, any>) {
+    const response = await useApi('/master-data/religion', {
+        method: 'GET',
+        callback: (responseStatus: boolean) => {
+            mStore.$state.isLoaded.religions = responseStatus
+        },
+    })
+    mStore.setReligion(response.data.value)
     return response
 }
 
-async function fetchLevel() {
-    const masterDataStore = useMasterDataStore()
-    const response = await useApi('/master-data/level', { method: 'GET' })
-    masterDataStore.setLevel(response.data.value)
+async function fetchLevel(mStore: Store<'master-data', MasterState, any, any>) {
+    const response = await useApi('/master-data/level', {
+        method: 'GET',
+        callback: (responseStatus: boolean) => {
+            mStore.$state.isLoaded.levels = responseStatus
+        },
+    })
+    mStore.setLevel(response.data.value)
     return response
 }
 
-async function fetchCertificate() {
-    const masterDataStore = useMasterDataStore()
-    const response = await useApi('/master-data/certificate', { method: 'GET' })
-    masterDataStore.setCertificate(response.data.value)
+async function fetchCertificate(mStore: Store<'master-data', MasterState, any, any>) {
+    console.log('fetchCertificate')
+    const response = await useApi('/master-data/certificate', {
+        method: 'GET',
+        callback: (responseStatus: boolean) => {
+            mStore.$state.isLoaded.certificates = responseStatus
+        },
+    })
+    mStore.setCertificate(response.data.value)
     return response
 }
 
-async function fetchMajor() {
-    const masterDataStore = useMasterDataStore()
-    const response = await useApi('/master-data/major', { method: 'GET' })
-    masterDataStore.setMajor(response.data.value)
+async function fetchMajor(mStore: Store<'master-data', MasterState, any, any>) {
+    console.log('fetchMajor')
+
+    const response = await useApi('/master-data/major', {
+        method: 'GET',
+        callback: (responseStatus: boolean) => {
+            mStore.$state.isLoaded.majors = responseStatus
+        },
+    })
+    mStore.setMajor(response.data.value)
     return response
 }
 
-async function fetchInstitute() {
-    const masterDataStore = useMasterDataStore()
-    const response = await useApi('/master-data/institute', { method: 'GET' })
-    masterDataStore.setInstitute(response.data.value)
+async function fetchInstitute(mStore: Store<'master-data', MasterState, any, any>) {
+    const response = await useApi('/master-data/institute', {
+        method: 'GET',
+        callback: (responseStatus: boolean) => {
+            mStore.$state.isLoaded.institutes = responseStatus
+        },
+    })
+    mStore.setInstitute(response.data.value)
     return response
 }
 
-async function fetchRace() {
-    const masterDataStore = useMasterDataStore()
-    const response = await useApi('/master-data/race', { method: 'GET' })
-    masterDataStore.setRace(response.data.value)
+async function fetchRace(mStore: Store<'master-data', MasterState, any, any>) {
+    const response = await useApi('/master-data/race', {
+        method: 'GET',
+        callback: (responseStatus: boolean) => {
+            mStore.$state.isLoaded.races = responseStatus
+        },
+    })
+    mStore.setRace(response.data.value)
     return response
 }
 
-async function fetchPosition() {
-    const masterDataStore = useMasterDataStore()
-    const response = await useApi('/master-data/position', { method: 'GET' })
-    masterDataStore.setPosition(response.data.value)
+async function fetchPosition(mStore: Store<'master-data', MasterState, any, any>) {
+    const response = await useApi('/master-data/position', {
+        method: 'GET',
+        callback: (responseStatus: boolean) => {
+            mStore.$state.isLoaded.positions = responseStatus
+        },
+    })
+    mStore.setPosition(response.data.value)
     return response
 }
 
 async function loadMasterData() {
+    const store = (await useMasterDataStore()) as any
     try {
-        await fetchProvince()
-        await fetchMaritalSatatus()
-        await fetchBlood()
+        await fetchCertificate(store)
+        await fetchInstitute(store)
+        await fetchLevel(store)
+        await fetchMajor(store)
+        await fetchPosition(store)
+        await fetchRace(store)
+        await fetchReligion(store)
 
-        await fetchTitle()
-        await fetchTitleSpecial()
-        await fetchTitleAcademic()
-        await fetchTitleConferred()
-        await fetchTitleMilitary()
-        await fetchTitleTH()
-        await fetchTitleEN()
+        await fetchMaritalSatatus(store)
+        await fetchBlood(store)
 
-        await fetchMilitary()
+        await fetchTitle(store)
+        await fetchTitleSpecial(store)
+        await fetchTitleAcademic(store)
+        await fetchTitleConferred(store)
+        await fetchTitleMilitary(store)
+        await fetchTitleTH(store)
+        await fetchTitleEN(store)
 
-        await fetchCertificate()
-        await fetchInstitute()
-        await fetchLevel()
-        await fetchMajor()
-        await fetchPosition()
-        await fetchRace()
-        await fetchReligion()
+        await fetchMilitary(store)
+
+        await fetchProvince(store)
     } catch (error: any) {
         showError({ statusCode: 500, statusMessage: error.message })
     }
