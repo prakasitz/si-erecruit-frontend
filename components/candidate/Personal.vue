@@ -1,5 +1,5 @@
 <template>
-    <CandidateBaseCard :title="'ข้อมูลส่วนบุคคล'">
+    <CandidateBaseCard :title="'ข้อมูลส่วนบุคคล'" :form-page="{ form: formPersonal }">
         <template #card-body>
             <!-- คำนำหน้า พิเศษ -->
             <v-container class="text-body-1">
@@ -12,7 +12,6 @@
                             </v-col>
                             <v-col cols="8">
                                 <v-select
-                                    :error-messages="'Hello world'"
                                     label="กรุณาเลือก"
                                     :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
                                     variant="outlined"
@@ -99,6 +98,7 @@
                                     inline
                                     persistent-hint
                                     hint="กรุณาเลือกคำนำหน้า"
+                                    :rules="rules_fieldEmpty"
                                 >
                                     <v-radio class="mr-4" label="นาย" value="1"></v-radio>
                                     <v-radio class="mr-4" label="นาง" value="2"></v-radio>
@@ -117,6 +117,7 @@
                                     v-model="personal_info.first_name_th"
                                     density="compact"
                                     variant="outlined"
+                                    :rules="rules_fieldEmpty"
                                 ></v-text-field>
                             </v-col>
                         </v-row>
@@ -131,6 +132,7 @@
                                     v-model="personal_info.last_name_th"
                                     density="compact"
                                     variant="outlined"
+                                    :rules="rules_fieldEmpty"
                                 ></v-text-field>
                             </v-col>
                         </v-row>
@@ -145,6 +147,7 @@
                                     v-model="personal_info.nickname_th"
                                     density="compact"
                                     variant="outlined"
+                                    :rules="rules_fieldEmpty"
                                 ></v-text-field>
                             </v-col>
                         </v-row>
@@ -170,6 +173,7 @@
                                     inline
                                     persistent-hint
                                     hint="กรุณาเลือกคำนำหน้า"
+                                    :rules="rules_fieldEmpty"
                                 >
                                     <v-radio class="mr-4" label="Mr." value="1"></v-radio>
                                     <v-radio class="mr-4" label="Mrs." value="2"></v-radio>
@@ -190,6 +194,7 @@
                                     variant="outlined"
                                     persistent-hint
                                     hint="ตัวพิมพ์ใหญ่"
+                                    :rules="rules_fieldEmpty"
                                 ></v-text-field>
                             </v-col>
                         </v-row>
@@ -206,6 +211,7 @@
                                     variant="outlined"
                                     persistent-hint
                                     hint="ตัวพิมพ์ใหญ่"
+                                    :rules="rules_fieldEmpty"
                                 ></v-text-field>
                             </v-col>
                         </v-row>
@@ -230,6 +236,7 @@
                                     placeholder="siriraj@gmail.com"
                                     density="compact"
                                     variant="outlined"
+                                    :rules="rules_fieldEmpty"
                                 ></v-text-field>
                             </v-col>
                         </v-row>
@@ -317,6 +324,7 @@
                                     v-model="personal_info.id_card_number"
                                     density="compact"
                                     variant="outlined"
+                                    :rules="rules_fieldEmpty"
                                 ></v-text-field>
                             </v-col>
                         </v-row>
@@ -332,6 +340,7 @@
                                     v-model="personal_info.id_card_amphur"
                                     density="compact"
                                     variant="outlined"
+                                    :rules="rules_fieldEmpty"
                                 >
                                     <template #prepend>
                                         <div class="label-field-top">อำเภอ/เขต</div>
@@ -405,6 +414,7 @@
                                     placeholder="0.00"
                                     variant="outlined"
                                     suffix="เซนติเมตร"
+                                    :rules="rules_fieldEmpty"
                                 >
                                 </v-text-field>
                             </v-col>
@@ -422,6 +432,7 @@
                                     placeholder="0.00"
                                     variant="outlined"
                                     suffix="กิโลกรัม"
+                                    :rules="rules_fieldEmpty"
                                 >
                                 </v-text-field>
                             </v-col>
@@ -438,6 +449,7 @@
                                     class="label-field-top"
                                     inline
                                     hide-details
+                                    :rules="rules_fieldEmpty"
                                 >
                                     <v-radio class="mr-4" label="A" value="1"></v-radio>
                                     <v-radio class="mr-4" label="AB" value="2"></v-radio>
@@ -467,6 +479,7 @@
                                     variant="outlined"
                                     density="compact"
                                     :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                                    :rules="rules_fieldEmpty"
                                 ></v-autocomplete>
                             </v-col>
                         </v-row>
@@ -483,6 +496,7 @@
                                     variant="outlined"
                                     density="compact"
                                     :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                                    :rules="rules_fieldEmpty"
                                 ></v-autocomplete>
                             </v-col>
                         </v-row>
@@ -498,6 +512,7 @@
                                     class="label-field-top"
                                     inline
                                     hide-details
+                                    :rules="rules_fieldEmpty"
                                 >
                                     <v-radio class="mr-4" label="พุทธ" value="1"></v-radio>
                                     <v-radio class="mr-4" label="คริสต์" value="2"></v-radio>
@@ -524,7 +539,8 @@ const { provinces } = useMasterDataStore()
 const { personal_info, setBirthDate } = personalStore
 
 const { search, loading, searchItems } = useSearchAutoComplete(provinces, 'province_name')
-
+const { rules_fieldEmpty } = useFillRules()
+const formPersonal: Ref<HTMLFormElement | null> = ref<HTMLFormElement | null>(null)
 const birtDate = computed({
     set(v: string) {
         setBirthDate(v)

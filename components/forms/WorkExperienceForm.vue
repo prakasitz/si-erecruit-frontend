@@ -24,6 +24,7 @@
                     density="compact"
                     variant="outlined"
                     maxLength="100"
+                    :rules="rules_fieldEmpty"
                 ></v-text-field>
             </v-col>
         </v-row>
@@ -35,6 +36,7 @@
                     density="compact"
                     variant="outlined"
                     maxLength="10"
+                    :rules="rules_fieldEmpty"
                 ></v-text-field>
             </v-col>
             <v-col cols="2"> ตำแหน่ง <span class="text-red-darken-1"> *</span> </v-col>
@@ -44,6 +46,7 @@
                     density="compact"
                     variant="outlined"
                     maxLength="100"
+                    :rules="rules_fieldEmpty"
                 ></v-text-field>
             </v-col>
         </v-row>
@@ -54,6 +57,9 @@
                     label="วันที่เข้าทำงาน"
                     v-bind="defaultVueDatePickerStyle"
                     v-model="workExperienceFormModel.start_date"
+                    hide-details
+                    model-type="yyyy/MM/dd"
+                    :rules="rules_fieldEmpty"
                 />
             </v-col>
             <v-col cols="2">
@@ -63,7 +69,11 @@
         <v-row class="m-0 p-0" v-if="!workExperienceFormModel.still_doing">
             <v-col cols="4"> วันที่ออกจากงาน <span class="text-red-darken-1"> *</span></v-col>
             <v-col cols="3">
-                <VueDatePicker v-bind="defaultVueDatePickerStyle" v-model="workExperienceFormModel.end_date" />
+                <VueDatePicker
+                    :rules="rules_fieldEmpty"
+                    v-bind="defaultVueDatePickerStyle"
+                    v-model="workExperienceFormModel.end_date"
+                />
             </v-col>
         </v-row>
         <v-row>
@@ -74,6 +84,7 @@
                     density="compact"
                     variant="outlined"
                     maxLength="500"
+                    :rules="rules_fieldEmpty"
                 ></v-text-field>
             </v-col>
         </v-row>
@@ -85,12 +96,13 @@ import { storeToRefs } from 'pinia'
 import { usePersonalStore } from '../../stores/personal.store'
 import { IJob, job, job_mahidol } from '~/stores/interface/personal_information.interface'
 
-const personalStore = usePersonalStore()
 export interface Props {
     index: number
     workExperienceFormModel: job
 }
 
+const { rules_fieldEmpty } = useFillRules()
+const personalStore = usePersonalStore()
 const props = defineProps<Props>()
 
 const emit = defineEmits(['update:trash', 'get:isFilled'])

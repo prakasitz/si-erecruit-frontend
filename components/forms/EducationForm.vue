@@ -24,6 +24,7 @@
                 density="compact"
                 variant="outlined"
                 maxLength="200"
+                :rules="rules_fieldEmpty"
             >
             </v-text-field>
         </v-col>
@@ -37,6 +38,7 @@
                 density="compact"
                 variant="outlined"
                 maxLength="200"
+                :rules="rules_fieldEmpty"
             >
             </v-text-field>
         </v-col>
@@ -50,6 +52,7 @@
                 density="compact"
                 variant="outlined"
                 maxLength="200"
+                :rules="rules_fieldEmpty"
             >
             </v-text-field>
         </v-col>
@@ -63,6 +66,7 @@
                 density="compact"
                 variant="outlined"
                 maxLength="200"
+                :rules="rules_fieldEmpty"
             >
             </v-text-field>
         </v-col>
@@ -77,6 +81,7 @@
                 density="compact"
                 variant="outlined"
                 maxLength="4"
+                :rules="rules_fieldEmpty"
             >
             </v-text-field
         ></v-col>
@@ -84,11 +89,19 @@
     <v-row>
         <v-col cols="3"> วันที่เริ่มต้นการศึกษา <span class="text-red-darken-1"> *</span></v-col>
         <v-col cols="3">
-            <VueDatePicker v-bind="defaultVueDatePickerStyle" v-model="educationFormModel.start_date" />
+            <VueDatePicker
+                v-bind="defaultVueDatePickerStyle"
+                v-model="educationFormModel.start_date"
+                :rules="rules_fieldEmpty"
+            />
         </v-col>
         <v-col cols="3"> วันที่จบการศึกษา <span class="text-red-darken-1"> *</span></v-col>
         <v-col cols="3">
-            <VueDatePicker v-bind="defaultVueDatePickerStyle" v-model="educationFormModel.graduate_date" />
+            <VueDatePicker
+                v-bind="defaultVueDatePickerStyle"
+                v-model="educationFormModel.graduate_date"
+                :rules="rules_fieldEmpty"
+            />
         </v-col>
     </v-row>
 </template>
@@ -102,6 +115,9 @@ export interface Props {
     index: number
     educationFormModel: education
 }
+
+const { rules_fieldEmpty } = useFillRules()
+const flow = useDatePickerFlow()
 
 const props = defineProps<Props>()
 const emit = defineEmits(['update:trash'])

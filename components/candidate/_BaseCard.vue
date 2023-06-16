@@ -4,8 +4,24 @@
             <v-card-title class="pa-auto text-h5 text-indigo-darken-2">{{ props.title }}</v-card-title>
             <v-card-subtitle></v-card-subtitle>
             <v-card-text>
-                <slot name="card-body" />
+                <slot :form="formPage" name="card-body" />
             </v-card-text>
+            <v-card-actions class="d-flex justify-space-between mb-6">
+                <div v-if="props.title != 'คำอธิบาย'">
+                    <v-btn variant="outlined" @click="prev"> ก่อนหน้า </v-btn>
+                </div>
+                <div v-if="props.title ==  'คำอธิบาย'">
+                    <v-btn variant="outlined" @click="next()"> ถัดไป </v-btn>
+                </div>
+                <div>
+                    <div v-if="props.title == 'เอกสารอื่นๆ'">
+                        <v-btn variant="outlined"> ยืนยันข้อมูล </v-btn>
+                    </div>
+                    <div v-else-if="props.title != 'คำอธิบาย'">
+                        <v-btn variant="outlined" @click="formValidate"> ถัดไป </v-btn>
+                    </div>
+                </div>
+            </v-card-actions>
         </v-container>
     </v-card>
 </template>
@@ -14,9 +30,20 @@
 export interface Props {
     title?: string
     labels?: any[]
+    formPage?: any
 }
+const { validate } = useFillRules()
 
+const { candidateForms, prev, next } = useWindowsNav()
 const props = withDefaults(defineProps<Props>(), {
     title: 'hello',
 })
+
+async function formValidate() {
+    console.log(props.formPage.form, 'formValidate')
+    const validForm = await validate(props.formPage.form)
+    if (validForm) {
+        next()
+    }
+}
 </script>

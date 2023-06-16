@@ -2,7 +2,7 @@
     <v-row v-for="skill in skillsRadio">
         <v-col cols="2">{{ skill.label }}</v-col>
         <v-col>
-            <v-radio-group hide-details inline v-model="skill.selected">
+            <v-radio-group :rules="rules_fieldEmpty" hide-details inline v-model="skill.selected">
                 <v-radio v-for="level in levels" :label="level.label" :value="level.value"></v-radio>
                 <v-text-field
                     class="pl-3"
@@ -25,6 +25,7 @@ export interface Props {
     languageFormModel: language
 }
 
+const { rules_fieldEmpty } = useFillRules()
 const props = defineProps<Props>()
 
 const skillsRadio: Ref<Skill[]> = ref([

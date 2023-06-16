@@ -9,6 +9,7 @@
                         hide-details
                         density="compact"
                         variant="outlined"
+                        :rules="rules_fieldEmpty"
                     >
                     </v-text-field>
                 </v-col>
@@ -19,6 +20,7 @@
                         hide-details
                         density="compact"
                         variant="outlined"
+                        :rules="rules_fieldEmpty"
                     >
                     </v-text-field>
                 </v-col>
@@ -29,6 +31,7 @@
                         hide-details
                         density="compact"
                         variant="outlined"
+                        :rules="rules_fieldEmpty"
                     >
                     </v-text-field>
                 </v-col>
@@ -39,6 +42,7 @@
                         hide-details
                         density="compact"
                         variant="outlined"
+                        :rules="rules_fieldEmpty"
                     >
                     </v-text-field>
                 </v-col>
@@ -51,6 +55,7 @@
                         hide-details
                         density="compact"
                         variant="outlined"
+                        :rules="rules_fieldEmpty"
                     >
                     </v-text-field>
                 </v-col>
@@ -61,6 +66,7 @@
                         hide-details
                         density="compact"
                         variant="outlined"
+                        :rules="rules_fieldEmpty"
                     >
                     </v-text-field>
                 </v-col>
@@ -73,6 +79,7 @@
                         hide-details
                         density="compact"
                         variant="outlined"
+                        :rules="rules_fieldEmpty"
                     >
                     </v-text-field>
                 </v-col>
@@ -100,6 +107,7 @@
                         hide-details
                         density="compact"
                         variant="outlined"
+                        :rules="rules_fieldEmpty"
                     >
                     </v-text-field>
                 </v-col>
@@ -110,6 +118,7 @@
                         density="compact"
                         hide-details
                         :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                        :rules="rules_fieldEmpty"
                     ></v-autocomplete>
                 </v-col>
             </v-row>
@@ -121,13 +130,13 @@
 import { address } from '~/stores/interface/personal_information.interface'
 import { useMasterDataStore } from '~/stores/master.store'
 
-const { provinces } = useMasterDataStore()
-
 export interface Props {
     isDisabled: boolean
     addressModel: address
 }
 
+const { rules_fieldEmpty } = useFillRules()
+const { provinces } = useMasterDataStore()
 const props = withDefaults(defineProps<Props>(), {
     isDisabled: false,
 })

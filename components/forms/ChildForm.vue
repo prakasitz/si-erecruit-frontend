@@ -13,6 +13,7 @@
                         label="Select"
                         v-model="childFormModel.title"
                         :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                        :rules="rules_fieldEmpty"
                     ></v-select>
                 </v-col>
             </v-row>
@@ -25,6 +26,7 @@
                         density="compact"
                         variant="outlined"
                         maxLength="50"
+                        :rules="rules_fieldEmpty"
                     >
                     </v-text-field>
                 </v-col>
@@ -36,6 +38,7 @@
                         density="compact"
                         variant="outlined"
                         maxLength="50"
+                        :rules="rules_fieldEmpty"
                     >
                     </v-text-field>
                 </v-col>
@@ -49,6 +52,7 @@
                         density="compact"
                         variant="outlined"
                         maxLength="13"
+                        :rules="rules_fieldEmpty"
                     >
                     </v-text-field>
                 </v-col>
@@ -56,12 +60,19 @@
             <v-row>
                 <v-col cols="3"> วัน/เดือน/ปี เกิด <span class="text-red-darken-1"> *</span></v-col>
                 <v-col cols="3">
-                    <v-text-field v-model="childFormModel.birth_date" density="compact" variant="outlined" type="date">
+                    <v-text-field
+                        :rules="rules_fieldEmpty"
+                        v-model="childFormModel.birth_date"
+                        density="compact"
+                        variant="outlined"
+                        type="date"
+                    >
                     </v-text-field>
                 </v-col>
                 <v-col cols="3"> จังหวัดที่เกิด <span class="text-red-darken-1"> *</span></v-col>
                 <v-col cols="3">
                     <v-select
+                        :rules="rules_fieldEmpty"
                         v-model="childFormModel.birth_province"
                         density="compact"
                         variant="outlined"
@@ -75,6 +86,7 @@
                 <v-col cols="3"> สัญชาติ <span class="text-red-darken-1"> *</span></v-col>
                 <v-col cols="3"
                     ><v-select
+                        :rules="rules_fieldEmpty"
                         v-model="childFormModel.ethnicity"
                         label="Select"
                         density="compact"
@@ -85,6 +97,7 @@
                 <v-col cols="3"> เชื้อชาติ <span class="text-red-darken-1"> *</span></v-col>
                 <v-col cols="3">
                     <v-select
+                        :rules="rules_fieldEmpty"
                         v-model="childFormModel.nationality"
                         label="Select"
                         density="compact"
@@ -95,7 +108,7 @@
             </v-row>
             <v-row>
                 <v-col cols="3"> ศาสนา <span class="text-red-darken-1"> *</span></v-col>
-                <v-radio-group inline v-model="childFormModel.religion">
+                <v-radio-group inline :rules="rules_fieldEmpty" v-model="childFormModel.religion">
                     <v-radio label="พุทธ" value="พุทธ"></v-radio>
                     <v-radio label="คริสต์ " value="คริสต์ "></v-radio>
                     <v-radio label="อิสลาม  " value="อิสลาม  "></v-radio>
@@ -106,7 +119,7 @@
             <v-row>
                 <v-col cols="3"> สวัสดิการบุตร <span class="text-red-darken-1"> *</span></v-col>
                 <v-col>
-                    <v-radio-group v-model="childFormModel.child_welfare">
+                    <v-radio-group :rules="rules_fieldEmpty" v-model="childFormModel.child_welfare">
                         <v-radio label="ไม่มี" value="ไม่มี"></v-radio>
                         <v-radio label="บุตรเป็นคนไร้ความสามารถ " value="บุตรเป็นคนไร้ความสามารถ "></v-radio>
                         <v-radio label="เบิกสวัสดิการกับท่านเอง " value="เบิกสวัสดิการกับท่านเอง "></v-radio>
@@ -122,13 +135,13 @@
 import { children_info } from '~/stores/interface/personal_information.interface'
 import { usePersonalStore } from '~/stores/personal.store'
 
-const personalStore = usePersonalStore()
-const { marriage } = personalStore
-
 export interface Props {
     index: number
 }
 
+const personalStore = usePersonalStore()
+const { marriage } = personalStore
+const { rules_fieldEmpty } = useFillRules()
 const props = defineProps<Props>()
 
 const childFormModel = reactive<children_info>({
