@@ -50,14 +50,10 @@
         <v-row>
             <v-col cols="4"> วันที่เข้าทำงาน <span class="text-red-darken-1"> *</span> </v-col>
             <v-col cols="3">
-        
                 <VueDatePicker
                     label="วันที่เข้าทำงาน"
-                    :flow="flow"
-                    :enable-time-picker="false"
+                    v-bind="defaultVueDatePickerStyle"
                     v-model="workExperienceFormModel.start_date"
-                    hide-details                                
-                    model-type="yyyy/MM/dd"
                 />
             </v-col>
             <v-col cols="2">
@@ -67,14 +63,7 @@
         <v-row class="m-0 p-0" v-if="!workExperienceFormModel.still_doing">
             <v-col cols="4"> วันที่ออกจากงาน <span class="text-red-darken-1"> *</span></v-col>
             <v-col cols="3">
-                <VueDatePicker
-                    label="วันที่ออกจากงาน"
-                    :flow="flow"
-                    :enable-time-picker="false"
-                    v-model="workExperienceFormModel.end_date"
-                    hide-details                                
-                    model-type="yyyy/MM/dd"
-                />
+                <VueDatePicker v-bind="defaultVueDatePickerStyle" v-model="workExperienceFormModel.end_date" />
             </v-col>
         </v-row>
         <v-row>
@@ -102,9 +91,8 @@ export interface Props {
     workExperienceFormModel: job
 }
 
-
 const props = defineProps<Props>()
-const flow = useDatePickerFlow()
+
 const emit = defineEmits(['update:trash', 'get:isFilled'])
 
 const IsOtherStillDoing = toRef(props.workExperienceFormModel, 'still_doing')
@@ -118,7 +106,7 @@ watch(IsOtherStillDoing, (newValue) => {
 const isFilled = ref(false)
 watch(
     props,
-    ({index, workExperienceFormModel }) => {
+    ({ index, workExperienceFormModel }) => {
         if (compareObjects(workExperienceFormModel, default_job)) {
             isFilled.value = false
         } else {

@@ -257,6 +257,9 @@
 </style>
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
+import { useMasterDataStore } from '~/stores/master.store'
+
 definePageMeta({
     title: 'จัดการข้อมูลผู้สมัคร',
     pageTransition: {
@@ -275,6 +278,8 @@ definePageMeta({
     //middleware: ['candidate-auth'],
 })
 
+const masterDataStore = useMasterDataStore()
+const { isItemsLoaded } = storeToRefs(masterDataStore)
 const { loadMasterData } = useMaster()
 
 const eye1 = ref(false)
@@ -335,7 +340,10 @@ const prev = () => {
 
 onMounted(async () => {
     console.groupCollapsed('onMount')
-    await loadMasterData()
+    console.log('isItemsLoaded', isItemsLoaded.value)
+    if (!isItemsLoaded.value) {
+        await loadMasterData()
+    }
     console.groupEnd()
 })
 

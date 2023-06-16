@@ -130,13 +130,9 @@
                         <v-col cols="4"> วันที่เข้าทำงาน <span class="text-red-darken-1"> *</span> </v-col>
                         <v-col cols="3">
                             <VueDatePicker
-                                    label="วันที่เข้าทำงาน"
-                                    :flow="flow"
-                                    :enable-time-picker="false"
-                                    v-model="job.had_job_mahidol_detail.start_date"
-                                    hide-details
-                                    model-type="yyyy/MM/dd"
-                                />
+                                v-bind="defaultVueDatePickerStyle"
+                                v-model="job.had_job_mahidol_detail.start_date"
+                            />
                         </v-col>
                         <v-col cols="2">
                             <v-checkbox
@@ -147,16 +143,14 @@
                         </v-col>
                     </v-row>
                     <v-row class="m-0 p-0">
-                        <v-col cols="4" v-if="!job.had_job_mahidol_detail.still_doing"> วันที่ออกจากงาน <span class="text-red-darken-1"> *</span></v-col>
+                        <v-col cols="4" v-if="!job.had_job_mahidol_detail.still_doing">
+                            วันที่ออกจากงาน <span class="text-red-darken-1"> *</span></v-col
+                        >
                         <v-col cols="3" v-if="!job.had_job_mahidol_detail.still_doing">
                             <VueDatePicker
-                                    label="วันที่ออกจากงาน"
-                                    :flow="flow"
-                                    :enable-time-picker="false"
-                                    v-model="job.had_job_mahidol_detail.end_date"
-                                    hide-details
-                                    model-type="yyyy/MM/dd"
-                                />
+                                v-bind="defaultVueDatePickerStyle"
+                                v-model="job.had_job_mahidol_detail.end_date"
+                            />
                         </v-col>
                     </v-row>
                     <v-row>
@@ -311,7 +305,6 @@
                                 variant="outlined"
                                 maxLength="120"
                             ></v-text-field>
-                        
                         </v-col>
                     </v-row>
                 </div>
@@ -366,7 +359,6 @@ import { usePersonalStore } from '../../stores/personal.store'
 import { IEducation, IJob, job, education } from '~/stores/interface/personal_information.interface'
 import { storeToRefs } from 'pinia'
 
-const flow = useDatePickerFlow()
 const personalStore = usePersonalStore()
 const { education, job } = personalStore
 const { HasJob, IsWorking, IsStudying, IsUnemployed, IsHasJobMahidol } = storeToRefs(personalStore)

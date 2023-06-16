@@ -84,26 +84,11 @@
     <v-row>
         <v-col cols="3"> วันที่เริ่มต้นการศึกษา <span class="text-red-darken-1"> *</span></v-col>
         <v-col cols="3">
-            <VueDatePicker
-                label="วันที่เริ่มต้นการศึกษา"
-                :flow="flow"
-                :enable-time-picker="false"
-                v-model="educationFormModel.start_date"
-                hide-details
-                model-type="yyyy/MM/dd"
-            />
+            <VueDatePicker v-bind="defaultVueDatePickerStyle" v-model="educationFormModel.start_date" />
         </v-col>
         <v-col cols="3"> วันที่จบการศึกษา <span class="text-red-darken-1"> *</span></v-col>
         <v-col cols="3">
-            <VueDatePicker
-                label="วันที่จบการศึกษา"
-                :flow="flow"
-                :enable-time-picker="false"
-                v-model="educationFormModel.graduate_date"
-                hide-details
-                model-type="yyyy/MM/dd"
-            />
-           
+            <VueDatePicker v-bind="defaultVueDatePickerStyle" v-model="educationFormModel.graduate_date" />
         </v-col>
     </v-row>
 </template>
@@ -111,7 +96,6 @@
 import { usePersonalStore } from '../../stores/personal.store'
 import { IEducation, education } from '~/stores/interface/personal_information.interface'
 
-const flow = useDatePickerFlow()
 const personalStore = usePersonalStore()
 const { education } = personalStore
 export interface Props {

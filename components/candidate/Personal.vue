@@ -12,6 +12,7 @@
                             </v-col>
                             <v-col cols="8">
                                 <v-select
+                                    :error-messages="'Hello world'"
                                     label="กรุณาเลือก"
                                     :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
                                     variant="outlined"
@@ -240,12 +241,10 @@
                             </v-col>
                             <v-col cols="3">
                                 <VueDatePicker
-                                    :flow="flow"
+                                    v-bind="defaultVueDatePickerStyle"
                                     :max-date="getMaxBirthDate()"
                                     :start-date="getMaxBirthDate()"
-                                    :enable-time-picker="false"
                                     v-model="birtDate"
-                                    model-type="yyyy/MM/dd"
                                 />
                             </v-col>
                             <v-col cols="3">
@@ -367,10 +366,8 @@
                             </v-col>
                             <v-col cols="8">
                                 <VueDatePicker
-                                    :flow="flow"
-                                    :enable-time-picker="false"
+                                    v-bind="defaultVueDatePickerStyle"
                                     v-model="personal_info.id_card_issue_date"
-                                    model-type="yyyy/MM/dd"
                                 />
                             </v-col>
                         </v-row>
@@ -382,10 +379,8 @@
                             </v-col>
                             <v-col cols="8">
                                 <VueDatePicker
-                                    :flow="flow"
-                                    :enable-time-picker="false"
+                                    v-bind="defaultVueDatePickerStyle"
                                     v-model="personal_info.id_card_expire_date"
-                                    model-type="yyyy/MM/dd"
                                 />
                             </v-col>
                         </v-row>
@@ -524,7 +519,6 @@ import { usePersonalStore } from '../../stores/personal.store'
 import { useMasterDataStore } from '../../stores/master.store'
 import { storeToRefs } from 'pinia'
 
-const flow = useDatePickerFlow()
 const personalStore = usePersonalStore()
 const { provinces } = useMasterDataStore()
 const { personal_info, setBirthDate } = personalStore
