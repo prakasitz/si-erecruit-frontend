@@ -20,8 +20,10 @@
                         density="compact"
                         hide-details
                         v-model="props.parentFormModel.title_name"
+                        :rules="rules_fieldEmpty"
                     ></v-select>
                 </v-col>
+
                 <v-col cols="6">
                     <v-text-field
                         hide-details
@@ -29,8 +31,10 @@
                         density="compact"
                         variant="outlined"
                         v-model="props.parentFormModel.first_name"
+                        :rules="rules_fieldEmpty"
                     ></v-text-field>
                 </v-col>
+
                 <v-col cols="6">
                     <v-text-field
                         hide-details
@@ -38,10 +42,17 @@
                         density="compact"
                         variant="outlined"
                         v-model="props.parentFormModel.last_name"
+                        :rules="rules_fieldEmpty"
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                    <v-radio-group v-model="props.parentFormModel.living" class="label-field-top" inline hide-details>
+                    <v-radio-group
+                        v-model="props.parentFormModel.living"
+                        class="label-field-top"
+                        inline
+                        hide-details
+                        :rules="rules_fieldEmpty"
+                    >
                         <template #prepend>
                             <div style="position: relative; top: -8.5px">
                                 <v-label>สถานภาพ: *</v-label>
@@ -78,6 +89,7 @@
                         label="สัญชาติ *"
                         density="compact"
                         variant="outlined"
+                        :rules="rules_fieldEmpty"
                     ></v-text-field>
                 </v-col>
                 <v-col cols="6">
@@ -87,6 +99,7 @@
                         label="เชื้อชาติ *"
                         density="compact"
                         variant="outlined"
+                        :rules="rules_fieldEmpty"
                     ></v-text-field>
                 </v-col>
                 <v-col>
@@ -96,6 +109,7 @@
                         class="label-field-top"
                         inline
                         hide-details
+                        :rules="rules_fieldEmpty"
                     >
                         <v-radio class="mr-4" label="พุทธ" value="1"></v-radio>
                         <v-radio class="mr-4" label="คริสต์" value="2"></v-radio>
@@ -110,10 +124,39 @@
 </template>
 <script setup lang="ts">
 import { parent_info } from '~/stores/interface/personal_information.interface'
+import { ref } from 'vue'
 
 export interface Props {
     parentFormModel: parent_info
 }
+
+const { rules_fieldEmpty } = useFillRules()
+// const select = ref(null)
+// const items = ['Item 1', 'Item 2', 'Item 3', 'Item 4']
+// const checkbox = ref(false)
+//const formRef = ref(null);
+//const formParents = ref<HTMLFormElement | null>(null)
+
+// async function validate() {
+//     const formInstance = formParents.value
+
+//     if (formInstance) {
+//         const {valid} = await formInstance.validate()
+//         if (valid) {
+//                 alert('Form is valid')
+//             } else {
+//                 alert('please fill out the form')
+//             }
+//     }
+// }
+
+// function reset() {
+//     formRef.value?.reset()
+// }
+
+// function resetValidation() {
+//     formRef.value?.resetValidation()
+// }
 
 const props = defineProps<Props>()
 

@@ -1,5 +1,5 @@
 <template>
-    <CandidateBaseCard :title="'ข้อมูลบิดา/มารดา'">
+    <CandidateBaseCard :title="'ข้อมูลบิดา/มารดา'" :form-page="{ form: formParents }">
         <template #card-body>
             <v-alert
                 class="text-subtitle-2"
@@ -11,54 +11,57 @@
             >
             </v-alert>
             <v-container class="text-body-1 my-6">
-                <v-row>
-                    <v-col cols="12">
-                        <v-row>
-                            <v-col cols="3">
-                                <b>ข้อมูลบิดา <span class="text-red">*</span></b>
-                            </v-col>
-                            <v-col cols="8">
-                                <FormsParentForm :parent-form-model="parent.father"></FormsParentForm>
-                            </v-col>
-                        </v-row>
-                    </v-col>
-                    <v-col cols="12">
-                        <v-row>
-                            <v-col cols="3">
-                                <b>ข้อมูลมารดา <span class="text-red">*</span></b>
-                            </v-col>
-                            <v-col cols="8">
-                                <FormsParentForm :parent-form-model="parent.mother"></FormsParentForm>
-                            </v-col>
-                        </v-row>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col cols="3">
-                        <b>บิดา-มารดา</b>
-                    </v-col>
-                    <v-col cols="4"
-                        ><v-text-field
-                            v-model="parent.mf_date_of_marriage"
-                            hide-details
-                            persistent-hint
-                            label="เลขที่ทะเบียนสมรส"
-                            density="compact"
-                            variant="outlined"
-                        ></v-text-field>
-                    </v-col>
-                    <v-col cols="4">
-                        <v-text-field
-                            v-model="parent.mf_no_marriage"
-                            hide-details
-                            type="date"
-                            persistent-hint
-                            label="เลขที่ทะเบียนสมรส"
-                            density="compact"
-                            variant="outlined"
-                        ></v-text-field>
-                    </v-col>
-                </v-row>
+                <v-form ref="formParents">
+                    <v-row>
+                        <v-col cols="12">
+                            <v-row>
+                                <v-col cols="3">
+                                    <b>ข้อมูลบิดา <span class="text-red">*</span></b>
+                                </v-col>
+                                <v-col cols="8">
+                                    <FormsParentForm :parent-form-model="parent.father"></FormsParentForm>
+                                    <v-btn class="me-4" type="submit"> submit </v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-col>
+                        <v-col cols="12">
+                            <v-row>
+                                <v-col cols="3">
+                                    <b>ข้อมูลมารดา <span class="text-red">*</span></b>
+                                </v-col>
+                                <v-col cols="8">
+                                    <FormsParentForm :parent-form-model="parent.mother"></FormsParentForm>
+                                </v-col>
+                            </v-row>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="3">
+                            <b>บิดา-มารดา</b>
+                        </v-col>
+                        <v-col cols="4"
+                            ><v-text-field
+                                v-model="parent.mf_no_marriage"
+                                hide-details
+                                persistent-hint
+                                label="เลขที่ทะเบียนสมรส"
+                                density="compact"
+                                variant="outlined"
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="4">
+                            <v-text-field
+                                v-model="parent.mf_date_of_marriage"
+                                hide-details
+                                type="date"
+                                persistent-hint
+                                label="วันที่ออกทะเบียนสมรส"
+                                density="compact"
+                                variant="outlined"
+                            ></v-text-field>
+                        </v-col>
+                    </v-row>
+                </v-form>
             </v-container>
         </template>
     </CandidateBaseCard>
@@ -68,9 +71,14 @@
 import { usePersonalStore } from '../../stores/personal.store'
 import { storeToRefs } from 'pinia'
 
+const formParents: Ref<HTMLFormElement | null> = ref<HTMLFormElement | null>(null)
 const personalStore = usePersonalStore()
 
 const { parent } = personalStore
 
 const parentDescription = 'ข้อมูลบิดา, มารดา ไว้ใช้ในการอ้างอิงกรณีการเบิกสวัสดิการให้แก่บุคคลดังกล่าว'
+
+// watch(formParents,(value) => {
+//     console.log('watch',value)
+// })
 </script>

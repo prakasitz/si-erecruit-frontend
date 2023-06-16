@@ -24,6 +24,7 @@
                 density="compact"
                 variant="outlined"
                 maxLength="200"
+                :rules="rules_fieldEmpty"
             >
             </v-text-field>
         </v-col>
@@ -37,6 +38,7 @@
                 density="compact"
                 variant="outlined"
                 maxLength="200"
+                :rules="rules_fieldEmpty"
             >
             </v-text-field>
         </v-col>
@@ -50,6 +52,7 @@
                 density="compact"
                 variant="outlined"
                 maxLength="200"
+                :rules="rules_fieldEmpty"
             >
             </v-text-field>
         </v-col>
@@ -63,6 +66,7 @@
                 density="compact"
                 variant="outlined"
                 maxLength="200"
+                :rules="rules_fieldEmpty"
             >
             </v-text-field>
         </v-col>
@@ -77,6 +81,7 @@
                 density="compact"
                 variant="outlined"
                 maxLength="4"
+                :rules="rules_fieldEmpty"
             >
             </v-text-field
         ></v-col>
@@ -91,6 +96,7 @@
                 v-model="educationFormModel.start_date"
                 hide-details
                 model-type="yyyy/MM/dd"
+                :rules="rules_fieldEmpty"
             />
         </v-col>
         <v-col cols="3"> วันที่จบการศึกษา <span class="text-red-darken-1"> *</span></v-col>
@@ -102,8 +108,8 @@
                 v-model="educationFormModel.graduate_date"
                 hide-details
                 model-type="yyyy/MM/dd"
+                :rules="rules_fieldEmpty"
             />
-           
         </v-col>
     </v-row>
 </template>
@@ -111,14 +117,15 @@
 import { usePersonalStore } from '../../stores/personal.store'
 import { IEducation, education } from '~/stores/interface/personal_information.interface'
 
-const flow = useDatePickerFlow()
-const personalStore = usePersonalStore()
-const { education } = personalStore
 export interface Props {
     index: number
     educationFormModel: education
 }
 
+const { rules_fieldEmpty } = useFillRules()
+const flow = useDatePickerFlow()
+const personalStore = usePersonalStore()
+const { education } = personalStore
 const props = defineProps<Props>()
 const emit = defineEmits(['update:trash'])
 </script>
