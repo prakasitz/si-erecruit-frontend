@@ -12,7 +12,6 @@ export default defineNuxtConfig({
     css: ['@mdi/font/css/materialdesignicons.min.css', '@/assets/_fonts.css', '@/assets/main.css', 'vuetify/styles'],
 
     modules: [
-        '@nuxt/devtools',
         async (option, nuxt) => {
             nuxt.hooks.hook('vite:extendConfig', (config) => {
                 config.plugins?.push(
@@ -25,7 +24,9 @@ export default defineNuxtConfig({
                 )
             })
         },
+        '@nuxt/devtools',
         '@pinia/nuxt',
+        'nuxt-security',
     ],
     sourcemap: false,
     runtimeConfig: {
@@ -52,6 +53,23 @@ export default defineNuxtConfig({
         autoImports: [
             'defineStore', // import { defineStore } from 'pinia'
         ],
+    },
+
+    security: {
+        hidePoweredBy: false,
+    },
+
+    routeRules: {
+        '/api/auth/check-pid': {
+            security: {
+                rateLimiter: {
+                    tokensPerInterval: 1,
+                    interval: 'day',
+                    fireImmediately: false,
+                },
+            },
+        },
+        '/api/proxy/example': { proxy: 'https://google.com', ssr: true },
     },
 
     app: {

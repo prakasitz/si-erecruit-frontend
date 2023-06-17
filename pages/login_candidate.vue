@@ -16,31 +16,19 @@
                             <v-form v-model="valid" @submit.prevent="userLogin">
                                 หมายเลขบัตรประจำตัวประชาชน
                                 <div class="text-center">
-                                    <v-text-field
-                                        v-model="pid"
-                                        :rules="numberRule"
-                                        class="mt-1"
-                                        variant="outlined"
-                                        prepend-inner-icon="mdi-account"
-                                        counter="13"
-                                        maxLength="13"
-                                        hint="x-xx-xx-xxxxx-xx-xx"
-                                    ></v-text-field>
+                                    <v-text-field v-model="pid" :rules="numberRule" class="mt-1" variant="outlined"
+                                        prepend-inner-icon="mdi-account" counter="13" maxLength="13"
+                                        hint="x-xx-xx-xxxxx-xx-xx"></v-text-field>
                                     <p>กรุณากรอกหมายเลขบัตรประจำตัวประชาชน (ตัวเลข 13 หลัก ไม่ต้องมี -)</p>
                                     <p>เพื่อตรวจสอบและลงทะเบียนข้อมูลบุคลากร ด้วยหมายเลขดังกล่าว</p>
                                     <v-btn class="mt-5 btn-candidate" @click="onClick_CheckingPID(pid)">
                                         ตรวจสอบข้อมูล
                                     </v-btn>
                                     <!-- <DialogsPasswordDialog :id_card="pid" :btn_disabled="btn_disabled" /> -->
-                                    <DialogsPasswordDialog
-                                        :id_card="pid"
-                                        :btn_disabled="btn_disabled"
-                                        :show="show_dialog"
-                                        :showError="show_dialog_error"
-                                        :error_detail="error_detail"
-                                        @update:show="(v:boolean) => (show_dialog = v)"
-                                        @update:show_error="(e:boolean) => (show_dialog_error = e)"
-                                    />
+                                    <DialogsPasswordDialog :id_card="pid" :btn_disabled="btn_disabled" :show="show_dialog"
+                                        :showError="show_dialog_error" :error_detail="error_detail"
+                                        @update:show="(v: boolean) => (show_dialog = v)"
+                                        @update:show_error="(e: boolean) => (show_dialog_error = e)" />
                                 </div>
                             </v-form>
                         </v-col>
@@ -55,6 +43,8 @@
 </template>
 
 <script setup lang="ts">
+const { loginCandidate } = useCandidate()
+
 const pid = ref('')
 const btn_disabled = ref()
 const show_dialog = ref(false)
@@ -69,8 +59,8 @@ const numberRule = [
         v.split('-').length > 1
             ? 'ไม่ต้องใส่ -'
             : v.length != 13
-            ? 'กรุณากรอกเลขบัตรประจำตัวประชาชนให้ครบ 13 หลัก'
-            : true,
+                ? 'กรุณากรอกเลขบัตรประจำตัวประชาชนให้ครบ 13 หลัก'
+                : true,
 ]
 
 // This will work in both `<script stup>` and `<script>`
@@ -83,7 +73,8 @@ definePageMeta({
 
 async function onClick_CheckingPID(_id: string) {
     const runtimeConfig = useRuntimeConfig()
-
+    const resp = await loginCandidate()
+    console.log(resp)
     useFetch(`${runtimeConfig.public.baseApi}/candidate-information/getCandidateInformation`, {
         method: 'POST',
         body: { pid: pid.value },
