@@ -15,6 +15,13 @@ async function loginCandidate() {
             password: 123456,
         },
     })
+
+    if (response.error.value?.data)
+        throw createError({
+            statusCode: response.error.value?.statusCode,
+            statusMessage: response.error.value?.message,
+        })
+
     return response
 }
 
@@ -28,6 +35,12 @@ async function checkPID() {
     return response
 }
 
-async function getUserInfo() {}
+async function getUserInfo() {
+    const response = await useApi('/auth/userinfo', {
+        method: 'GET',
+    })
+
+    return response
+}
 
 async function getStatus() {}

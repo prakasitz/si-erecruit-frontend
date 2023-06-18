@@ -8,33 +8,17 @@
                         <v-card-text>
                             <div class="">
                                 <p>
-                                    <v-text-field
-                                        v-model="props.id_card"
-                                        class="mt-1"
-                                        variant="outlined"
-                                        readonly
-                                        prepend-inner-icon="mdi-account"
-                                        maxLength="13"
-                                        hint="x-xx-xx-xxxxx-xx-xx"
-                                    ></v-text-field>
+                                    <v-text-field v-model="props.id_card" class="mt-1" variant="outlined" readonly
+                                        prepend-inner-icon="mdi-account" maxLength="13"
+                                        hint="x-xx-xx-xxxxx-xx-xx"></v-text-field>
                                 </p>
                                 <p>
-                                    <v-text-field
-                                        v-model="password"
-                                        class="mt-1"
-                                        variant="outlined"
-                                        label="รหัสผ่าน"
-                                        prepend-inner-icon="mdi-key"
-                                        maxLength="8"
-                                        type="password"
-                                    ></v-text-field>
+                                    <v-text-field v-model="password" class="mt-1" variant="outlined" label="รหัสผ่าน"
+                                        prepend-inner-icon="mdi-key" maxLength="8" type="password"></v-text-field>
                                 </p>
                             </div>
-                            <v-label
-                                v-if="invalidPassword"
-                                text="**กรุณาตรวจสอบรหัสผ่านอีกครั้ง"
-                                class="mx-3 text-red"
-                            ></v-label>
+                            <v-label v-if="invalidPassword" text="**กรุณาตรวจสอบรหัสผ่านอีกครั้ง"
+                                class="mx-3 text-red"></v-label>
                         </v-card-text>
                         <v-card-actions class="justify-end">
                             <v-btn variant="text" @click="loginCandidate(props.id_card, password)">เข้าสู่ระบบ</v-btn>
@@ -78,10 +62,12 @@ const invalidPassword = ref(false)
 async function loginCandidate(pid: string, password: string) {
     try {
         invalidPassword.value = false
-        await auth.signIn({ username: pid, password: password })
+        const resp = await useCandidate().loginCandidate()
+        console.log(resp.data.value)
+        // await auth.signIn({ username: pid, password: password })
         navigateTo('/candidate')
     } catch (er: any) {
-        console.log(er.status)
+        console.log(er)
         if ((er.status = 401)) {
             invalidPassword.value = !invalidPassword.value
         }

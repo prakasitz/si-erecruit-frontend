@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-const { loginCandidate } = useCandidate()
+const { loginCandidate, checkPID } = useCandidate()
 
 const pid = ref('')
 const btn_disabled = ref()
@@ -73,18 +73,24 @@ definePageMeta({
 
 async function onClick_CheckingPID(_id: string) {
     const runtimeConfig = useRuntimeConfig()
-    const resp = await loginCandidate()
-    console.log(resp)
-    useFetch(`${runtimeConfig.public.baseApi}/candidate-information/getCandidateInformation`, {
-        method: 'POST',
-        body: { pid: pid.value },
-    }).then((d: any) => {
-        if (d.data.value) {
-            show_dialog.value = true
-        } else {
-            error_detail.value = `กรุณาตรวจสอบหมายเลขบัตรประจำตัวประชาชนอีกครั้ง`
-            show_dialog_error.value = true
-        }
-    })
+    const resp = await checkPID()
+
+    if (resp.data.value) {
+        show_dialog.value = true
+    } else {
+        error_detail.value = `กรุณาตรวจสอบหมายเลขบัตรประจำตัวประชาชนอีกครั้ง`
+        show_dialog_error.value = true
+    }
+    // useFetch(`${runtimeConfig.public.baseApi}/candidate-information/getCandidateInformation`, {
+    //     method: 'POST',
+    //     body: { pid: pid.value },
+    // }).then((d: any) => {
+    //     if (d.data.value) {
+    //         show_dialog.value = true
+    //     } else {
+    //         error_detail.value = `กรุณาตรวจสอบหมายเลขบัตรประจำตัวประชาชนอีกครั้ง`
+    //         show_dialog_error.value = true
+    //     }
+    // })
 }
 </script>

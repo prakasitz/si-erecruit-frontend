@@ -4,6 +4,14 @@ import { createResolver } from '@nuxt/kit'
 import vuetify from 'vite-plugin-vuetify'
 const { resolve } = createResolver(import.meta.url)
 
+const rateLimit300perDay = {
+    rateLimiter: {
+        tokensPerInterval: 300,
+        interval: 'day',
+        fireImmediately: false,
+    },
+}
+
 export default defineNuxtConfig({
     typescript: {
         shim: false,
@@ -62,14 +70,15 @@ export default defineNuxtConfig({
     routeRules: {
         '/api/auth/check-pid': {
             security: {
-                rateLimiter: {
-                    tokensPerInterval: 1,
-                    interval: 'day',
-                    fireImmediately: false,
-                },
+                ...rateLimit300perDay,
             },
         },
-        '/api/proxy/example': { proxy: 'https://google.com', ssr: true },
+        '/api/auth/login': {
+            security: {
+                ...rateLimit300perDay,
+            },
+        },
+        '/api/proxy/example': { proxy: 'https://jsonplaceholder.typicode.com/todos/1' },
     },
 
     app: {
