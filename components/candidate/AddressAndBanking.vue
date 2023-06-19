@@ -137,28 +137,31 @@
                         </v-col>
                         <v-col cols="8" offset="3">
                             <v-row>
-                                <v-col cols="6">
-                                    <v-text-field
-                                        v-model="license.license_begin_date"
-                                        type="date"
-                                        label="ออกให้ ณ วันที่"
-                                        variant="outlined"
-                                        density="compact"
-                                        hide-details
-                                    >
-                                    </v-text-field>
+                                <v-col cols="3">
+                                    <p>ออกให้ ณ วันที่</p>
                                 </v-col>
-                                <v-col cols="6">
-                                    <v-text-field
+                                <v-col cols="9">
+                                    <VueDatePicker
+                                        placeholder="วัน/เดือน/ปี"
+                                        :flow="flow"
+                                        :enable-time-picker="false"
+                                        v-model="license.license_begin_date"
+                                        model-type="yyyy/MM/dd"
+                                    />
+                                </v-col>
+                            </v-row>
+                        </v-col>
+                        <v-col cols="8" offset="3" class="pb-5">
+                            <v-row>
+                                <v-col cols="3">
+                                    <p>วันที่หมดอายุ</p>
+                                </v-col>
+                                <v-col cols="9">
+                                    <VueDatePicker
+                                        placeholder="ไม่มีหรือตลอดชีพ ให้ปล่อยว่าง"
+                                        :="defaultVueDatePickerStyle"
                                         v-model="license.license_expire_date"
-                                        type="date"
-                                        variant="outlined"
-                                        label="วันที่หมดอายุ"
-                                        hint="ไม่มีหรือตลอดชีพ ให้ปล่อยว่าง"
-                                        density="compact"
-                                        persistent-hint
-                                    >
-                                    </v-text-field>
+                                    />
                                 </v-col>
                             </v-row>
                         </v-col>
@@ -196,7 +199,7 @@
                                                 >
                                                 </v-text-field>
                                             </v-col>
-                                            <v-col cols="8" offset="3" class="pb-5">
+                                            <v-col cols="8" offset="3" class="pb-3">
                                                 <v-checkbox
                                                     class="float-left"
                                                     label="ใช้เลขที่เดียวกันกับบัตรประจำตัวประชาชน"
@@ -206,34 +209,39 @@
                                                 >
                                                 </v-checkbox>
                                             </v-col>
+
                                             <v-col cols="8" offset="3" class="pb-5">
                                                 <v-row>
-                                                    <v-col>
-                                                        <v-text-field
-                                                            v-model="ss.ss_card_issue_date"
-                                                            variant="outlined"
-                                                            type="date"
-                                                            hide-details
-                                                            label="ออกให้ ณ วันที่"
-                                                            density="compact"
-                                                            :rules="rules_fieldEmpty"
-                                                        >
-                                                        </v-text-field>
+                                                    <v-col cols="3">
+                                                        <p>ออกให้ ณ วันที่<span class="text-red">*</span></p>
                                                     </v-col>
                                                     <v-col>
-                                                        <v-text-field
-                                                            v-model="ss.ss_card_expire_date"
-                                                            variant="outlined"
-                                                            hide-details
-                                                            type="date"
-                                                            label="วันที่หมดอายุ"
-                                                            density="compact"
+                                                        <VueDatePicker
+                                                            placeholder="วัน/เดือน/ปี"
+                                                            :="defaultVueDatePickerStyle"
+                                                            v-model="ss.ss_card_issue_date"
                                                             :rules="rules_fieldEmpty"
-                                                        >
-                                                        </v-text-field>
+                                                        />
                                                     </v-col>
                                                 </v-row>
                                             </v-col>
+
+                                            <v-col cols="8" offset="3" class="pb-5">
+                                                <v-row>
+                                                    <v-col cols="3">
+                                                        <p>วันที่หมดอายุ<span class="text-red">*</span></p>
+                                                    </v-col>
+                                                    <v-col cols="9">
+                                                        <VueDatePicker
+                                                            placeholder="วัน/เดือน/ปี"
+                                                            :="defaultVueDatePickerStyle"
+                                                            v-model="ss.ss_card_expire_date"
+                                                            :rules="rules_fieldEmpty"
+                                                        />
+                                                    </v-col>
+                                                </v-row>
+                                            </v-col>
+
                                             <v-col cols="8" offset="3">
                                                 <v-row>
                                                     <v-col>
@@ -335,7 +343,7 @@ const { address, banking, license, ss } = personalStore
 
 const { rules_fieldEmpty } = useFillRules()
 const formAddressAndBanking: Ref<HTMLFormElement | null> = ref<HTMLFormElement | null>(null)
-
+const flow = useDatePickerFlow()
 const hints = {
     followHomeland: 'hint: กรุณากรอก ที่อยู่ตามทะเบียนบ้าน *',
     followCurrent: 'hint: กรุณากรอก ที่อยู่ปัจจุบัน *',

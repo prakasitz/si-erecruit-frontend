@@ -1,6 +1,5 @@
-
-
-b, strong {
+b,
+strong {
     font-family: 'Krub-Bold';
 }
 
@@ -11,28 +10,50 @@ b, strong {
 
 .a {
     color: red;
-  }
+}
 
 .label-field-top {
-    position: relative; 
-    top: -6.5px
+    position: relative;
+    top: -6.5px;
 }
 
 :root {
     /*General*/
-    --dp-font-family: "Krub-Regular", sans-serif !important
+    --dp-font-family: 'Krub-Regular', sans-serif !important;
 }
 
 /* For DatePicker Customization */
 
-input[class^="dp__"]::placeholder,
-input[aria-label="Datepicker input"]::placeholder {
-  /* Add your desired CSS styles for the placeholder */
-  font-size: 0.95em;
-  /* Add any other desired styles */
+input[class^='dp__']::placeholder,
+input[aria-label='Datepicker input']::placeholder {
+    /* Add your desired CSS styles for the placeholder */
+    font-size: 0.95em;
+    /* Add any other desired styles */
+}
+
+.dp__input_invalid {
+    box-shadow: unset !important;
+    border-color: rgb(176, 0, 32) !important;
+}
+
+.dp__input:not(.dp__input_invalid) {
+    border-color: rgb(173, 162, 162) !important;
+
+    &:hover {
+        border-color: black !important;
+    }
+}
+
+.dp__input_valid {
+    box-shadow: unset !important;
+    border-color: rgb(173, 162, 162) !important;
+}
+
+.dp__input_invalid::placeholder {
+    color: rgb(176, 0, 32) !important;
+    opacity: unset !important;
 }
 
 .dp__outer_menu_wrap div {
-    font-size: .99em;
+    font-size: 0.99em;
 }
-

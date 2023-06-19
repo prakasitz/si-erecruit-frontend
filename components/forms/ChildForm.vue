@@ -60,14 +60,17 @@
             <v-row>
                 <v-col cols="3"> วัน/เดือน/ปี เกิด <span class="text-red-darken-1"> *</span></v-col>
                 <v-col cols="3">
-                    <v-text-field
-                        :rules="rules_fieldEmpty"
-                        v-model="childFormModel.birth_date"
-                        density="compact"
-                        variant="outlined"
-                        type="date"
-                    >
-                    </v-text-field>
+                    <v-input v-model="childFormModel.birth_date" :rules="rules_fieldEmpty">
+                        <template #default="{ isValid }">
+                            <VueDatePicker
+                                placeholder="วัน/เดือน/ปี เกิด"
+                                :="defaultVueDatePickerStyle"
+                                v-model="childFormModel.birth_date"
+                                :rules="rules_fieldEmpty"
+                                :state="!!isValid.value"
+                            />
+                        </template>
+                    </v-input>
                 </v-col>
                 <v-col cols="3"> จังหวัดที่เกิด <span class="text-red-darken-1"> *</span></v-col>
                 <v-col cols="3">

@@ -20,7 +20,6 @@
                                 </v-col>
                                 <v-col cols="8">
                                     <FormsParentForm :parent-form-model="parent.father"></FormsParentForm>
-                                    <v-btn class="me-4" type="submit"> submit </v-btn>
                                 </v-col>
                             </v-row>
                         </v-col>
@@ -50,15 +49,12 @@
                             ></v-text-field>
                         </v-col>
                         <v-col cols="4">
-                            <v-text-field
+                            <VueDatePicker
+                                placeholder="วันที่ออกทะเบียนสมรส"
+                                :="defaultVueDatePickerStyle"
                                 v-model="parent.mf_date_of_marriage"
-                                hide-details
-                                type="date"
-                                persistent-hint
-                                label="วันที่ออกทะเบียนสมรส"
-                                density="compact"
-                                variant="outlined"
-                            ></v-text-field>
+                                :rules="rules_fieldEmpty"
+                            />
                         </v-col>
                     </v-row>
                 </v-form>
@@ -73,7 +69,7 @@ import { storeToRefs } from 'pinia'
 
 const formParents: Ref<HTMLFormElement | null> = ref<HTMLFormElement | null>(null)
 const personalStore = usePersonalStore()
-
+const { rules_fieldEmpty } = useFillRules()
 const { parent } = personalStore
 
 const parentDescription = 'ข้อมูลบิดา, มารดา ไว้ใช้ในการอ้างอิงกรณีการเบิกสวัสดิการให้แก่บุคคลดังกล่าว'

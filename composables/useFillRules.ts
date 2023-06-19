@@ -15,7 +15,7 @@ export const useFillRules = () => {
     }
     const rules_fieldEmpty = [(v: any) => !!v || 'โปรดกรอกข้อมูลในช่องว่าง']
 
-    const rules_dateEmpty = []
+    const rules_dateEmpty = [(v: Date) => !!v || 'โปรดลงวันที่']
 
     return { validate, rules_fieldEmpty }
 }
