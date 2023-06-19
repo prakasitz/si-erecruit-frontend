@@ -1,0 +1,9 @@
+version: '3.1'
+services:
+    new-si-erecruit:
+        image: registry.si.mahidol.ac.th/new-si-erecruit/frontend:lastest
+        restart: on-failure
+    ports:
+        - '3002:3002'
+    env_file:
+        - .env
