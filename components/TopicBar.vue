@@ -6,8 +6,8 @@
                     <v-row>
                         <v-col cols="7"> <v-breadcrumbs divider=">" :items="props.labels"></v-breadcrumbs> </v-col>
                         <v-col class="mx-4 pt-7 text-right">
-                            <v-icon class="text-main-color mx-1">mdi-account</v-icon> นางสาวแพรวพรรณ เผือกบางนา</v-col
-                        >
+                            <v-icon class="text-main-color mx-1">mdi-account</v-icon>คุณ{{ displayname }}
+                        </v-col>
                     </v-row>
                 </v-sheet>
             </v-col>
@@ -15,6 +15,12 @@
     </v-app-bar>
 </template>
 <script setup lang="ts">
+import { useUserStore } from '~/stores/user.store'
+
+// This will work in both `<script setup>` and `<script>`
+const userStore = useUserStore()
+const { displayname } = userStore
+
 export interface Props {
     labels?: any[]
 }
