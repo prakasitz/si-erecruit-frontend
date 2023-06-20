@@ -38,9 +38,14 @@ export default defineNuxtConfig({
     ],
     sourcemap: false,
     runtimeConfig: {
-        baseApi: `${process.env.API_URL}`,
+        baseApi: `${process.env.BACKEND_API_URL}`,
+        urlADFS: `${process.env.URI_ADFS_ACL}`,
+        urlOauth2: `${process.env.API_ADFS}`,
+        urlUserInfo: `${process.env.API_ADFS_USERINFO}`,
+        clientID: `${process.env.CLIENT_ID_ADFS}`,
+        clientSecret: `${process.env.CLIENT_SECRET_ADFS}`,
         public: {
-            baseApi: `${process.env.API_URL}`,
+            baseApi: `/api`,
         },
     },
     build: {
