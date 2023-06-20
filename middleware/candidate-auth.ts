@@ -3,10 +3,12 @@ import { CandidateAuth } from '~/auth/candidate.auth'
 export default defineNuxtRouteMiddleware(async (to, from) => {
     const { getUserInfo } = useCandidate()
     if (process.client) {
-        console.log('candidate-auth', to, from)
         try {
             const resp = await getUserInfo()
-            console.log('user', resp.data.value)
+            console.group('middleware:candidate-auth')
+            console.info('candidate-auth', { to, from })
+            console.log('user from middleware', resp.data.value)
+            console.groupEnd()
         } catch (err) {
             return navigateTo('/login_candidate')
         }

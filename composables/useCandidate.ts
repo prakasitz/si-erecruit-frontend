@@ -1,3 +1,5 @@
+import { useUserStore } from '~/stores/user.store'
+
 export default function useCandidate() {
     return {
         loginCandidate,
@@ -7,12 +9,12 @@ export default function useCandidate() {
     }
 }
 
-async function loginCandidate() {
+async function loginCandidate(pid?: string | undefined, password?: string | undefined) {
     const response = await useApi('/auth/login', {
         method: 'POST',
         body: {
-            pid: 123456,
-            password: 123456,
+            pid: pid?.toString(),
+            password: password?.toString(),
         },
     })
 
@@ -32,6 +34,12 @@ async function checkPID() {
             pid: 123456,
         },
     })
+    if (response.error.value?.data)
+        throw createError({
+            statusCode: response.error.value?.statusCode,
+            statusMessage: response.error.value?.message,
+        })
+
     return response
 }
 
@@ -39,6 +47,15 @@ async function getUserInfo() {
     const response = await useApi('/auth/userinfo', {
         method: 'GET',
     })
+
+    if (response.error.value?.data)
+        throw createError({
+            statusCode: response.error.value?.statusCode,
+            statusMessage: response.error.value?.message,
+        })
+
+    const userStore = (await useUserStore()) as any
+    userStore.setUserInfo(response.data.value)
 
     return response
 }
