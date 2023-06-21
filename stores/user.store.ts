@@ -6,6 +6,7 @@ export const useUserStore = defineStore('userinfo', {
             commonid: null,
             commonname: null,
             secret: null,
+            exp: null,
         }
     },
     actions: {
@@ -15,6 +16,7 @@ export const useUserStore = defineStore('userinfo', {
             this.commonid = data.commonid
             this.commonname = data.commonname
             this.secret = data.secret
+            this.exp = data.exp
         },
     },
 })

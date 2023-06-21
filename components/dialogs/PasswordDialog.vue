@@ -82,17 +82,21 @@ const password = ref('')
 const invalidPassword = ref(false)
 
 async function loginCandidate(pid?: string | undefined, password?: string | undefined) {
-    try {
-        invalidPassword.value = false
-        const resp = await useCandidate().loginCandidate(pid, password)
-        console.log(resp.data.value)
-        // await auth.signIn({ username: pid, password: password })
-        await navigateTo({ path: '/candidate' })
-    } catch (error: H3Error | any) {
-        if (error instanceof H3Error && error.statusCode == 401) {
-            invalidPassword.value = !invalidPassword.value
-        } else {
-            throw showError({ statusCode: 500, statusMessage: 'Internal Server Error' })
+    if (!pid || !password) {
+        invalidPassword.value = !invalidPassword.value
+    } else {
+        try {
+            invalidPassword.value = false
+            const resp = await useCandidate().loginCandidate(pid, password)
+            console.log(resp.data.value)
+            // await auth.signIn({ username: pid, password: password })
+            await navigateTo({ path: '/candidate' })
+        } catch (error: H3Error | any) {
+            if (error instanceof H3Error && error.statusCode == 401) {
+                invalidPassword.value = !invalidPassword.value
+            } else {
+                throw showError({ statusCode: 500, statusMessage: 'Internal Server Error' })
+            }
         }
     }
 }

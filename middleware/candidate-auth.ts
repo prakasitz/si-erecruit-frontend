@@ -1,8 +1,12 @@
 import { CandidateAuth } from '~/auth/candidate.auth'
+import { useUserStore } from '~/stores/user.store'
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
     const { getUserInfo } = useCandidate()
-    if (process.client) {
+    const userStore = useUserStore()
+    if (process.client && userStore.$state.exp == null) {
+        const timestampInSeconds = userStore.$state.exp
+
         try {
             const resp = await getUserInfo()
             console.group('middleware:candidate-auth')
