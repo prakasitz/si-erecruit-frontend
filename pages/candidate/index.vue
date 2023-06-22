@@ -8,7 +8,7 @@
                 Lorem ipsum dolor sit amet consectetur, adipisicing elit. Necessitatibus, explicabo voluptas. Mollitia
                 quos dicta alias at porro nihil quis, eligendi odio voluptas est repudiandae ex nesciunt suscipit
                 consequuntur, quidem asperiores!
-            </v-card-text>
+             </v-card-text>
         </v-card>
         <br />
     </div>
