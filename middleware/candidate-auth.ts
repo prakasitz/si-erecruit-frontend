@@ -4,9 +4,7 @@ import { useUserStore } from '~/stores/user.store'
 export default defineNuxtRouteMiddleware(async (to, from) => {
     const { getUserInfo } = useCandidate()
     const userStore = useUserStore()
-    if (process.client && userStore.$state.exp == null) {
-        const timestampInSeconds = userStore.$state.exp
-
+    if (process.client) {
         try {
             const resp = await getUserInfo()
             console.group('middleware:candidate-auth')
@@ -14,7 +12,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
             console.log('user from middleware', resp.data.value)
             console.groupEnd()
         } catch (err) {
-            return navigateTo('/login_candidate')
+            return navigateTo('/login_candidate', { redirectCode: 301 })
         }
     }
 })
