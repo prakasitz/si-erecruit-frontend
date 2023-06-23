@@ -108,12 +108,12 @@
                     <v-row justify="space-between" align="center">
                         <v-col cols="1"> <v-btn variant="plain" icon="mdi-chevron-left" @click="prev"></v-btn></v-col>
                         <v-col>
-                            <v-item-group v-model="onboarding" class="text-center" mandatory>
+                            <v-item-group v-model="onboardingState" class="text-center" mandatory>
                                 <v-row no-gutters>
                                     <v-item
-                                        v-for="item in candidateForms"
-                                        :key="`btn-${item.id}`"
+                                        v-for="item in candidateFormState"
                                         v-slot="{ isSelected, toggle }"
+                                        :key="item.id"
                                         :value="item.id"
                                     >
                                         <v-col>
@@ -143,8 +143,8 @@
             <v-col cols="12">
                 <section id="test21">
                     <form>
-                        <v-window class="py-1" v-model="onboarding">
-                            <v-window-item v-for="item in candidateForms" :key="`card-${item.id}`" :value="item.id">
+                        <v-window class="py-1" v-model="onboardingState">
+                            <v-window-item v-for="item in candidateFormState" :key="`card-${item.id}`" :value="item.id">
                                 <v-card v-if="item.id == 1" class="mx-auto" width="90%">
                                     <v-container>
                                         <v-card-title class="pa-auto text-h5 text-red-darken-2"
@@ -240,15 +240,32 @@
                                         </v-card-text>
                                     </v-container>
                                 </v-card>
-                                <LazyCandidateJobPosition v-if="item.id == 2"></LazyCandidateJobPosition>
-                                <LazyCandidatePersonal v-if="item.id == 3"></LazyCandidatePersonal>
-                                <LazyCandidateAddressAndBanking v-if="item.id == 4"></LazyCandidateAddressAndBanking>
-                                <LazyCandidateParent v-if="item.id == 5"></LazyCandidateParent>
-                                <LazyCandidateMarriage v-if="item.id == 6"></LazyCandidateMarriage>
-                                <LazyCandidateEducationAndJob v-if="item.id == 7"></LazyCandidateEducationAndJob>
-                                <LazyCandidateTax v-if="item.id == 8"></LazyCandidateTax>
-                                <LazyCandidateTalent v-if="item.id == 9"></LazyCandidateTalent>
-                                <LazyCandidateFiles v-if="item.id == 10"></LazyCandidateFiles>
+                                <LoadingCandidateCard v-if="item.id != 1 && item.isLoading == true">
+                                </LoadingCandidateCard>
+                                <LazyCandidateJobPosition
+                                    v-if="item.id == 2"
+                                    :candidate-form="item"
+                                ></LazyCandidateJobPosition>
+                                <LazyCandidatePersonal
+                                    v-if="item.id == 3"
+                                    :candidate-form="item"
+                                ></LazyCandidatePersonal>
+                                <LazyCandidateAddressAndBanking
+                                    v-if="item.id == 4"
+                                    :candidate-form="item"
+                                ></LazyCandidateAddressAndBanking>
+                                <LazyCandidateParent v-if="item.id == 5" :candidate-form="item"></LazyCandidateParent>
+                                <LazyCandidateMarriage
+                                    v-if="item.id == 6"
+                                    :candidate-form="item"
+                                ></LazyCandidateMarriage>
+                                <LazyCandidateEducationAndJob
+                                    v-if="item.id == 7"
+                                    :candidate-form="item"
+                                ></LazyCandidateEducationAndJob>
+                                <LazyCandidateTax v-if="item.id == 8" :candidate-form="item"></LazyCandidateTax>
+                                <LazyCandidateTalent v-if="item.id == 9" :candidate-form="item"></LazyCandidateTalent>
+                                <LazyCandidateFiles v-if="item.id == 10" :candidate-form="item"></LazyCandidateFiles>
                             </v-window-item>
                         </v-window>
                     </form>
@@ -270,6 +287,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { useMasterDataStore } from '~/stores/master.store'
+import { CandidateForm } from '~/utils/types'
 
 definePageMeta({
     title: 'จัดการข้อมูลผู้สมัคร',
@@ -291,17 +309,23 @@ definePageMeta({
 
 // Master Store
 const masterDataStore = useMasterDataStore()
+const selected = ref(0)
 const { isItemsLoaded } = storeToRefs(masterDataStore)
 const { loadMasterData } = useMaster()
 
-const onboarding: Ref<number> = useState('onBoarding')
-const { candidateForms, prev, next } = useWindowsNav()
+// const onboarding = useState<number>('onBoarding')
+// const candidateForms = useState<CandidateForm[]>('candidateForms')
+
+const onboardingState = useOnboarding()
+const candidateFormState = useCandidateForms()
+
+const { prev, next } = useWindowsNav()
 const eye1 = ref(false)
 const eye2 = ref(false)
 const panelShow = ref('secret')
 
 onMounted(async () => {
-    console.groupCollapsed('onMount')
+    console.groupCollapsed('onMount Form')
     // console.log('isItemsLoaded', isItemsLoaded.value)
     // if (!isItemsLoaded.value) {
     //     await loadMasterData()

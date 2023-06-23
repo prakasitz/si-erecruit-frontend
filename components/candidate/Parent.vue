@@ -1,5 +1,5 @@
 <template>
-    <CandidateBaseCard :title="'ข้อมูลบิดา/มารดา'" :form-page="{ form: formParents }">
+    <CandidateBaseCard :candidate-form="props.candidateForm" :form-page="{ form: formParents }">
         <template #card-body>
             <v-alert
                 class="text-subtitle-2"
@@ -69,7 +69,11 @@
 
 <script setup lang="ts">
 import { usePersonalStore } from '../../stores/personal.store'
-import { storeToRefs } from 'pinia'
+
+import { CandidateForm } from '~/utils/types'
+const props = defineProps<{
+    candidateForm: CandidateForm
+}>()
 
 const formParents: Ref<HTMLFormElement | null> = ref<HTMLFormElement | null>(null)
 const personalStore = usePersonalStore()

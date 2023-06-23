@@ -86,3 +86,10 @@ export type MasterTitleConferred = {
     name_affix: string
     output_text: string
 }
+
+export type CandidateForm = {
+    id: number
+    title: string
+    cardTitle: string
+    isLoading: boolean
+}

@@ -1,5 +1,5 @@
 <template>
-    <CandidateBaseCard :title="'ข้อมูลคู่สมรส/บุตร'" :form-page="{ form: formMarriage }">
+    <CandidateBaseCard :candidate-form="props.candidateForm" :form-page="{ form: formMarriage }">
         <template #card-body>
             <v-form ref="formMarriage">
                 <v-alert
@@ -250,10 +250,12 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
 import { usePersonalStore } from '../../stores/personal.store'
-import { IMarriage } from '~/stores/interface/personal_information.interface'
-import { storeToRefs } from 'pinia'
+
+import { CandidateForm } from '~/utils/types'
+const props = defineProps<{
+    candidateForm: CandidateForm
+}>()
 
 const { rules_fieldEmpty } = useFillRules()
 const formMarriage: Ref<HTMLFormElement | null> = ref<HTMLFormElement | null>(null)

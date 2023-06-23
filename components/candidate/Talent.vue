@@ -1,5 +1,5 @@
 <template>
-    <CandidateBaseCard :title="'ข้อมูลอื่น ๆ'" :form-page="{ form: formTalent }">
+    <CandidateBaseCard :candidate-form="props.candidateForm" :form-page="{ form: formTalent }">
         <template #card-body>
             <v-form ref="formTalent">
                 <v-alert
@@ -200,6 +200,11 @@
 
 <script setup lang="ts">
 import { usePersonalStore } from '~/stores/personal.store'
+
+import { CandidateForm } from '~/utils/types'
+const props = defineProps<{
+    candidateForm: CandidateForm
+}>()
 
 const { rules_fieldEmpty } = useFillRules()
 const formTalent: Ref<HTMLFormElement | null> = ref<HTMLFormElement | null>(null)

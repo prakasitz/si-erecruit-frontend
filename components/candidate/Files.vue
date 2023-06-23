@@ -1,5 +1,5 @@
 <template>
-    <CandidateBaseCard :title="'เอกสารอื่นๆ'">
+    <CandidateBaseCard :candidate-form="props.candidateForm">
         <template #card-body>
             <v-alert
                 border="start"
@@ -92,7 +92,16 @@
     </CandidateBaseCard>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { CandidateForm } from '~/utils/types'
+import { substrFilename } from '~/utils/string'
+
+const props = defineProps<{
+    candidateForm: CandidateForm
+}>()
+
+const { data } = await useFetch('/api/delay', { server: false }) //ใช้ await เมื่อต้องการ ssr
+
 const attach_personal_list = ref([
     { menu: 'สำเนาบัตรประจำตัวประชาชนตนเอง *', filename: 'สำเนาบัตรประจำตัวประชาชนตนเอง.pdf' },
     { menu: 'สำเนาทะเบียนบ้านตนเอง *', filename: '' },
@@ -161,16 +170,4 @@ const attach_private_list = ref([
     { menu: 'ใบตรวจสุขภาพ/รับรองแพทย์', filename: '' },
     { menu: 'ใบตรวจสุขภาพ/รับรองแพทย์', filename: '' },
 ])
-
-function substrFilename(_str) {
-    if (_str != '') {
-        let lst = _str.split('.')
-        if (lst[0].length > 15) {
-            _str = `${lst[0].substr(0, 13)}.. .${lst[1]}`
-        }
-    } else {
-        _str = 'ไม่พบการแนบไฟล์'
-    }
-    return _str
-}
 </script>

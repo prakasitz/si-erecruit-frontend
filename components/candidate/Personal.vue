@@ -1,5 +1,5 @@
 <template>
-    <CandidateBaseCard :title="'ข้อมูลส่วนบุคคล'" :form-page="{ form: formPersonal }">
+    <CandidateBaseCard :candidate-form="props.candidateForm" :form-page="{ form: formPersonal }">
         <template #card-body>
             <!-- คำนำหน้า พิเศษ -->
             <v-container class="text-body-1">
@@ -533,6 +533,11 @@
 import { usePersonalStore } from '../../stores/personal.store'
 import { useMasterDataStore } from '../../stores/master.store'
 import { storeToRefs } from 'pinia'
+
+import { CandidateForm } from '~/utils/types'
+const props = defineProps<{
+    candidateForm: CandidateForm
+}>()
 
 const personalStore = usePersonalStore()
 const { provinces } = useMasterDataStore()

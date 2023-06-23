@@ -1,5 +1,5 @@
 <template>
-    <CandidateBaseCard :title="'ข้อมูลประวัติ'" :form-page="{ form: FormEducationAndJob }">
+    <CandidateBaseCard :candidate-form="props.candidateForm" :form-page="{ form: FormEducationAndJob }">
         <template #card-body>
             <v-form ref="FormEducationAndJob">
                 <v-alert
@@ -385,8 +385,12 @@ import { usePersonalStore } from '../../stores/personal.store'
 import { IEducation, IJob, job, education } from '~/stores/interface/personal_information.interface'
 import { storeToRefs } from 'pinia'
 
-const { rules_fieldEmpty } = useFillRules()
+import { CandidateForm } from '~/utils/types'
+const props = defineProps<{
+    candidateForm: CandidateForm
+}>()
 
+const { rules_fieldEmpty } = useFillRules()
 const personalStore = usePersonalStore()
 const { education, job } = personalStore
 const { HasJob, IsWorking, IsStudying, IsUnemployed, IsHasJobMahidol } = storeToRefs(personalStore)

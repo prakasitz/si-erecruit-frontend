@@ -1,61 +1,24 @@
+import { storeToRefs } from 'pinia'
+import { useComponentStore } from '~/stores/component.store'
+import { CandidateForm } from '~/utils/types'
+
 export const useOnboarding = () => {
-    return useState('onBoarding', () => 1)
+    const componentStore = useComponentStore()
+    const { onBoarding } = storeToRefs(componentStore)
+    return onBoarding
+}
+
+export const useCandidateForms = () => {
+    const componentStore = useComponentStore()
+    const { candidateForms } = storeToRefs(componentStore)
+    return candidateForms
 }
 
 export const useWindowsNav = () => {
-    const candidateForms = reactive([
-        {
-            id: 1,
-            title: 'คำอธิบาย',
-        },
-        {
-            id: 2,
-            title: 'ตำแหน่งงาน',
-        },
-        {
-            id: 3,
-            title: 'ข้อมูลส่วนบุคคล',
-        },
-        {
-            id: 4,
-            title: 'ที่อยู่/บัญชีธนาคาร',
-        },
-        {
-            id: 5,
-            title: 'บิดา/มารดา',
-        },
-        {
-            id: 6,
-            title: 'คู่สมรส/บุตร',
-        },
-        {
-            id: 7,
-            title: 'ประวัติ',
-        },
-        {
-            id: 8,
-            title: 'ภาษี',
-        },
-        {
-            id: 9,
-            title: 'ข้อมูลอื่นๆ',
-        },
-        {
-            id: 10,
-            title: 'เอกสารอื่นๆ',
-        },
-    ])
+    const componentStore = useComponentStore()
 
-    const onboarding: Ref<number> = useState('onBoarding')
+    const next = () => componentStore.onBoardingNext()
+    const prev = () => componentStore.onBoardingPrev()
 
-    const next = () => {
-        console.log(onboarding.value)
-        onboarding.value = onboarding.value + 1 > candidateForms.length ? candidateForms.length : onboarding.value + 1
-    }
-
-    const prev = () => {
-        onboarding.value = onboarding.value - 1 <= 0 ? 1 : onboarding.value - 1
-    }
-
-    return { candidateForms, next, prev }
+    return { next, prev }
 }

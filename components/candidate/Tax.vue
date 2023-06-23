@@ -1,5 +1,5 @@
 <template>
-    <CandidateBaseCard :title="'ข้อมูลภาษี'" :form-page="{ form: formTax }">
+    <CandidateBaseCard :candidate-form="props.candidateForm" :form-page="{ form: formTax }">
         <template #card-body>
             <v-form ref="formTax">
                 <v-alert
@@ -234,9 +234,12 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
 import { usePersonalStore } from '../../stores/personal.store'
-import { ITax } from '~/stores/interface/personal_information.interface'
+
+import { CandidateForm } from '~/utils/types'
+const props = defineProps<{
+    candidateForm: CandidateForm
+}>()
 
 const { rules_fieldEmpty } = useFillRules()
 const formTax: Ref<HTMLFormElement | null> = ref<HTMLFormElement | null>(null)

@@ -1,5 +1,5 @@
 <template>
-    <CandidateBaseCard :title="'ข้อมูลตำแหน่งงาน'" :form-page="{ form: formJobPosition }">
+    <CandidateBaseCard :candidate-form="props.candidateForm" :form-page="{ form: formJobPosition }">
         <template #card-body>
             <v-form ref="formJobPosition">
                 <v-alert
@@ -14,7 +14,7 @@
                     <v-row>
                         <v-col cols="2">
                             <p>
-                                <b>ตำแหน่ง <span class="text-red">*</span></b>
+                                <b>ตำแหน่ง<span class="text-red">*</span></b>
                             </p>
                             <p class="text-caption">ที่เปิดรับบรรจุ</p>
                         </v-col>
@@ -24,7 +24,7 @@
                                     <v-item-group selected-class="card-item-selected">
                                         <v-row>
                                             <v-col cols="6" v-for="i in 4">
-                                                <v-item v-slot="{ isSelected, selectedClass, toggle }">
+                                                <v-item v-slot="{ isSelected, selectedClass, toggle }: any">
                                                     <FormsJobsChoice
                                                         :is-selected="isSelected"
                                                         :class="[selectedClass]"
@@ -52,7 +52,20 @@
 </style>
 
 <script setup lang="ts">
-const formJobPosition: Ref<HTMLFormElement | null> = ref<HTMLFormElement | null>(null)
+import { CandidateForm } from '~/utils/types'
+const props = defineProps<{
+    candidateForm: CandidateForm
+}>()
 
+const formJobPosition: Ref<HTMLFormElement | null> = ref<HTMLFormElement | null>(null)
 const jobPositionDescription = 'กรุณาเลือกตำแหน่งที่ท่านบรรจุ'
+const { data } = await useFetch('/api/delay', { server: false }) //ใช้ await เมื่อต้องการ ssr
+
+onMounted(() => {
+    console.log('onMounted JobPosition')
+})
+
+onUpdated(() => {
+    console.log('onUpdated JobPosition')
+})
 </script>

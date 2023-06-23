@@ -79,7 +79,7 @@
 
 <script setup lang="ts">
 interface Props {
-    isSelected: boolean
+    isSelected: boolean | undefined
 }
 
 const props = defineProps<Props>()
