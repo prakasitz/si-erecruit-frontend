@@ -54,10 +54,9 @@
             <v-col cols="4"> วันที่เข้าทำงาน <span class="text-red-darken-1"> *</span> </v-col>
             <v-col cols="3">
                 <VueDatePicker
-                    label="วันที่เข้าทำงาน"
+                    placeholder="วัน/เดือน/ปี"
                     v-bind="defaultVueDatePickerStyle"
                     v-model="workExperienceFormModel.start_date"
-                    hide-details
                     model-type="yyyy/MM/dd"
                     :rules="rules_fieldEmpty"
                 />
@@ -70,6 +69,7 @@
             <v-col cols="4"> วันที่ออกจากงาน <span class="text-red-darken-1"> *</span></v-col>
             <v-col cols="3">
                 <VueDatePicker
+                    placeholder="วัน/เดือน/ปี"
                     :rules="rules_fieldEmpty"
                     v-bind="defaultVueDatePickerStyle"
                     v-model="workExperienceFormModel.end_date"

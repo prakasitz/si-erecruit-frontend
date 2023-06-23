@@ -247,12 +247,19 @@
                                 <p>วัน/เดือน/ปี เกิด<span class="text-red">*</span></p>
                             </v-col>
                             <v-col cols="3">
-                                <VueDatePicker
-                                    v-bind="defaultVueDatePickerStyle"
-                                    :max-date="getMaxBirthDate()"
-                                    :start-date="getMaxBirthDate()"
-                                    v-model="birtDate"
-                                />
+                                <v-input v-model="birtDate" :rules="rules_fieldEmpty">
+                                    <template #default="{ isValid }">
+                                        <VueDatePicker
+                                            placeholder="วัน/เดือน/ปี"
+                                            :="defaultVueDatePickerStyle"
+                                            :max-date="getMaxBirthDate()"
+                                            :start-date="getMaxBirthDate()"
+                                            v-model="birtDate"
+                                            :rules="rules_fieldEmpty"
+                                            :state="!!isValid.value"
+                                        />
+                                    </template>
+                                </v-input>
                             </v-col>
                             <v-col cols="3">
                                 <v-text-field
@@ -374,10 +381,17 @@
                                 <p>วันที่ออกบัตร <span class="text-red">*</span></p>
                             </v-col>
                             <v-col cols="8">
-                                <VueDatePicker
-                                    v-bind="defaultVueDatePickerStyle"
-                                    v-model="personal_info.id_card_issue_date"
-                                />
+                                <v-input v-model="personal_info.id_card_issue_date" :rules="rules_fieldEmpty">
+                                    <template #default="{ isValid }">
+                                        <VueDatePicker
+                                            placeholder="วัน/เดือน/ปี"
+                                            :="defaultVueDatePickerStyle"
+                                            v-model="personal_info.id_card_issue_date"
+                                            :rules="rules_fieldEmpty"
+                                            :state="!!isValid.value"
+                                        />
+                                    </template>
+                                </v-input>
                             </v-col>
                         </v-row>
                     </v-col>
@@ -387,10 +401,17 @@
                                 <p>วันที่บัตรหมดอายุ <span class="text-red">*</span></p>
                             </v-col>
                             <v-col cols="8">
-                                <VueDatePicker
-                                    v-bind="defaultVueDatePickerStyle"
-                                    v-model="personal_info.id_card_expire_date"
-                                />
+                                <v-input v-model="personal_info.id_card_expire_date" :rules="rules_fieldEmpty">
+                                    <template #default="{ isValid }">
+                                        <VueDatePicker
+                                            placeholder="วัน/เดือน/ปี"
+                                            :="defaultVueDatePickerStyle"
+                                            v-model="personal_info.id_card_expire_date"
+                                            :rules="rules_fieldEmpty"
+                                            :state="!!isValid.value"
+                                        />
+                                    </template>
+                                </v-input>
                             </v-col>
                         </v-row>
                     </v-col>

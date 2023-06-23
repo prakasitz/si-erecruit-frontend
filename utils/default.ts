@@ -12,7 +12,7 @@ export const default_job: job = {
 }
 
 export const defaultVueDatePickerStyle: VueDatePickerProps = {
-    placeholder: 'กรุณาเลือกวันที่',
+    
     flow: ['year', 'month', 'calendar'],
     enableTimePicker: false,
     hideNavigation: ['time'],

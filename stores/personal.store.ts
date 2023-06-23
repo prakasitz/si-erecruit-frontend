@@ -38,7 +38,7 @@ export const usePersonalStore = defineStore('personal', {
             job_position: {},
             personal_info: {
                 title_name_th: '',
-                first_name_th: 'TEST',
+                first_name_th: '',
                 last_name_th: '',
                 nickname_th: '',
                 title_name_en: '',
