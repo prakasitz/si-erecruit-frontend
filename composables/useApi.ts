@@ -1,9 +1,11 @@
-export const useApi = async (url: any, params: any) => {
+import { UseFetchOptions } from 'nuxt/app'
+
+export const useApi = async (url: any, params: UseFetchOptions<any>) => {
     const cookie = useCookie('token')
 
     const config = useRuntimeConfig()
 
-    const opts = {
+    const opts: UseFetchOptions<any> = {
         key: url,
         baseURL: config.public.baseApi,
 

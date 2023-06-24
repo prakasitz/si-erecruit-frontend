@@ -16,27 +16,22 @@ export default defineNuxtConfig({
     typescript: {
         shim: false,
     },
-    // vuetify ships precompiled css, no need to import sass
-    css: ['@mdi/font/css/materialdesignicons.min.css', '@/assets/_fonts.css', '@/assets/main.css', 'vuetify/styles'],
 
-    modules: [
-        async (option, nuxt) => {
-            nuxt.hooks.hook('vite:extendConfig', (config) => {
-                config.plugins?.push(
-                    vuetify({
-                        autoImport: true,
-                        styles: {
-                            configFile: resolve('assets/settings.scss'),
-                        },
-                    })
-                )
-            })
-        },
-        '@nuxt/devtools',
-        '@pinia/nuxt',
-        'nuxt-security',
+    css: [
+        '@mdi/font/css/materialdesignicons.min.css',
+        '@/assets/_fonts.css',
+        '@/assets/main.css',
+        'vuetify/styles',
+        '@vuepic/vue-datepicker/dist/main.css',
     ],
-    sourcemap: false,
+
+    modules: ['@pinia/nuxt', 'nuxt-security'],
+
+    sourcemap: {
+        server: false,
+        client: false,
+    },
+
     runtimeConfig: {
         baseApi: `${process.env.BACKEND_API_URL}`,
         urlADFS: `${process.env.URI_ADFS_ACL}`,
@@ -48,19 +43,31 @@ export default defineNuxtConfig({
             baseApi: `/api`,
         },
     },
+
     build: {
         transpile: ['vuetify', '@vuepic/vue-datepicker'],
     },
-    vite: {
-        ssr: {
-            noExternal: ['vuetify', '@vuepic/vue-datepicker'],
-        },
-        define: {
-            'process.env.DEBUG': false,
+
+    hooks: {
+        'vite:extendConfig': (config, { isClient, isServer }) => {
+            config.plugins?.push(
+                vuetify({
+                    styles: {
+                        configFile: resolve('assets/settings.scss'),
+                    },
+                })
+            )
         },
     },
 
-    components: true,
+    // vite: {
+    //     ssr: {
+    //         noExternal: ['vuetify', '@vuepic/vue-datepicker'],
+    //     },
+    //     define: {
+    //         'process.env.DEBUG': false,
+    //     },
+    // },
 
     pinia: {
         autoImports: [
@@ -69,22 +76,34 @@ export default defineNuxtConfig({
     },
 
     security: {
-        hidePoweredBy: false,
+        headers: {
+            crossOriginResourcePolicy: 'same-origin',
+            // crossOriginOpenerPolicy: 'unsafe-none',
+            // crossOriginEmbedderPolicy: 'require-corp',
+            // referrerPolicy: 'strict-origin-when-cross-origin',
+            // contentSecurityPolicy: {
+            //     'upgrade-insecure-requests': false,
+            // },
+        },
+        allowedMethodsRestricter: '*',
+        hidePoweredBy: true,
+        enabled: false,
+        csrf: false,
     },
 
-    routeRules: {
-        '/api/auth/check-pid': {
-            security: {
-                ...rateLimit300perDay,
-            },
-        },
-        '/api/auth/login': {
-            security: {
-                ...rateLimit300perDay,
-            },
-        },
-        '/api/proxy/example': { proxy: 'https://jsonplaceholder.typicode.com/todos/1' },
-    },
+    // routeRules: {
+    //     '/api/auth/check-pid': {
+    //         security: {
+    //             ...rateLimit300perDay,
+    //         },
+    //     },
+    //     '/api/auth/login': {
+    //         security: {
+    //             ...rateLimit300perDay,
+    //         },
+    //     },
+    //     '/api/proxy/example': { proxy: 'https://jsonplaceholder.typicode.com/todos/1' },
+    // },
 
     app: {
         head: {
@@ -95,9 +114,5 @@ export default defineNuxtConfig({
         // global transition
         pageTransition: { name: 'page', mode: 'out-in' },
         layoutTransition: { name: 'layout', mode: 'out-in' },
-    },
-
-    devtools: {
-        enabled: false,
     },
 })
