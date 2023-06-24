@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 import { useLoadingCandidateCard } from '~/composables/useLoading'
-import { CandidateForm } from '~/utils/types'
+import { CandidateForm, VuetifyForm } from '~/utils/types'
 
 export interface Props {
     candidateForm: CandidateForm
@@ -46,7 +46,7 @@ const { prev, next } = useWindowsNav()
 useLoadingCandidateCard(props.candidateForm.id)
 
 async function formValidate() {
-    const form = props.formPage.form as HTMLFormElement
+    const form = props.formPage.form as VuetifyForm
     const validForm = await validate(props.formPage.form)
     if (validForm) {
         next()

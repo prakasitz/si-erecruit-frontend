@@ -63,14 +63,13 @@
                                 </v-col>
                             </v-row>
                             <v-row>
-                                <v-col cols="3"
-                                    ><b>ภาษาอังกฤษ <span class="text-red">*</span></b>
-                                </v-col>
-                                <v-col>
-                                    <FormsLanguageForm
-                                        :language-form-model="talent.eng_language_details"
-                                    ></FormsLanguageForm>
-                                </v-col>
+                                <FormsLanguageForm :language-form-model="talent.eng_language_details" mandatory>
+                                    <template #prepend>
+                                        <v-col cols="3"
+                                            ><b>ภาษาอังกฤษ<span class="text-red">*</span></b>
+                                        </v-col>
+                                    </template>
+                                </FormsLanguageForm>
                             </v-row>
                             <v-row>
                                 <v-col cols="3"><b>คะแนนการทดสอบภาษาอังกฤษ</b> </v-col>
@@ -98,23 +97,25 @@
                                 </v-col>
                             </v-row>
                             <v-row>
-                                <v-col cols="3"><b>ภาษาอื่น</b> </v-col>
-                                <v-col>
-                                    <v-row>
-                                        <v-col cols="3"> โปรดระบุ </v-col>
-                                        <v-col>
-                                            <v-text-field
-                                                v-model="talent.other_language"
-                                                density="compact"
-                                                variant="outlined"
-                                                hide-details
-                                            ></v-text-field>
+                                <FormsLanguageForm :language-form-model="talent.other_language_details">
+                                    <template #prepend>
+                                        <v-col cols="3"><b>ภาษาอื่นๆ</b> </v-col>
+                                        <v-col cols="9">
+                                            <v-row>
+                                                <v-col cols="3"> โปรดระบุ </v-col>
+                                                <v-col>
+                                                    <v-text-field
+                                                        v-model="talent.other_language"
+                                                        density="compact"
+                                                        variant="outlined"
+                                                        hide-details
+                                                    ></v-text-field>
+                                                </v-col>
+                                            </v-row>
                                         </v-col>
-                                    </v-row>
-                                    <FormsLanguageForm
-                                        :language-form-model="talent.other_language_details"
-                                    ></FormsLanguageForm>
-                                </v-col>
+                                        <v-col cols="3"></v-col>
+                                    </template>
+                                </FormsLanguageForm>
                             </v-row>
                             <v-row>
                                 <v-col cols="3">กีฬา</v-col>
@@ -201,13 +202,13 @@
 <script setup lang="ts">
 import { usePersonalStore } from '~/stores/personal.store'
 
-import { CandidateForm } from '~/utils/types'
+import { CandidateForm, VuetifyForm } from '~/utils/types'
 const props = defineProps<{
     candidateForm: CandidateForm
 }>()
 
 const { rules_fieldEmpty } = useFillRules()
-const formTalent: Ref<HTMLFormElement | null> = ref<HTMLFormElement | null>(null)
+const formTalent = ref<VuetifyForm | null>(null)
 const announced_from = 'hello'
 const personalStore = usePersonalStore()
 const { talent } = personalStore
