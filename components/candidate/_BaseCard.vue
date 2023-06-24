@@ -41,11 +41,12 @@ const props = defineProps<Props>()
 
 const { validate } = useFillRules()
 
-const { candidateForms, prev, next } = useWindowsNav()
+const { prev, next } = useWindowsNav()
 
 useLoadingCandidateCard(props.candidateForm.id)
 
 async function formValidate() {
+    const form = props.formPage.form as HTMLFormElement
     const validForm = await validate(props.formPage.form)
     if (validForm) {
         next()

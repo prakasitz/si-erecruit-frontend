@@ -1,6 +1,5 @@
 export const useFillRules = () => {
     const validate = async (formPage: HTMLFormElement | null) => {
-        console.log(formPage)
         const formInstance = formPage
         if (formInstance) {
             const { valid } = await formInstance.validate()
