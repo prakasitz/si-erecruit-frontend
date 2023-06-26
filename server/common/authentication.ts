@@ -1,10 +1,8 @@
 import axios, { AxiosError } from 'axios'
-import { H3Event, H3Error } from 'h3'
-import { JwksClient } from 'jwks-rsa'
 import * as qs from 'qs'
 import { JwtPayload, VerifyErrors } from 'jsonwebtoken'
 import { getItemStorage, setItemStorage } from './storage'
-import { verifySignature } from './jwt'
+import { verifyToken } from './jwt'
 
 export async function getClientCredentials() {
     const { urlOauth2, urlADFS, urlUserInfo, clientID, clientSecret } = useRuntimeConfig()
@@ -44,20 +42,5 @@ export async function getClientCredentials() {
     } catch (error: any) {
         throw new Error('error:' + error)
     } finally {
-    }
-}
-
-export async function verifyToken(token: string) {
-    try {
-        const isValid = await new Promise<boolean>((resolve, reject) => {
-            verifySignature(token, (err: VerifyErrors | null, userInfo: JwtPayload | undefined) => {
-                if (err) console.log('error form verifyToken', err)
-                if (err) resolve(false)
-                resolve(true)
-            })
-        })
-        return isValid
-    } catch (error: any) {
-        throw new Error('error:' + error)
     }
 }

@@ -37,9 +37,11 @@
                             ></v-label>
                         </v-card-text>
                         <v-card-actions class="justify-end">
+                            <!-- <dev-only> -->
                             <v-btn v-if="$isDev" variant="text" @click="loginCandidate('1100201370643', '908183')"
-                                >แน่นอน</v-btn
+                                >Clike me</v-btn
                             >
+                            <!-- </dev-only> -->
                             <v-btn variant="text" @click="loginCandidate(props.id_card, password)">เข้าสู่ระบบ</v-btn>
                             <v-btn variant="text" @click="emit('update:show', false)">ยกเลิก</v-btn>
                         </v-card-actions>
