@@ -31,7 +31,7 @@ async function checkPID() {
     const response = await useApi('/auth/check-pid', {
         method: 'POST',
         body: {
-            pid: 123456,
+            pid: 1100201370643,
         },
     })
     if (response.error.value?.data)
