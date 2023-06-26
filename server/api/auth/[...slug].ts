@@ -1,5 +1,5 @@
 import { createRouter, defineEventHandler, useBase, H3Error, isError } from 'h3'
-import { getClientCredentials, verifyToken } from '../../common/authentication'
+import { getClientCredentials,  } from '../../common/authentication'
 import { backendService } from '../../common/externalApi'
 import { handleErrorRoute } from '../../common/error'
 
@@ -64,7 +64,7 @@ router.post(
             const { access_token } = data
             setCookie(event, 'access_token', `Bearer ${access_token}`, {
                 httpOnly: true,
-                secure: true,
+                // secure: true,
                 sameSite: 'strict',
             })
 
