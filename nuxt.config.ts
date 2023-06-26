@@ -39,6 +39,7 @@ export default defineNuxtConfig({
         urlUserInfo: `${process.env.API_ADFS_USERINFO}`,
         clientID: `${process.env.CLIENT_ID_ADFS}`,
         clientSecret: `${process.env.CLIENT_SECRET_ADFS}`,
+        jwks: `${process.env.URI_ADFS_JWKS}`,
         public: {
             baseApi: `/api`,
         },
