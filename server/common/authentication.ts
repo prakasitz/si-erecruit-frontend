@@ -1,11 +1,10 @@
 import axios, { AxiosError } from 'axios'
 import * as qs from 'qs'
-import { JwtPayload, VerifyErrors } from 'jsonwebtoken'
 import { getItemStorage, setItemStorage } from './storage'
 import { verifyToken } from './jwt'
 
 export async function getClientCredentials() {
-    const { urlOauth2, urlADFS, urlUserInfo, clientID, clientSecret } = useRuntimeConfig()
+    const { urlOauth2, clientID, clientSecret } = useRuntimeConfig()
     if (!urlOauth2 && !clientID && !clientSecret) return new Error('Can not found config variable.')
 
     let isValid = false

@@ -5,5 +5,7 @@ export async function getItemStorage(key: string) {
 }
 
 export async function setItemStorage({ key, values }: { key: string; values: any }) {
-    return useStorage(defaultStorage).setItem(key, values)
+    return useStorage(defaultStorage).setItem(key, values, {
+        ttl: 10000,
+    })
 }

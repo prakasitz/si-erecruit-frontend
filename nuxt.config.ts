@@ -25,23 +25,22 @@ export default defineNuxtConfig({
         '@vuepic/vue-datepicker/dist/main.css',
     ],
 
-    modules: ['@pinia/nuxt', 'nuxt-security'],
+    modules: [
+        '@pinia/nuxt',
+        'nuxt-security',
+        //'@nuxt/devtools'
+    ],
 
-    sourcemap: {
-        server: false,
-        client: false,
-    },
+    // sourcemap: false,
 
     runtimeConfig: {
-        baseApi: `${process.env.BACKEND_API_URL}`,
-        urlADFS: `${process.env.URI_ADFS_ACL}`,
-        urlOauth2: `${process.env.API_ADFS}`,
-        urlUserInfo: `${process.env.API_ADFS_USERINFO}`,
-        clientID: `${process.env.CLIENT_ID_ADFS}`,
-        clientSecret: `${process.env.CLIENT_SECRET_ADFS}`,
-        jwks: `${process.env.URI_ADFS_JWKS}`,
+        baseApi: process.env.BACKEND_API_URL,
+        urlOauth2: process.env.API_ADFS,
+        clientId: process.env.CLIENT_ID_ADFS,
+        clientSecret: process.env.CLIENT_SECRET_ADFS,
+        jwks: process.env.URI_ADFS_JWKS,
         public: {
-            baseApi: `/api`,
+            baseApi: '/api',
         },
     },
 
@@ -116,4 +115,12 @@ export default defineNuxtConfig({
         pageTransition: { name: 'page', mode: 'out-in' },
         layoutTransition: { name: 'layout', mode: 'out-in' },
     },
+
+    // devtools: {
+    //     // Enable devtools (default: true)
+    //     enabled: true,
+    //     // VS Code Server options
+    //     vscode: {},
+    //     // ...other options
+    // },
 })

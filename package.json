@@ -4,9 +4,9 @@
     "private": true,
     "scripts": {
         "build": "nuxt build",
-        "dev": "nuxt dev",
+        "dev": "nuxt dev --dotenv .env.local",
         "generate": "nuxt generate",
-        "preview": "nuxt preview",
+        "preview": "nuxt preview --dotenv .env.production",
         "postinstall": "nuxt prepare",
         "docker:build": "cross-var docker build -t registry.si.mahidol.ac.th/new-si-erecruit/$npm_package_name:$npm_package_version .",
         "docker:push": "cross-var docker tag registry.si.mahidol.ac.th/new-si-erecruit/$npm_package_name:$npm_package_version registry.si.mahidol.ac.th/new-si-erecruit/$npm_package_name && cross-var docker push registry.si.mahidol.ac.th/new-si-erecruit/$npm_package_name:$npm_package_version && cross-var docker push registry.si.mahidol.ac.th/new-si-erecruit/$npm_package_name",

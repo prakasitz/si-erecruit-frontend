@@ -84,7 +84,7 @@ class BackendService {
 
     private handleError(error: Error | AxiosError) {
         if (axios.isAxiosError(error)) {
-            console.log(error.response)
+            console.log('axios error:', error.response)
             return createError({
                 statusCode: error.response?.status,
                 statusMessage: error.response?.statusText,

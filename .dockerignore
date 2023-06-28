@@ -1,5 +1,8 @@
 # node_modules
 npm-debug.log
+.output
+.yarnrc.yml
+.nuxt/
 .env
-.git
-.vscode
+.git/
+.vscode/
