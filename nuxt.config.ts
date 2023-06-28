@@ -19,19 +19,33 @@ export default defineNuxtConfig({
 
     css: [
         '@mdi/font/css/materialdesignicons.min.css',
+        '@vuepic/vue-datepicker/dist/main.css',
         '@/assets/_fonts.css',
         '@/assets/main.css',
         'vuetify/styles',
-        '@vuepic/vue-datepicker/dist/main.css',
     ],
 
     modules: [
         '@pinia/nuxt',
         'nuxt-security',
-        //'@nuxt/devtools'
+        async (options, nuxt) => {
+            nuxt.hooks.hook('vite:extendConfig', (config) =>
+                config.plugins.push(
+                    vuetify({
+                        styles: {
+                            configFile: resolve('assets/settings.scss'),
+                        },
+                    })
+                )
+            )
+        },
+        '@nuxt/devtools',
     ],
 
-    // sourcemap: false,
+    sourcemap: {
+        server: false,
+        client: false,
+    },
 
     runtimeConfig: {
         baseApi: process.env.BACKEND_API_URL,
@@ -48,26 +62,23 @@ export default defineNuxtConfig({
         transpile: ['vuetify', '@vuepic/vue-datepicker'],
     },
 
-    hooks: {
-        'vite:extendConfig': (config, { isClient, isServer }) => {
-            config.plugins?.push(
-                vuetify({
-                    styles: {
-                        configFile: resolve('assets/settings.scss'),
-                    },
-                })
-            )
-        },
-    },
-
-    // vite: {
-    //     ssr: {
-    //         noExternal: ['vuetify', '@vuepic/vue-datepicker'],
-    //     },
-    //     define: {
-    //         'process.env.DEBUG': false,
+    // hooks: {
+    //     'vite:extendConfig': (config, { isClient, isServer }) => {
+    //         config.plugins?.push(
+    //             vuetify({
+    //                 styles: {
+    //                     configFile: resolve('assets/settings.scss'),
+    //                 },
+    //             })
+    //         )
     //     },
     // },
+
+    vite: {
+        define: {
+            'process.env.DEBUG': false,
+        },
+    },
 
     pinia: {
         autoImports: [
@@ -116,11 +127,11 @@ export default defineNuxtConfig({
         layoutTransition: { name: 'layout', mode: 'out-in' },
     },
 
-    // devtools: {
-    //     // Enable devtools (default: true)
-    //     enabled: true,
-    //     // VS Code Server options
-    //     vscode: {},
-    //     // ...other options
-    // },
+    devtools: {
+        // Enable devtools (default: true)
+        enabled: true,
+        // VS Code Server options
+        vscode: {},
+        // ...other options
+    },
 })
