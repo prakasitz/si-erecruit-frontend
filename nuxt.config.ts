@@ -25,22 +25,7 @@ export default defineNuxtConfig({
         'vuetify/styles',
     ],
 
-    modules: [
-        '@pinia/nuxt',
-        'nuxt-security',
-        async (options, nuxt) => {
-            nuxt.hooks.hook('vite:extendConfig', (config) =>
-                config.plugins.push(
-                    vuetify({
-                        styles: {
-                            configFile: resolve('assets/settings.scss'),
-                        },
-                    })
-                )
-            )
-        },
-        '@nuxt/devtools',
-    ],
+    modules: ['@pinia/nuxt', 'nuxt-security', '@nuxt/devtools'],
 
     sourcemap: {
         server: false,
@@ -48,11 +33,11 @@ export default defineNuxtConfig({
     },
 
     runtimeConfig: {
-        baseApi: process.env.BACKEND_API_URL,
-        urlOauth2: process.env.API_ADFS,
-        clientId: process.env.CLIENT_ID_ADFS,
-        clientSecret: process.env.CLIENT_SECRET_ADFS,
-        jwks: process.env.URI_ADFS_JWKS,
+        baseApi: '',
+        urlOauth2: '',
+        clientId: '',
+        clientSecret: '',
+        jwks: '',
         public: {
             baseApi: '/api',
         },
@@ -62,17 +47,22 @@ export default defineNuxtConfig({
         transpile: ['vuetify', '@vuepic/vue-datepicker'],
     },
 
-    // hooks: {
-    //     'vite:extendConfig': (config, { isClient, isServer }) => {
-    //         config.plugins?.push(
-    //             vuetify({
-    //                 styles: {
-    //                     configFile: resolve('assets/settings.scss'),
-    //                 },
-    //             })
-    //         )
-    //     },
-    // },
+    hooks: {
+        'vite:extendConfig': (config, { isClient, isServer }) => {
+            config.plugins?.push(
+                vuetify({
+                    styles: {
+                        configFile: resolve('assets/settings.scss'),
+                    },
+                })
+            )
+        },
+        'nitro:config': (config) => {
+            console.log('======================nitro:config=========================')
+            console.log(config.runtimeConfig)
+            console.log('===================================================')
+        },
+    },
 
     vite: {
         define: {
@@ -131,7 +121,6 @@ export default defineNuxtConfig({
         // Enable devtools (default: true)
         enabled: true,
         // VS Code Server options
-        vscode: {},
         // ...other options
     },
 })
