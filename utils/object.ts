@@ -25,3 +25,8 @@ export const compareObjects = (obj1: any, obj2: any) => {
 }
 
 export const isTrue = (obj: any) => Object.values(obj).every((item) => item)
+
+
+export const checkObjectPropertiesNull = (obj: any) => {
+    return Object.values(obj).every((prop) => prop === null)
+}
