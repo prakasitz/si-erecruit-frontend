@@ -8,6 +8,9 @@ export const useApi = async (url: any, params: UseFetchOptions<any>) => {
     const opts: UseFetchOptions<any> = {
         key: url,
         baseURL: config.public.baseApi,
+        headers: {
+            Accept: 'application/json',
+        },
 
         async onRequest({ options }: any) {
             options.headers = options.headers || {}
@@ -17,7 +20,7 @@ export const useApi = async (url: any, params: UseFetchOptions<any>) => {
         },
 
         async onRequestError({ error }: any) {
-            console.log("onRequestError",error.message)
+            console.log('onRequestError', error.message)
         },
 
         async onResponse({ request, response, options }: any) {
@@ -30,7 +33,7 @@ export const useApi = async (url: any, params: UseFetchOptions<any>) => {
         },
 
         async onResponseError({ response }: any) {
-            console.log("onResponseError", response._data.message)
+            console.log('onResponseError', response._data.message)
         },
 
         ...params,
