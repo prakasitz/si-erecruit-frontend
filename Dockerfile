@@ -13,13 +13,8 @@
 # RUN apk add tzdata
 # ENV TZ="Asia/Bangkok"
 
-# ENV HOST=0.0.0.0
-# ENV PORT=3002
-
-
 # EXPOSE 3002
 
-# CMD ["node", ".output/server/index.mjs"]
 # ENTRYPOINT ["node", ".output/server/index.mjs"]
 
 # --------------so big and not working (ms)---------------------
@@ -99,4 +94,4 @@ ENV NODE_ENV=production
 EXPOSE 3002
 
 # start the app
-CMD [ "node", "/app/.output/server/index.mjs" ]
+ENTRYPOINT [ "node", "/app/.output/server/index.mjs" ]
