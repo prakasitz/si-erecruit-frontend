@@ -1,7 +1,7 @@
 <template>
     <CandidateBaseCard :candidate-form="props.candidateForm" :form-page="{ form: formPersonal }">
         <template #card-body>
-            <v-form :ref="formPersonal">
+            <v-form ref="formPersonal">
                 <!-- คำนำหน้า พิเศษ -->
                 <v-container class="text-body-1">
                     <v-row>
