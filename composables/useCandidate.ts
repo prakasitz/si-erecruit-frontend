@@ -4,7 +4,7 @@ export default function useCandidate() {
     return {
         loginCandidate,
         checkPID,
-        getUserInfo,
+        fetchUserInfo,
         getStatus,
     }
 }
@@ -43,7 +43,7 @@ async function checkPID() {
     return response
 }
 
-async function getUserInfo() {
+async function fetchUserInfo() {
     const response = await useApi('/auth/userinfo', {
         method: 'GET',
     })
