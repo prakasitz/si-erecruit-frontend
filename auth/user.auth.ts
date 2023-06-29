@@ -1,14 +1,11 @@
-import { IAuth, UserLogin } from "./auth.interface";
-import axios from 'axios';
+import { IAuth, UserLogin } from './auth.interface'
+import axios from 'axios'
 import cookieHelper from '~/helper/cookie.helper'
 
 const cookie = cookieHelper()
 
 export class UserAuth implements IAuth {
-
-    constructor() {
-
-    }
+    constructor() {}
 
     async signIn(userLogin: UserLogin): Promise<string> {
         const runtimeConfig = useRuntimeConfig()
@@ -19,14 +16,14 @@ export class UserAuth implements IAuth {
                 url: `${runtimeConfig.public.baseApi}/hr-user/auth`,
                 data: {
                     username: userLogin.username,
-                    password: userLogin.password
-                }
-            });
-            cookie.setCookie('access_token', data);
+                    password: userLogin.password,
+                },
+            })
+            cookie.setCookie('access_token', data)
             return data
         } catch (err: any) {
-            console.log(err)
-            throw err.response;
+            console.log('signIn', err)
+            throw err.response
         }
     }
 
@@ -43,11 +40,9 @@ export class UserAuth implements IAuth {
             method: 'POST',
             url: `${runtimeConfig.public.baseApi}/hr-user/auth/userinfo`,
             data: {
-                access_token: access_token
-            }
-        });
-
-
+                access_token: access_token,
+            },
+        })
 
         return data
     }

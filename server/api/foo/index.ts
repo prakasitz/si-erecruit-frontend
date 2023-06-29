@@ -1,1 +1,1 @@
-export default defineEventHandler(() => 'Test get foo handler')
+export default defineEventHandler(() => useRuntimeConfig())

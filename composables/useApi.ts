@@ -17,7 +17,7 @@ export const useApi = async (url: any, params: UseFetchOptions<any>) => {
         },
 
         async onRequestError({ error }: any) {
-            console.log(error.message)
+            console.log("onRequestError",error.message)
         },
 
         async onResponse({ request, response, options }: any) {
@@ -30,7 +30,7 @@ export const useApi = async (url: any, params: UseFetchOptions<any>) => {
         },
 
         async onResponseError({ response }: any) {
-            console.log(response._data.message)
+            console.log("onResponseError", response._data.message)
         },
 
         ...params,

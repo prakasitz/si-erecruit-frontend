@@ -1,15 +1,15 @@
 import axios, { AxiosError } from 'axios'
 import * as qs from 'qs'
-import { JwtPayload, VerifyErrors } from 'jsonwebtoken'
 import { getItemStorage, setItemStorage } from './storage'
 import { verifyToken } from './jwt'
 
 export async function getClientCredentials() {
-    const { urlOauth2, urlADFS, urlUserInfo, clientID, clientSecret } = useRuntimeConfig()
-    if (!urlOauth2 && !clientID && !clientSecret) return new Error('Can not found config variable.')
+    const { urlOauth2, clientId, clientSecret } = useRuntimeConfig()
+    if (!urlOauth2 && !clientId && !clientSecret) return new Error('Can not found config variable.')
+
+    console.log({ RuntimeConfig: useRuntimeConfig() })
 
     let isValid = false
-
     const token = await getItemStorage('client_credential_token')
     if (token) isValid = await verifyToken(token.toString())
 
@@ -22,7 +22,7 @@ export async function getClientCredentials() {
         const results = await axios.post(
             urlOauth2,
             qs.stringify({
-                client_id: clientID,
+                client_id: clientId,
                 client_secret: clientSecret,
                 grant_type: 'client_credentials',
             }),

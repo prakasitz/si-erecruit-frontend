@@ -19,13 +19,13 @@ export default defineNuxtConfig({
 
     css: [
         '@mdi/font/css/materialdesignicons.min.css',
+        '@vuepic/vue-datepicker/dist/main.css',
         '@/assets/_fonts.css',
         '@/assets/main.css',
         'vuetify/styles',
-        '@vuepic/vue-datepicker/dist/main.css',
     ],
 
-    modules: ['@pinia/nuxt', 'nuxt-security'],
+    modules: ['@pinia/nuxt', 'nuxt-security', '@nuxt/devtools'],
 
     sourcemap: {
         server: false,
@@ -33,15 +33,13 @@ export default defineNuxtConfig({
     },
 
     runtimeConfig: {
-        baseApi: `${process.env.BACKEND_API_URL}`,
-        urlADFS: `${process.env.URI_ADFS_ACL}`,
-        urlOauth2: `${process.env.API_ADFS}`,
-        urlUserInfo: `${process.env.API_ADFS_USERINFO}`,
-        clientID: `${process.env.CLIENT_ID_ADFS}`,
-        clientSecret: `${process.env.CLIENT_SECRET_ADFS}`,
-        jwks: `${process.env.URI_ADFS_JWKS}`,
+        baseApi: '',
+        urlOauth2: '',
+        clientId: '',
+        clientSecret: '',
+        jwks: '',
         public: {
-            baseApi: `/api`,
+            baseApi: '/api',
         },
     },
 
@@ -59,16 +57,18 @@ export default defineNuxtConfig({
                 })
             )
         },
+        'nitro:config': (config) => {
+            console.log('======================nitro:config=========================')
+            console.log(config.runtimeConfig)
+            console.log('===================================================')
+        },
     },
 
-    // vite: {
-    //     ssr: {
-    //         noExternal: ['vuetify', '@vuepic/vue-datepicker'],
-    //     },
-    //     define: {
-    //         'process.env.DEBUG': false,
-    //     },
-    // },
+    vite: {
+        define: {
+            'process.env.DEBUG': false,
+        },
+    },
 
     pinia: {
         autoImports: [
@@ -115,5 +115,12 @@ export default defineNuxtConfig({
         // global transition
         pageTransition: { name: 'page', mode: 'out-in' },
         layoutTransition: { name: 'layout', mode: 'out-in' },
+    },
+
+    devtools: {
+        // Enable devtools (default: true)
+        enabled: true,
+        // VS Code Server options
+        // ...other options
     },
 })
