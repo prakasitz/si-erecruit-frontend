@@ -12,7 +12,7 @@ export class CandidateAuth implements IAuth {
         try {
             let { data } = await axios({
                 method: 'POST',
-                url: `${runtimeConfig.public.baseApi}/cadidate/auth`,
+                url: `${runtimeConfig.public.baseApi}/candidate/auth`,
                 data: {
                     pid: userLogin.username,
                     password: userLogin.password,
@@ -39,7 +39,7 @@ export class CandidateAuth implements IAuth {
 
         let { data } = await axios({
             method: 'POST',
-            url: `${runtimeConfig.public.baseApi}/cadidate/auth/userInfo`,
+            url: `${runtimeConfig.public.baseApi}/candidate/auth/userInfo`,
             data: {
                 access_token: access_token,
             },
