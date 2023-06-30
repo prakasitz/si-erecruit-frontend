@@ -33,6 +33,9 @@ async function loginHR(username?: string | undefined, password?: string | undefi
 async function fetchUserInfo() {
     const response = await useApi('/auth/userinfo', {
         method: 'GET',
+        headers: {
+            'x-role': RoleEnum.HR
+        }
     })
 
     if (response.error.value?.data)

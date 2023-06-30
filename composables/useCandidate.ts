@@ -12,6 +12,9 @@ export default function useCandidate() {
 async function loginCandidate(pid?: string | undefined, password?: string | undefined) {
     const response = await useApi('/auth/login', {
         method: 'POST',
+        headers: {
+            'x-role': RoleEnum.CANDIDATE,
+        },
         body: {
             pid: pid?.toString(),
             password: password?.toString(),
@@ -22,6 +25,7 @@ async function loginCandidate(pid?: string | undefined, password?: string | unde
         throw createError({
             statusCode: response.error.value?.statusCode,
             statusMessage: response.error.value?.message,
+            message: '[m:login-candidate]',
         })
 
     return response
@@ -46,6 +50,9 @@ async function checkPID() {
 async function fetchUserInfo() {
     const response = await useApi('/auth/userinfo', {
         method: 'GET',
+        headers: {
+            'x-role': RoleEnum.CANDIDATE,
+        },
     })
 
     if (response.error.value?.data)
