@@ -1,18 +1,7 @@
-@use "vuetify/settings" with (
-    $list-item-title-font-size: 16px,
-    $body-font-family: "Krub-Regular",
-    $heading-font-family: 'Krub-Bold',
-    // $field-border-radius: 20px,
-    $text-field-border-radius: 16px,
+@use 'vuetify/lib/styles/main.sass' with (
+    $body-font-family: 'Krub-Regular',
+    $heading-font-family: 'Krub-Bold'
 );
-
-
-// .v-text-field {
-//     .v-field__outline__start {
-//       border-radius: 20px 0 0 20px !important;
-//       border-color: red !important;
-//     }
-//   }
 
 .v-text-field {
     .v-field__outline__start {

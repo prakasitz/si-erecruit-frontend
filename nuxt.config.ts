@@ -2,6 +2,7 @@
 
 import { createResolver } from '@nuxt/kit'
 import vuetify from 'vite-plugin-vuetify'
+
 const { resolve } = createResolver(import.meta.url)
 
 const rateLimit300perDay = {
@@ -48,15 +49,15 @@ export default defineNuxtConfig({
     },
 
     hooks: {
-        'vite:extendConfig': (config, { isClient, isServer }) => {
-            config.plugins?.push(
-                vuetify({
-                    styles: {
-                        configFile: resolve('assets/settings.scss'),
-                    },
-                })
-            )
-        },
+        // 'vite:extendConfig': (config, { isClient, isServer }) => {
+        //     config.plugins?.push(
+        //         vuetify({
+        //             styles: {
+        //                 configFile: resolve('assets/settings.scss'),
+        //             },
+        //         })
+        //     )
+        // },
         'nitro:config': (config) => {
             console.log('======================nitro:config=========================')
             console.log(config.runtimeConfig)
