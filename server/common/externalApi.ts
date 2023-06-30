@@ -6,7 +6,7 @@ class BackendService {
     private config: any
     private baseAPI: AxiosInstance
     private hrSlug = 'hr-user'
-    private candidateSlug = 'cadidate'
+    private candidateSlug = 'candidate'
     private candidateInfoSlug = 'candidate-info'
 
     constructor() {
@@ -102,12 +102,9 @@ class BackendService {
 
     public async HRUserInfo(hr_token: string) {
         try {
-            let token = hr_token.split('Bearer ')[1]
             const resp = await this.baseAPI.post(
                 `/${this.hrSlug}/auth/userInfo`,
-                {
-                    body: token,
-                },
+                {},
                 {
                     headers: {
                         Authorization: hr_token,
