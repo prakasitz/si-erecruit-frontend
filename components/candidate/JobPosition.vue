@@ -59,7 +59,8 @@ const props = defineProps<{
 
 const formJobPosition: Ref<HTMLFormElement | null> = ref<HTMLFormElement | null>(null)
 const jobPositionDescription = 'กรุณาเลือกตำแหน่งที่ท่านบรรจุ'
-const { data } = await useFetch('/api/delay', { server: false }) //ใช้ await เมื่อต้องการ ssr
+
+useFetch('/api/delay', { server: false }) //ใช้ await เมื่อต้องการ ssr
 
 onMounted(() => {
     console.log('onMounted JobPosition')
@@ -67,5 +68,9 @@ onMounted(() => {
 
 onUpdated(() => {
     console.log('onUpdated JobPosition')
+})
+
+onUnmounted(() => {
+    console.log('onUnmounted JobPosition')
 })
 </script>

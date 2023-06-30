@@ -102,7 +102,6 @@ const route = useRoute()
 
 useHead({
     titleTemplate: (productCategory) => {
-        console.log('breadcrumbs >>', route.meta.breadcrumbs)
         return productCategory ? `${productCategory} - ${route.meta.title}` : 'Site Title'
     },
     // meta: [{ property: 'og:title', content: `App Name - ${route.meta.title}` }],
