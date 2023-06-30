@@ -20,6 +20,7 @@ definePageMeta({
             title: 'หน้าหลัก',
         },
     ],
+    middleware: 'hr-auth',
 })
 
 const route = useRoute()

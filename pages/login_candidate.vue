@@ -81,7 +81,7 @@ definePageMeta({
         name: 'rotate',
     },
     layout: 'logincandidate',
-    middleware: ['candidate-isauthenticated'],
+    middleware: 'is-auth',
 })
 
 async function onClick_CheckingPID(_id: string) {

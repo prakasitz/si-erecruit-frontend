@@ -58,6 +58,7 @@
 
 <script setup lang="ts">
 import { UserAuth } from '~/auth/user.auth'
+import { H3Error } from 'h3'
 
 const topDialog = useTopDialog()
 const auth = new UserAuth()
@@ -70,14 +71,27 @@ definePageMeta({
         name: 'rotate',
     },
     layout: 'custom',
+    middleware: 'is-auth',
 })
 
 async function signIn() {
+    // try {
+    //     await auth.signIn({ username: username.value, password: password.value })
+    //     navigateTo('/')
+    // } catch {
+    //     topDialog.value = true
+    // }
+
     try {
-        await auth.signIn({ username: username.value, password: password.value })
-        navigateTo('/')
-    } catch {
-        topDialog.value = true
+        const res = await useHR().loginHR(username.value, password.value)
+        console.log(res.data.value)
+        await navigateTo({ path: '/' })
+    } catch (error: H3Error | any) {
+        if (error instanceof H3Error && error.statusCode == 401) {
+            topDialog.value = true
+        } else {
+            throw showError({ statusCode: 500, statusMessage: 'Internal Server Error', message: error.message })
+        }
     }
 }
 </script>
