@@ -1,21 +1,18 @@
 import axios, { AxiosError, AxiosInstance } from 'axios'
 import { getClientCredentials } from './authentication'
 
-const config = useRuntimeConfig()
-const baseAPi = axios.create({
-    baseURL: config.baseApi,
-    timeout: 1000,
-})
-
 class BackendService {
     private token: string | undefined
     private config: any
     private baseAPI: AxiosInstance
+    private hrSlug = 'hr-user'
+    private candidateSlug = 'cadidate'
+    private candidateInfoSlug = 'candidate-info'
 
     constructor() {
         this.config = useRuntimeConfig()
         this.baseAPI = axios.create({
-            baseURL: config.baseApi,
+            baseURL: this.config.baseApi,
             timeout: 1000,
         })
     }
@@ -24,10 +21,31 @@ class BackendService {
         this.token = (await getClientCredentials())?.toString()
     }
 
+    public async CandidateLogin(pid: string, password: string) {
+        try {
+            await this.initializeToken()
+            const resp = await this.baseAPI.post(
+                `/${this.candidateSlug}/auth`,
+                {
+                    pid: pid.toString(),
+                    password: password.toString(),
+                },
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + this.token,
+                    },
+                }
+            )
+            return resp.data
+        } catch (error: AxiosError | any) {
+            throw this.handleError(error)
+        }
+    }
+
     public async CandidateUserInfo(candidate_token: string) {
         try {
             const resp = await this.baseAPI.post(
-                '/cadidate/auth/userInfo',
+                `/${this.candidateSlug}/auth/userInfo`,
                 {},
                 {
                     headers: {
@@ -45,7 +63,7 @@ class BackendService {
         try {
             await this.initializeToken()
             const resp = await this.baseAPI.post(
-                '/candidate-info/check-active',
+                `/${this.candidateInfoSlug}/check-active`,
                 {
                     pid: pid.toString(),
                 },
@@ -61,18 +79,38 @@ class BackendService {
         }
     }
 
-    public async CandidateLogin(pid: string, password: string) {
+    public async HRLogin(username: string, password: string) {
         try {
             await this.initializeToken()
             const resp = await this.baseAPI.post(
-                '/cadidate/auth',
+                `/${this.hrSlug}/auth`,
                 {
-                    pid: pid.toString(),
+                    username: username.toString(),
                     password: password.toString(),
                 },
                 {
                     headers: {
                         Authorization: 'Bearer ' + this.token,
+                    },
+                }
+            )
+            return resp.data
+        } catch (error: AxiosError | any) {
+            throw this.handleError(error)
+        }
+    }
+
+    public async HRUserInfo(hr_token: string) {
+        try {
+            let token = hr_token.split('Bearer ')[1]
+            const resp = await this.baseAPI.post(
+                `/${this.hrSlug}/auth/userInfo`,
+                {
+                    body: token,
+                },
+                {
+                    headers: {
+                        Authorization: hr_token,
                     },
                 }
             )
