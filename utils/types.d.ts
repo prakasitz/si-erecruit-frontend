@@ -32,12 +32,14 @@ export enum ProfileStatus {
     CANCELLED = 'Cancelled',
 }
 
-export enum Roles {
-    'SUPER_ADMIN',
-    'ADMIN',
-    'HR',
-    'CANDIDATE',
+export enum RoleEnum {
+    SUPER_ADMIN = 'SUPER_ADMIN',
+    ADMIN = 'ADMIN',
+    HR = 'HR',
+    CANDIDATE = 'CANDIDATE'
 }
+
+export type Roles = 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'CANDIDATE'
 
 export type Candidate = {
     id: string
