@@ -36,7 +36,7 @@ export enum RoleEnum {
     SUPER_ADMIN = 'SUPER_ADMIN',
     ADMIN = 'ADMIN',
     HR = 'HR',
-    CANDIDATE = 'CANDIDATE'
+    CANDIDATE = 'CANDIDATE',
 }
 
 export type Roles = 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'CANDIDATE'
@@ -118,4 +118,21 @@ export type VuetifyForm = {
     }>
     reset: () => void
     resetValidation: () => void
+}
+
+export type User = {
+    id: number
+    first_name: string
+    last_name?: string
+    pid?: string
+    permissions: string | null
+    role: Roles
+    csrf_token?: string
+    is_active: boolean
+    last_login: Date | null
+    created_at: Date
+}
+
+export type TokenSession = {
+    access_token: string
 }
