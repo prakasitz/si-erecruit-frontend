@@ -82,6 +82,7 @@ class BackendService {
     public async HRLogin(username: string, password: string) {
         try {
             await this.initializeToken()
+
             const resp = await this.baseAPI.post(
                 `/${this.hrSlug}/auth`,
                 {
