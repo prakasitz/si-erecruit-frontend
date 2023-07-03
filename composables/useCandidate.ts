@@ -55,6 +55,8 @@ async function fetchUserInfo() {
         },
     })
 
+    console.log('useCandidate:fetchUserInfo:', ' ', response.error.value?.statusCode)
+
     if (response.error.value?.data)
         throw createError({
             statusCode: response.error.value?.statusCode,

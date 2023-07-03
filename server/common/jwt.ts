@@ -31,7 +31,7 @@ export async function verifyToken(token: string) {
     try {
         const isValid = await new Promise<boolean>((resolve, reject) => {
             verifySignature(token, (err: VerifyErrors | null, userInfo: JwtPayload | undefined) => {
-                if (err) console.log('error form verifyToken', err)
+                if (err) console.log('jwt:verifyToken', ' ', err)
                 if (err) resolve(false)
                 resolve(true)
             })

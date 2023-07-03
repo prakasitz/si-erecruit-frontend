@@ -1,4 +1,5 @@
 import { UseFetchOptions } from 'nuxt/app'
+import { FetchResponse, FetchContext } from 'ofetch'
 
 export const useApi = async (url: any, params: UseFetchOptions<any>) => {
     const cookie = useCookie('token')
@@ -32,8 +33,8 @@ export const useApi = async (url: any, params: UseFetchOptions<any>) => {
             }
         },
 
-        async onResponseError({ response }: any) {
-            console.log('onResponseError', response._data.message)
+        async onResponseError({ response }: FetchContext<any>) {
+            console.log('useApi:onResponseError:', response?.status)
         },
 
         ...params,

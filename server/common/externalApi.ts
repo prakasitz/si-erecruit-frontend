@@ -119,7 +119,10 @@ class BackendService {
 
     private handleError(error: Error | AxiosError) {
         if (axios.isAxiosError(error)) {
-            console.log('axios error:', error.response)
+            console.log('ExternalAPI:error:', ' ', {
+                statusCode: error.response?.status,
+                message: error.response?.statusText,
+            })
             return createError({
                 statusCode: error.response?.status,
                 statusMessage: error.response?.statusText,
