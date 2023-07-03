@@ -38,6 +38,7 @@ export default defineNuxtConfig({
         urlOauth2: '',
         clientId: '',
         clientSecret: '',
+        audience: '',
         jwks: '',
         public: {
             baseApi: '/api',
