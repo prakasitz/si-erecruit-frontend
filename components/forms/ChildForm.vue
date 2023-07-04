@@ -67,7 +67,7 @@
                                 :="defaultVueDatePickerStyle"
                                 v-model="childFormModel.birth_date"
                                 :rules="rules_fieldEmpty"
-                                :state="!!isValid.value"
+                                :state="(isValid.value as boolean)"
                             />
                         </template>
                     </v-input>

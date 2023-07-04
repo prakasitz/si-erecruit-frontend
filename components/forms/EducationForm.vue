@@ -96,7 +96,7 @@
                         :="defaultVueDatePickerStyle"
                         v-model="educationFormModel.start_date"
                         :rules="rules_fieldEmpty"
-                        :state="!!isValid.value"
+                        :state="(isValid.value as boolean)"
                     />
                 </template>
             </v-input>
@@ -110,7 +110,7 @@
                         :="defaultVueDatePickerStyle"
                         v-model="educationFormModel.graduate_date"
                         :rules="rules_fieldEmpty"
-                        :state="!!isValid.value"
+                        :state="(isValid.value as boolean)"
                     />
                 </template>
             </v-input>

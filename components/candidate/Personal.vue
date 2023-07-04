@@ -257,7 +257,7 @@
                                                 :start-date="getMaxBirthDate()"
                                                 v-model="birtDate"
                                                 :rules="rules_fieldEmpty"
-                                                :state="!!isValid.value"
+                                                :state="(isValid.value as boolean)"
                                             />
                                         </template>
                                     </v-input>
@@ -385,11 +385,11 @@
                                     <v-input v-model="personal_info.id_card_issue_date" :rules="rules_fieldEmpty">
                                         <template #default="{ isValid }">
                                             <VueDatePicker
-                                                placeholder="วัน/เดือน/ปี"
+                                                :placeholder="`วัน/เดือน/ปี`"
                                                 :="defaultVueDatePickerStyle"
                                                 v-model="personal_info.id_card_issue_date"
                                                 :rules="rules_fieldEmpty"
-                                                :state="!!isValid.value"
+                                                :state="(isValid.value as boolean)"
                                             />
                                         </template>
                                     </v-input>
@@ -409,7 +409,7 @@
                                                 :="defaultVueDatePickerStyle"
                                                 v-model="personal_info.id_card_expire_date"
                                                 :rules="rules_fieldEmpty"
-                                                :state="!!isValid.value"
+                                                :state="(isValid.value as boolean)"
                                             />
                                         </template>
                                     </v-input>
