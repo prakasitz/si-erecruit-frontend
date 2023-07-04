@@ -136,3 +136,9 @@ export type User = {
 export type TokenSession = {
     access_token: string
 }
+
+export type JSONResponse = {
+    status: 'success' | 'fail'
+    data?: any
+    error?: any
+}

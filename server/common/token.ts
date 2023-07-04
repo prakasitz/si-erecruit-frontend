@@ -28,11 +28,11 @@ export async function verifySignature(token: any, done: any) {
     )
 }
 
-export async function verifyToken(token: string) {
+export async function verifyOauth2Token(token: string) {
     try {
         const isValid = await new Promise<boolean>((resolve, reject) => {
             verifySignature(token, (err: VerifyErrors | null, userInfo: JwtPayload | undefined) => {
-                if (err) console.log('jwt:verifyToken', ' ', err)
+                if (err) console.log('jwt:verifyOauth2Token', ' ', err)
                 if (err) resolve(false)
                 resolve(true)
             })
@@ -51,7 +51,7 @@ export function setCookieLogin(event: H3Event, { token }: { token: string }) {
     })
 }
 
-export async function getTokenPayload(token: string): Promise<H3Error | JwtPayload> {
+export async function verifyAccessToken(token: string): Promise<H3Error | JwtPayload> {
     let tempPayload = null
     let payload = null
     let error = null
@@ -61,13 +61,13 @@ export async function getTokenPayload(token: string): Promise<H3Error | JwtPaylo
         const decoded: jwt.JwtPayload | null | string = jwt.decode(token)
 
         if (decoded && typeof decoded === 'object') {
-            // this token from adfs
+            // this token from adfs or JWT
             let isValid: boolean = false
             if (decoded.aud === audience) {
-                isValid = await verifyToken(token)
-                console.log('getTokenPayload: Jwt payload obtained successfully')
+                isValid = await verifyOauth2Token(token)
+                console.log('verifyAccessToken: Jwt payload obtained successfully')
                 if (isValid) return decoded
-                throw new Error('getTokenPayload: Cannot Verify token')
+                throw new Error('verifyAccessToken: Cannot Verify token')
             } else {
                 //should be using api for verify candidate token valid or not ?
                 let secret =
@@ -75,25 +75,25 @@ export async function getTokenPayload(token: string): Promise<H3Error | JwtPaylo
 
                 jwt.verify(token, secret, (err, jwtPayload) => {
                     if (err) {
-                        console.log('getTokenPayload: Cannot Verify token')
+                        console.log('verifyAccessToken: Cannot Verify token', err)
                         // If not, just return the error
-                        error = 'getTokenPayload: Cannot Verify token'
+                        error = 'verifyAccessToken: Cannot Verify token'
                     } else {
                         tempPayload = jwtPayload
                     }
                 })
 
                 if (tempPayload) {
-                    console.log('getTokenPayload: Jwt payload obtained successfully')
+                    console.log('verifyAccessToken: Jwt payload obtained successfully')
                     payload = tempPayload as JwtPayload
                     return payload
                 }
                 // // Return error (to satisfy Typescript demannds)
-                throw new Error('getTokenPayload:  We should never reach here')
+                throw new Error('verifyAccessToken:  We should never reach here')
             }
         } else {
-            console.log('getTokenPayload: Invalid audience in token')
-            throw new Error('getTokenPayload: Invalid audience in token')
+            console.log('verifyAccessToken: Invalid audience in token')
+            throw new Error('verifyAccessToken: Invalid audience in token')
         }
     } catch (error: jwt.JsonWebTokenError | any) {
         let msg: string = error.message
@@ -104,7 +104,7 @@ export async function getTokenPayload(token: string): Promise<H3Error | JwtPaylo
         return createError({
             statusCode: 500,
             statusMessage: 'Internal Server Error',
-            message: 'getTokenPayload: Server error, Error decoding token: ' + msg,
+            message: 'verifyAccessToken: Server error, Error decoding token: ' + msg,
             stack: undefined,
         })
     }
