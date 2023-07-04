@@ -47,9 +47,8 @@ export async function getClientCredentials() {
 }
 
 export async function isAuthenticated(event: H3Event): Promise<boolean | H3Error> {
-    let accessToken = getCookie(event, 'access_token') as string
+    let accessToken = getHeader(event, 'Authorization') as string
 
-    // // If no token, user is not authenticated
     if (!accessToken) {
         console.log('Error: No access token provided')
         return createError({

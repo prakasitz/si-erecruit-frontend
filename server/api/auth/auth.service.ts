@@ -47,3 +47,16 @@ export async function checkIsAuthenticated(event: H3Event) {
     } finally {
     }
 }
+
+export async function checkPID(event: H3Event) {
+    try {
+        const body = await readBody(event)
+        if (body?.pid) {
+            const { pid } = body
+            const data = await backendService.CandidateCheckActive(pid)
+            return data
+        }
+    } catch (error: H3Error | any) {
+        return handleErrorRoute(error)
+    }
+}

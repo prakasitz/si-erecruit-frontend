@@ -12,9 +12,21 @@ export const default_job: job = {
 }
 
 export const defaultVueDatePickerStyle: VueDatePickerProps = {
-    
     flow: ['year', 'month', 'calendar'],
     enableTimePicker: false,
     hideNavigation: ['time'],
     modelType: 'yyyy/MM/dd',
 }
+
+// User not found error
+export const userNotFoundError = createError({
+    statusCode: 401,
+    statusMessage: 'Unauthorized',
+    message: 'User not found',
+})
+
+// Forbidden error
+export const forbiddenError = createError({
+    statusCode: 403,
+    statusMessage: 'Forbidden',
+})

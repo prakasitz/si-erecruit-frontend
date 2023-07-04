@@ -5,20 +5,8 @@ import { handleErrorRoute } from '../../common/error'
 import { JSONResponse, RoleEnum, Roles } from '../../../utils/types'
 import { verifyAccessToken, setCookieLogin } from '../../common/token'
 import { isMatchRegex } from '../../../utils/string'
-import { checkIsAuthenticated, getUserInfo } from './auth.service'
-
-// User not found error
-const userNotFoundError = createError({
-    statusCode: 401,
-    statusMessage: 'Unauthorized',
-    message: 'User not found',
-})
-
-// Forbidden error
-const forbiddenError = createError({
-    statusCode: 403,
-    statusMessage: 'Forbidden',
-})
+import { checkIsAuthenticated, checkPID, getUserInfo } from './auth.service'
+import { userNotFoundError } from '../../../utils/default'
 
 const router = createRouter()
 
@@ -62,16 +50,9 @@ router.get(
 router.post(
     '/check-pid',
     defineEventHandler(async (event) => {
-        try {
-            const body = await readBody(event)
-            if (body?.pid) {
-                const { pid } = body
-                const data = await backendService.CandidateCheckActive(pid)
-                return { body, data }
-            }
-        } catch (error: H3Error | any) {
-            return handleErrorRoute(error)
-        }
+        // ! CHECK USER FROM PAYLOAD
+        if (!event.context.user) throw userNotFoundError
+        return checkPID(event)
     })
 )
 
@@ -79,7 +60,6 @@ router.post(
     @param role must match HR or CANDIDATE
     @param referer from frontend header referer
 */
-
 router.post(
     '/login',
     defineEventHandler(async (event) => {
