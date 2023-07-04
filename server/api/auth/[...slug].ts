@@ -1,18 +1,32 @@
 import { createRouter, defineEventHandler, useBase, H3Error, isError } from 'h3'
-import { getClientCredentials } from '../../common/authentication'
+import { getClientCredentials, isAuthenticated } from '../../common/authentication'
 import { backendService } from '../../common/externalApi'
 import { handleErrorRoute } from '../../common/error'
-import { RoleEnum, Roles } from '../../../utils/types'
-import { getTokenPayload, setCookieLogin } from '../../common/token'
+import { JSONResponse, RoleEnum, Roles } from '../../../utils/types'
+import { verifyAccessToken, setCookieLogin } from '../../common/token'
 import { isMatchRegex } from '../../../utils/string'
+import { checkIsAuthenticated, getUserInfo } from './auth.service'
+
+// User not found error
+const userNotFoundError = createError({
+    statusCode: 401,
+    statusMessage: 'Unauthorized',
+    message: 'User not found',
+})
+
+// Forbidden error
+const forbiddenError = createError({
+    statusCode: 403,
+    statusMessage: 'Forbidden',
+})
 
 const router = createRouter()
 
 router.post(
-    '/getTokenPayload',
+    '/verifyAccessToken',
     defineEventHandler(async (event) => {
         const body = await readBody(event)
-        return await getTokenPayload(body.token)
+        return await verifyAccessToken(body.token)
     })
 )
 
@@ -24,36 +38,24 @@ router.get(
     })
 )
 
+/**
+ * @desc Checks if user is authenticated
+ * @param event H3 Event passed from api
+ * @returns {Promise<JSONResponse>}
+ */
+router.get(
+    '/isauthenticated',
+    defineEventHandler(async (event) => {
+        return checkIsAuthenticated(event)
+    })
+)
+
 router.get(
     '/userinfo',
     defineEventHandler(async (event) => {
-        const token = getCookie(event, 'access_token') as string
-        let role = getHeader(event, 'x-role') as Roles | undefined
-
-        if (!token) {
-            console.log('Error: No access token provided')
-            return createError({
-                statusCode: 400,
-                statusMessage: 'No access token provided',
-            })
-        }
-
-        try {
-            switch (role) {
-                case 'HR':
-                    const data1 = await backendService.HRUserInfo(token)
-                    return data1
-                    break
-                case 'CANDIDATE':
-                    const data2 = await backendService.CandidateUserInfo(token)
-                    return data2
-                    break
-                default:
-                    break
-            }
-        } catch (error: H3Error | any) {
-            return handleErrorRoute(error)
-        }
+        // ! CHECK USER FROM PAYLOAD
+        if (!event.context.user) throw userNotFoundError
+        return getUserInfo(event)
     })
 )
 
@@ -73,12 +75,11 @@ router.post(
     })
 )
 
-/*
-    @param role from frontend header x-role
-        role must match HR or CANDIDATE
+/**
+    @param role must match HR or CANDIDATE
     @param referer from frontend header referer
-        referer must match /login or /login_candidate
 */
+
 router.post(
     '/login',
     defineEventHandler(async (event) => {
