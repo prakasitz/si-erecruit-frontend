@@ -8,7 +8,7 @@ export async function getUserInfo(event: H3Event) {
     try {
         const runtimeConfig = useRuntimeConfig()
         let userContext = event.context.user
-        const token = getHeader(event, 'Authorization') as string
+        const token = getCookie(event, 'access_token') as string
         let role = getHeader(event, 'x-role') as Roles | undefined
         switch (role) {
             case 'HR':

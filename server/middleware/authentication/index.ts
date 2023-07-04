@@ -14,30 +14,37 @@ const forbiddenError = createError({
 
 export default defineEventHandler(async (event) => {
     // Get all routes that need a user to be authenticated
+
     const authRoutes = getAuthenticatedRoutes()
     if (event.node.req.url) {
         for (let i = 0; i < authRoutes.length; i++) {
             if (event.node.req.url.includes(authRoutes[i])) {
-                console.log(`=============`, ' ', `middleware:authentication`, ' ', `==========================`)
-                const authenticated = await isAuthenticated(event)
+                try {
+                    console.log(`=============`, ' ', `middleware:authentication`, ' ', `==========================`)
 
-                if (authenticated instanceof H3Error) throw forbiddenError
+                    const authenticated = await isAuthenticated(event)
 
-                if (authenticated === false) throw forbiddenError
+                    if (authenticated instanceof H3Error) throw forbiddenError
 
-                const userOrNull = await getUserFromAccessToken(event)
+                    if (authenticated === false) throw forbiddenError
 
-                if (userOrNull === null) {
-                    console.log('Missing access token after authentication. This should not happen.')
-                    throw createError({
-                        statusCode: 401,
-                        statusMessage: 'Unauthorized. Missing access token.',
-                    })
+                    const userOrNull = await getUserFromAccessToken(event)
+
+                    if (userOrNull === null) {
+                        console.log('Missing access token after authentication. This should not happen.')
+                        throw createError({
+                            statusCode: 401,
+                            statusMessage: 'Unauthorized. Missing access token.',
+                        })
+                    }
+                    console.log(userOrNull)
+                    // Add user to context
+                    event.context.user = userOrNull
+                } catch (error) {
+                    throw error
+                } finally {
+                    console.log(`=======================================================================`)
                 }
-                console.log(userOrNull)
-                // Add user to context
-                event.context.user = userOrNull
-                console.log(`=======================================================================`)
                 break
             }
         }

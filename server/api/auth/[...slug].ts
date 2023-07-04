@@ -50,8 +50,6 @@ router.get(
 router.post(
     '/check-pid',
     defineEventHandler(async (event) => {
-        // ! CHECK USER FROM PAYLOAD
-        if (!event.context.user) throw userNotFoundError
         return checkPID(event)
     })
 )

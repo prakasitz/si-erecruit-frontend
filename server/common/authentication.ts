@@ -47,10 +47,10 @@ export async function getClientCredentials() {
 }
 
 export async function isAuthenticated(event: H3Event): Promise<boolean | H3Error> {
-    let accessToken = getHeader(event, 'Authorization') as string
+    let accessToken = getCookie(event, 'access_token') as string
 
     if (!accessToken) {
-        console.log('Error: No access token provided')
+        console.log('isAuthenticated: No access token provided')
         return createError({
             statusCode: 400,
             statusMessage: 'No access token provided',
