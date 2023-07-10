@@ -94,6 +94,15 @@ export default defineNuxtConfig({
         csrf: false,
     },
 
+    routeRules: {
+        '/api/master/**': {
+            proxy: {
+                to: '/api/external/master/**',
+            },
+            
+        },
+    },
+
     // routeRules: {
     //     '/api/auth/check-pid': {
     //         security: {
