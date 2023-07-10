@@ -1,13 +1,13 @@
 import axios, { AxiosError, AxiosInstance } from 'axios'
 import { getClientCredentials } from './authentication'
 
-class BackendService {
-    private token: string | undefined
-    private config: any
-    private baseAPI: AxiosInstance
-    private hrSlug = 'hr-user'
-    private candidateSlug = 'candidate'
-    private candidateInfoSlug = 'candidate-info'
+export class BackendService {
+    protected token: string | undefined
+    protected config: any
+    protected baseAPI: AxiosInstance
+    protected hrSlug = 'hr-user'
+    protected candidateSlug = 'candidate'
+    protected candidateInfoSlug = 'candidate-info'
 
     constructor() {
         this.config = useRuntimeConfig()
@@ -17,7 +17,7 @@ class BackendService {
         })
     }
 
-    private async initializeToken() {
+    protected async initializeToken() {
         this.token = (await getClientCredentials())?.toString()
     }
 
@@ -118,7 +118,7 @@ class BackendService {
         }
     }
 
-    private handleError(error: Error | AxiosError) {
+    protected handleError(error: Error | AxiosError) {
         if (axios.isAxiosError(error)) {
             console.log('ExternalAPI:error:', ' ', {
                 statusCode: error.response?.status,
