@@ -15,9 +15,9 @@
         "docker:nobuild": "yarn docker:build && yarn docker:push && yarn docker:dev"
     },
     "devDependencies": {
-        "@nuxt/devtools": "latest",
-        "@types/node": "^18",
+        "@nuxt/devtools": "^0.6.7",
         "@types/jsonwebtoken": "^8.5.9",
+        "@types/node": "^18",
         "@types/qs": "^6",
         "cross-var": "^1.1.0",
         "nuxt": "3.5.3",

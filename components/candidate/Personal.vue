@@ -101,9 +101,12 @@
                                         hint="กรุณาเลือกคำนำหน้า"
                                         :rules="rules_fieldEmpty"
                                     >
-                                        <v-radio class="mr-4" label="นาย" value="1"></v-radio>
-                                        <v-radio class="mr-4" label="นาง" value="2"></v-radio>
-                                        <v-radio class="mr-4" label="นางสาว" value="3"></v-radio>
+                                        <v-radio
+                                            v-for="title in mTitles"
+                                            class="mr-4"
+                                            :label="title.long_text"
+                                            :value="title.form_of_address_key"
+                                        ></v-radio>
                                     </v-radio-group>
                                 </v-col>
                             </v-row>
@@ -556,14 +559,25 @@
 import { usePersonalStore } from '../../stores/personal.store'
 import { useMasterDataStore } from '../../stores/master.store'
 import { storeToRefs } from 'pinia'
-
 import { CandidateForm } from '~/utils/types'
 const props = defineProps<{
     candidateForm: CandidateForm
 }>()
 
+const {
+    data: mTitles,
+    error,
+    refresh,
+    pending,
+} = await useApi('/master/title?adult=1', {
+    method: 'GET',
+})
+
+console.log('title', mTitles.value)
+
 const personalStore = usePersonalStore()
-const { provinces } = useMasterDataStore()
+const { provinces, setTitle } = useMasterDataStore()
+
 const { personal_info, setBirthDate } = personalStore
 
 const { search, loading, searchItems } = useSearchAutoComplete(provinces, 'province_name')

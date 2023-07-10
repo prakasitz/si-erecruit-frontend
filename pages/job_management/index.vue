@@ -68,6 +68,7 @@ definePageMeta({
             title: 'จัดการงาน',
         },
     ],
+    middleware: ['hr-auth'],
 })
 
 const headers = [

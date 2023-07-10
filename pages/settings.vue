@@ -65,6 +65,7 @@ definePageMeta({
             title: 'ตั้งค่า',
         },
     ],
+    middleware: ['hr-auth'],
 })
 
 const route = useRoute()

@@ -9,5 +9,6 @@ definePageMeta({
         name: 'rotate',
     },
     layout: 'custom',
+    middleware: ['hr-auth']
 })
 </script>
