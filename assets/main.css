@@ -57,3 +57,43 @@ input[aria-label='Datepicker input']::placeholder {
 .dp__outer_menu_wrap div {
     font-size: 0.99em;
 }
+
+.label.label-light-info {
+    color: white;
+    background-color: #1e88e5 !important;
+}
+
+.label.label-light-megna {
+    color: white;
+    background-color: #a1887f !important;
+}
+
+.label.label-megna {
+    color: white;
+    background-color: #5e4c45 !important;
+}
+
+.label.label-primary {
+    color: white;
+    background-color: #1248ac !important;
+}
+
+.label.label-danger {
+    color: white;
+    background-color: #787a7c !important;
+}
+
+.label.label-inverse {
+    color: white;
+    background-color: #555a5f !important;
+}
+
+.label.label-success {
+    color: white;
+    background-color: #117c3a !important;
+}
+
+.label.label-light-warning {
+    color: white;
+    background-color: #b89d46 !important;
+}

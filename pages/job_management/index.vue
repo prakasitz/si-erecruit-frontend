@@ -1,12 +1,20 @@
 <template>
     <div>
-        <v-card class="mx-auto" width="90%">
+        <v-card v-if="pending" class="mx-auto" width="90%">
+            <v-card-item>
+                <v-skeleton-loader
+                    :loading="pending"
+                    type="heading, subtitle, table-tbody, table-tfoot"
+                ></v-skeleton-loader>
+            </v-card-item>
+        </v-card>
+        <v-card v-else class="mx-auto" width="90%">
             <v-card-item>
                 <v-card-title :style="{ 'font-size': '18px !important' }"> </v-card-title>
                 <v-data-table
                     v-model:items-per-page="itemsPerPage"
                     :headers="headers"
-                    :items="desserts"
+                    :items="jobs"
                     item-value="name"
                     class="elevation-1"
                     show-select
@@ -34,9 +42,12 @@
                             </v-col>
                         </v-row>
                     </template>
-                    <template v-slot:item.status="{ item }">
-                        <v-chip v-if="item.raw.status == 0" color="red">Imported</v-chip>
-                        <v-chip v-if="item.raw.status == 1" color="black">Closed</v-chip>
+                    <template v-slot:item.job_name="{ item }">
+                        <p>{{ item.raw.job_name }}</p>
+                        <p class="text-caption">{{ item.raw.desc }}</p>
+                    </template>
+                    <template v-slot:item.job_status="{ item }">
+                        <v-chip :class="item.raw.job_status_color">{{ item.raw.job_status }}</v-chip>
                     </template>
                     <template v-slot:item.action="{ item }">
                         <NuxtLink :to="`/job_management/${item.raw.source}`"
@@ -51,7 +62,14 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import dayjs from 'dayjs'
+import 'dayjs/locale/th' // load on demand
+import buddhistEra from 'dayjs/plugin/buddhistEra'
+
+dayjs.extend(buddhistEra)
+dayjs.locale('th')
+
 const route = useRoute()
 
 definePageMeta({
@@ -72,9 +90,9 @@ definePageMeta({
 })
 
 const headers = [
-    { title: 'ชื่องาน', align: 'start', key: 'name' },
-    { title: 'ที่มา', align: 'start', key: 'source' },
-    { title: 'สถานะ', align: 'start', key: 'status' },
+    { title: 'ชื่องาน', align: 'start', key: 'job_name' },
+    { title: 'ที่มา', align: 'start', key: 'data_source' },
+    { title: 'สถานะ', align: 'start', key: 'job_status' },
     { title: 'แก้ไข/ลบ', align: 'start', key: 'action' },
 ]
 
@@ -143,5 +161,35 @@ const desserts = [
     },
 ]
 
-console.log(route.meta.title) // My home page
+const { data: jobs, pending } = useFetch('/api/jobs/get', {
+    method: 'POST',
+    transform(data: any) {
+        return data.map(
+            ({ job_name, data_source, job_status, create_date, mu_job_ID, mu_job_name, job_status_code }: any): any => {
+                let buddFormat = 'DD MMM BBBB, HH:mm'
+                let formatedCreateDate = dayjs(create_date).format(buddFormat)
+
+                return {
+                    job_name,
+                    data_source,
+                    job_status: job_status_code.job_status_text,
+                    job_status_color: job_status_code.zjob_status_color,
+                    desc: `${mu_job_ID ?? '??'} - ${mu_job_name ?? '???'} | ${
+                        formatedCreateDate == 'Invalid Date' ? '???' : formatedCreateDate
+                    }`,
+                }
+            }
+        )
+    },
+    server: false,
+})
+
+onMounted(async () => {
+    // const { data, error, refresh, pending } = await useApi('/jobs/get', {
+    //     method: 'POST',
+    // })
+    // console.log(data.value)
+})
+
+console.log(route.meta.title, 1) // My home page
 </script>
