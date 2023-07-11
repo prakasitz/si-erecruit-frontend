@@ -1,6 +1,6 @@
 import { createRouter, defineEventHandler, useBase, H3Error, isError } from 'h3'
 import { getClientCredentials, isAuthenticated } from '../../common/authentication'
-import { backendService } from '../../common/externalApi'
+import { externalAPIService } from '../../common/externalAPI/ExternalAPIService'
 import { handleErrorRoute } from '../../common/error'
 import { JSONResponse, RoleEnum, Roles } from '../../../utils/types'
 import { verifyAccessToken, setCookieLogin } from '../../common/token'
@@ -83,7 +83,7 @@ router.post(
                     isMatchReferer = isMatchRegex(referer, /\/login$/)
                     if (!isMatchReferer) throw new Error(`Route /login: Referer not match., referer=${referer}`)
                     if (!username || !password) throw new Error(`Route /login: username and password is required`)
-                    data = await backendService.HRLogin(username, password)
+                    data = await externalAPIService.HRLogin(username, password)
                     break
                 case 'CANDIDATE':
                     isMatchReferer = isMatchRegex(referer, /\/login_candidate$/)
@@ -95,7 +95,7 @@ router.post(
                         password = '908183'
                     }
 
-                    data = await backendService.CandidateLogin(pid, password)
+                    data = await externalAPIService.CandidateLogin(pid, password)
                     break
                 default:
                     throw new Error(`Route /login: x-role not match., x-role=${role.toString()}`)

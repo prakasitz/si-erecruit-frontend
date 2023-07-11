@@ -30,3 +30,9 @@ export const forbiddenError = createError({
     statusCode: 403,
     statusMessage: 'Forbidden',
 })
+
+export const BadRequestError = createError({
+    statusCode: 400,
+    statusMessage: 'Bad Request',
+    message: 'Invalida query parameter',
+})

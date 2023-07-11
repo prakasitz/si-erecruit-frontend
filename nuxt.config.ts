@@ -99,7 +99,11 @@ export default defineNuxtConfig({
             proxy: {
                 to: '/api/external/master/**',
             },
-            
+        },
+        '/api/jobs/**': {
+            proxy: {
+                to: '/api/external/jobs/**',
+            },
         },
     },
 
