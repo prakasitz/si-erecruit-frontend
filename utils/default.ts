@@ -18,21 +18,31 @@ export const defaultVueDatePickerStyle: VueDatePickerProps = {
     modelType: 'yyyy/MM/dd',
 }
 
+export const TokenNotFoundError = (msg: string = 'Unauthorized') =>
+    createError({
+        statusCode: 401,
+        statusMessage: 'Unauthorized',
+        message: 'Error: Token not found',
+    })
+
 // User not found error
-export const userNotFoundError = createError({
-    statusCode: 401,
-    statusMessage: 'Unauthorized',
-    message: 'User not found',
-})
+export const userNotFoundError = (msg: string = 'Unauthorized') =>
+    createError({
+        statusCode: 401,
+        statusMessage: 'Unauthorized',
+        message: 'Error: User not found',
+    })
 
 // Forbidden error
-export const forbiddenError = createError({
-    statusCode: 403,
-    statusMessage: 'Forbidden',
-})
+export const forbiddenError = (msg: string = 'Forbidden') =>
+    createError({
+        statusCode: 403,
+        statusMessage: 'Error: Forbidden',
+    })
 
-export const BadRequestError = createError({
-    statusCode: 400,
-    statusMessage: 'Bad Request',
-    message: 'Invalida query parameter',
-})
+export const BadRequestError = (msg: string = 'Bad Request') =>
+    createError({
+        statusCode: 400,
+        statusMessage: 'Bad Request',
+        message: `Error: ${msg}`,
+    })
