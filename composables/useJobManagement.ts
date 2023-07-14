@@ -8,11 +8,15 @@ dayjs.locale('th')
 export default function useJobManagement() {
     return {
         fetchJob,
+        deleteJob,
     }
 }
 
 const fetchJob = () => {
     return useFetch('/api/jobs/get', {
+        headers: {
+            Accept: 'application/json',
+        },
         method: 'POST',
         transform(data: any) {
             return data.map(
@@ -25,9 +29,7 @@ const fetchJob = () => {
                     mu_job_name,
                     job_status_code,
                 }: any): any => {
-                    let buddFormat = 'DD MMM BBBB, HH:mm'
-                    let formatedCreateDate = dayjs(create_date).format(buddFormat)
-
+                    let formatedCreateDate = dateToString(create_date, DateFormatEnum.DATE_TIME_BUDDHIST_1)
                     return {
                         job_name,
                         data_source,
@@ -41,5 +43,14 @@ const fetchJob = () => {
             )
         },
         server: false,
+    })
+}
+
+const deleteJob = async (jobId: string) => {
+    return await $fetch('/api/jobs/delete/:jobId', {
+        headers: {
+            Accept: 'application/json',
+        },
+        method: 'DELETE',
     })
 }

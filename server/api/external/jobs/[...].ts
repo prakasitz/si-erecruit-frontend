@@ -16,4 +16,15 @@ router.post(
         }
     })
 )
+
+router.delete(
+    '/:jobId',
+    defineEventHandler(async (event) => {
+        const body = await readBody(event)
+        const params = await getRouterParams(event)
+        const query = await getQuery(event)
+
+        return { body, params, query }
+    })
+)
 export default useBase('/api/external/jobs', router.handler)

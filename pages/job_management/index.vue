@@ -50,8 +50,8 @@
                         <v-chip :class="item.raw.job_status_color">{{ item.raw.job_status }}</v-chip>
                     </template>
                     <template v-slot:item.action="{ item }">
-                        <NuxtLink :to="`/job_management/${item.raw.source}`"
-                            ><v-icon size="small" class="me-2" @click="editItem(item.raw)"> mdi-pencil </v-icon>
+                        <NuxtLink :to="`/job_management/${item.raw.source}`">
+                            <v-icon size="small" class="me-2" @click="editItem(item.raw)"> mdi-pencil </v-icon>
                         </NuxtLink>
                         <v-icon size="small" @click="deleteItem(item.raw)" color="red"> mdi-delete </v-icon>
                     </template>
