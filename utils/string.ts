@@ -34,3 +34,8 @@ export const checkURL = (url: string, urls: Array<string>) => {
     }
     return false // URL does not match any of the strings
 }
+
+export const isStringNumber = (str: string) => {
+    const numberRegex = /^-?\d+\.?\d*$/
+    return numberRegex.test(str)
+}

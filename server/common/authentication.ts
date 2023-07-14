@@ -5,6 +5,7 @@ import { verifyAccessToken, verifyOauth2Token } from './token'
 import { H3Event, H3Error } from 'h3'
 import { User } from '../../utils/types'
 import { JwtPayload } from 'jsonwebtoken'
+import { TokenNotFoundError } from '../../utils/default'
 
 export async function getClientCredentials() {
     const { urlOauth2, clientId, clientSecret } = useRuntimeConfig()
@@ -51,10 +52,7 @@ export async function isAuthenticated(event: H3Event): Promise<boolean | H3Error
 
     if (!accessToken) {
         console.log('isAuthenticated: No access token provided')
-        return createError({
-            statusCode: 400,
-            statusMessage: 'No access token provided',
-        })
+        return TokenNotFoundError()
     }
 
     // Parse Bearer token (Bearer xxxx)
