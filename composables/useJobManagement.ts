@@ -47,7 +47,7 @@ const fetchJob = () => {
 }
 
 const deleteJob = async (jobId: string) => {
-    return await $fetch('/api/jobs/delete/:jobId', {
+    return await $fetch(`/api/jobs/${jobId}`, {
         headers: {
             Accept: 'application/json',
         },

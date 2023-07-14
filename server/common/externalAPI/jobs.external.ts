@@ -33,6 +33,10 @@ class JobsExternal extends ExternalAPIService {
             throw this.handleError(error)
         }
     }
+
+    public async delJobById(jobId: number) {
+        return 'delJobById'
+    }
 }
 
 export const jobService = new JobsExternal()
