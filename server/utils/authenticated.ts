@@ -9,11 +9,13 @@ export function getAuthenticatedRoutes(): Array<string> {
 
         //use header is access_token
         '/api/auth/userinfo',
-        '/api/master/**',
         '/api/profile/**',
+        '/api/external/master/**',
+        '/api/master/**',
 
         //hr routes
-        '/api/job/**',
+        '/api/jobs/**',
+        '/api/external/jobs/**',
 
         //candidate routes
     ]

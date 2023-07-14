@@ -20,3 +20,17 @@ export const isMatchRegex = (str: string, regex: RegExp): boolean => {
     }
     return !!match
 }
+
+export const checkURL = (url: string, urls: Array<string>) => {
+    for (const string of urls) {
+        if (string.endsWith('**')) {
+            const prefix = string.slice(0, -2) // Remove the trailing '**'
+            if (url.startsWith(prefix)) {
+                return true // URL matches the prefix, return true
+            }
+        } else if (url === string) {
+            return true // URL exactly matches the string, return true
+        }
+    }
+    return false // URL does not match any of the strings
+}
