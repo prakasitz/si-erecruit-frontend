@@ -1,4 +1,5 @@
 import { AxiosError } from 'axios'
+import { H3Event, H3Error } from 'h3'
 import { ExternalAPIService } from './ExternalAPIService'
 
 class JobsExternal extends ExternalAPIService {
@@ -6,15 +7,15 @@ class JobsExternal extends ExternalAPIService {
     constructor() {
         super()
     }
-    public async getJobs() {
+    public async getJobs(event: H3Event) {
         try {
-            await this.initializeToken()
+            const accessToken = this.getAccessToken(event)
             const resp = await this.baseAPI.post(
                 `/${this.jobSlug}/get`,
                 {},
                 {
                     headers: {
-                        Authorization: 'Bearer ' + this.token,
+                        Authorization: 'Bearer ' + accessToken,
                     },
                 }
             )
@@ -28,14 +29,25 @@ class JobsExternal extends ExternalAPIService {
                 }, 1000)
             })
         } catch (error: AxiosError | any) {
-            console.log('token', this.token)
-            console.log(error)
-            throw this.handleError(error)
+            return this.handleError(error)
         }
     }
 
-    public async delJobById(jobId: number) {
-        return 'delJobById'
+    public async delJobById(jobId: number, event: H3Event) {
+        try {
+            const accessToken = this.getAccessToken(event)
+            const resp = await this.baseAPI.delete(`/${this.jobSlug}/delete`, {
+                data: {
+                    job_ID: jobId,
+                },
+                headers: {
+                    Authorization: 'Bearer ' + accessToken,
+                },
+            })
+            return resp.data
+        } catch (error: AxiosError | any) {
+            return this.handleError(error)
+        }
     }
 }
 

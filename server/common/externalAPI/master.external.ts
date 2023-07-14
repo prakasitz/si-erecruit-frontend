@@ -12,7 +12,7 @@ class MasterExternal extends ExternalAPIService {
 
             return this.token
         } catch (error: AxiosError | any) {
-            throw this.handleError(error)
+            return this.handleError(error)
         }
     }
 
@@ -22,7 +22,7 @@ class MasterExternal extends ExternalAPIService {
 
             return this.token
         } catch (error: AxiosError | any) {
-            throw this.handleError(error)
+            return this.handleError(error)
         }
     }
 
@@ -32,7 +32,7 @@ class MasterExternal extends ExternalAPIService {
 
             return this.token
         } catch (error: AxiosError | any) {
-            throw this.handleError(error)
+            return this.handleError(error)
         }
     }
 
@@ -56,7 +56,7 @@ class MasterExternal extends ExternalAPIService {
 
             return result
         } catch (error: AxiosError | any) {
-            throw this.handleError(error)
+            return this.handleError(error)
         }
     }
 
@@ -66,7 +66,7 @@ class MasterExternal extends ExternalAPIService {
 
             return this.token
         } catch (error: AxiosError | any) {
-            throw this.handleError(error)
+            return this.handleError(error)
         }
     }
 
@@ -76,7 +76,7 @@ class MasterExternal extends ExternalAPIService {
 
             return this.token
         } catch (error: AxiosError | any) {
-            throw this.handleError(error)
+            return this.handleError(error)
         }
     }
 
@@ -86,7 +86,7 @@ class MasterExternal extends ExternalAPIService {
 
             return this.token
         } catch (error: AxiosError | any) {
-            throw this.handleError(error)
+            return this.handleError(error)
         }
     }
 
@@ -96,7 +96,7 @@ class MasterExternal extends ExternalAPIService {
 
             return this.token
         } catch (error: AxiosError | any) {
-            throw this.handleError(error)
+            return this.handleError(error)
         }
     }
 
@@ -106,7 +106,7 @@ class MasterExternal extends ExternalAPIService {
 
             return this.token
         } catch (error: AxiosError | any) {
-            throw this.handleError(error)
+            return this.handleError(error)
         }
     }
 
@@ -116,7 +116,7 @@ class MasterExternal extends ExternalAPIService {
 
             return this.token
         } catch (error: AxiosError | any) {
-            throw this.handleError(error)
+            return this.handleError(error)
         }
     }
 
@@ -126,7 +126,7 @@ class MasterExternal extends ExternalAPIService {
 
             return this.token
         } catch (error: AxiosError | any) {
-            throw this.handleError(error)
+            return this.handleError(error)
         }
     }
 
@@ -136,7 +136,7 @@ class MasterExternal extends ExternalAPIService {
 
             return this.token
         } catch (error: AxiosError | any) {
-            throw this.handleError(error)
+            return this.handleError(error)
         }
     }
 
@@ -146,7 +146,7 @@ class MasterExternal extends ExternalAPIService {
 
             return this.token
         } catch (error: AxiosError | any) {
-            throw this.handleError(error)
+            return this.handleError(error)
         }
     }
 
@@ -156,7 +156,7 @@ class MasterExternal extends ExternalAPIService {
 
             return this.token
         } catch (error: AxiosError | any) {
-            throw this.handleError(error)
+            return this.handleError(error)
         }
     }
 
@@ -166,7 +166,7 @@ class MasterExternal extends ExternalAPIService {
 
             return this.token
         } catch (error: AxiosError | any) {
-            throw this.handleError(error)
+            return this.handleError(error)
         }
     }
 
@@ -176,7 +176,7 @@ class MasterExternal extends ExternalAPIService {
 
             return this.token
         } catch (error: AxiosError | any) {
-            throw this.handleError(error)
+            return this.handleError(error)
         }
     }
 
@@ -186,7 +186,7 @@ class MasterExternal extends ExternalAPIService {
 
             return this.token
         } catch (error: AxiosError | any) {
-            throw this.handleError(error)
+            return this.handleError(error)
         }
     }
 
@@ -196,7 +196,7 @@ class MasterExternal extends ExternalAPIService {
 
             return this.token
         } catch (error: AxiosError | any) {
-            throw this.handleError(error)
+            return this.handleError(error)
         }
     }
 
@@ -206,7 +206,7 @@ class MasterExternal extends ExternalAPIService {
 
     //         return this.token
     //     } catch (error: AxiosError | any) {
-    //         throw this.handleError(error)
+    //         return this.handleError(error)
     //     }
     // }
 }

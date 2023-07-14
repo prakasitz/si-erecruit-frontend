@@ -1,5 +1,7 @@
 import axios, { AxiosError, AxiosInstance } from 'axios'
+import { H3Event, H3Error } from 'h3'
 import { getClientCredentials } from '../authentication'
+import { TokenNotFoundError } from '../../../utils/default'
 
 export class ExternalAPIService {
     protected token: string | undefined
@@ -15,6 +17,12 @@ export class ExternalAPIService {
             baseURL: this.config.baseApi,
             timeout: 1000,
         })
+    }
+
+    protected getAccessToken(event: H3Event) {
+        let accessTokenWithBearer = getCookie(event, 'access_token')
+        if (!accessTokenWithBearer) return TokenNotFoundError('message from getAccessToken')
+        return accessTokenWithBearer.split(' ')[1]
     }
 
     protected async initializeToken() {
@@ -38,7 +46,7 @@ export class ExternalAPIService {
             )
             return resp.data
         } catch (error: AxiosError | any) {
-            throw this.handleError(error)
+            return this.handleError(error)
         }
     }
 
@@ -55,7 +63,7 @@ export class ExternalAPIService {
             )
             return resp.data
         } catch (error: AxiosError | any) {
-            throw this.handleError(error)
+            return this.handleError(error)
         }
     }
 
@@ -75,7 +83,7 @@ export class ExternalAPIService {
             )
             return resp.data
         } catch (error: AxiosError | any) {
-            throw this.handleError(error)
+            return this.handleError(error)
         }
     }
 
@@ -97,7 +105,7 @@ export class ExternalAPIService {
             )
             return resp.data
         } catch (error: AxiosError | any) {
-            throw this.handleError(error)
+            return this.handleError(error)
         }
     }
 
@@ -114,14 +122,14 @@ export class ExternalAPIService {
             )
             return resp.data
         } catch (error: AxiosError | any) {
-            throw this.handleError(error)
+            return this.handleError(error)
         }
     }
 
-    protected handleError(error: Error | AxiosError) {
+    protected handleError(error: Error | AxiosError | H3Error) {
         if (axios.isAxiosError(error)) {
-            console.log('=====================ExternalAPI:handleError=====================')
-            console.log('ExternalAPI:error:', ' ', {
+            console.log('=====================ExternalAPI:isAxiosError=====================')
+            console.log('ExternalAPI:Axios:', ' ', {
                 statusCode: error.response?.status,
                 message: error.response?.statusText,
             })
@@ -131,6 +139,8 @@ export class ExternalAPIService {
                 statusMessage: error.response?.statusText,
                 stack: undefined,
             })
+        } else if (error instanceof H3Error) {
+            return error
         } else {
             return error
         }

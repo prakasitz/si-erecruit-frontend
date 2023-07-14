@@ -1,6 +1,6 @@
 import { useRoute } from 'nuxt/app'
 import { masterService } from '../../../common/externalAPI/master.external'
-import { BadRequestError } from '../../../../utils/default'
+import { BadRequestError, TokenNotFoundError } from '../../../../utils/default'
 import { jobService } from '../../../common/externalAPI/jobs.external'
 import { isStringNumber } from '../../../../utils/string'
 
@@ -10,7 +10,7 @@ router.post(
     defineEventHandler(async (event) => {
         const body = await readBody(event)
         try {
-            const data = await jobService.getJobs()
+            const data = await jobService.getJobs(event)
             return data
         } catch (error) {
             throw BadRequestError
@@ -21,13 +21,15 @@ router.post(
 router.delete(
     '/:jobId',
     defineEventHandler(async (event) => {
-        const body = await readBody(event)
         const { jobId } = await getRouterParams(event)
-        const query = await getQuery(event)
-
         if (!jobId || !isStringNumber(jobId)) throw BadRequestError('Job ID must be a number')
 
-        return { aaa: 'asdasdas' }
+        const tokenOrUndefined = getCookie(event, 'access_token')
+        if (!tokenOrUndefined) return TokenNotFoundError()
+
+        const response = await jobService.delJobById(parseInt(jobId), event)
+
+        return response
     })
 )
 export default useBase('/api/external/jobs', router.handler)
