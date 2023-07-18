@@ -1,12 +1,20 @@
 <template>
     <div>
-        <v-card class="mx-auto" width="90%">
+        <v-card v-if="pending" class="mx-auto" width="90%">
+            <v-card-item>
+                <v-skeleton-loader
+                    :loading="pending"
+                    type="heading, subtitle, table-tbody, table-tfoot"
+                ></v-skeleton-loader>
+            </v-card-item>
+        </v-card>
+        <v-card v-else class="mx-auto" width="90%">
             <v-card-item>
                 <v-card-title :style="{ 'font-size': '18px !important' }"> </v-card-title>
                 <v-data-table
                     v-model:items-per-page="itemsPerPage"
                     :headers="headers"
-                    :items="desserts"
+                    :items="jobs"
                     item-value="name"
                     class="elevation-1"
                     show-select
@@ -34,15 +42,34 @@
                             </v-col>
                         </v-row>
                     </template>
-                    <template v-slot:item.status="{ item }">
-                        <v-chip v-if="item.raw.status == 0" color="red">Imported</v-chip>
-                        <v-chip v-if="item.raw.status == 1" color="black">Closed</v-chip>
+                    <template v-slot:item.job_name="{ item }">
+                        <p>{{ item.raw.job_name }}</p>
+                        <p class="text-caption">{{ item.raw.desc }}</p>
+                    </template>
+                    <template v-slot:item.job_status="{ item }">
+                        <v-chip :class="item.raw.job_status_color">{{ item.raw.job_status }}</v-chip>
                     </template>
                     <template v-slot:item.action="{ item }">
-                        <NuxtLink :to="`/job_management/${item.raw.source}`"
-                            ><v-icon size="small" class="me-2" @click="editItem(item.raw)"> mdi-pencil </v-icon>
-                        </NuxtLink>
-                        <v-icon size="small" @click="deleteItem(item.raw)" color="red"> mdi-delete </v-icon>
+                        <v-btn
+                            class="me-2"
+                            :variant="'text'"
+                            :size="'small'"
+                            density="comfortable"
+                            icon="mdi-pencil"
+                            :to="`/job_management/${item.raw.job_ID}`"
+                            title="แก้ไข"
+                            color="indigo"
+                        ></v-btn>
+                        <v-btn
+                            :variant="'text'"
+                            density="comfortable"
+                            icon="mdi-delete"
+                            :size="'small'"
+                            @click="deleteItem(item.raw)"
+                            color="red"
+                            title="ลบ"
+                            :disabled="!item.raw.canDelete"
+                        ></v-btn>
                     </template>
                 </v-data-table>
             </v-card-item>
@@ -51,7 +78,9 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+const { fetchJob } = useJobManagement()
+
 const route = useRoute()
 
 definePageMeta({
@@ -72,9 +101,9 @@ definePageMeta({
 })
 
 const headers = [
-    { title: 'ชื่องาน', align: 'start', key: 'name' },
-    { title: 'ที่มา', align: 'start', key: 'source' },
-    { title: 'สถานะ', align: 'start', key: 'status' },
+    { title: 'ชื่องาน', align: 'start', key: 'job_name' },
+    { title: 'ที่มา', align: 'start', key: 'data_source' },
+    { title: 'สถานะ', align: 'start', key: 'job_status' },
     { title: 'แก้ไข/ลบ', align: 'start', key: 'action' },
 ]
 
@@ -143,5 +172,14 @@ const desserts = [
     },
 ]
 
-console.log(route.meta.title) // My home page
+const { data: jobs, pending } = fetchJob()
+
+onMounted(async () => {
+    // const { data, error, refresh, pending } = await useApi('/jobs/get', {
+    //     method: 'POST',
+    // })
+    // console.log(data.value)
+})
+
+console.log(route.meta.title, 1) // My home page
 </script>

@@ -28,6 +28,7 @@
         "@pinia/nuxt": "^0.4.11",
         "@vuepic/vue-datepicker": "^5.2.1",
         "axios": "^1.4.0",
+        "dayjs": "^1.11.9",
         "jsonwebtoken": "^9.0.0",
         "jwks-rsa": "^3.0.1",
         "pinia": "^2.1.4",
