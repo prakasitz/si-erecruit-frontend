@@ -1,18 +1,42 @@
+import { defineStore } from 'pinia'
+
 export const useUserStore = defineStore('userinfo', {
     state: (): any => {
         return {
-            displayname: null,
-            role: null,
+            user: {
+                displayname: null,
+                role: null,
+            },
+
+            sub: null,
+            employee_id: null,
+            department: null,
+
             commonid: null,
             commonname: null,
             secret: null,
             exp: null,
         }
     },
+    getters: {
+        isAdmin: ({ user }) => user.role?.includes('ADMIN'),
+        isHR: ({ user }) => user.role?.includes('HR'),
+        isCandidate: ({ user }) => user.role?.includes('CANDIDATE'),
+    },
     actions: {
         async setUserInfo(data: any) {
-            this.displayname = data.displayname
-            this.role = data.role
+            this.user = {
+                displayname: data.display_name,
+                role: data.role,
+            }
+
+            // HR
+            this.sub = data.sub
+            this.employee_id = data.employee_id
+            this.department = data.department
+            this.commonid = data.sub
+
+            //Candidate
             this.commonid = data.commonid
             this.commonname = data.commonname
             this.secret = data.secret

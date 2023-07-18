@@ -6,12 +6,8 @@
 import { H3Error } from 'h3'
 import { getUserFromAccessToken, isAuthenticated } from '../../common/authentication'
 import { checkURL } from '../../../utils/string'
+import { forbiddenError } from '../../../utils/default'
 // import { isAuthenticated } from '../../../common/authentication'
-
-const forbiddenError = createError({
-    statusCode: 403,
-    statusMessage: 'Forbidden',
-})
 
 export default defineEventHandler(async (event) => {
     // Get all routes that need a user to be authenticated
@@ -23,14 +19,11 @@ export default defineEventHandler(async (event) => {
             try {
                 console.log(`=============`, ' ', `middleware:authentication`, ' ', `==========================`)
 
-                const authenticated = await isAuthenticated(event)
-
-                if (authenticated instanceof H3Error) throw authenticated
-
-                if (authenticated === false) throw forbiddenError
+                const authenticatedOrError = await isAuthenticated(event)
+                if (authenticatedOrError instanceof H3Error) throw authenticatedOrError
+                if (authenticatedOrError === false) throw forbiddenError()
 
                 const userOrNull = await getUserFromAccessToken(event)
-
                 if (userOrNull === null) {
                     console.log('Missing access token after authentication. This should not happen.')
                     throw createError({
@@ -38,10 +31,13 @@ export default defineEventHandler(async (event) => {
                         statusMessage: 'Unauthorized. Missing access token.',
                     })
                 }
+                console.log(`++++++++++userOrNul+++++++++++`)
                 console.log(userOrNull)
+                console.log(`++++++++++++++++++++++++++++++`)
                 // Add user to context
                 event.context.user = userOrNull
-            } catch (error) {
+            } catch (error: H3Error | any) {
+                console.log(`Error: authentication middleware: ${error}`)
                 throw error
             } finally {
                 console.log(`=======================================================================`)

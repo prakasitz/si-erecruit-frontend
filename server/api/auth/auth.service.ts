@@ -1,26 +1,29 @@
 import { H3Event, H3Error } from 'h3'
 import { handleErrorRoute } from '../../common/error'
 import { JSONResponse, Roles } from '../../../utils/types'
-import { backendService } from '../../common/externalApi'
 import { isAuthenticated } from '../../common/authentication'
+import { externalAPIService } from '../../common/externalApi'
+import { BadRequestError } from '../../../utils/default'
 
 export async function getUserInfo(event: H3Event) {
     try {
+        console.log('-=--=--=--=--=--=- start userInfo -=--=--=--=--=--=--=--=-')
         const runtimeConfig = useRuntimeConfig()
         let userContext = event.context.user
         const token = getCookie(event, 'access_token') as string
         let role = getHeader(event, 'x-role') as Roles | undefined
         switch (role) {
             case 'HR':
-                return await backendService.HRUserInfo(token)
+                return await externalAPIService.HRUserInfo(token)
             case 'CANDIDATE':
-                return await backendService.CandidateUserInfo(token)
+                return await externalAPIService.CandidateUserInfo(token)
             default:
-                break
+                throw BadRequestError('Role is not valid')
         }
     } catch (error: H3Error | any) {
         return handleErrorRoute(error)
     } finally {
+        console.log('-=--=--=--=--=--=- end userInfo -=--=--=--=--=--=--=--=-')
     }
 }
 
@@ -53,7 +56,7 @@ export async function checkPID(event: H3Event) {
         const body = await readBody(event)
         if (body?.pid) {
             const { pid } = body
-            const data = await backendService.CandidateCheckActive(pid)
+            const data = await externalAPIService.CandidateCheckActive(pid)
             return data
         }
     } catch (error: H3Error | any) {

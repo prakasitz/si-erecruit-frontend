@@ -1,15 +1,17 @@
 import { UseFetchOptions } from 'nuxt/app'
 import { FetchResponse, FetchContext } from 'ofetch'
 
-export const useApi = async (url: any, params: UseFetchOptions<any>) => {
+export const useApi = async (url: any, params: any | UseFetchOptions<HeadersInit>) => {
     const cookie = useCookie('token')
 
     const config = useRuntimeConfig()
 
     const opts: UseFetchOptions<any> = {
+        ...params,
         key: url,
         baseURL: config.public.baseApi,
         headers: {
+            ...params?.headers,
             Accept: 'application/json',
         },
 
@@ -34,10 +36,41 @@ export const useApi = async (url: any, params: UseFetchOptions<any>) => {
         },
 
         async onResponseError({ response }: FetchContext<any>) {
-            console.log('useApi:onResponseError:', response?.status)
-        },
+            console.error('[nuxt] ==> useApi:onResponseError:', response?.status)
 
-        ...params,
+            //if response.status == 403 throw showError
+            // only api response
+            if (response?.headers.get('Accept') !== 'application/json') {
+                throw showError({
+                    statusCode: response?.status,
+                    message: response?._data.message + ', useApi onResponseError',
+                    stack: undefined,
+                })
+            }
+            // if (response && response.status) {
+            //     console.log('createError')
+            //     throw showError({
+            //         statusCode: response?.status,
+            //         message: response?._data.message,
+            //         stack: undefined,
+            //     })
+            // }
+
+            // showError({
+            //     statusCode: response?.status,
+            // })
+            // if (response?.status === 401) {
+            //     console.log('401')
+            //     // redirect('/login')
+            // } else {
+            //     console.log('onResponseError Any status')
+            //     showError({
+            //         statusCode: response?.status,
+            //         message: response?._data.message,
+            //         stack: undefined,
+            //     })
+            // }
+        },
     }
 
     const { data, pending, error, refresh, execute } = await useFetch(url, opts)

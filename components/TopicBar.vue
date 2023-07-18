@@ -6,7 +6,7 @@
                     <v-row>
                         <v-col cols="7"> <v-breadcrumbs divider=">" :items="props.labels"></v-breadcrumbs> </v-col>
                         <v-col class="mx-4 pt-7 text-right">
-                            <v-icon class="text-main-color mx-1">mdi-account</v-icon>คุณ{{ displayname }}
+                            <v-icon class="text-main-color mx-1">mdi-account</v-icon>คุณ{{ user.displayname }}
                         </v-col>
                     </v-row>
                 </v-sheet>
@@ -19,7 +19,7 @@ import { useUserStore } from '~/stores/user.store'
 
 // This will work in both `<script setup>` and `<script>`
 const userStore = useUserStore()
-const { displayname } = userStore
+const { user } = userStore
 
 export interface Props {
     labels?: any[]

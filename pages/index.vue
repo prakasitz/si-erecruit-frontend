@@ -2,14 +2,17 @@
     <div>
         <v-card class="mx-auto" width="90%">
             <v-card-title :style="{ 'font-size': '16px !important' }">
-                <b>ยินดีต้อนรับคุณ ประกาศิต ช่วยรักษา</b>
+                <b>ยินดีต้อนรับ {{ user.displayname }}</b>
             </v-card-title>
         </v-card>
         <br />
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+// import { useAuthUser } from '~/composables/auth/useAuthUser'
+import { useUserStore } from '~/stores/user.store'
+
 definePageMeta({
     title: 'หน้าหลัก',
     pageTransition: {
@@ -20,8 +23,13 @@ definePageMeta({
             title: 'หน้าหลัก',
         },
     ],
-    middleware: 'hr-auth',
+    middleware: ['hr-only'],
 })
+
+const userStore = useUserStore()
+const { user } = userStore
+
+console.log('index', userStore.user.role)
 
 const route = useRoute()
 console.log(route.meta.title) // My home page

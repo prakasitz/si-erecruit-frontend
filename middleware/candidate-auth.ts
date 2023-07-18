@@ -3,7 +3,7 @@ import { useUserStore } from '~/stores/user.store'
 import { H3Error } from 'h3'
 import { handleMiddlewareError } from '~/helper/error.helper'
 export default defineNuxtRouteMiddleware(async (to, from) => {
-    const { fetchUserInfo } = useCandidate()
+    const { fetchUserInfo } = useCandidateBACK()
     try {
         const resp = await fetchUserInfo()
         console.group('middleware:candidate-auth:')

@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios'
-import { BackendService, backendService } from './externalApi'
+import { ExternalAPIService } from './externalApi'
 
-class MasterExternal extends BackendService {
+class MasterExternal extends ExternalAPIService {
     private masterSlug: string = 'master-data'
     constructor() {
         super()

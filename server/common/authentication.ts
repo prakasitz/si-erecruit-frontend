@@ -61,7 +61,7 @@ export async function isAuthenticated(event: H3Event): Promise<boolean | H3Error
     // // If other error, return error
     // If other error, return error
     if (errorOrUser instanceof H3Error) {
-        console.log('Error: isAuthenticated', errorOrUser)
+        console.log('isAuthenticated: ', errorOrUser)
         return false
     } else {
         // Otherwise, we have the user so return true
