@@ -50,10 +50,26 @@
                         <v-chip :class="item.raw.job_status_color">{{ item.raw.job_status }}</v-chip>
                     </template>
                     <template v-slot:item.action="{ item }">
-                        <NuxtLink :to="`/job_management/${item.raw.source}`">
-                            <v-icon size="small" class="me-2" @click="editItem(item.raw)"> mdi-pencil </v-icon>
-                        </NuxtLink>
-                        <v-icon size="small" @click="deleteItem(item.raw)" color="red"> mdi-delete </v-icon>
+                        <v-btn
+                            class="me-2"
+                            :variant="'text'"
+                            :size="'small'"
+                            density="comfortable"
+                            icon="mdi-pencil"
+                            :to="`/job_management/${item.raw.job_ID}`"
+                            title="แก้ไข"
+                            color="indigo"
+                        ></v-btn>
+                        <v-btn
+                            :variant="'text'"
+                            density="comfortable"
+                            icon="mdi-delete"
+                            :size="'small'"
+                            @click="deleteItem(item.raw)"
+                            color="red"
+                            title="ลบ"
+                            :disabled="!item.raw.canDelete"
+                        ></v-btn>
                     </template>
                 </v-data-table>
             </v-card-item>
