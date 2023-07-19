@@ -15,7 +15,7 @@ export class ExternalAPIService {
         this.config = useRuntimeConfig()
         this.baseAPI = axios.create({
             baseURL: this.config.baseApi,
-            timeout: 1000,
+            timeout: 2000,
         })
     }
 

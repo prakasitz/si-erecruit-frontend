@@ -1,11 +1,13 @@
 <template>
     <div>
         <NuxtLayout>
-            <v-row class="mb-5">
-                <DialogInfo />
-                <DialogWarning />
-                <DialogError />
-            </v-row>
+            <DevOnly>
+                <v-row class="mb-5">
+                    <DialogInfo />
+                    <DialogWarning />
+                    <DialogError />
+                </v-row>
+            </DevOnly>
             <NuxtPage />
         </NuxtLayout>
     </div>

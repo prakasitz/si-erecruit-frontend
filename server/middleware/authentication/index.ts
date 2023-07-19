@@ -18,7 +18,6 @@ export default defineEventHandler(async (event) => {
 
     const authRoutes = getAuthenticatedRoutes()
     if (event.node.req.url) {
-        console.log('middleware:authentication', event.node.req.url, checkURL(event.node.req.url, authRoutes))
         if (checkURL(event.node.req.url, authRoutes)) {
             try {
                 console.log(`=============`, ' ', `middleware:authentication`, ' ', `==========================`)
