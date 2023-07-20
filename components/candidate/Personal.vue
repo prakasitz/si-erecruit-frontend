@@ -569,7 +569,7 @@ const {
     error,
     refresh,
     pending,
-} = await useApi('/master/title?adult=1', {
+} = await useApi('/external/master/title?adult=1', {
     method: 'GET',
 })
 

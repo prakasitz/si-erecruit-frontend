@@ -19,7 +19,7 @@ async function importProfile(file: File) {
 
     console.log('file', formData)
 
-    return await useApi('/api/profile/import', {
+    return await useApi('/api/external/profile/import', {
         method: 'POST',
         body: formData,
     })

@@ -1,10 +1,9 @@
 import { AxiosError } from 'axios'
 import { ExternalAPIService } from './ExternalAPIService'
 import { H3Event } from 'h3'
-import { Readable } from 'stream'
 import * as fs from 'fs'
 import FormData from 'form-data'
-import { Blob } from 'buffer'
+import { FileUpload } from '../../../utils/types'
 
 class ProfileExternal extends ExternalAPIService {
     private slug: string = 'profile'
@@ -12,71 +11,49 @@ class ProfileExternal extends ExternalAPIService {
         super()
     }
 
-    public async import(
-        event: H3Event,
-        {
-            filename,
-            blob,
-            bufferData,
-            formDataString,
-            h,
-            formMultipart,
-        }: { filename: string; blob: Blob; bufferData: Buffer; formDataString: string; h: any; formMultipart: any }
-    ) {
+    //working only non-proxy
+    public async import(event: H3Event, { file }: { file: FileUpload[] }) {
         try {
-            console.log('profiles: method => import')
-            // const formData = new FormData()
-            // console.log('blob:', blob)
-            // // formData.append('file', bufferData)
-            // formData.append('file', blob, filename)
-            // console.log('formData Header', formData.getHeaders())
+            console.log('============= profiles: method => import =======================')
 
-            return this.SendFormDataAndHeader(formDataString, h, event)
+            if (!file) throw new Error('file is required')
 
-            // if (!resp.data) throw new Error(`importProfile: Error Unexpected`)
+            const { originalFilename, filepath } = file[0]
+            const fileStream: fs.ReadStream = fs.createReadStream(filepath)
 
-            // let result: any = resp.data
-            // return new Promise<any>((resolve) => {
-            //     setTimeout(() => {
-            //         resolve(result)
-            //     }, 1000)
-            // })
+            //create formData
+            const formData = new FormData()
+            formData.append('file', fileStream, originalFilename)
 
-            // return { resp: resp.data }
+            const accessToken = this.getAccessToken(event)
+            const resp = await this.baseAPI.post(`/${this.slug}/import`, formData, {
+                headers: {
+                    ...formData.getHeaders(),
+                    Authorization: 'Bearer ' + accessToken,
+                },
+            })
+
+            if (!resp.data) throw new Error(`importProfile: Error Unexpected`)
+            return resp.data
         } catch (error: AxiosError | any) {
             if (error instanceof AxiosError) {
-                console.log(error.response)
+                console.log()
             }
             return this.handleError(error)
+        } finally {
+            console.log('=================================================')
         }
     }
 
-    public async SendBufferAsFormData(bufferData: any, event: H3Event) {
-        const formData = new FormData()
-        formData.append('file', bufferData)
-        const accessToken = this.getAccessToken(event)
-        const resp = await this.baseAPI.post(`/${this.slug}/import`, formData, {
-            headers: {
-                Authorization: 'Bearer ' + accessToken,
-            },
+    public deleteFile = (filePath: any) => {
+        fs.unlink(filePath, (error: any) => {
+            if (error) {
+                console.error('Error deleting file:', error)
+                throw error
+            } else {
+                console.log('File deleted successfully:', filePath)
+            }
         })
-
-        if (!resp.data) throw new Error(`importProfile: Error Unexpected`)
-        return { resp: resp.data }
-    }
-
-    //error
-    public async SendFormDataAndHeader(formDataString: string, headers: any, event: H3Event) {
-        const accessToken = this.getAccessToken(event)
-        const resp = await this.baseAPI.post(`/${this.slug}/import`, formDataString, {
-            headers: {
-                ...headers,
-                Authorization: 'Bearer ' + accessToken,
-            },
-        })
-
-        if (!resp.data) throw new Error(`importProfile: Error Unexpected`)
-        return { resp: resp.data }
     }
 }
 

@@ -16,7 +16,7 @@ export default function useJobManagement() {
 const fetchJob = () => {
     /*
      */
-    return useFetch('/api/jobs/get', {
+    return useFetch('/api/external/jobs/get', {
         headers: {
             Accept: 'application/json',
         },
@@ -67,7 +67,7 @@ const canDelete = (jobStatus: string) => {
 }
 
 const deleteJob = async (jobId: string) => {
-    return await $fetch(`/api/jobs/${jobId}`, {
+    return await $fetch(`/api/external/jobs/${jobId}`, {
         headers: {
             Accept: 'application/json',
         },
