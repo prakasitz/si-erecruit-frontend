@@ -126,17 +126,18 @@ async function onClickUpload(files: File[]) {
             message: 'Imported successfully',
             actionButtons: [
                 {
+                    text: 'Upload again',
+                    prependIcon: 'mdi-reload',
+                    href: '/file_import',
+                },
+                {
                     text: 'Check Job Data',
                     prependIcon: 'mdi-clipboard-check',
                     color: 'indigo',
                     to: '/job_management',
                 },
-                {
-                    text: 'Upload again',
-                    prependIcon: 'mdi-reload',
-                    href: '/file_import',
-                },
             ],
+            persistent: true,
         })
     }
 

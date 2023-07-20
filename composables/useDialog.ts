@@ -11,7 +11,6 @@ export default function useDialog() {
 function showDialogInfo({ title, message, ...args }: DialogContext) {
     const dialogContext = useState<DialogContext>('dialogContext')
     const dialogInfo = useState('dialogInfo')
-    console.log(title, message, dialogContext)
 
     dialogContext.value = { title, message, ...args }
 
@@ -42,5 +41,6 @@ type DialogContext = {
     title: string
     message: string
     actionButtons: any[]
+    persistent?: boolean
     [key: string]: any
 }

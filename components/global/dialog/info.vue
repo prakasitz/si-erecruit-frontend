@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="dialog" width="auto">
+    <v-dialog v-model="dialog" width="auto" :persistent="context.persistent ?? false">
         <template v-slot:activator="{ props }">
             <v-row justify="center" class="ma-2">
                 <v-btn :color="bgColor" v-bind="props"> Open Dialog INFO </v-btn>
