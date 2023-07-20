@@ -11,6 +11,13 @@ export const default_job: job = {
     start_date: '',
 }
 
+export const defaultDialogContext = {
+    title: '',
+    message: '',
+    actionButtons: [],
+    persistent: false,
+}
+
 export const defaultVueDatePickerStyle: VueDatePickerProps = {
     flow: ['year', 'month', 'calendar'],
     enableTimePicker: false,

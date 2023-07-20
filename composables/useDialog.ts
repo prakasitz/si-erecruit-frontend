@@ -4,26 +4,19 @@ export default function useDialog() {
         dialogWarning,
         dialogError,
         dialogContext,
-        showDialogInfo,
+        showDialog,
     }
 }
 
-function showDialogInfo({ title, message, ...args }: DialogContext) {
+function showDialog({ title, message, ...args }: DialogContext, dialog: any) {
     const dialogContext = useState<DialogContext>('dialogContext')
-    const dialogInfo = useState('dialogInfo')
-
     dialogContext.value = { title, message, ...args }
-
-    dialogInfo.value = true
+    dialog.value = true
 }
 
 function dialogContext() {
     return useState<DialogContext>('dialogContext', () => {
-        return {
-            title: '',
-            message: '',
-            actionButtons: [],
-        }
+        return defaultDialogContext
     })
 }
 
@@ -41,6 +34,6 @@ type DialogContext = {
     title: string
     message: string
     actionButtons: any[]
-    persistent?: boolean
+    persistent: boolean
     [key: string]: any
 }

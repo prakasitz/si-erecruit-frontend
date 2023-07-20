@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="dialog" width="auto" :persistent="context.persistent ?? false">
+    <v-dialog v-model="dialog" width="auto" :persistent="context.persistent">
         <template v-slot:activator="{ props }">
             <v-row justify="center" class="ma-2">
                 <v-btn :color="bgColor" v-bind="props"> Open Dialog INFO </v-btn>
@@ -16,7 +16,6 @@
             <v-card-text> {{ context.message }} </v-card-text>
             <v-card-actions v-if="context.actionButtons && context.actionButtons.length > 0">
                 <v-spacer></v-spacer>
-                <!-- Redirect or Upload again -->
                 <template v-for="button in context.actionButtons">
                     <v-btn :variant="'outlined'" v-bind="button" @click="dialog = !dialog" />
                 </template>
@@ -34,12 +33,7 @@ const context = dialogContext()
 
 watch(dialog, (value) => {
     if (value == false) {
-        //clear context
-        context.value = {
-            title: '',
-            message: '',
-            actionButtons: [],
-        }
+        context.value = defaultDialogContext
     }
 })
 </script>

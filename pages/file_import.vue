@@ -84,7 +84,7 @@ const tableStyle = {
 }
 
 const { importProfile } = useProfile()
-const { showDialogInfo } = useDialog()
+const { showDialog, dialogInfo } = useDialog()
 
 const loading = ref(false)
 const importedData = ref<any[] | null>(null)
@@ -121,24 +121,28 @@ async function onClickUpload(files: File[]) {
     const resp = await importProfile(files)
     if (resp?.data) {
         importedData.value = resp.data.data
-        showDialogInfo({
-            title: 'Imported',
-            message: 'Imported successfully',
-            actionButtons: [
-                {
-                    text: 'Upload again',
-                    prependIcon: 'mdi-reload',
-                    href: '/file_import',
-                },
-                {
-                    text: 'Check Job Data',
-                    prependIcon: 'mdi-clipboard-check',
-                    color: 'indigo',
-                    to: '/job_management',
-                },
-            ],
-            persistent: true,
-        })
+        const dialog = dialogInfo()
+        showDialog(
+            {
+                title: 'Imported',
+                message: 'Imported successfully',
+                actionButtons: [
+                    {
+                        text: 'Upload again',
+                        prependIcon: 'mdi-reload',
+                        href: '/file_import',
+                    },
+                    {
+                        text: 'Check Job Data',
+                        prependIcon: 'mdi-clipboard-check',
+                        color: 'indigo',
+                        to: '/job_management',
+                    },
+                ],
+                persistent: true,
+            },
+            dialog
+        )
     }
 
     loading.value = false
