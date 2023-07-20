@@ -1,7 +1,16 @@
 <template>
-    <NuxtLayout>
-        <NuxtPage />
-    </NuxtLayout>
+    <div>
+        <NuxtLayout>
+            <DevOnly>
+                <v-row class="mb-5">
+                    <DialogInfo />
+                    <DialogWarning />
+                    <DialogError />
+                </v-row>
+            </DevOnly>
+            <NuxtPage />
+        </NuxtLayout>
+    </div>
 </template>
 <style>
 /* ... */
@@ -43,6 +52,7 @@
 </style>
 
 <script setup lang="ts">
+const infoDialog = ref(false)
 const roles = ref(null)
 const route = useRoute()
 </script>

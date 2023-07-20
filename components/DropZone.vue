@@ -12,7 +12,14 @@
         @click="openFileExplorer"
     >
         <!-- share state with the scoped slot -->
-        <input ref="fileInput" type="file" style="display: none" @change="onFileInputChange" />
+        <input
+            ref="fileInput"
+            name="file"
+            type="file"
+            accept=".xls, .xlsx"
+            style="display: none"
+            @change="onFileInputChange"
+        />
         <slot :dropZoneActive="active"></slot>
     </div>
 </template>

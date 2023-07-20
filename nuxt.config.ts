@@ -105,6 +105,11 @@ export default defineNuxtConfig({
                 to: '/api/external/jobs/**',
             },
         },
+        '/api/profile/**': {
+            proxy: {
+                to: '/api/external/profile/**',
+            },
+        },
     },
 
     // routeRules: {

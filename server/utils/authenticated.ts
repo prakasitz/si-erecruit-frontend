@@ -11,10 +11,8 @@ export function getAuthenticatedRoutes(): Array<string> {
         '/api/auth/userinfo',
         '/api/profile/**',
         '/api/external/master/**',
-        '/api/master/**',
 
         //hr routes
-        '/api/jobs/**',
         '/api/external/jobs/**',
 
         //candidate routes

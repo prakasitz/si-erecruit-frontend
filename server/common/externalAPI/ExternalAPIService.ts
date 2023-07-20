@@ -15,7 +15,7 @@ export class ExternalAPIService {
         this.config = useRuntimeConfig()
         this.baseAPI = axios.create({
             baseURL: this.config.baseApi,
-            timeout: 1000,
+            timeout: 2000,
         })
     }
 
@@ -142,7 +142,10 @@ export class ExternalAPIService {
         } else if (error instanceof H3Error) {
             return error
         } else {
-            return error
+            return createError({
+                statusCode: 500,
+                message: error.message,
+            })
         }
     }
 }
