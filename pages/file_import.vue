@@ -50,13 +50,24 @@
                 <!-- rigth button -->
                 <v-spacer></v-spacer>
                 <v-btn
+                    v-if="importedData == null"
                     prepend-icon="mdi-upload"
                     :variant="'tonal'"
                     color="indigo"
-                    @click="importProfile(files[0])"
+                    @click="onClickUpload(files)"
+                    :loading="loading"
                     :disabled="cntFiles == 0"
                 >
                     <b>Upload File</b>
+                </v-btn>
+                <v-btn
+                    v-if="importedData && importedData.length > 0"
+                    prepend-icon="mdi-check"
+                    :variant="'tonal'"
+                    color="success"
+                    :disabled="cntFiles == 0"
+                >
+                    <b>Uploaded</b>
                 </v-btn>
                 <v-spacer></v-spacer>
             </v-card-actions>
@@ -71,6 +82,13 @@ const tableStyle = {
     // border: '1px solid black !important',
     width: '90%',
 }
+
+const { importProfile } = useProfile()
+const { showDialogInfo } = useDialog()
+
+const loading = ref(false)
+const importedData = ref<any[] | null>(null)
+const files = ref<File[]>([])
 
 definePageMeta({
     title: 'นำเข้าไฟล์',
@@ -89,18 +107,40 @@ definePageMeta({
     middleware: ['hr-auth'],
 })
 
-const { importProfile } = useProfile()
-
-const files = ref<File[]>([])
-
 const cntFiles = computed(() => {
     return files.value ? files.value.length : 0
 })
 
 function onFilesDropped(f: File[]) {
-    //add files to the array
-    console.log(f)
     files.value = f
+}
+
+async function onClickUpload(files: File[]) {
+    loading.value = true
+
+    const resp = await importProfile(files)
+    if (resp?.data) {
+        importedData.value = resp.data.data
+        showDialogInfo({
+            title: 'Imported',
+            message: 'Imported successfully',
+            actionButtons: [
+                {
+                    text: 'Check Job Data',
+                    prependIcon: 'mdi-clipboard-check',
+                    color: 'indigo',
+                    to: '/job_management',
+                },
+                {
+                    text: 'Upload again',
+                    prependIcon: 'mdi-reload',
+                    href: '/file_import',
+                },
+            ],
+        })
+    }
+
+    loading.value = false
 }
 
 function fileExtention(filename: string) {
