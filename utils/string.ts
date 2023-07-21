@@ -39,3 +39,7 @@ export const isStringNumber = (str: string) => {
     const numberRegex = /^-?\d+\.?\d*$/
     return numberRegex.test(str)
 }
+
+export const toCapitalizeCase = (word: string) => {
+    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+}

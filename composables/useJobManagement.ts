@@ -2,51 +2,17 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/th' // load on demand
 import buddhistEra from 'dayjs/plugin/buddhistEra'
 import { create } from 'domain'
+import { Job, JobWithProfile, Profile } from '~/utils/types'
 
 dayjs.extend(buddhistEra)
 dayjs.locale('th')
 
 export default function useJobManagement() {
     return {
-        fetchJob,
+        fetchJobs,
+        getProfilesByJobId,
         deleteJob,
     }
-}
-
-const fetchJob = () => {
-    /*
-     */
-    return useFetch('/api/external/jobs/get', {
-        headers: {
-            Accept: 'application/json',
-        },
-        method: 'POST',
-        transform(data: any) {
-            return data.map(
-                ({
-                    job_ID,
-                    job_name,
-                    data_source,
-                    job_status,
-                    create_date,
-                    mu_job_ID,
-                    mu_job_name,
-                    job_status_code,
-                }: any): any => {
-                    return {
-                        job_ID,
-                        job_name,
-                        data_source,
-                        job_status: job_status_code.job_status_text,
-                        job_status_color: job_status_code.zjob_status_color,
-                        desc: createDescription(mu_job_ID, mu_job_name, create_date),
-                        canDelete: canDelete(job_status_code.job_status_text),
-                    }
-                }
-            )
-        },
-        server: false,
-    })
 }
 
 /* 
@@ -66,11 +32,94 @@ const canDelete = (jobStatus: string) => {
     return jobStatus == 'importing' || jobStatus == 'imported' || jobStatus == 'created'
 }
 
-const deleteJob = async (jobId: string) => {
-    return await $fetch(`/api/external/jobs/${jobId}`, {
+const fetchJobs = (jobId?: any, isTransform: boolean = false) => {
+    let body: any = {}
+    if (jobId) {
+        body = {
+            job_ID: jobId,
+        }
+    }
+    return useFetch('/api/external/jobs/get', {
+        body,
+        headers: {
+            Accept: 'application/json',
+        },
+        method: 'POST',
+        transform(data: any) {
+            let tempData: any = data
+            if (jobId) tempData = data[0]
+            if (!isTransform)
+                return {
+                    ...tempData,
+                    create_date: dateToString(tempData['create_date'], DateFormatEnum.DATE_TIME_BUDDHIST_1),
+                }
+            const transFormData = tempData.map(
+                ({
+                    job_ID,
+                    job_name,
+                    data_source,
+                    job_status,
+                    create_date,
+                    mu_job_ID,
+                    mu_job_name,
+                    job_status_code,
+                }: Job)=> {
+                    return {
+                        job_ID,
+                        job_name,
+                        data_source,
+                        job_status: job_status_code!.job_status_text,
+                        job_status_color: job_status_code!.zjob_status_color,
+                        desc: createDescription(mu_job_ID, mu_job_name, create_date),
+                        canDelete: canDelete(job_status_code!.job_status_text),
+                    }
+                }
+            )
+            return transFormData
+        },
+        server: false,
+    })
+}
+
+const getProfilesByJobId = (jobId: string) => {
+    return useFetch(`/api/external/jobs/getProfileOnJob/${jobId}`, {
+        headers: {
+            Accept: 'application/json',
+        },
+        method: 'POST',
+        transform(data: any[]) {
+            const _data: JobWithProfile = data[0]
+            const job: Job = {
+                job_ID: _data['job_ID'],
+                job_name: _data['job_name'],
+                data_source: _data['data_source'],
+                job_status: _data['job_status'],
+                create_date: dateToString(_data['create_date'], DateFormatEnum.DATE_TIME_BUDDHIST_1),
+                mu_job_ID: _data['mu_job_ID'],
+                mu_job_name: _data['mu_job_name'],
+                job_status_code: _data['job_status_code'],
+            }
+            const profiles = _data['profile'].map((item: Profile) => {
+                return {
+                    fullname: item.nameTH + ' ' + item.lastnameTH,
+                    status: item.profile_status,
+                    pid: item.id_card_number,
+                    phone: item.cur_mobile ?? item.cur_telephone ?? 'ไม่มีข้อมูล',
+                    action: 'action',
+                }
+            })
+            return { job, profiles }
+        },
+        server: false,
+    })
+}
+
+const deleteJob = (jobId: string) => {
+    return useFetch(`/api/external/jobs/${jobId}`, {
         headers: {
             Accept: 'application/json',
         },
         method: 'DELETE',
+        server: false,
     })
 }

@@ -3,16 +3,18 @@ import { H3Event, H3Error } from 'h3'
 import { ExternalAPIService } from './ExternalAPIService'
 
 class JobsExternal extends ExternalAPIService {
-    private jobSlug: string = 'jobs'
+    private slug: string = 'jobs'
     constructor() {
         super()
     }
-    public async getJobs(event: H3Event) {
+    public async getJobs(event: H3Event, body?: any) {
         try {
             const accessToken = this.getAccessToken(event)
             const resp = await this.baseAPI.post(
-                `/${this.jobSlug}/get`,
-                {},
+                `/${this.slug}/get`,
+                {
+                    ...body,
+                },
                 {
                     headers: {
                         Authorization: 'Bearer ' + accessToken,
@@ -33,10 +35,31 @@ class JobsExternal extends ExternalAPIService {
         }
     }
 
+    public async getProfilesByJobId(event: H3Event, jobId?: string) {
+        try {
+            console.log('============= jobs: method => getProfilesByJobId =======================')
+            const accessToken = this.getAccessToken(event)
+            const resp = await this.baseAPI.post(
+                `/${this.slug}/getProfileOnJob/${jobId}`,
+                {},
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + accessToken,
+                    },
+                }
+            )
+            return resp.data
+        } catch (error: AxiosError | any) {
+            return this.handleError(error)
+        } finally {
+            console.log('=================================================')
+        }
+    }
+
     public async delJobById(jobId: number, event: H3Event) {
         try {
             const accessToken = this.getAccessToken(event)
-            const resp = await this.baseAPI.delete(`/${this.jobSlug}/delete`, {
+            const resp = await this.baseAPI.delete(`/${this.slug}/delete`, {
                 data: {
                     job_ID: jobId,
                 },

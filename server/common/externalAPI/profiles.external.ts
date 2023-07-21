@@ -36,9 +36,6 @@ class ProfileExternal extends ExternalAPIService {
             if (!resp.data) throw new Error(`importProfile: Error Unexpected`)
             return resp.data
         } catch (error: AxiosError | any) {
-            if (error instanceof AxiosError) {
-                console.log()
-            }
             return this.handleError(error)
         } finally {
             console.log('=================================================')
