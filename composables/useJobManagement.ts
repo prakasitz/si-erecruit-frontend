@@ -63,7 +63,7 @@ const fetchJobs = (jobId?: any, isTransform: boolean = false) => {
                     mu_job_ID,
                     mu_job_name,
                     job_status_code,
-                }: Job)=> {
+                }: Job) => {
                     return {
                         job_ID,
                         job_name,
@@ -88,7 +88,7 @@ const getProfilesByJobId = (jobId: string) => {
         },
         method: 'POST',
         transform(data: any[]) {
-            const _data: JobWithProfile = data[0]
+            const _data: JobWithProfile = data
             const job: Job = {
                 job_ID: _data['job_ID'],
                 job_name: _data['job_name'],
