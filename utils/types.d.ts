@@ -1,5 +1,3 @@
-import { Value } from 'sass'
-
 export enum CandidateStatus {
     CREATED = 'Created',
     ACTIVE = 'Active',
