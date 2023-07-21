@@ -10,10 +10,23 @@ router.post(
     defineEventHandler(async (event) => {
         const body = await readBody(event)
         try {
-            const data = await jobService.getJobs(event)
+            const data = await jobService.getJobs(event, body)
             return data
         } catch (error) {
-            throw BadRequestError
+            throw BadRequestError()
+        }
+    })
+)
+
+router.post(
+    '/getProfileOnJob/:jobId',
+    defineEventHandler(async (event) => {
+        const jobId = await getRouterParam(event, 'jobId')
+        try {
+            const data = await jobService.getProfilesByJobId(event, jobId)
+            return data
+        } catch (error) {
+            throw BadRequestError()
         }
     })
 )

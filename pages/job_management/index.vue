@@ -79,7 +79,7 @@
 </template>
 
 <script setup lang="ts">
-const { fetchJob } = useJobManagement()
+const { fetchJobs } = useJobManagement()
 
 const route = useRoute()
 
@@ -109,70 +109,7 @@ const headers = [
 
 const search = ref()
 
-const desserts = [
-    {
-        name: 'Frozen Yogurt',
-        source: 159,
-        status: 0,
-        select: false,
-    },
-    {
-        name: 'Ice cream sandwich',
-        source: 237,
-        status: 1,
-        select: true,
-    },
-    {
-        name: 'Eclair',
-        source: 262,
-        status: 0,
-        select: true,
-    },
-    {
-        name: 'Cupcake',
-        source: 305,
-        status: 1,
-        select: true,
-    },
-    {
-        name: 'Gingerbread',
-        source: 356,
-        status: 1,
-        select: true,
-    },
-    {
-        name: 'Jelly bean',
-        source: 375,
-        status: 0,
-        select: true,
-    },
-    {
-        name: 'Lollipop',
-        source: 392,
-        status: 0,
-        select: true,
-    },
-    {
-        name: 'Honeycomb',
-        source: 408,
-        status: 0,
-        select: true,
-    },
-    {
-        name: 'Donut',
-        source: 452,
-        status: 1,
-        select: true,
-    },
-    {
-        name: 'KitKat',
-        source: 518,
-        status: 0,
-        select: true,
-    },
-]
-
-const { data: jobs, pending } = fetchJob()
+const { data: jobs, pending } = fetchJobs(null, true)
 
 onMounted(async () => {
     // const { data, error, refresh, pending } = await useApi('/jobs/get', {
