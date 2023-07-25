@@ -3,6 +3,7 @@ export default function useDialog() {
         dialogInfo,
         dialogWarning,
         dialogError,
+        dialogConfirm,
         dialogContext,
         showDialog,
     }
@@ -28,6 +29,10 @@ function dialogWarning() {
 }
 function dialogError() {
     return useState('dialogError', () => false)
+}
+
+function dialogConfirm() {
+    return useState('dialogConfirm', () => false)
 }
 
 type DialogContext = {

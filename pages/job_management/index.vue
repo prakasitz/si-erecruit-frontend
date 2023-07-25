@@ -17,8 +17,9 @@
                     :items="jobs"
                     item-value="name"
                     class="elevation-1"
-                    show-select
                     :search="search"
+                    :hover="true"
+                    @click:row="onRowClick"
                 >
                     <template v-slot:top>
                         <v-row>
@@ -64,8 +65,9 @@
                             :variant="'text'"
                             density="comfortable"
                             icon="mdi-delete"
+                            :id="`jobid-${item.raw.job_ID}`"
                             :size="'small'"
-                            @click="deleteItem(item.raw)"
+                            @click="confirmForDeleteItem(event, item.raw)"
                             color="red"
                             title="ลบ"
                             :disabled="!item.raw.canDelete"
@@ -79,7 +81,11 @@
 </template>
 
 <script setup lang="ts">
-const { fetchJob } = useJobManagement()
+import { NuxtError } from 'nuxt/app'
+import { FetchError } from 'ofetch'
+
+const { fetchJob, deleteJob } = useJobManagement()
+const { dialogConfirm, showDialog } = useDialog()
 
 const route = useRoute()
 
@@ -109,70 +115,92 @@ const headers = [
 
 const search = ref()
 
-const desserts = [
-    {
-        name: 'Frozen Yogurt',
-        source: 159,
-        status: 0,
-        select: false,
-    },
-    {
-        name: 'Ice cream sandwich',
-        source: 237,
-        status: 1,
-        select: true,
-    },
-    {
-        name: 'Eclair',
-        source: 262,
-        status: 0,
-        select: true,
-    },
-    {
-        name: 'Cupcake',
-        source: 305,
-        status: 1,
-        select: true,
-    },
-    {
-        name: 'Gingerbread',
-        source: 356,
-        status: 1,
-        select: true,
-    },
-    {
-        name: 'Jelly bean',
-        source: 375,
-        status: 0,
-        select: true,
-    },
-    {
-        name: 'Lollipop',
-        source: 392,
-        status: 0,
-        select: true,
-    },
-    {
-        name: 'Honeycomb',
-        source: 408,
-        status: 0,
-        select: true,
-    },
-    {
-        name: 'Donut',
-        source: 452,
-        status: 1,
-        select: true,
-    },
-    {
-        name: 'KitKat',
-        source: 518,
-        status: 0,
-        select: true,
-    },
-]
+const { data: jobs, pending, refresh } = fetchJob()
 
-const { data: jobs, pending } = fetchJob()
+const onRowClick = (event: Event, item: any) => {
+    const router = useRouter()
+
+    //@ts-ignore
+    let target = event.target as HTMLElement
+    let tagName = target.tagName
+    let buttonId = `jobid-${item.item.raw.job_ID}`
+    let buttonElement: HTMLButtonElement | null = null
+    let from: string | null = null
+    // target tagName is I or BUTTON
+    switch (tagName) {
+        case 'I':
+            buttonElement = target.closest('button')
+            from = 'I'
+        case 'BUTTON':
+            from = from || 'BUTTON'
+            buttonElement = buttonElement || (target as HTMLButtonElement)
+            if (buttonElement.id == buttonId) {
+                console.log('from', from, buttonElement.id, buttonId)
+                confirmForDeleteItem(event, item.item.raw)
+            }
+            break
+        default:
+            router.push(`/job_management/${item.item.raw.job_ID}`)
+            break
+    }
+
+    // $router.push(`/job_management/${item.item.raw.job_ID}`)
+}
+
+const confirmForDeleteItem = (event: Event, item: any) => {
+    const dialog = dialogConfirm()
+    showDialog(
+        {
+            title: 'Confirm to delete this job',
+            dialogColor: 'amber',
+            message: `Are you sure to delete this job ${item.job_ID}?`,
+            item: {
+                id: item.job_ID,
+            },
+            actionButtons: [
+                {
+                    text: 'DELETE',
+                    variant: 'elevated',
+                    color: 'red',
+                    cb: deleteJobItem,
+                },
+                {
+                    text: 'Cancel',
+                    color: 'gray',
+                },
+            ],
+            persistent: true,
+        },
+        dialog
+    )
+}
+
+const deleteJobItem = async (event: Event, itemId: any): Promise<{ status: boolean; message: unknown }> => {
+    if (event instanceof PointerEvent) {
+        try {
+            const resp = await deleteJob(itemId)
+            return { status: true, message: `Job ID: ${itemId} deleted!` }
+        } catch (error: FetchError | any) {
+            console.log(error)
+            if (error instanceof FetchError) {
+                const { statusCode, statusMessage } = error.data as NuxtError
+                let message = error.data.message + ` (${statusMessage}:${statusCode})` || error.message || error || ''
+                return { status: false, message }
+            } else {
+                let message = error.message || error || ''
+                return {
+                    status: false,
+                    message: `Unexcepted error, please try again later <br> => "${message}"`,
+                }
+            }
+        } finally {
+            //fetch job again
+            refresh()
+        }
+    }
+    event.preventDefault()
+    return { status: false, message: 'cancel to DELETE' }
+}
 
 onMounted(async () => {
     // const { data, error, refresh, pending } = await useApi('/jobs/get', {
