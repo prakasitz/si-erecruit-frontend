@@ -84,7 +84,7 @@
 import { NuxtError } from 'nuxt/app'
 import { FetchError } from 'ofetch'
 
-const { fetchJob, deleteJob } = useJobManagement()
+const { fetchJobs, deleteJob } = useJobManagement()
 const { dialogConfirm, showDialog } = useDialog()
 
 const route = useRoute()
@@ -115,7 +115,7 @@ const headers = [
 
 const search = ref()
 
-const { data: jobs, pending, refresh } = fetchJob()
+const { data: jobs, pending, refresh } = fetchJobs(undefined, true)
 
 const onRowClick = (event: Event, item: any) => {
     const router = useRouter()

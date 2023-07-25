@@ -33,6 +33,7 @@ const canDelete = (jobStatus: string) => {
 }
 
 const fetchJobs = (jobId?: any, isTransform: boolean = false) => {
+    console.log(jobId, isTransform)
     let body: any = {}
     if (jobId) {
         body = {
@@ -87,8 +88,8 @@ const getProfilesByJobId = (jobId: string) => {
             Accept: 'application/json',
         },
         method: 'POST',
-        transform(data: any[]) {
-            const _data: JobWithProfile = data
+        transform(data) {
+            const _data = data as JobWithProfile
             const job: Job = {
                 job_ID: _data['job_ID'],
                 job_name: _data['job_name'],
