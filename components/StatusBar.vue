@@ -1,45 +1,69 @@
 <template>
     <div class="container">
-        <div class="node" :class="getNodeFill(0)">
-            <div class="text">Imported</div>
-        </div>
-        <div class="line"></div>
-        <div class="node" :class="getNodeFill(1)">
-            <div class="text">Published</div>
-        </div>
-        <div class="line"></div>
-        <div class="node" :class="getNodeFill(2)">
-            <div class="text">Verified</div>
-        </div>
-        <div class="line"></div>
-        <div class="node" :class="getNodeFill(3)">
-            <div class="text">Approve</div>
-        </div>
-        <div class="line"></div>
-        <div class="node" :class="getNodeFill(4)">
-            <div class="text">Closed</div>
-        </div>
+        <template v-for="node in nodeList">
+            <div v-if="node.index != 0" class="line"></div>
+            <div class="node" :class="getNodeFill(node.index, node.text)">
+                <div class="text">{{ toCapitalizeCase(node.text) }}</div>
+            </div>
+        </template>
     </div>
 </template>
 
-<script>
-export default {
-    data() {
-        return {
-            activeNode: 2, // set this to the index of the active node
-        }
+<script setup lang="ts">
+import { JobStatusType } from '~/utils/types';
+
+export interface Props {
+    status?: JobStatusType
+}
+
+type NodeList = {
+    index: number
+    text: JobStatusType
+    class: string
+}
+
+const props = defineProps<Props>()
+const nodeList: NodeList[] = [
+    {
+        index: 0,
+        text: JobStatus.IMPORTED,
+        class: 'inactive',
     },
-    methods: {
-        getNodeFill(index) {
-            if (this.activeNode > index) {
-                return 'actived'
-            } else if (this.activeNode == index) {
-                return 'active'
-            } else {
-                return 'inactive'
-            }
-        },
+    {
+        index: 1,
+        text: JobStatus.PUBLISHED,
+        class: 'inactive',
     },
+    {
+        index: 2,
+        text: JobStatus.VERIFYING,
+        class: 'inactive',
+    },
+    {
+        index: 3,
+        text: JobStatus.APPROVED,
+        class: 'inactive',
+    },
+    {
+        index: 4,
+        text: JobStatus.CLOSED,
+        class: 'inactive',
+    },
+]
+
+const getNodeFill = (index: number, status: JobStatusType) => {
+    //check props.status in nodeList.class
+    // check props not null
+    let isInNodeList = nodeList.find((node) => node.text === status)
+    if (!props.status || !isInNodeList) return 'inactive'
+    let statusIndex = nodeList.findIndex((node) => node.text === props.status)
+    if (index < nodeList.findIndex((node) => node.text === props.status)) {
+        return 'actived'
+    } else if (index == statusIndex) {
+        return 'active'
+    } else {
+        return 'inactive'
+    }
 }
 </script>
 
