@@ -80,18 +80,12 @@ FROM $NODE_VERSION-slim AS production
 
 COPY --from=production-base /app/.output /app/.output
 
-# Service hostname
-ENV NUXT_HOST=0.0.0.0
-ENV NUXT_PORT=3002
-
 # Service version
 ARG NUXT_APP_VERSION
 ENV NUXT_APP_VERSION=${NUXT_APP_VERSION}
 
 # Run in production mode
 ENV NODE_ENV=production
-
-EXPOSE 3002
 
 # start the app
 ENTRYPOINT [ "node", "/app/.output/server/index.mjs" ]
