@@ -1,5 +1,6 @@
 import { AxiosError } from 'axios'
 import { ExternalAPIService } from './ExternalAPIService'
+import { H3Event, H3Error } from 'h3'
 
 class MasterExternal extends ExternalAPIService {
     private masterSlug: string = 'master-data'
@@ -199,6 +200,68 @@ class MasterExternal extends ExternalAPIService {
             return this.handleError(error)
         }
     }
+
+    public async getSettings(event: H3Event) {
+        try {
+            await this.initializeToken()
+            const resp = await this.baseAPI.get(`/${this.masterSlug}/settings`, {
+                headers: {
+                    Authorization: 'Bearer ' + this.token,
+                },
+            })
+
+            if (!resp.data) throw new Error(`getSettings: Data not found`)
+
+            let result: any = resp.data
+            return result
+        } catch (error: AxiosError | any) {
+            return this.handleError(error)
+        }
+    }
+
+    public async getBySetting(setting_keys: { setting_keys: string[] }, event: H3Event) {
+        try {
+            await this.initializeToken()
+            const resp = await this.baseAPI.post(`/${this.masterSlug}/settings`,
+                {
+                    code_list: setting_keys.setting_keys
+                },
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + this.token,
+                    }
+                }
+            )
+            if (!resp.data) throw new Error(`getSettings: Data not found`)
+
+            let result: any = resp.data
+            return result
+        } catch (error: AxiosError | any) {
+            return this.handleError(error)
+        }
+    }
+
+    public async updateSetting(setting: { setting_key: string, value: string }, event: H3Event) {
+        try {
+            const token = await this.getAccessToken(event)
+            const resp = await this.baseAPI.put(`/${this.masterSlug}/setting`,
+                { ...setting },
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + token,
+                    }
+                }
+            )
+            if (!resp.data || resp.data.rowAffects < 1) throw new Error(`Update Setting: fail`)
+
+            let result: any = resp.data
+            return result
+
+        } catch (error: AxiosError | any) {
+            return this.handleError(error)
+        }
+    }
+
 
     // public async getMaritalStatus() {
     //     try {
