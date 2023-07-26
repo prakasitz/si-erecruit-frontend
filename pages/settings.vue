@@ -38,11 +38,29 @@
             </v-card-item>
         </v-card>
         <br />
+        <DialogsSettingInfo />
     </div>
-    <DialogsSettingInfo />
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+    title: 'ตั้งค่า',
+    name: 'settings',
+    pageTransition: {
+        name: 'rotate',
+    },
+    breadcrumbs: [
+        {
+            title: 'หน้าหลัก',
+            href: '/',
+        },
+        {
+            title: 'ตั้งค่า',
+        },
+    ],
+    middleware: ['hr-auth'],
+})
+
 const { fetchSettings, fetchBySettings, updateSetting } = useSettings()
 const { showDialogInfo } = useSettingInfoDialog()
 
@@ -65,21 +83,4 @@ const editItem = async (item: any) => {
         })
     }
 }
-
-definePageMeta({
-    title: 'ตั้งค่า',
-    pageTransition: {
-        name: 'rotate',
-    },
-    breadcrumbs: [
-        {
-            title: 'หน้าหลัก',
-            href: '/',
-        },
-        {
-            title: 'ตั้งค่า',
-        },
-    ],
-    middleware: ['hr-auth'],
-})
 </script>
