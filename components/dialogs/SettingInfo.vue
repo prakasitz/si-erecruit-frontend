@@ -82,10 +82,8 @@ const updateSettings = async () => {
     }
     try {
         const isUpdate = await updateSetting(updateValue)
-        console.log(isUpdate?.data.value)
         const rowAffect = isUpdate?.data.value
         updateShow(false, false, true, false)
-        console.log(rowAffect)
         if (rowAffect && rowAffect.rowAffects > 0) {
         } else {
             updateShow(false, false, false, true)

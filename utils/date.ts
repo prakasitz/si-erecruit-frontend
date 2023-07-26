@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import 'dayjs/locale/th' // load on demand
+import 'dayjs/locale/es' // load on demand
 import buddhistEra from 'dayjs/plugin/buddhistEra'
 
 dayjs.extend(buddhistEra)
