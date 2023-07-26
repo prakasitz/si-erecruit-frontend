@@ -26,8 +26,8 @@
                             <v-col class="mx-4 my-3">
                                 <p class="text-h6 text-main-color font-weight-bold">รายชื่องานที่นำข้อมูลเข้า</p>
                                 <p class="text-h7 font-weight-bold">
-                                    ได้ทำการนำข้อมูลเข้าแล้ว
-                                    <span style="color: red">79</span>
+                                    ได้ทำการนำข้อมูลทั้งหมด
+                                    <span style="color: red">{{ jobs.length }}</span>
                                     รายการ
                                 </p>
                             </v-col>
