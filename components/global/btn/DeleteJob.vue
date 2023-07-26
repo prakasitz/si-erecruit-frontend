@@ -13,13 +13,28 @@ const fnDelete = async () => {
         const resp = await deleteJob(props.jobId)
         const rowAffects = resp?.data?.value.rowAffects
         if (rowAffects) {
-            return { status: true, message: `Job ID: ${props.jobId} deleted!` }
+            return {
+                status: true,
+                message: `Job ID: ${props.jobId} deleted!`,
+                callbackActionBtn: [
+                    {
+                        text: 'close',
+                        to: '/job_management',
+                    },
+                ],
+            }
         } else {
-            return { status: false, message: `Sorry, something went wrong.` }
+            return {
+                status: false,
+                message: `Sorry, something went wrong.`,
+            }
         }
     } catch (e) {
         console.log(e)
-        return { status: false, message: `Sorry, something went wrong.` }
+        return {
+            status: false,
+            message: `Sorry, something went wrong.`,
+        }
     }
 }
 
