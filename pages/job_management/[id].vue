@@ -19,7 +19,7 @@
                 </v-card-item>
             </v-card>
         </div>
-        <div v-else>
+        <div v-else-if="job">
             <v-card class="mx-auto" width="90%">
                 <v-toolbar density="compact" color="main-color">
                     <v-card-title :style="{ 'font-size': '16px !important' }">
@@ -79,6 +79,13 @@
                     </v-data-table>
                 </v-card-text>
             </v-card>
+        </div>
+        <div v-else>
+            {{
+                showError({
+                    statusCode: 404,
+                })
+            }}
         </div>
         <br />
     </div>
