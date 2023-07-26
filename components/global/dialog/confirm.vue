@@ -41,13 +41,27 @@
                         :disabled="loading"
                     />
                 </template>
-                <v-btn v-else :variant="'outlined'" @click.once="closeDialog()">cancel</v-btn>
+                <template v-else>
+                    <v-btn
+                        v-if="context.callbackActionBtn && context.callbackActionBtn.length > 0"
+                        v-for="button in context.callbackActionBtn"
+                        v-bind="button"
+                        @click="closeDialog"
+                    ></v-btn>
+                    <v-btn v-else :variant="'outlined'" @click="closeDialog">cancel </v-btn>
+                </template>
             </v-card-actions>
         </v-card>
     </v-dialog>
 </template>
 
 <script setup lang="ts">
+interface BtnActionCallBack {
+    status: boolean
+    message: unknown
+    callbackActionBtn: any[]
+}
+
 const { dialogConfirm, dialogContext } = useDialog()
 const dialog = dialogConfirm()
 const context = dialogContext()
@@ -61,7 +75,7 @@ const simpleActionHandler = async (event: unknown, buttonAction: any) => {
     if (typeof buttonAction.cb == 'function') {
         console.log(context.value)
         let itemId = context.value.item.id
-        const { status, message }: { status: boolean; message: unknown } = await buttonAction.cb(event, itemId)
+        const { status, message, callbackActionBtn }: BtnActionCallBack = await buttonAction.cb(event, itemId)
         loading.value = false
         if (status) {
             success.value = true
@@ -71,6 +85,9 @@ const simpleActionHandler = async (event: unknown, buttonAction: any) => {
             success.value = false
         }
         context.value.callbackMessage = message
+        if (callbackActionBtn) {
+            context.value.callbackActionBtn = callbackActionBtn
+        }
     } else {
         closeDialog()
     }
