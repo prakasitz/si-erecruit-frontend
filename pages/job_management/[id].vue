@@ -26,6 +26,23 @@
                         <span class="text-h6">รายละเอียดงาน (ID: {{ route.params.id }})</span><br />
                     </v-card-title>
                 </v-toolbar>
+                <div
+                    v-if="
+                        ['cancelled', 'suspended', 'terminated'].find(
+                            (item) => item == job.job_status_code.job_status_text.toLowerCase()
+                        )
+                    "
+                >
+                    <v-sheet
+                        class="d-flex justify-center"
+                        color="black"
+                        min-width="100%"
+                        min-height="100%"
+                        :style="{ opacity: '20%', zIndex: '1000' }"
+                    >
+                        <h1 class="d-flex align-center">{{ job.job_status_code.job_status_text }}</h1>
+                    </v-sheet>
+                </div>
                 <v-card-text class="d-flex justify-center">
                     <v-container>
                         <FormJobDetail :job="job" :profileCount="profile.profiles.length"></FormJobDetail>
