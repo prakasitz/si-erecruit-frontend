@@ -50,8 +50,9 @@
                     >
                         <template v-slot:top> </template>
                         <template v-slot:item.status="{ item }">
-                            <v-chip v-if="item.raw.status == 0" color="red">Imported</v-chip>
-                            <v-chip v-if="item.raw.status == 1" color="black">Closed</v-chip>
+                            <v-chip :color="profileStatusComputed(item.raw.status).profile_status_color">
+                                {{ profileStatusComputed(item.raw.status).profile_status_text }}
+                            </v-chip>
                         </template>
                         <template v-slot:item.action="{ item }">
                             <NuxtLink :to="`/candidate/form/`">
@@ -96,6 +97,60 @@ let jobId = route.params.id
 const { getProfilesByJobId, fetchJobs } = useJobManagement()
 const { data: job, pending: jobPending } = fetchJobs(jobId)
 const { data: profile, pending: profilePending } = getProfilesByJobId(jobId)
+const profileStatus = [
+    {
+        profile_status_code: 0,
+        profile_status_text: 'Created',
+        profile_status_color: 'label label-info m-r-10',
+    },
+    {
+        profile_status_code: 1,
+        profile_status_text: 'Imported',
+        profile_status_color: 'label label-megna m-r-10',
+    },
+    {
+        profile_status_code: 2,
+        profile_status_text: 'Publishable',
+        profile_status_color: 'label label-success m-r-10',
+    },
+    {
+        profile_status_code: 3,
+        profile_status_text: 'Suspended',
+        profile_status_color: 'label label-danger m-r-10',
+    },
+    {
+        profile_status_code: 4,
+        profile_status_text: 'Submitted',
+        profile_status_color: 'label label-light-success m-r-10',
+    },
+    {
+        profile_status_code: 5,
+        profile_status_text: 'Verified',
+        profile_status_color: 'label label-light-megna m-r-10',
+    },
+    {
+        profile_status_code: 6,
+        profile_status_text: 'Waived',
+        profile_status_color: 'label label-warning m-r-10',
+    },
+    {
+        profile_status_code: 9,
+        profile_status_text: 'Cancelled',
+        profile_status_color: 'label label-red m-r-10',
+    },
+    {
+        profile_status_code: 99,
+        profile_status_text: 'Closed',
+        profile_status_color: 'label-light-inverse m-r-10',
+    },
+]
+
+const profileStatusComputed = computed(() => {
+    return (status) => {
+        const obj = profileStatus.find((item) => item.profile_status_code == status)
+        return obj
+    }
+})
 
 const headers = [
     // { title: 'No.', align: 'start', key: 'no' },

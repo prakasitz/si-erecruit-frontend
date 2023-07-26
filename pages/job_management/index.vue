@@ -67,7 +67,7 @@
                             icon="mdi-delete"
                             :id="`jobid-${item.raw.job_ID}`"
                             :size="'small'"
-                            @click="confirmForDeleteItem(event, item.raw)"
+                            @click="confirmForDeleteItem($event, item.raw)"
                             color="red"
                             title="ลบ"
                             :disabled="!item.raw.canDelete"
