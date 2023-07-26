@@ -3,7 +3,7 @@ import 'dayjs/locale/th' // load on demand
 import buddhistEra from 'dayjs/plugin/buddhistEra'
 
 dayjs.extend(buddhistEra)
-dayjs.locale('th')
+// dayjs.locale('th')
 
 export enum DateFormatEnum {
     DATE_TIME_BUDDHIST_1 = 'DD MMM BBBB, HH:mm',
@@ -17,5 +17,5 @@ export enum DateFormatEnum {
 }
 
 export const dateToString = (date: string | Date, format: DateFormatEnum) => {
-    return dayjs(date).format(format)
+    return dayjs(date, 'DD/MM/YYYY HH:mm').subtract(7, 'hour').format(format)
 }

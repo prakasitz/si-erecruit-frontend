@@ -1,9 +1,12 @@
 <template>
     <v-dialog v-model="dialog" width="auto" :persistent="context.persistent">
         <template v-slot:activator="{ props }">
+            <dev-only>
+
             <v-row justify="center" class="ma-2">
                 <v-btn :color="bgColor" v-bind="props"> Open Dialog ERROR </v-btn>
             </v-row>
+            </dev-only>
         </template>
         <v-card class="mb-5" width="400">
             <v-toolbar density="compact" :color="bgColor">

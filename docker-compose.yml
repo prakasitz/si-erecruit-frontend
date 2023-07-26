@@ -1,9 +1,12 @@
 version: '3.1'
 services:
-    new-si-erecruit:
+    frontend:
         image: registry.si.mahidol.ac.th/new-si-erecruit/frontend:latest
         restart: on-failure
+        environment:
+            - NITRO_HOST=0.0.0.0
+            - NITRO_PORT=3002
         ports:
             - '3002:3002'
         env_file:
-            - .env.production
+            - .env
