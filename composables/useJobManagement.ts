@@ -102,6 +102,7 @@ const getProfilesByJobId = (jobId: string) => {
             }
             const profiles = _data['profile'].map((item: Profile) => {
                 return {
+                    job_ID: item.job_ID,
                     fullname: item.nameTH + ' ' + item.lastnameTH,
                     status: item.profile_status,
                     pid: item.id_card_number,

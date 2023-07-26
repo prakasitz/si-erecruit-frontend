@@ -107,6 +107,7 @@ definePageMeta({
 })
 
 const headers = [
+    { title: 'ID', align: 'start', key: 'job_ID', width: '5%' },
     { title: 'ชื่องาน', align: 'start', key: 'job_name' },
     { title: 'ที่มา', align: 'start', key: 'data_source' },
     { title: 'สถานะ', align: 'start', key: 'job_status' },
