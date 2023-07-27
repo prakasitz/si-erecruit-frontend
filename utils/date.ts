@@ -16,6 +16,6 @@ export enum DateFormatEnum {
     DAY_MONTH_YEAR = 'DD MMMM YYYY',
 }
 
-export const dateToString = (date: string | Date, format: DateFormatEnum) => {
+export const dateToString = (date: string | Date, format: any) => {
     return dayjs(date, 'DD/MM/YYYY HH:mm').subtract(7, 'hour').format(format)
 }
