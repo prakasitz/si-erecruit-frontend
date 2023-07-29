@@ -50,23 +50,6 @@ export class ExternalAPIService {
         }
     }
 
-    public async CandidateUserInfo(candidate_token: string) {
-        try {
-            const resp = await this.baseAPI.post(
-                `/${this.candidateSlug}/auth/userInfo`,
-                {},
-                {
-                    headers: {
-                        Authorization: candidate_token,
-                    },
-                }
-            )
-            return resp.data
-        } catch (error: AxiosError | any) {
-            return this.handleError(error)
-        }
-    }
-
     public async CandidateCheckActive(pid: string) {
         try {
             await this.initializeToken()
@@ -90,7 +73,6 @@ export class ExternalAPIService {
     public async HRLogin(username: string, password: string) {
         try {
             await this.initializeToken()
-
             const resp = await this.baseAPI.post(
                 `/${this.hrSlug}/auth`,
                 {
@@ -105,6 +87,7 @@ export class ExternalAPIService {
             )
             return resp.data
         } catch (error: AxiosError | any) {
+            console.log(error.data)
             return this.handleError(error)
         }
     }
@@ -123,6 +106,23 @@ export class ExternalAPIService {
             // modify resp.data on role[] add `HR`
             if (!resp.data.role) resp.data.role = []
             resp.data.role.push('HR')
+            return resp.data
+        } catch (error: AxiosError | any) {
+            return this.handleError(error)
+        }
+    }
+
+    public async CandidateUserInfo(candidate_token: string) {
+        try {
+            const resp = await this.baseAPI.post(
+                `/${this.candidateSlug}/auth/userInfo`,
+                {},
+                {
+                    headers: {
+                        Authorization: candidate_token,
+                    },
+                }
+            )
             return resp.data
         } catch (error: AxiosError | any) {
             return this.handleError(error)

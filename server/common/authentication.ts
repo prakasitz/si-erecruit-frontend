@@ -85,7 +85,7 @@ export async function getUserFromAccessToken(event: H3Event): Promise<any> {
 
     // Verify access token
     const accessTokenArr = accessToken.split(' ')
-    const errorOrUser = verifyAccessToken(accessTokenArr[1])
+    const errorOrUser = await verifyAccessToken(accessTokenArr[1])
 
     // If error, print to console and return false
     if (errorOrUser instanceof H3Error) {

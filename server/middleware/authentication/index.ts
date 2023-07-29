@@ -6,7 +6,7 @@
 import { H3Error } from 'h3'
 import { getUserFromAccessToken, isAuthenticated } from '../../common/authentication'
 import { checkURL } from '../../../utils/string'
-import { forbiddenError } from '../../../utils/default'
+import { UnauthorizedError, forbiddenError } from '../../../utils/default'
 // import { isAuthenticated } from '../../../common/authentication'
 
 export default defineEventHandler(async (event) => {
@@ -20,16 +20,14 @@ export default defineEventHandler(async (event) => {
                 console.log(`=============`, ' ', `middleware:authentication`, ' ', `==========================`)
 
                 const authenticatedOrError = await isAuthenticated(event)
+                
                 if (authenticatedOrError instanceof H3Error) throw authenticatedOrError
-                if (authenticatedOrError === false) throw forbiddenError()
+                if (authenticatedOrError === false) throw UnauthorizedError('Token is invalid or expired.')
 
                 const userOrNull = await getUserFromAccessToken(event)
                 if (userOrNull === null) {
-                    console.log('Missing access token after authentication. This should not happen.')
-                    throw createError({
-                        statusCode: 401,
-                        statusMessage: 'Unauthorized. Missing access token.',
-                    })
+                    console.log('Unauthorized. Missing access token')
+                    throw UnauthorizedError('Unauthorized. Missing access token')
                 }
                 console.log(`++++++++++userOrNul+++++++++++`)
                 console.log(userOrNull)

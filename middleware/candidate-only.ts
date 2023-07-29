@@ -5,10 +5,10 @@ import { useUserStore } from '~/stores/user.store'
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
     await useAuth().me()
-    const { isHR } = storeToRefs(useUserStore())
-    console.log('middleware:hr-only', isHR.value)
-    if (!isHR.value) {
-        // return navigateTo({ name: 'login-hr' })
+    const { isCandidate } = storeToRefs(useUserStore())
+    console.log('middleware:candidate-only', isCandidate.value)
+    if (!isCandidate.value) {
+        // return navigateTo({ name: 'login-candidate' })
         throw createError({
             statusCode: 403,
             message: 'You are not authorized to access this page.',

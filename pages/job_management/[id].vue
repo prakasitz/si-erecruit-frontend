@@ -68,7 +68,7 @@ definePageMeta({
             title: 'รายละเอียดงาน',
         },
     ],
-    middleware: ['hr-auth'],
+    middleware: ['hr-only'],
 })
 
 const headers = [

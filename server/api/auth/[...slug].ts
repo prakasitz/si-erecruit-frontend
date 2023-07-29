@@ -1,7 +1,7 @@
 import { createRouter, defineEventHandler, useBase, H3Error, isError } from 'h3'
 import { getClientCredentials, isAuthenticated } from '../../common/authentication'
 import { handleErrorRoute } from '../../common/error'
-import { JSONResponse, RoleEnum, Roles } from '../../../utils/types'
+import { JSONResponse, Roles } from '../../../utils/types'
 import { verifyAccessToken, setCookieLogin } from '../../common/token'
 import { isMatchRegex } from '../../../utils/string'
 import { checkIsAuthenticated, checkPID, getUserInfo } from './auth.service'
@@ -42,7 +42,6 @@ router.get(
     '/userinfo',
     defineEventHandler(async (event) => {
         // ! CHECK USER FROM PAYLOAD
-        console.log('hello context:', event.context.user)
         if (!event.context.user) throw userNotFoundError()
         return getUserInfo(event)
     })
@@ -52,6 +51,24 @@ router.post(
     '/check-pid',
     defineEventHandler(async (event) => {
         return checkPID(event)
+    })
+)
+
+router.post(
+    '/logout',
+    defineEventHandler(async (event) => {
+        const { role } = event.context.user
+        console.log('/logout')
+        console.log('user', event.context.user)
+        console.log('role', event.context.user.role)
+        console.log('role', role)
+        let redirectUrl = role.includes('HR') ? '/login' : '/login_candidate'
+        deleteCookie(event, 'access_token')
+        return {
+            status: 'success',
+            message: 'Logout success',
+            redirect: redirectUrl,
+        }
     })
 )
 

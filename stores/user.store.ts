@@ -26,7 +26,7 @@ export const useUserStore = defineStore('userinfo', {
     actions: {
         async setUserInfo(data: any) {
             this.user = {
-                displayname: data.display_name,
+                displayname: data.display_name || data.displayname,
                 role: data.role,
             }
 

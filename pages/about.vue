@@ -10,6 +10,6 @@ definePageMeta({
         name: 'rotate',
     },
     layout: 'custom',
-    // middleware: ['hr-auth']
+    // middleware: ['hr-only']
 })
 </script>

@@ -47,7 +47,7 @@ definePageMeta({
             title: 'นำเข้าไฟล์',
         },
     ],
-    middleware: ['hr-auth'],
+    middleware: ['hr-only'],
 })
 
 const route = useRoute()

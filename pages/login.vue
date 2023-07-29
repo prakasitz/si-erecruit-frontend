@@ -76,7 +76,7 @@ const username = ref('')
 const password = ref('')
 const overlay = ref(false)
 
-const { login, me } = useAuth()
+const { login } = useAuth()
 
 definePageMeta({
     name: 'login-hr',

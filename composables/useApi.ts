@@ -40,13 +40,13 @@ export const useApi = async (url: any, params: any | UseFetchOptions<HeadersInit
 
             //if response.status == 403 throw showError
             // only api response
-            if (response?.headers.get('Accept') !== 'application/json') {
-                throw showError({
-                    statusCode: response?.status,
-                    message: response?._data.message + ', useApi onResponseError',
-                    stack: undefined,
-                })
-            }
+            // if (response?.headers.get('Accept') !== 'application/json') {
+            //     throw showError({
+            //         statusCode: response?.status,
+            //         message: response?._data.message + ', useApi onResponseError',
+            //         stack: undefined,
+            //     })
+            // }
             // if (response && response.status) {
             //     console.log('createError')
             //     throw showError({

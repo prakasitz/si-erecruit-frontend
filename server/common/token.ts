@@ -1,5 +1,5 @@
 import { JwksClient } from 'jwks-rsa'
-import jwt, { JwtPayload, TokenExpiredError, VerifyErrors } from 'jsonwebtoken'
+import jwt, { JwtPayload, VerifyErrors } from 'jsonwebtoken'
 import { H3Event, H3Error } from 'h3'
 import { TokenNotFoundError, UnauthorizedError } from '../../utils/default'
 
@@ -67,7 +67,13 @@ export async function verifyAccessToken(token: string): Promise<H3Error | JwtPay
             if (decoded.aud === audience) {
                 isValid = await verifyOauth2Token(token)
                 console.log('Jwt payload obtained successfully', `isValid is ${isValid}`)
-                if (isValid) return decoded
+                console.log(`----| start: modify HR Payload |----`)
+                const modifiedPayload = {
+                    ...decoded,
+                    role: ['HR'],
+                }
+                console.log(`----| end: modify HR Payload |----`)
+                if (isValid) return modifiedPayload
                 return UnauthorizedError('Token is not valid or expired')
             } else {
                 //should be using api for verify candidate token valid or not ?
@@ -78,7 +84,11 @@ export async function verifyAccessToken(token: string): Promise<H3Error | JwtPay
                     if (err) {
                         console.log('Cannot Verify token: ', err)
                         // If not, just return the error
-                        error = 'Cannot Verify token'
+                        if (err instanceof jwt.TokenExpiredError) {
+                            throw UnauthorizedError('Token is expired')
+                        } else {
+                            throw UnauthorizedError('Token is not valid')
+                        }
                     } else {
                         tempPayload = jwtPayload
                     }
@@ -96,8 +106,9 @@ export async function verifyAccessToken(token: string): Promise<H3Error | JwtPay
             console.log('Invalid audience in token')
             throw new Error('Invalid audience in token')
         }
-    } catch (error: jwt.JsonWebTokenError | any) {
+    } catch (error: jwt.JsonWebTokenError | H3Error | any) {
         let msg: string = error.message
+        if (error instanceof H3Error) return error
         if (error instanceof jwt.JsonWebTokenError) {
             msg = error.message + ` [jwt.JsonWebTokenError]`
         }

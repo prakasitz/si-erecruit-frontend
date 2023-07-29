@@ -1,25 +1,27 @@
 import { H3Event, H3Error } from 'h3'
 import { handleErrorRoute } from '../../common/error'
-import { JSONResponse, Roles } from '../../../utils/types'
+import { JSONResponse } from '../../../utils/types'
 import { isAuthenticated } from '../../common/authentication'
 import { externalAPIService } from '../../common/externalApi'
 import { BadRequestError } from '../../../utils/default'
 
 export async function getUserInfo(event: H3Event) {
     try {
-        console.log('-=--=--=--=--=--=- start userInfo -=--=--=--=--=--=--=--=-')
-        const runtimeConfig = useRuntimeConfig()
         let userContext = event.context.user
+        if (!userContext.role) throw BadRequestError('userContext.role is undefined')
+
+        console.log('-=--=--=--=--=--=- start userInfo -=--=--=--=--=--=--=--=-')
+
         const token = getCookie(event, 'access_token') as string
-        let role = getHeader(event, 'x-role') as Roles | undefined
-        switch (role) {
-            case 'HR':
-                return await externalAPIService.HRUserInfo(token)
-            case 'CANDIDATE':
-                return await externalAPIService.CandidateUserInfo(token)
-            default:
-                throw BadRequestError('Role is not valid')
+        let role = userContext.role as string[]
+        console.log('role', role)
+        if (role.includes('HR')) {
+            return externalAPIService.HRUserInfo(token)
+        } else if (role.includes('CANDIDATE')) {
+            return externalAPIService.CandidateUserInfo(token)
         }
+
+        throw BadRequestError('userContext.role is invalid')
     } catch (error: H3Error | any) {
         return handleErrorRoute(error)
     } finally {
