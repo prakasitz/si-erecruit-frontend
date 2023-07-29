@@ -5,6 +5,7 @@ export function getAuthenticatedRoutes(): Array<string> {
     return [
         //common routes
         // '/api/auth/login', ==> noone token
+        '/api/auth/logout',
         // '/api/auth/check-pid',
 
         //use header is access_token

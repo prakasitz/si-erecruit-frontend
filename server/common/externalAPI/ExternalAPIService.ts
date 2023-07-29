@@ -50,23 +50,6 @@ export class ExternalAPIService {
         }
     }
 
-    public async CandidateUserInfo(candidate_token: string) {
-        try {
-            const resp = await this.baseAPI.post(
-                `/${this.candidateSlug}/auth/userInfo`,
-                {},
-                {
-                    headers: {
-                        Authorization: candidate_token,
-                    },
-                }
-            )
-            return resp.data
-        } catch (error: AxiosError | any) {
-            return this.handleError(error)
-        }
-    }
-
     public async CandidateCheckActive(pid: string) {
         try {
             await this.initializeToken()
@@ -120,6 +103,26 @@ export class ExternalAPIService {
                     },
                 }
             )
+            // modify resp.data on role[] add `HR`
+            if (!resp.data.role) resp.data.role = []
+            resp.data.role.push('HR')
+            return resp.data
+        } catch (error: AxiosError | any) {
+            return this.handleError(error)
+        }
+    }
+
+    public async CandidateUserInfo(candidate_token: string) {
+        try {
+            const resp = await this.baseAPI.post(
+                `/${this.candidateSlug}/auth/userInfo`,
+                {},
+                {
+                    headers: {
+                        Authorization: candidate_token,
+                    },
+                }
+            )
             return resp.data
         } catch (error: AxiosError | any) {
             return this.handleError(error)
@@ -129,23 +132,34 @@ export class ExternalAPIService {
     protected handleError(error: Error | AxiosError | H3Error) {
         if (axios.isAxiosError(error)) {
             console.log('=====================ExternalAPI:isAxiosError=====================')
-            console.log('ExternalAPI:Axios:', ' ', {
-                statusCode: error.response?.status,
-                message: error.response?.statusText,
-            })
-            console.log('=================================================================')
-            return createError({
-                statusCode: error.response?.status,
-                statusMessage: error.response?.statusText,
-                stack: undefined,
-            })
+            // axios timeout
+            if (error.code === 'ECONNABORTED') {
+                console.log('ExternalAPI:Axios:Timeout:', ' ', {
+                    statusCode: 408,
+                    message: 'Request Timeout',
+                })
+                console.log('=================================================================')
+                return createError({
+                    statusCode: 408,
+                    statusMessage: 'Request Timeout',
+                    stack: undefined,
+                })
+            } else {
+                console.log('ExternalAPI:Axios:HTTPError:', ' ', {
+                    statusCode: error.response?.status,
+                    message: error.response?.statusText,
+                })
+                console.log('=================================================================')
+                return createError({
+                    statusCode: error.response?.status,
+                    statusMessage: error.response?.statusText,
+                    stack: undefined,
+                })
+            }
         } else if (error instanceof H3Error) {
             return error
         } else {
-            return createError({
-                statusCode: 500,
-                message: error.message,
-            })
+            return error
         }
     }
 }

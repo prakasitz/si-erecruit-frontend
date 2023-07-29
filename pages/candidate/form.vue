@@ -286,7 +286,7 @@ definePageMeta({
             title: 'จัดการข้อมูลผู้สมัคร',
         },
     ],
-    middleware: ['candidate-auth'],
+    middleware: ['hr-candidate-only'],
 })
 
 // Master Store

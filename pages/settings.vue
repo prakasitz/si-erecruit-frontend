@@ -58,7 +58,7 @@ definePageMeta({
             title: 'ตั้งค่า',
         },
     ],
-    middleware: ['hr-auth'],
+    middleware: ['hr-only'],
 })
 
 const { fetchSettings, fetchBySettings, updateSetting } = useSettings()

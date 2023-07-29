@@ -1,5 +1,3 @@
 export const useTopDialog = () => {
-    return useState('topDialog', () => true)
+    return useState<any>('topDialog', () => false)
 }
-
-

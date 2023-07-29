@@ -114,7 +114,7 @@ definePageMeta({
             title: 'รายละเอียดงาน',
         },
     ],
-    middleware: ['hr-auth'],
+    middleware: ['hr-only'],
 })
 const route = useRoute()
 let jobId = route.params.id

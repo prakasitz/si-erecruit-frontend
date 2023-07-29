@@ -1,6 +1,7 @@
 import { JwksClient } from 'jwks-rsa'
 import jwt, { JwtPayload, VerifyErrors } from 'jsonwebtoken'
 import { H3Event, H3Error } from 'h3'
+import { TokenNotFoundError, UnauthorizedError } from '../../utils/default'
 
 export async function verifySignature(token: any, done: any) {
     const runtimeConfig = useRuntimeConfig()
@@ -39,7 +40,7 @@ export async function verifyOauth2Token(token: string) {
         })
         return isValid
     } catch (error: any) {
-        throw new Error('error:' + error)
+        throw new Error('verifyOauth2Token:Unexpected Error:' + error)
     }
 }
 
@@ -56,8 +57,8 @@ export async function verifyAccessToken(token: string): Promise<H3Error | JwtPay
     let payload = null
     let error = null
     const { audience } = useRuntimeConfig()
-
     try {
+        console.log('------------------start verifyAccessToken ------------------')
         const decoded: jwt.JwtPayload | null | string = jwt.decode(token)
 
         if (decoded && typeof decoded === 'object') {
@@ -65,9 +66,15 @@ export async function verifyAccessToken(token: string): Promise<H3Error | JwtPay
             let isValid: boolean = false
             if (decoded.aud === audience) {
                 isValid = await verifyOauth2Token(token)
-                console.log('verifyAccessToken: Jwt payload obtained successfully')
-                if (isValid) return decoded
-                throw new Error('verifyAccessToken: Cannot Verify token')
+                console.log('Jwt payload obtained successfully', `isValid is ${isValid}`)
+                console.log(`----| start: modify HR Payload |----`)
+                const modifiedPayload = {
+                    ...decoded,
+                    role: ['HR'],
+                }
+                console.log(`----| end: modify HR Payload |----`)
+                if (isValid) return modifiedPayload
+                return UnauthorizedError('Token is not valid or expired')
             } else {
                 //should be using api for verify candidate token valid or not ?
                 let secret =
@@ -75,37 +82,44 @@ export async function verifyAccessToken(token: string): Promise<H3Error | JwtPay
 
                 jwt.verify(token, secret, (err, jwtPayload) => {
                     if (err) {
-                        console.log('verifyAccessToken: Cannot Verify token', err)
+                        console.log('Cannot Verify token: ', err)
                         // If not, just return the error
-                        error = 'verifyAccessToken: Cannot Verify token'
+                        if (err instanceof jwt.TokenExpiredError) {
+                            throw UnauthorizedError('Token is expired')
+                        } else {
+                            throw UnauthorizedError('Token is not valid')
+                        }
                     } else {
                         tempPayload = jwtPayload
                     }
                 })
 
                 if (tempPayload) {
-                    console.log('verifyAccessToken: Jwt payload obtained successfully')
+                    console.log('Jwt payload obtained successfully')
                     payload = tempPayload as JwtPayload
                     return payload
                 }
                 // // Return error (to satisfy Typescript demannds)
-                throw new Error('verifyAccessToken:  We should never reach here')
+                throw new Error('  We should never reach here')
             }
         } else {
-            console.log('verifyAccessToken: Invalid audience in token')
-            throw new Error('verifyAccessToken: Invalid audience in token')
+            console.log('Invalid audience in token')
+            throw new Error('Invalid audience in token')
         }
-    } catch (error: jwt.JsonWebTokenError | any) {
+    } catch (error: jwt.JsonWebTokenError | H3Error | any) {
         let msg: string = error.message
+        if (error instanceof H3Error) return error
         if (error instanceof jwt.JsonWebTokenError) {
-            msg = error.message
+            msg = error.message + ` [jwt.JsonWebTokenError]`
         }
-        console.log('getTotkenPayload:Error decoding token:', error.message)
+        console.log('Error decoding token:', error.message)
         return createError({
             statusCode: 500,
             statusMessage: 'Internal Server Error',
-            message: 'verifyAccessToken: Server error, Error decoding token: ' + msg,
+            message: ':Error decoding token: ' + msg,
             stack: undefined,
         })
+    } finally {
+        console.log('---------------- end verifyAccessToken --------------------------------')
     }
 }
