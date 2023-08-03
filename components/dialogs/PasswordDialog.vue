@@ -89,7 +89,7 @@ async function loginCandidate(pid?: string | undefined, password?: string | unde
     } else {
         try {
             invalidPassword.value = false
-            const resp = await useCandidate().loginCandidate(pid, password)
+            const resp = await useCandidateBACK().loginCandidate(pid, password)
             console.log(resp.data.value)
             // await auth.signIn({ username: pid, password: password })
             await navigateTo({ path: '/candidate' })

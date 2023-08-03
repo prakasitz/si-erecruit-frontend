@@ -25,6 +25,13 @@ export const defaultVueDatePickerStyle: VueDatePickerProps = {
     modelType: 'yyyy/MM/dd',
 }
 
+export const UnauthorizedError = (msg: string = 'Unauthorized') =>
+    createError({
+        statusCode: 401,
+        statusMessage: 'Unauthorized',
+        message: `Error: ${msg}`,
+    })
+
 export const TokenNotFoundError = (msg: string = 'Unauthorized') =>
     createError({
         statusCode: 401,

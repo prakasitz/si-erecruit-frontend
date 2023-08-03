@@ -61,7 +61,7 @@ export async function isAuthenticated(event: H3Event): Promise<boolean | H3Error
     // // If other error, return error
     // If other error, return error
     if (errorOrUser instanceof H3Error) {
-        console.log('Error: isAuthenticated', errorOrUser)
+        console.log('isAuthenticated: ', errorOrUser)
         return false
     } else {
         // Otherwise, we have the user so return true
@@ -85,7 +85,7 @@ export async function getUserFromAccessToken(event: H3Event): Promise<any> {
 
     // Verify access token
     const accessTokenArr = accessToken.split(' ')
-    const errorOrUser = verifyAccessToken(accessTokenArr[1])
+    const errorOrUser = await verifyAccessToken(accessTokenArr[1])
 
     // If error, print to console and return false
     if (errorOrUser instanceof H3Error) {

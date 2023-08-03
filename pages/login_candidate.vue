@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-const { loginCandidate, checkPID } = useCandidate()
+const { loginCandidate, checkPID } = useCandidateBACK()
 
 const pid = ref('')
 const btn_disabled = ref()
@@ -81,7 +81,8 @@ definePageMeta({
         name: 'rotate',
     },
     layout: 'logincandidate',
-    middleware: 'is-auth',
+    name: 'login-candidate',
+    // middleware: 'is-auth',
 })
 
 async function onClick_CheckingPID(_id: string) {

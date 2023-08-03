@@ -5,10 +5,11 @@
 <script setup lang="ts">
 // This will work in both `<script setup>` and `<script>`
 definePageMeta({
+    name: 'about',
     pageTransition: {
         name: 'rotate',
     },
     layout: 'custom',
-    middleware: ['hr-auth']
+    // middleware: ['hr-only']
 })
 </script>
