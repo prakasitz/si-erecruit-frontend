@@ -58,12 +58,94 @@
                 <StatusBar :status="job.job_status_code?.job_status_text"></StatusBar>
             </v-col>
         </v-row>
-        <BtnDeleteJob :jobId="job.job_ID"></BtnDeleteJob>
+
+        <v-row class="d-flex justify-end mt-10">
+            <BtnJobAction
+                v-if="buttonShow.BtnDeleteJob"
+                class="mx-1"
+                text="Delete"
+                color="red"
+                :jobId="job.job_ID"
+                :cb="deleteJob"
+            />
+            <BtnJobAction
+                v-if="buttonShow.BtnSuspendJob"
+                class="mx-1"
+                text="Suspend"
+                color="orange"
+                :jobId="job.job_ID"
+                :cb="suspendJob"
+            />
+            <BtnJobAction
+                v-if="buttonShow.BtnCancelledJob"
+                class="mx-1"
+                text="Cancel"
+                color=""
+                :jobId="job.job_ID"
+                :cb="cancelJob"
+            />
+            <BtnJobAction
+                v-if="buttonShow.BtnTerminated"
+                class="mx-1"
+                text="Terminate"
+                color="grey"
+                :jobId="job.job_ID"
+                :cb="terminateJob"
+            />
+            <BtnJobAction
+                v-if="buttonShow.BtnApproveJob"
+                class="mx-1"
+                text="Approve"
+                color="green"
+                :jobId="job.job_ID"
+                :cb="approveJob"
+            />
+            <BtnJobAction
+                v-if="buttonShow.BtnPublishedJob"
+                class="mx-1"
+                text="Publish ยังไม่ทำ"
+                color="blue"
+                :jobId="job.job_ID"
+                :cb="publishJob"
+            />
+            <BtnJobAction
+                v-if="buttonShow.BtnRepublished"
+                class="mx-1"
+                text="Republish"
+                color="indigo"
+                :jobId="job.job_ID"
+                :cb="republishJob"
+            />
+
+            <BtnJobAction
+                v-if="buttonShow.BtnDMS"
+                class="mx-1"
+                text="DMS ยังไม่ทำ"
+                color="purple"
+                :jobId="job.job_ID"
+                :cb="verifiedJob"
+            />
+            <BtnJobAction
+                v-if="buttonShow.BtnVerifyJob"
+                class="mx-1"
+                text="Verify"
+                color="main-color "
+                :jobId="job.job_ID"
+                :cb="verifiedJob"
+            />
+        </v-row>
     </div>
 </template>
 
 <script setup lang="ts">
 import { Job } from '~/utils/types'
+import { storeToRefs } from 'pinia'
+import { useJobComponentStore } from '~/stores/job-component.store'
+
+const useJobComponent = useJobComponentStore()
+const { buttonShow } = storeToRefs(useJobComponent)
+const { deleteJob, approveJob, cancelJob, publishJob, republishJob, suspendJob, terminateJob, verifiedJob } =
+    useButtonAction()
 
 interface JobDetail {
     jobNumber: string
