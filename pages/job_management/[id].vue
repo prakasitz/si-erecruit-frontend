@@ -58,7 +58,7 @@
                 </v-toolbar>
                 <v-card-text class="d-flex justify-center">
                     <v-data-table
-                        v-model:items-per-page="itemsPerPage"
+                        :items-per-page="10"
                         :headers="headers"
                         :items="profile.profiles"
                         item-value="name"

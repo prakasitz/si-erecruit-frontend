@@ -4,12 +4,12 @@
             <v-col cols="12">
                 <v-sheet class="ma-0s pa-0" max-height="70">
                     <v-row>
-                        <v-col cols="9"> <v-breadcrumbs divider=">" :items="props.labels"></v-breadcrumbs> </v-col>
+                        <v-col cols="5"> <v-breadcrumbs divider=">" :items="props.labels"></v-breadcrumbs> </v-col>
                         <v-spacer></v-spacer>
                         <v-col class="text-right" align-self="center">
                             <v-menu>
                                 <template v-slot:activator="{ props }">
-                                    <v-btn block :variant="'text'" :size="'large'" v-bind="props">
+                                    <v-btn :variant="'text'" :size="'large'" v-bind="props">
                                         <template #prepend>
                                             <v-icon class="text-main-color mx-1">mdi-account</v-icon>
                                         </template>
