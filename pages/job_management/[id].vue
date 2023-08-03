@@ -79,6 +79,40 @@
                     </v-data-table>
                 </v-card-text>
             </v-card>
+            <div class="mx-auto" :style="{ width: '90%' }">
+                <BtnProfileAction
+                    v-if="buttonShow.BtnExport"
+                    class="mx-1"
+                    text="Export ยังไม่ทำ"
+                    color="indigo"
+                    :jobId="job.job_ID"
+                    :cb="cancelJob"
+                />
+                <BtnProfileAction
+                    v-if="buttonShow.BtnSuspend"
+                    class="mx-1"
+                    text="Suspend ยังไม่ทำ"
+                    color="warning"
+                    :jobId="job.job_ID"
+                    :cb="deleteJob"
+                />
+                <BtnProfileAction
+                    v-if="buttonShow.BtnPublishable"
+                    class="mx-1"
+                    text="Publishable ยังไม่ทำ"
+                    color="blue"
+                    :jobId="job.job_ID"
+                    :cb="terminateJob"
+                />
+                <BtnProfileAction
+                    v-if="buttonShow.BtnSendSAP"
+                    class="mx-1"
+                    text="SAP ยังไม่ทำ"
+                    color="purple"
+                    :jobId="job.job_ID"
+                    :cb="suspendJob"
+                />
+            </div>
         </div>
         <div v-else>
             {{
@@ -92,6 +126,9 @@
 </template>
 
 <script setup>
+import { storeToRefs } from 'pinia'
+import { useJobComponentStore } from '~/stores/job-component.store'
+
 definePageMeta({
     title: 'รายละเอียดงาน',
     pageTransition: {
@@ -121,6 +158,9 @@ let jobId = route.params.id
 const { getProfilesByJobId, fetchJobs } = useJobManagement()
 const { data: job, pending: jobPending } = fetchJobs(jobId)
 const { data: profile, pending: profilePending } = getProfilesByJobId(jobId)
+
+const useJobComponent = useJobComponentStore()
+const { buttonShow } = storeToRefs(useJobComponent)
 const profileStatus = [
     {
         profile_status_code: 0,

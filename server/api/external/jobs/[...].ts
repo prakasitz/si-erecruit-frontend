@@ -45,4 +45,107 @@ router.delete(
         return response
     })
 )
+
+router.patch(
+    '/approved/:jobId',
+    defineEventHandler(async (event) => {
+
+        const { jobId } = await getRouterParams(event)
+        if (!jobId || !isStringNumber(jobId)) throw BadRequestError('Job ID must be a number')
+
+        const tokenOrUndefined = getCookie(event, 'access_token')
+
+        if (!tokenOrUndefined) return TokenNotFoundError()
+
+        const response = await jobService.approveobById(parseInt(jobId), event)
+
+        return response
+    })
+)
+
+router.patch(
+    '/cancel/:jobId',
+    defineEventHandler(async (event) => {
+
+        const { jobId } = await getRouterParams(event)
+        if (!jobId || !isStringNumber(jobId)) throw BadRequestError('Job ID must be a number')
+
+        const tokenOrUndefined = getCookie(event, 'access_token')
+
+        if (!tokenOrUndefined) return TokenNotFoundError()
+
+        const response = await jobService.cancelById(parseInt(jobId), event)
+
+        return response
+    })
+)
+
+router.patch(
+    '/republish/:jobId',
+    defineEventHandler(async (event) => {
+
+        const { jobId } = await getRouterParams(event)
+        if (!jobId || !isStringNumber(jobId)) throw BadRequestError('Job ID must be a number')
+
+        const tokenOrUndefined = getCookie(event, 'access_token')
+
+        if (!tokenOrUndefined) return TokenNotFoundError()
+
+        const response = await jobService.rePublishById(parseInt(jobId), event)
+
+        return response
+    })
+)
+
+router.patch(
+    '/suspended/:jobId',
+    defineEventHandler(async (event) => {
+
+        const { jobId } = await getRouterParams(event)
+        if (!jobId || !isStringNumber(jobId)) throw BadRequestError('Job ID must be a number')
+
+        const tokenOrUndefined = getCookie(event, 'access_token')
+
+        if (!tokenOrUndefined) return TokenNotFoundError()
+
+        const response = await jobService.suspendById(parseInt(jobId), event)
+
+        return response
+    })
+)
+
+router.patch(
+    '/terminate/:jobId',
+    defineEventHandler(async (event) => {
+
+        const { jobId } = await getRouterParams(event)
+        if (!jobId || !isStringNumber(jobId)) throw BadRequestError('Job ID must be a number')
+
+        const tokenOrUndefined = getCookie(event, 'access_token')
+
+        if (!tokenOrUndefined) return TokenNotFoundError()
+
+        const response = await jobService.terminateById(parseInt(jobId), event)
+
+        return response
+    })
+)
+
+router.patch(
+    '/verified/:jobId',
+    defineEventHandler(async (event) => {
+
+        const { jobId } = await getRouterParams(event)
+        if (!jobId || !isStringNumber(jobId)) throw BadRequestError('Job ID must be a number')
+
+        const tokenOrUndefined = getCookie(event, 'access_token')
+
+        if (!tokenOrUndefined) return TokenNotFoundError()
+
+        const response = await jobService.verifiedById(parseInt(jobId), event)
+
+        return response
+    })
+)
+
 export default useBase('/api/external/jobs', router.handler)

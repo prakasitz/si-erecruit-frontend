@@ -3,6 +3,7 @@ import 'dayjs/locale/th' // load on demand
 import buddhistEra from 'dayjs/plugin/buddhistEra'
 import { create } from 'domain'
 import { Job, JobWithProfile, Profile } from '~/utils/types'
+import { useJobComponentStore } from '~/stores/job-component.store'
 
 dayjs.extend(buddhistEra)
 dayjs.locale('th')
@@ -12,6 +13,8 @@ export default function useJobManagement() {
         fetchJobs,
         getProfilesByJobId,
         deleteJob,
+        approveJob,
+        rePublishJob
     }
 }
 
@@ -21,9 +24,8 @@ export default function useJobManagement() {
 */
 const createDescription = (mu_job_ID: string, mu_job_name: string, create_date: string) => {
     let formatedCreateDate = dateToString(create_date, DateFormatEnum.DATE_TIME_BUDDHIST_1)
-    return `${mu_job_ID ?? '??'} - ${mu_job_name ?? '???'} | ${
-        formatedCreateDate == 'Invalid Date' ? '???' : formatedCreateDate
-    }`
+    return `${mu_job_ID ?? '??'} - ${mu_job_name ?? '???'} | ${formatedCreateDate == 'Invalid Date' ? '???' : formatedCreateDate
+        }`
 }
 
 // canDelete if jobStatus is 'importing', 'imported', 'created'
@@ -76,6 +78,9 @@ const fetchJobs = (jobId?: any, isTransform: boolean = false) => {
                     }
                 }
             )
+
+
+
             return transFormData
         },
         server: false,
@@ -110,6 +115,10 @@ const getProfilesByJobId = (jobId: string) => {
                     action: 'action',
                 }
             })
+            //* set component 
+            // const jobComponentStore = useJobComponentStore()
+            const { setButtonShow } = useJobComponentStore()
+            setButtonShow(job.job_status);
             return { job, profiles }
         },
         server: false,
@@ -125,3 +134,77 @@ const deleteJob = (jobId: string) => {
         server: false,
     })
 }
+
+const approveJob = (jobId: string) => {
+    return useFetch(`/api/external/jobs/${jobId}`, {
+        headers: {
+            Accept: 'application/json',
+        },
+        method: 'DELETE',
+        server: false,
+    })
+}
+const cancelJob = (jobId: string) => {
+    return useFetch(`/api/external/jobs/${jobId}`, {
+        headers: {
+            Accept: 'application/json',
+        },
+        method: 'DELETE',
+        server: false,
+    })
+}
+const publishJob = (jobId: string) => {
+    return useFetch(`/api/external/jobs/${jobId}`, {
+        headers: {
+            Accept: 'application/json',
+        },
+        method: 'DELETE',
+        server: false,
+    })
+}
+const rePublishJob = (jobId: string) => {
+    return useFetch(`/api/external/jobs/${jobId}`, {
+        headers: {
+            Accept: 'application/json',
+        },
+        method: 'DELETE',
+        server: false,
+    })
+}
+const sendJobtoDMS = (jobId: string) => {
+    return useFetch(`/api/external/jobs/${jobId}`, {
+        headers: {
+            Accept: 'application/json',
+        },
+        method: 'DELETE',
+        server: false,
+    })
+}
+const suspendJob = (jobId: string) => {
+    return useFetch(`/api/external/jobs/${jobId}`, {
+        headers: {
+            Accept: 'application/json',
+        },
+        method: 'DELETE',
+        server: false,
+    })
+}
+const terminateJob = (jobId: string) => {
+    return useFetch(`/api/external/jobs/${jobId}`, {
+        headers: {
+            Accept: 'application/json',
+        },
+        method: 'DELETE',
+        server: false,
+    })
+}
+const verifyJob = (jobId: string) => {
+    return useFetch(`/api/external/jobs/${jobId}`, {
+        headers: {
+            Accept: 'application/json',
+        },
+        method: 'DELETE',
+        server: false,
+    })
+}
+
