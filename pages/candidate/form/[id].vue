@@ -298,6 +298,7 @@ const masterDataStore = useMasterDataStore()
 const personalStore = usePersonalStore()
 const userStore = useUserStore()
 const { isItemsLoaded } = storeToRefs(masterDataStore)
+const { calAge } = storeToRefs(personalStore)
 const { isCandidate } = storeToRefs(userStore)
 const { loadMasterData } = useMaster()
 
@@ -340,6 +341,58 @@ onMounted(async () => {
         personal_info: {
             first_name_th: profile.nameTH,
             last_name_th: profile.lastnameTH,
+            first_name_en: profile.first_name_en,
+            last_name_en: profile.last_name_en,
+            email_address: profile.email_address,
+            birth_date: profile.birth_date,
+            height: profile.height,
+            weight: profile.weight,
+
+            id_card_number: profile.id_card_number,
+            id_card_issue_date: profile.id_card_issue_date,
+            id_card_expire_date: profile.id_card_expire_date,
+            id_card_amphur: profile.id_card_amphur,
+            id_card_province: profile.id_card_province,
+        },
+        address: {
+            cur_mobile: profile.cur_mobile,
+            cur_telephone: profile.cur_telephone,
+            reg_address: {
+                address_city: profile.reg_amphur,
+                address_district: profile.reg_district,
+                address_country: profile.reg_country,
+                address_moo: profile.reg_moo,
+                address_no: profile.reg_address,
+                address_postcode: profile.reg_postcode,
+                address_province: profile.reg_province,
+                address_road: profile.reg_road,
+                address_soi: profile.reg_soi,
+                address_village: profile.reg_village,
+            },
+            cur_address: {
+                address_city: profile.cur_amphur,
+                address_district: profile.cur_district,
+                address_country: profile.cur_country,
+                address_moo: profile.cur_moo,
+                address_no: profile.cur_address,
+                address_postcode: profile.cur_postcode,
+                address_province: profile.cur_province,
+                address_road: profile.cur_road,
+                address_soi: profile.cur_soi,
+                address_village: profile.cur_village,
+            },
+            emer_address: {
+                address_city: profile.urg_amphur,
+                address_district: profile.urg_district,
+                address_country: profile.urg_country,
+                address_moo: profile.urg_moo,
+                address_no: profile.urg_address,
+                address_postcode: profile.urg_postcode,
+                address_province: profile.urg_province,
+                address_road: profile.urg_road,
+                address_soi: profile.urg_soi,
+                address_village: profile.urg_village,
+            },
         },
     })
     // console.log('isItemsLoaded', isItemsLoaded.value)

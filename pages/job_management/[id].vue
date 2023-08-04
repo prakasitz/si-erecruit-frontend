@@ -156,8 +156,9 @@ definePageMeta({
 const route = useRoute()
 let jobId = route.params.id
 const { getProfilesByJobId, fetchJobs } = useJobManagement()
-const { data: job, pending: jobPending } = fetchJobs(jobId)
-const { data: profile, pending: profilePending } = getProfilesByJobId(jobId)
+
+const { data: job, pending: jobPending, error: jobError } = await fetchJobs(jobId)
+const { data: profile, pending: profilePending, error: profileError } = await getProfilesByJobId(jobId)
 
 const useJobComponent = useJobComponentStore()
 const { buttonShow } = storeToRefs(useJobComponent)
