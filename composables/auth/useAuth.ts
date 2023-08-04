@@ -9,7 +9,7 @@ export const useAuth = () => {
         const { setUserInfo } = userStore
         console.log('setUser', user)
         setUserInfo(user)
-    }
+    } 
 
     // This function is currently commented out and not in use.
     // const setCookie = (cookie: any) => {

@@ -85,7 +85,7 @@
                     class="mx-1"
                     text="Export ยังไม่ทำ"
                     color="indigo"
-                    :jobId="job.job_ID"
+                    :data="job.job_ID"
                     :cb="cancelJob"
                 />
                 <BtnProfileAction
@@ -93,15 +93,15 @@
                     class="mx-1"
                     text="Suspend ยังไม่ทำ"
                     color="warning"
-                    :jobId="job.job_ID"
-                    :cb="deleteJob"
+                    :data="{ profile_IDs: job.job_ID }"
+                    :cb="suspendedProfile"
                 />
                 <BtnProfileAction
                     v-if="buttonShow.BtnPublishable"
                     class="mx-1"
                     text="Publishable ยังไม่ทำ"
                     color="blue"
-                    :jobId="job.job_ID"
+                    :data="job.job_ID"
                     :cb="terminateJob"
                 />
                 <BtnProfileAction
@@ -109,7 +109,7 @@
                     class="mx-1"
                     text="SAP ยังไม่ทำ"
                     color="purple"
-                    :jobId="job.job_ID"
+                    :data="job.job_ID"
                     :cb="suspendJob"
                 />
             </div>
@@ -156,11 +156,13 @@ definePageMeta({
 const route = useRoute()
 let jobId = route.params.id
 const { getProfilesByJobId, fetchJobs } = useJobManagement()
+const { suspendedProfile } = useProfile()
 const { data: job, pending: jobPending } = fetchJobs(jobId)
 const { data: profile, pending: profilePending } = getProfilesByJobId(jobId)
 
 const useJobComponent = useJobComponentStore()
 const { buttonShow } = storeToRefs(useJobComponent)
+
 const profileStatus = [
     {
         profile_status_code: 0,

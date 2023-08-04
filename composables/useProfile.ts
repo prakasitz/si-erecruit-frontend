@@ -6,25 +6,16 @@ export default function useProfile() {
         getUserInfo,
         getStatus,
         importProfile,
+        suspendedProfile
         getProfileById,
     }
 }
 
-async function loginCandidate() {}
+async function loginCandidate() { }
 
-async function getUserInfo() {}
+async function getUserInfo() { }
 
 async function getStatus() {}
-
-function getProfileById(id: string) {
-    return useApi(`/api/external/profile/get/${parseInt(id)}`, {
-        method: 'POST',
-        key: 'getProfileById',
-        transform: ({ profile }: { profile: Profile }) => {
-            return profile
-        },
-    })
-}
 
 async function importProfile(files: File[]) {
     if (files.length == 0) return
@@ -42,4 +33,17 @@ async function importProfile(files: File[]) {
             message: error.value?.message,
         })
     return { data: data.value, pending: pending.value, error: error.value }
+}
+
+async function suspendedProfile(data: { profile_IDs: number[] }) {
+    if (!data.profile_IDs) {
+        console.log(123)
+    }
+    return useFetch(`/api/external/profile/suspended`, {
+        headers: {
+            Accept: 'application/json',
+        },
+        method: 'PATCH',
+        server: false,
+    })
 }

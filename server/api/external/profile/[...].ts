@@ -1,9 +1,9 @@
 import { profileService } from '../../../common/externalAPI/profiles.external'
 import { IncomingMessage } from 'http'
 import { formidable, Options, errors } from 'formidable'
+import { BadRequestError, TokenNotFoundError } from '../../../../utils/default'
 
 import { H3Error } from 'h3'
-import { BadRequestError } from '../../../../utils/default'
 
 const router = createRouter()
 
@@ -42,6 +42,23 @@ router.post(
                 profileService.deleteFile(bodyFormData!.file![0].filepath)
             }
         }
+    })
+)
+
+router.patch(
+    '/suspended',
+    defineEventHandler(async (event) => {
+
+        const body = await readBody(event)
+        // if (!jobId || !isStringNumber(jobId)) throw BadRequestError('Job ID must be a number')
+
+        const tokenOrUndefined = getCookie(event, 'access_token')
+
+        if (!tokenOrUndefined) return TokenNotFoundError()
+
+        const response = await profileService.suspenedProfiles(body, event)
+
+        return response
     })
 )
 

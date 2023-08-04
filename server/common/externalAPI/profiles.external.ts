@@ -78,6 +78,27 @@ class ProfileExternal extends ExternalAPIService {
             }
         })
     }
+
+    public async suspenedProfiles(profiles: number[], event: H3Event) {
+        try {
+            const accessToken = this.getAccessToken(event)
+
+            const resp = await this.baseAPI.patch(`/${this.slug}/suspended`,
+                {
+                    profile_IDs: profiles,
+                },
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + accessToken,
+                    }
+                },
+            )
+
+            return resp.data
+        } catch (error: AxiosError | any) {
+            return this.handleError(error)
+        }
+    }
 }
 
 export const profileService = new ProfileExternal()

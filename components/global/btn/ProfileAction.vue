@@ -6,7 +6,7 @@
 export interface Props {
     text: string
     color: string
-    jobId: number
+    data: object
     cb?: any
 }
 const { dialogConfirm, showDialog } = useDialog()
@@ -19,9 +19,9 @@ const confirmActionItem = (event: Event, item: any) => {
         {
             title: `Confirm to  ${props.text} this profile`,
             dialogColor: 'amber',
-            message: `Are you sure to ${props.text} this profile ${props.jobId}?`,
+            message: `Are you sure to ${props.text} this profile?`,
             item: {
-                id: props.jobId,
+                id: props.data,
             },
             actionButtons: [
                 {
