@@ -74,7 +74,6 @@ export const usePersonalStore = defineStore('personal', {
                     address_province: null,
                     address_postcode: '',
                     address_country: '',
-                    
                 },
                 cur_address: {
                     address_no: '',
@@ -304,21 +303,13 @@ export const usePersonalStore = defineStore('personal', {
         IsStudying: ({ job }): boolean => job.job_status == 'กำลังศึกษาต่อ',
         IsUnemployed: ({ job }): boolean => job.job_status == 'ว่างงาน',
         IsHasJobMahidol: ({ job }): boolean => job.had_job_mahidol == 'Y',
-    },
-    actions: {
-        setBirthDate(birth_date: string) {
-            this.personal_info.birth_date = birth_date
-            this.calculateAge()
-        },
-        calculateAge() {
-            if (!this.personal_info.birth_date) {
-                this.personal_info.age_year = null
-                this.personal_info.age_month = null
-                return
+        calAge: ({ personal_info }): { years: number; months: number } => {
+            if (!personal_info.birth_date) {
+                return { years: 0, months: 0 }
             }
 
             let today = new Date()
-            let birthDate = new Date(this.personal_info.birth_date)
+            let birthDate = new Date(personal_info.birth_date)
 
             let years = today.getFullYear() - birthDate.getFullYear()
             let months = today.getMonth() - birthDate.getMonth()
@@ -328,6 +319,16 @@ export const usePersonalStore = defineStore('personal', {
                 months += 12
             }
 
+            return { years, months }
+        },
+    },
+    actions: {
+        setBirthDate(birth_date: string) {
+            this.personal_info.birth_date = birth_date
+            this.setAge()
+        },
+        setAge() {
+            const { years, months } = this.calAge
             this.personal_info.age_year = years
             this.personal_info.age_month = months
         },
