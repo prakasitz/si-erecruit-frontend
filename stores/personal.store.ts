@@ -63,6 +63,8 @@ export const usePersonalStore = defineStore('personal', {
                 military_status: '',
             },
             address: {
+                cur_same_address: false,
+                urg_same_address: false,
                 reg_address: {
                     address_no: '',
                     address_moo: '',
@@ -303,6 +305,9 @@ export const usePersonalStore = defineStore('personal', {
         IsStudying: ({ job }): boolean => job.job_status == 'กำลังศึกษาต่อ',
         IsUnemployed: ({ job }): boolean => job.job_status == 'ว่างงาน',
         IsHasJobMahidol: ({ job }): boolean => job.had_job_mahidol == 'Y',
+        curIsRegAddress: ({address}): boolean => address.cur_same_address == true,
+        emerIsRegAddress: ({address}): boolean => address.urg_same_address == false,
+        emerIsCurAddress: ({address}): boolean => address.urg_same_address == true,
         calAge: ({ personal_info }): { years: number; months: number } => {
             if (!personal_info.birth_date) {
                 return { years: 0, months: 0 }

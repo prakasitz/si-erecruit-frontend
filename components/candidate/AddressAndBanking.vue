@@ -344,6 +344,7 @@ const masterDataStore = useMasterDataStore()
 const personalStore = usePersonalStore()
 const { provinces } = useMasterDataStore()
 const { address, banking, license, ss } = personalStore
+const { curIsRegAddress, emerIsCurAddress, emerIsRegAddress } = storeToRefs(personalStore)
 
 const { rules_fieldEmpty } = useFillRules()
 const formAddressAndBanking: Ref<HTMLFormElement | null> = ref<HTMLFormElement | null>(null)
@@ -365,9 +366,38 @@ const isSamePersonalID = ref(false)
 const homelandSectionValid = ref(true)
 const currSectionValid = ref(true)
 
-const currIsHomeland = ref(false)
-const emerIsHomeland = ref(false)
-const emerIsCurrent = ref(false)
+const currIsHomeland = computed({
+    get: () => {
+        return curIsRegAddress.value
+    },
+    set: (newValue) => {
+        address.cur_same_address = newValue
+    },
+})
+const emerIsHomeland = computed({
+    get: () => {
+        return emerIsRegAddress.value
+    },
+    set: (newValue) => {
+        if (newValue === true) {
+            address.urg_same_address = false
+        } else {
+            address.urg_same_address = null
+        }
+    },
+})
+const emerIsCurrent = computed({
+    get: () => {
+        return emerIsCurAddress.value
+    },
+    set: (newValue) => {
+        if (newValue === true) {
+            address.urg_same_address = true
+        } else {
+            address.urg_same_address = null
+        }
+    },
+})
 
 const ForDisabledCheckBox = reactive({
     'hide-details': false,
@@ -388,6 +418,7 @@ watch(isSamePersonalID, (newValue) => {
 
 watch(currIsHomeland, (newValue) => {
     if (newValue === true) {
+        address.cur_same_address = true
         personalStore.useRegAddressOnCurAddress()
     }
 })
@@ -395,7 +426,10 @@ watch(currIsHomeland, (newValue) => {
 watch(emerIsHomeland, (newValue) => {
     if (newValue === true) {
         emerIsCurrent.value = false
+        address.urg_same_address = false
         personalStore.useRegAddressOnEmerAddress()
+    } else if (newValue == false && emerIsCurAddress.value == false) {
+        address.urg_same_address = null
     }
 })
 
@@ -403,6 +437,9 @@ watch(emerIsCurrent, (newValue) => {
     if (newValue === true) {
         personalStore.useCurAddressOnEmerAddress()
         emerIsHomeland.value = false
+        address.urg_same_address = true
+    } else if (newValue == false && emerIsRegAddress.value == false) {
+        address.urg_same_address = null
     }
 })
 </script>

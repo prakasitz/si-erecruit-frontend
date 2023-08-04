@@ -357,6 +357,8 @@ onMounted(async () => {
         address: {
             cur_mobile: profile.cur_mobile,
             cur_telephone: profile.cur_telephone,
+            cur_same_address: profile.cur_same_address,
+            urg_same_address: profile.urg_same_address,
             reg_address: {
                 address_city: profile.reg_amphur,
                 address_district: profile.reg_district,

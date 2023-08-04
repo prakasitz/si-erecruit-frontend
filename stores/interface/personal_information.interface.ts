@@ -42,6 +42,17 @@ export interface IPersonalInfo {
 }
 
 export interface IAddressInfo {
+    /**
+     * @value false, mean use cur_address as address
+     * @value true, mean use reg_address as address
+     */
+    cur_same_address: boolean
+    /**
+     * @value 0 is reg_address
+     * @value 1 is cur_address
+     * @value null is use emer_address as address
+     **/
+    urg_same_address: boolean | null
     reg_address: address
     cur_address: address
     emer_address: address
