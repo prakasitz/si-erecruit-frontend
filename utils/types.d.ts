@@ -588,3 +588,26 @@ export type Profile = {
     foreigner_status: any // null,
     employee_type: any // null
 }
+
+export interface btnShowOnJob {
+    BtnHeaderJob: boolean
+    BtnDeleteJob: boolean
+    BtnPublishedJob: boolean
+    BtnRepublished: boolean
+    BtnCancelledJob: boolean
+    BtnSuspendJob: boolean
+    BtnVerifyJob: boolean
+    BtnApproveJob: boolean
+    BtnTerminated: boolean
+    BtnDMS: boolean
+
+    BtnExport: boolean
+    BtnSuspend: boolean
+    BtnPublishable: boolean
+    BtnSendSAP: boolean
+}
+
+export interface btnShowWstatus {
+    status: number
+    btn_show: btnShowOnJob
+}
