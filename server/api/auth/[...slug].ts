@@ -81,6 +81,10 @@ router.post(
     defineEventHandler(async (event) => {
         let role = getRequestHeader(event, 'x-role') as Roles | undefined
         let referer = getRequestHeader(event, 'referer') as string | undefined
+
+        //remove query string
+        referer = referer?.split('?')[0]
+
         console.log('Route /login:referer', referer)
         try {
             if (!role || !referer)
