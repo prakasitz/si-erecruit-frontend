@@ -143,10 +143,8 @@
                                 <v-col cols="9">
                                     <VueDatePicker
                                         placeholder="วัน/เดือน/ปี"
-                                        :flow="flow"
-                                        :enable-time-picker="false"
+                                        :="defaultVueDatePickerStyle"
                                         v-model="license.license_begin_date"
-                                        model-type="yyyy/MM/dd"
                                     />
                                 </v-col>
                             </v-row>

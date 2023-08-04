@@ -396,6 +396,24 @@ onMounted(async () => {
                 address_village: profile.urg_village,
             },
         },
+        license: {
+            license_number: profile.license_number,
+            license_begin_date: profile.license_begin_date,
+            license_expire_date: profile.license_expire_date,
+        },
+        ss: {
+            ss_have: profile.ss_have,
+            ss_same_number: profile.ss_same_number,
+            ss_card_hospital: profile.ss_card_hospital,
+            ss_card_number: profile.ss_card_number,
+            ss_card_province: profile.ss_card_province,
+            ss_card_issue_date: profile.ss_card_issue_date,
+            ss_card_expire_date: profile.ss_card_expire_date,
+        },
+        banking: {
+            bank_account_name: profile.bank_account_name,
+            bank_account_number: profile.bank_account_number,
+        },
     })
     // console.log('isItemsLoaded', isItemsLoaded.value)
     // if (!isItemsLoaded.value) {
