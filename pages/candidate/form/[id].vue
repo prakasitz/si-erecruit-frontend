@@ -19,7 +19,7 @@
                                                 readonly
                                                 density="compact"
                                                 variant="outlined"
-                                                value="1 4098 00357 95 0"
+                                                :value="pidFormat"
                                                 :type="eye1 ? 'text' : 'password'"
                                                 :append-icon="eye1 ? 'mdi-eye' : 'mdi-eye-off'"
                                                 @click:append="eye1 = !eye1"
@@ -269,7 +269,9 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { useMasterDataStore } from '~/stores/master.store'
+import { usePersonalStore } from '~/stores/personal.store'
 import { useUserStore } from '~/stores/user.store'
+import { Profile } from '~/utils/types'
 
 definePageMeta({
     title: 'จัดการข้อมูลผู้สมัคร',
@@ -293,6 +295,7 @@ const route = useRoute()
 
 // Master Store
 const masterDataStore = useMasterDataStore()
+const personalStore = usePersonalStore()
 const userStore = useUserStore()
 const { isItemsLoaded } = storeToRefs(masterDataStore)
 const { isCandidate } = storeToRefs(userStore)
@@ -302,6 +305,20 @@ const { getProfileById } = useProfile()
 const { data, pending, error } = await getProfileById(route.params.id as string)
 // const onboarding = useState<number>('onBoarding')
 // const candidateForms = useState<CandidateForm[]>('candidateForms')
+const pidFormat = computed(() => {
+    // Convert the personalID to a string (in case it's a number)
+    const idString = data.value?.id_card_number.toString() ?? ''
+
+    if (idString.length == 0) return '<ไม่มีข้อมูล>'
+    if (idString.length !== 13) return idString
+
+    // Split the ID into chunks of 1, 4, 5, 2, and 1 digits
+    const formattedID = `${idString.substring(0, 1)} ${idString.substring(1, 5)} ${idString.substring(
+        5,
+        10
+    )} ${idString.substring(10, 12)} ${idString.substring(12, 13)}`
+    return formattedID
+})
 
 const onboardingState = useOnboarding()
 const candidateFormState = useCandidateForms()
@@ -318,6 +335,13 @@ if (isCandidate.value) {
 }
 
 onMounted(async () => {
+    let profile = data.value as Profile
+    personalStore.$patch({
+        personal_info: {
+            first_name_th: profile.nameTH,
+            last_name_th: profile.lastnameTH,
+        },
+    })
     // console.log('isItemsLoaded', isItemsLoaded.value)
     // if (!isItemsLoaded.value) {
     //     await loadMasterData()
