@@ -58,14 +58,14 @@
                 </v-toolbar>
                 <v-card-text class="d-flex justify-center">
                     <v-data-table
+                        v-model="profilesSelected"
                         :items-per-page="10"
                         :headers="headers"
                         :items="profile.profiles"
-                        item-value="name"
+                        return-object
                         class="elevation-0"
                         show-select
                     >
-                        <template v-slot:top> </template>
                         <template v-slot:item.status="{ item }">
                             <v-chip :color="profileStatusComputed(item.raw.status).profile_status_color">
                                 {{ profileStatusComputed(item.raw.status).profile_status_text }}
@@ -224,5 +224,6 @@ const headers = [
     { title: 'เบอร์โทรศัพท์', align: 'start', key: 'phone' },
     { title: 'จัดการ', align: 'center', key: 'action' },
 ]
+const profilesSelected = ref([])
 console.log(route.meta.title) // My home page
 </script>
