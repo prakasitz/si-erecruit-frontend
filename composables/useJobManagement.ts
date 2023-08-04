@@ -14,7 +14,7 @@ export default function useJobManagement() {
         getProfilesByJobId,
         deleteJob,
         approveJob,
-        rePublishJob
+        rePublishJob,
     }
 }
 
@@ -24,8 +24,9 @@ export default function useJobManagement() {
 */
 const createDescription = (mu_job_ID: string, mu_job_name: string, create_date: string) => {
     let formatedCreateDate = dateToString(create_date, DateFormatEnum.DATE_TIME_BUDDHIST_1)
-    return `${mu_job_ID ?? '??'} - ${mu_job_name ?? '???'} | ${formatedCreateDate == 'Invalid Date' ? '???' : formatedCreateDate
-        }`
+    return `${mu_job_ID ?? '??'} - ${mu_job_name ?? '???'} | ${
+        formatedCreateDate == 'Invalid Date' ? '???' : formatedCreateDate
+    }`
 }
 
 // canDelete if jobStatus is 'importing', 'imported', 'created'
@@ -39,7 +40,7 @@ const fetchJobs = (jobId?: any, isTransform: boolean = false) => {
     let body: any = {}
     if (jobId) {
         body = {
-            job_ID: jobId,
+            job_ID: parseInt(jobId),
         }
     }
     return useFetch('/api/external/jobs/get', {
@@ -50,6 +51,7 @@ const fetchJobs = (jobId?: any, isTransform: boolean = false) => {
         method: 'POST',
         transform(data: any) {
             let tempData: any = data
+            if(data.length == 0) throw new Error('Fetch Jobs: Data not found or cannot transform data.')
             if (jobId) tempData = data[0]
             if (!isTransform)
                 return {
@@ -78,8 +80,6 @@ const fetchJobs = (jobId?: any, isTransform: boolean = false) => {
                     }
                 }
             )
-
-
 
             return transFormData
         },
@@ -115,10 +115,10 @@ const getProfilesByJobId = (jobId: string) => {
                     profile_ID: item.profile_ID,
                 }
             })
-            //* set component 
+            //* set component
             // const jobComponentStore = useJobComponentStore()
             const { setButtonShow } = useJobComponentStore()
-            setButtonShow(job.job_status);
+            setButtonShow(job.job_status)
             return { job, profiles }
         },
         server: false,
@@ -207,4 +207,3 @@ const verifyJob = (jobId: string) => {
         server: false,
     })
 }
-
