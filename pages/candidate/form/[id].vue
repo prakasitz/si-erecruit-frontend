@@ -414,6 +414,34 @@ onMounted(async () => {
             bank_account_name: profile.bank_account_name,
             bank_account_number: profile.bank_account_number,
         },
+        parent: {
+            father: {
+                title_special: profile.father_title_special,
+                title_name: profile.father_title_name,
+                first_name: profile.father_first_name,
+                last_name: profile.father_last_name,
+                id_card_number: profile.father_id_card_number,
+                career: profile.father_career,
+                living: profile.father_living,
+                nationality: profile.father_nationality,
+                religion: profile.father_religion,
+                race: profile.father_race,
+            },
+            mother: {
+                title_special: profile.mother_title_special,
+                title_name: profile.mother_title_name,
+                first_name: profile.mother_first_name,
+                last_name: profile.mother_last_name,
+                id_card_number: profile.mother_id_card_number,
+                career: profile.mother_career,
+                living: profile.mother_living,
+                nationality: profile.mother_nationality,
+                religion: profile.mother_religion,
+                race: profile.mother_race,
+            },
+            mf_date_of_marriage: profile.mf_date_of_marriage,
+            mf_no_marriage: profile.mf_no_marriage,
+        },
     })
     // console.log('isItemsLoaded', isItemsLoaded.value)
     // if (!isItemsLoaded.value) {
