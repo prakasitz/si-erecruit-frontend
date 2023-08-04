@@ -75,6 +75,7 @@ import { useAuth } from '~/composables/auth/useAuth'
 const username = ref('')
 const password = ref('')
 const overlay = ref(false)
+const route = useRoute()
 
 const { login } = useAuth()
 
@@ -90,8 +91,10 @@ definePageMeta({
 async function signIn() {
     try {
         overlay.value = true
+        let redirectOrNull = route.query.redirect as string | null
+
         await login(username.value, password.value, RoleEnum.HR)
-        await navigateTo({ path: '/' })
+        await navigateTo({ path: redirectOrNull || '/' })
 
         // const res = await useHR().loginHR(username.value, password.value)
         // console.log('signIn', res?.data)

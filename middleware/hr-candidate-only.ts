@@ -5,6 +5,7 @@ import { useAuth } from '~/composables/auth/useAuth'
 import { useUserStore } from '~/stores/user.store'
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
+    const { middlewareError } = useErrorHandler()
     try {
         await useAuth().me()
         const { isHR, isCandidate } = storeToRefs(useUserStore())
@@ -18,30 +19,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         }
     } catch (error: NuxtError | any) {
         console.log('error: middleware:hr-candidate-only', error)
-        if (error.statusCode === 401) {
-            const { dialogError, showDialog } = useDialog()
-            const dialog = dialogError()
-            const role = useCookie('role').value
-
-            let loginPath = role === 'HR' ? '/login' : '/login_candidate'
-            showDialog(
-                {
-                    title: 'Token Expired',
-                    message: 'Look like your session has expired. <br> Please login again.',
-                    actionButtons: [
-                        {
-                            text: 'Login',
-                            variant: 'elevated',
-                            color: 'grey-darken-4',
-                            href: loginPath,
-                        },
-                    ],
-                    persistent: true,
-                },
-                dialog
-            )
-        } else {
-            throw error
-        }
+        middlewareError(error, { to, from })
     }
 })

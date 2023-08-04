@@ -78,6 +78,7 @@ import { H3Error } from 'h3'
 import { useAuth } from '~/composables/auth/useAuth'
 
 const { $isDev } = useNuxtApp()
+const route = useRoute()
 const auth = new CandidateAuth()
 const props = defineProps(['id_card', 'btn_disabled', 'show', 'showError', 'error_detail'])
 const emit = defineEmits(['update:show', 'update:show_error'])
@@ -90,9 +91,10 @@ async function loginCandidate(pid?: string | undefined, password?: string | unde
     } else {
         try {
             invalidPassword.value = false
+            let redirectOrNull = route.query.redirect as string | null
             await useAuth().login(pid, password, RoleEnum.CANDIDATE)
             // await auth.signIn({ username: pid, password: password })
-            await navigateTo({ path: '/candidate' })
+            await navigateTo({ path: redirectOrNull || '/candidate' })
         } catch (error: H3Error | any) {
             if (error instanceof H3Error && error.statusCode == 401) {
                 invalidPassword.value = !invalidPassword.value

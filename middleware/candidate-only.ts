@@ -5,6 +5,7 @@ import { useAuth } from '~/composables/auth/useAuth'
 import { useUserStore } from '~/stores/user.store'
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
+    const { middlewareError } = useErrorHandler()
     try {
         await useAuth().me()
         const { isCandidate } = storeToRefs(useUserStore())
@@ -18,6 +19,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         }
     } catch (error: NuxtError | any) {
         console.log('error: middleware:candidate-only', error)
-        throw error
+        throw middlewareError(error, { to, from })
     }
 })
