@@ -18,6 +18,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         }
     } catch (error: NuxtError | any) {
         console.log('error: middleware:hr-only', error)
-        throw middlewareError(error, { to, from })
+        middlewareError(error, { to, from })
     }
 })
