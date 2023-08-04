@@ -71,9 +71,9 @@
                                 {{ profileStatusComputed(item.raw.status).profile_status_text }}
                             </v-chip>
                         </template>
-                        <template v-slot:item.action="{ item }">
-                            <NuxtLink :to="`/candidate/form/`">
-                                <v-icon size="small" class="me-2" @click="editItem(item.raw)"> mdi-eye </v-icon>
+                        <template v-slot:item.action="{ item }" :key="item.raw.profile_ID">
+                            <NuxtLink :to="`/candidate/form/${item.raw.profile_ID}`">
+                                <v-icon size="small" class="me-2"> mdi-eye </v-icon>
                             </NuxtLink>
                         </template>
                     </v-data-table>

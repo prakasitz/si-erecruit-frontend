@@ -1,6 +1,7 @@
 <template>
     <div>
         <NuxtLayout>
+            <NuxtLoadingIndicator />
             <v-row class="mb-5">
                 <DialogInfo />
                 <DialogWarning />

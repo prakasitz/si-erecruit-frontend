@@ -106,7 +106,7 @@ const items4Candidate = [
     {
         title: 'จัดการข้อมูลผู้สมัคร',
         value: 'bar',
-        to: '/candidate/form/',
+        to: `/candidate/form/${route.params.id}`,
         nav: [
             {
                 title: 'หน้าหลัก',

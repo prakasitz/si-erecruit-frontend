@@ -2,10 +2,9 @@
     <v-dialog v-model="dialog" width="auto" :persistent="context.persistent">
         <template v-slot:activator="{ props }">
             <dev-only>
-
-            <v-row justify="center" class="ma-2">
-                <v-btn :color="bgColor" v-bind="props"> Open Dialog ERROR </v-btn>
-            </v-row>
+                <v-row justify="center" class="ma-2">
+                    <v-btn :color="bgColor" v-bind="props"> Open Dialog ERROR </v-btn>
+                </v-row>
             </dev-only>
         </template>
         <v-card class="mb-5" width="400">
@@ -16,7 +15,7 @@
                     ><br />
                 </v-card-title>
             </v-toolbar>
-            <v-card-text> {{ context.message }} </v-card-text>
+            <v-card-text v-html="context.message" />
             <v-card-actions v-if="context.actionButtons && context.actionButtons.length > 0">
                 <v-spacer></v-spacer>
                 <!-- Redirect or Upload again -->

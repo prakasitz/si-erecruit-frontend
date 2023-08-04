@@ -131,12 +131,18 @@ router.post(
             }
 
             setCookieLogin(event, { token: dataOrError.access_token })
+            setCookie(event, 'role', role, {
+                httpOnly: false,
+                sameSite: 'strict',
+                maxAge: 60 * 60 * 24, // 1 day
+            })
 
             return {
                 access_token: dataOrError.access_token,
                 _: process.env.NODE_ENV !== 'production' ? devResult : undefined,
             }
         } catch (error: H3Error | any) {
+            console.log(error)
             return handleErrorRoute(error)
         }
     })

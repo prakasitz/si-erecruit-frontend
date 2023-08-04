@@ -53,6 +53,15 @@ export enum JobStatusColor {
     CLOSED = 'label label-inverse',
 }
 
+export type DialogContext = {
+    title: string
+    message: string
+    actionButtons: any[]
+    persistent: boolean
+    [key: string]: any
+}
+
+
 export type Roles = 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'CANDIDATE'
 
 export type Candidate = {

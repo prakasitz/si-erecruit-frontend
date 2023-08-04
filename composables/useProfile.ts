@@ -1,9 +1,12 @@
+import { Profile } from '~/utils/types'
+
 export default function useProfile() {
     return {
         loginCandidate,
         getUserInfo,
         getStatus,
         importProfile,
+        getProfileById,
     }
 }
 
@@ -12,6 +15,16 @@ async function loginCandidate() {}
 async function getUserInfo() {}
 
 async function getStatus() {}
+
+function getProfileById(id: string) {
+    return useApi(`/api/external/profile/get/${parseInt(id)}`, {
+        method: 'POST',
+        key: 'getProfileById',
+        transform: ({ profile }: { profile: Profile }) => {
+            return profile
+        },
+    })
+}
 
 async function importProfile(files: File[]) {
     if (files.length == 0) return

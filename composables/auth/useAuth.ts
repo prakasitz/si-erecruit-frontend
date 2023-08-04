@@ -1,4 +1,4 @@
-import { Roles } from '~/utils/types'
+import { DialogContext, Roles } from '~/utils/types'
 import { FetchError } from 'ofetch'
 import { useUserStore } from '~/stores/user.store'
 
@@ -19,20 +19,24 @@ export const useAuth = () => {
     // Handles user login. Makes an API call to authenticate the user.
     const login = async (username: any, password: any, role: Roles) => {
         try {
+            const pidOrUserName = role === 'CANDIDATE' ? 'pid' : 'username'
             const { error, data } = await useApi('/auth/login', {
                 method: 'POST',
                 headers: {
                     'X-Role': role,
                 },
                 body: {
-                    username,
+                    [pidOrUserName]: username,
                     password,
                 },
             })
 
             if (error.value) throw error.value
         } catch (error: FetchError | any) {
-            throw error
+            throw createError({
+                statusCode: error.statusCode,
+                message: error.data.message,
+            })
         }
     }
 
@@ -47,8 +51,11 @@ export const useAuth = () => {
             userStore.$reset()
             return navigateTo(data.value.redirect)
         } catch (error: FetchError | any) {
-            console.log('error on me', error)
-            throw error.data
+            console.log('error on logout', error)
+            throw createError({
+                statusCode: error.statusCode,
+                message: error.data.message,
+            })
         }
     }
 
@@ -65,7 +72,10 @@ export const useAuth = () => {
                 setUser(data.value)
             } catch (error: FetchError | any) {
                 console.log('error on me', error)
-                throw error.data
+                throw createError({
+                    statusCode: error.statusCode,
+                    message: error.data.message,
+                })
             }
         }
     }

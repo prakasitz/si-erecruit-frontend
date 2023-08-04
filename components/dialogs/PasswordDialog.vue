@@ -75,6 +75,7 @@
 <script setup lang="ts">
 import { CandidateAuth } from '~/auth/candidate.auth'
 import { H3Error } from 'h3'
+import { useAuth } from '~/composables/auth/useAuth'
 
 const { $isDev } = useNuxtApp()
 const auth = new CandidateAuth()
@@ -89,8 +90,7 @@ async function loginCandidate(pid?: string | undefined, password?: string | unde
     } else {
         try {
             invalidPassword.value = false
-            const resp = await useCandidateBACK().loginCandidate(pid, password)
-            console.log(resp.data.value)
+            await useAuth().login(pid, password, RoleEnum.CANDIDATE)
             // await auth.signIn({ username: pid, password: password })
             await navigateTo({ path: '/candidate' })
         } catch (error: H3Error | any) {

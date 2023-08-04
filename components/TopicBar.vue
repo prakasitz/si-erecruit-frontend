@@ -4,7 +4,21 @@
             <v-col cols="12">
                 <v-sheet class="ma-0s pa-0" max-height="70">
                     <v-row>
-                        <v-col cols="5"> <v-breadcrumbs divider=">" :items="props.labels"></v-breadcrumbs> </v-col>
+                        <v-col cols="6" align-self="center">
+                            <v-breadcrumbs
+                                v-if="isCandidate"
+                                divider=">"
+                                :disabled="true"
+                                :items="props.labels"
+                            ></v-breadcrumbs>
+                            <div v-if="isCandidateLayout && (isHR || isAdmin)" class="mx-auto pl-5">
+                                <p class="text-h6">
+                                    ข้อมูลผู้สมัคร: {{ profileOrNull?.nameTH }} {{ profileOrNull?.lastnameTH }} ({{
+                                        route.params.id
+                                    }})
+                                </p>
+                            </div>
+                        </v-col>
                         <v-spacer></v-spacer>
                         <v-col class="text-right" align-self="center">
                             <v-menu>
@@ -39,6 +53,7 @@
 import { storeToRefs } from 'pinia'
 import { useAuth } from '~/composables/auth/useAuth'
 import { useUserStore } from '~/stores/user.store'
+import { Profile } from '~/utils/types'
 
 type MenuItem = {
     title: string
@@ -46,7 +61,18 @@ type MenuItem = {
     onClick?: (event: Event) => Promise<any>
 }
 
+export interface Props {
+    labels?: any[]
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    labels: () => [{ title: 'หนัาหลัก', href: '/' }],
+})
+
 // This will work in both `<script setup>` and `<script>`
+const route = useRoute()
+const isCandidateLayout = computed(() => route.name === 'candidate-form-id')
+
 const userStore = useUserStore()
 const { logout } = useAuth()
 const { user } = userStore
@@ -70,11 +96,5 @@ const menuItem: MenuItem[] = [
     },
 ]
 
-export interface Props {
-    labels?: any[]
-}
-
-const props = withDefaults(defineProps<Props>(), {
-    labels: () => [{ title: 'หนัาหลัก', href: '/' }],
-})
+const profileOrNull = useNuxtData<Profile>('getProfileById').data.value
 </script>

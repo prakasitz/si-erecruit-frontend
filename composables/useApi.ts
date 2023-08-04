@@ -8,7 +8,7 @@ export const useApi = async (url: any, params: any | UseFetchOptions<HeadersInit
 
     const opts: UseFetchOptions<any> = {
         ...params,
-        key: url,
+        key: params?.key || url,
         baseURL: config.public.baseApi,
         headers: {
             ...params?.headers,
@@ -37,7 +37,6 @@ export const useApi = async (url: any, params: any | UseFetchOptions<HeadersInit
 
         async onResponseError({ response }: FetchContext<any>) {
             console.error('[nuxt] ==> useApi:onResponseError:', response?.status)
-
             //if response.status == 403 throw showError
             // only api response
             // if (response?.headers.get('Accept') !== 'application/json') {

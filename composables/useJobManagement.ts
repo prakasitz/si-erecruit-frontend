@@ -107,7 +107,7 @@ const getProfilesByJobId = (jobId: string) => {
                     status: item.profile_status,
                     pid: item.id_card_number,
                     phone: item.cur_mobile ?? item.cur_telephone ?? 'ไม่มีข้อมูล',
-                    action: 'action',
+                    profile_ID: item.profile_ID,
                 }
             })
             return { job, profiles }
