@@ -266,7 +266,15 @@ const { rules_fieldEmpty } = useFillRules()
 const formMarriage: Ref<HTMLFormElement | null> = ref<HTMLFormElement | null>(null)
 
 const personalStore = usePersonalStore()
-const { marriage, useCurAddressOnRefAddress, useRegAddressOnRefAddress } = personalStore
+const { marriage, useCurAddressOnRefAddress, useRegAddressOnRefAddress, setDefaultChildList } = personalStore
+
+watch(marriage, ({status}) => {
+    if (status == '1') {
+        setDefaultChildList()
+    }
+}, {
+    deep: true
+})
 
 watch(marriage.ref_person, ({ref_same_address}) => {
     if (ref_same_address === true) {

@@ -332,6 +332,14 @@ export const usePersonalStore = defineStore('personal', {
             this.personal_info.birth_date = birth_date
             this.setAge()
         },
+        setDefaultChildList() {
+            this.$patch({
+                marriage: {
+                    ...this.marriage,
+                    ...deepCopy(defaultChildrenInfo),
+                }
+            })
+        },
         setAge() {
             const { years, months } = this.calAge
             this.personal_info.age_year = years

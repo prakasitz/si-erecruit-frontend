@@ -12,6 +12,11 @@ export const default_job: job = {
     start_date: '',
 }
 
+export const defaultChildrenInfo = {
+    num_of_chlid: '0',
+    children_list: [],
+}
+
 export const defaultAddress: address = {
         address_no: '',
         address_moo: '',
