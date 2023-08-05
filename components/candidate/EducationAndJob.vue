@@ -46,12 +46,12 @@
                         <v-col cols="6"> เคยมีประวัติการทำงาน </v-col>
                         <v-col cols="6">
                             <v-radio-group v-model="job.had_job" hide-details inline>
-                                <v-radio label="ไม่เคย" value="N"></v-radio>
-                                <v-radio label="เคย" value="Y"></v-radio>
+                                <v-radio label="ไม่เคย" value="0"></v-radio>
+                                <v-radio label="เคย" value="1"></v-radio>
                             </v-radio-group>
                         </v-col>
                     </v-row>
-                    <div v-if="job.had_job == 'Y'">
+                    <div v-if="job.had_job == '1'">
                         <FormsWorkExperienceForm
                             v-for="i in job.had_job_list.length"
                             class="mt-7"
@@ -78,12 +78,12 @@
                         <v-col cols="6"> เคยมีประวัติการทำงานในมหาวิทยาลัยมหิดล </v-col>
                         <v-col cols="6">
                             <v-radio-group v-model="job.had_job_mahidol" hide-details inline>
-                                <v-radio label="ไม่เคย" value="N"></v-radio>
-                                <v-radio label="เคย" value="Y"></v-radio>
+                                <v-radio label="ไม่เคย" value="0"></v-radio>
+                                <v-radio label="เคย" value="1"></v-radio>
                             </v-radio-group>
                         </v-col>
                     </v-row>
-                    <div class="box-detail" v-if="job.had_job_mahidol == 'Y'">
+                    <div class="box-detail" v-if="job.had_job_mahidol == '1'">
                         <v-row>
                             <v-col cols="4"> ภาควิชา/หน่วยงาน <span class="text-red-darken-1"> *</span> </v-col>
                             <v-col>

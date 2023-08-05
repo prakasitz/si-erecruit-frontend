@@ -335,6 +335,7 @@ if (isCandidate.value) {
     setPageLayout('default')
 }
 
+
 onMounted(async () => {
     let profile = data.value as Profile
     personalStore.$patch({
@@ -451,7 +452,15 @@ onMounted(async () => {
                 last_name: profile.ref_last_name,
                 relationship: profile.ref_relationship,
                 phone_number: profile.ref_telephone,
-            }
+            },
+        },
+        education: {
+            education_select: 1,
+            education_list: personalStore.mapEducationList(profile)
+        },
+        job: {
+            had_job: profile.chk_work_out,
+            had_job_mahidol: profile.chk_work_in
         }
     })
     // console.log('isItemsLoaded', isItemsLoaded.value)

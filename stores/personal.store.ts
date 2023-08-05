@@ -11,9 +11,12 @@ import {
     ITalent,
     ITax,
     address,
+    education,
     job,
     job_mahidol,
 } from './interface/personal_information.interface'
+
+import { Profile } from '~/utils/types'
 
 import { defineStore } from 'pinia'
 
@@ -337,7 +340,7 @@ export const usePersonalStore = defineStore('personal', {
                 marriage: {
                     ...this.marriage,
                     ...deepCopy(defaultChildrenInfo),
-                }
+                },
             })
         },
         setAge() {
@@ -367,6 +370,28 @@ export const usePersonalStore = defineStore('personal', {
         },
         useCurAddressOnRefAddress() {
             this.marriage.ref_person.address_detail = deepCopy(this.address.cur_address)
+        },
+
+        mapEducationList(rawData: Profile) {
+            const education_list = [] as education[]
+            for (let i = 1; i <= 4; i++) {
+                let edu = `edu${i}` as 'edu1' | 'edu2' | 'edu3' | 'edu4'
+                const educationObj: education = {
+                    education_level: rawData[`${edu}_level`],
+                    major: rawData[`${edu}_major`],
+                    degree: rawData[`${edu}_qual`],
+                    school: rawData[`${edu}_aca`],
+                    gpa: rawData[`${edu}_grade`],
+                    start_date: rawData[`${edu}_begin`],
+                    graduate_date: rawData[`${edu}_end`],
+                }
+
+                if (checkObjectPropertiesNull(educationObj)) break
+
+                educationObj.id = i
+                education_list.push(educationObj)
+            }
+            return education_list
         },
     },
 })
