@@ -181,8 +181,8 @@
                                     hide-details
                                     inline
                                 >
-                                    <v-radio label="ได้รับแล้ว" value="Y"></v-radio>
-                                    <v-radio label="ยังไม่ได้รับ" value="N"></v-radio>
+                                    <v-radio label="ได้รับแล้ว" value="01"></v-radio>
+                                    <v-radio label="ยังไม่ได้รับ" value="00"></v-radio>
                                 </v-radio-group>
                             </v-col>
                         </v-row>
@@ -217,6 +217,20 @@
                                 <v-text-field
                                     v-model="job.current_job.position_name"
                                     label="ขื่อตำแหน่งงาน"
+                                    density="compact"
+                                    variant="outlined"
+                                    maxLength="56"
+                                    :rules="rules_fieldEmpty"
+                                >
+                                </v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col cols="4">เงินเดือน <span class="text-red-darken-1"> *</span></v-col>
+                            <v-col>
+                                <v-text-field
+                                    v-model="job.current_job.salary"
+                                    label="เงินเดือน"
                                     density="compact"
                                     variant="outlined"
                                     maxLength="56"
@@ -503,6 +517,7 @@ watch(IsStudying, (newValue) => {
             company_province: '',
             duration_m: '',
             duration_y: '',
+            salary: '',
             job_type: '',
             position_name: '',
         }
@@ -522,6 +537,7 @@ watch(IsUnemployed, (newValue) => {
             company_province: '',
             duration_m: '',
             duration_y: '',
+            salary: '',
             job_type: '',
             position_name: '',
         }
@@ -540,7 +556,7 @@ watch(IsHasJobMahidol, (newValue) => {
         job.had_job_mahidol_detail = {
             department: '',
             end_date: '',
-            got_compensation: '',
+            got_compensation: null,
             position_name: '',
             reason: '',
             salary: '',

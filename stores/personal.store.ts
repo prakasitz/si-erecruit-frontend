@@ -208,7 +208,7 @@ export const usePersonalStore = defineStore('personal', {
                 announced_from: '',
             },
             job: {
-                had_job: 'N',
+                had_job: '0',
                 had_job_list: [
                     {
                         company_name: '',
@@ -221,11 +221,11 @@ export const usePersonalStore = defineStore('personal', {
                     },
                 ],
 
-                had_job_mahidol: 'N',
+                had_job_mahidol: '0',
                 had_job_mahidol_detail: {
                     department: '',
                     end_date: '',
-                    got_compensation: '',
+                    got_compensation: null,
                     position_name: '',
                     reason: '',
                     salary: '',
@@ -233,13 +233,14 @@ export const usePersonalStore = defineStore('personal', {
                     start_date: '',
                     still_doing: false,
                 },
-                job_status: '1',
+                job_status: '',
                 current_job: {
                     company_name: '',
                     company_province: null,
                     duration_m: '',
                     duration_y: '',
                     job_type: '',
+                    salary: '',
                     position_name: '',
                 },
                 current_education: {
@@ -303,11 +304,11 @@ export const usePersonalStore = defineStore('personal', {
         }
     },
     getters: {
-        HasJob: ({ job }): boolean => job.had_job == 'Y',
+        HasJob: ({ job }): boolean => job.had_job == '1',
         IsWorking: ({ job }): boolean => job.job_status == 'กำลังทำงาน',
         IsStudying: ({ job }): boolean => job.job_status == 'กำลังศึกษาต่อ',
         IsUnemployed: ({ job }): boolean => job.job_status == 'ว่างงาน',
-        IsHasJobMahidol: ({ job }): boolean => job.had_job_mahidol == 'Y',
+        IsHasJobMahidol: ({ job }): boolean => job.had_job_mahidol == '1',
         curIsRegAddress: ({ address }): boolean => address.cur_same_address == true,
         emerIsRegAddress: ({ address }): boolean => address.urg_same_address == false,
         emerIsCurAddress: ({ address }): boolean => address.urg_same_address == true,
@@ -392,6 +393,26 @@ export const usePersonalStore = defineStore('personal', {
                 education_list.push(educationObj)
             }
             return education_list
+        },
+        mapJobList(rawData: Profile) {
+            const job_list = [] as job[]
+            for (let i = 1; i <= 4; i++) {
+                let emp = `emp${i}` as 'emp1' | 'emp2' | 'emp3' | 'emp4'
+                const jobObj: job = {
+                    company_name: rawData[`${emp}_place`],
+                    position_name: rawData[`${emp}_pos`],
+                    salary: rawData[`${emp}_sal`],
+                    start_date: rawData[`${emp}_begin`],
+                    still_doing: rawData[`${emp}_present`],
+                    end_date: rawData[`${emp}_end`],
+                    reason: rawData[`${emp}_exit_reason`],
+                }
+                if (checkObjectPropertiesNull(jobObj)) break
+
+                job_list.push(jobObj)
+            }
+            console.log("job_list", job_list)
+            return job_list
         },
     },
 })

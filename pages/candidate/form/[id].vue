@@ -335,7 +335,6 @@ if (isCandidate.value) {
     setPageLayout('default')
 }
 
-
 onMounted(async () => {
     let profile = data.value as Profile
     personalStore.$patch({
@@ -456,12 +455,45 @@ onMounted(async () => {
         },
         education: {
             education_select: 1,
-            education_list: personalStore.mapEducationList(profile)
+            education_list: personalStore.mapEducationList(profile),
         },
         job: {
-            had_job: profile.chk_work_out,
-            had_job_mahidol: profile.chk_work_in
-        }
+            had_job: profile.chk_work_out ?? '0',
+            had_job_mahidol: profile.chk_work_in ?? '0',
+            had_job_list: personalStore.mapJobList(profile),
+            job_status: profile.cur_working,
+            had_job_mahidol_detail: {
+                department: profile.work_in_org,
+                sap_type: profile.work_in_type,
+                position_name: profile.work_in_pos,
+                salary: profile.work_in_sal,
+                start_date: profile.work_in_begin,
+                still_doing: profile.work_in_present,
+                end_date: profile.work_in_end,
+                reason: profile.work_in_exit_reason,
+                got_compensation: profile.work_in_com,
+            },
+            current_job: {
+                job_type: profile.cur_working_time,
+                position_name: profile.cur_working_pos,
+                company_name: profile.cur_working_place,
+                company_province: profile.cur_working_province,
+                duration_y: profile.cur_working_year,
+                duration_m: profile.cur_working_month,
+                salary: profile.cur_working_sal,
+            },
+            current_education: {
+                education_level: profile.studying_level,
+                major: profile.studying_major,
+                graduate_date: profile.studying_success,
+                school: profile.studying_academy,
+            },
+            current_unemployee: {
+                duration_y: profile.unemployed_year,
+                duration_m: profile.unemployed_month,
+                reason: profile.unemployed_reason,
+            },
+        },
     })
     // console.log('isItemsLoaded', isItemsLoaded.value)
     // if (!isItemsLoaded.value) {

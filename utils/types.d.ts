@@ -61,6 +61,12 @@ export type DialogContext = {
     [key: string]: any
 }
 
+/**
+ * Compensation Option
+ * @value 00 - ยังไม่ได้รับ
+ * @value 01 - ได้รับแล้ว
+ */
+export type CompensationOption = '00' | '01'
 
 export type Roles = 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'CANDIDATE'
 

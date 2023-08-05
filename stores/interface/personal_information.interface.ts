@@ -1,4 +1,4 @@
-import { TalentLevel, YesNo } from '~/utils/types'
+import { CompensationOption, TalentLevel, YesNo } from '~/utils/types'
 
 export interface IJobPosition {}
 
@@ -96,10 +96,11 @@ export interface IEducation {
 }
 
 export interface IJob {
-    had_job: string
+    had_job: '0' | '1'
+    had_job_mahidol: '0' | '1'
+
     had_job_list: job[]
 
-    had_job_mahidol: string
     had_job_mahidol_detail: job_mahidol
 
     job_status: string // 1= กำลังทำงาน 2 = กำลังศึกษาต่อ 3 = ว่างงาน
@@ -177,6 +178,7 @@ interface current_education {
 interface current_job {
     job_type: string
     position_name: string
+    salary: string
     duration_y: string
     duration_m: string
     company_name: string
@@ -184,7 +186,7 @@ interface current_job {
 }
 
 export interface education {
-    id: number
+    id?: number
     education_level: string
     degree: string
     major: string
@@ -213,7 +215,7 @@ export interface job_mahidol {
     still_doing: boolean
     end_date: string
     reason: string
-    got_compensation: YesNo
+    got_compensation: CompensationOption | null
 }
 
 export interface parent_info {
