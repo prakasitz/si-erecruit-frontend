@@ -269,7 +269,7 @@ export const usePersonalStore = defineStore('personal', {
                         address_country: '',
                         id: 0,
                     },
-                    address_option: '',
+                    ref_same_address: null,
                     frist_name: '',
                     last_name: '',
                     phone_number: '',
@@ -305,9 +305,9 @@ export const usePersonalStore = defineStore('personal', {
         IsStudying: ({ job }): boolean => job.job_status == 'กำลังศึกษาต่อ',
         IsUnemployed: ({ job }): boolean => job.job_status == 'ว่างงาน',
         IsHasJobMahidol: ({ job }): boolean => job.had_job_mahidol == 'Y',
-        curIsRegAddress: ({address}): boolean => address.cur_same_address == true,
-        emerIsRegAddress: ({address}): boolean => address.urg_same_address == false,
-        emerIsCurAddress: ({address}): boolean => address.urg_same_address == true,
+        curIsRegAddress: ({ address }): boolean => address.cur_same_address == true,
+        emerIsRegAddress: ({ address }): boolean => address.urg_same_address == false,
+        emerIsCurAddress: ({ address }): boolean => address.urg_same_address == true,
         calAge: ({ personal_info }): { years: number; months: number } => {
             if (!personal_info.birth_date) {
                 return { years: 0, months: 0 }
@@ -351,8 +351,14 @@ export const usePersonalStore = defineStore('personal', {
         useRegAddressOnEmerAddress() {
             this.address.emer_address = deepCopy(this.address.reg_address)
         },
+        useRegAddressOnRefAddress() {
+            this.marriage.ref_person.address_detail = deepCopy(this.address.reg_address)
+        },
         useCurAddressOnEmerAddress() {
             this.address.emer_address = deepCopy(this.address.cur_address)
+        },
+        useCurAddressOnRefAddress() {
+            this.marriage.ref_person.address_detail = deepCopy(this.address.cur_address)
         },
     },
 })

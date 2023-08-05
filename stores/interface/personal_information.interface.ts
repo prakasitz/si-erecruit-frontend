@@ -48,8 +48,8 @@ export interface IAddressInfo {
      */
     cur_same_address: boolean
     /**
-     * @value 0 is reg_address
-     * @value 1 is cur_address
+     * @value false is reg_address
+     * @value true is cur_address
      * @value null is use emer_address as address
      **/
     urg_same_address: boolean | null
@@ -272,6 +272,11 @@ interface ref_person {
     last_name: string
     relationship: string
     phone_number: string
-    address_option: string
+    /**
+     * @value false is reg_address
+     * @value true is cur_address
+     * @value null is use manual as address
+     */
+    ref_same_address: boolean | null
     address_detail: address
 }

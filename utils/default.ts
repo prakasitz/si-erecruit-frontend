@@ -1,4 +1,4 @@
-import { job } from '~/stores/interface/personal_information.interface'
+import { address, job } from '~/stores/interface/personal_information.interface'
 import { VueDatePickerProps } from '@vuepic/vue-datepicker'
 import { btnShowWstatus } from './types'
 
@@ -10,6 +10,19 @@ export const default_job: job = {
     salary: '',
     still_doing: false,
     start_date: '',
+}
+
+export const defaultAddress: address = {
+        address_no: '',
+        address_moo: '',
+        address_village: '',
+        address_soi: '',
+        address_road: '',
+        address_district: '',
+        address_city: '',
+        address_province: null,
+        address_postcode: '',
+        address_country: '',
 }
 
 export const defaultDialogContext = {

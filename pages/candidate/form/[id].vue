@@ -442,6 +442,17 @@ onMounted(async () => {
             mf_date_of_marriage: profile.mf_date_of_marriage,
             mf_no_marriage: profile.mf_no_marriage,
         },
+        marriage: {
+            status: profile.marital_status,
+            num_of_chlid: profile.number_of_children,
+            ref_person: {
+                title: profile.ref_title_name,
+                frist_name: profile.ref_first_name,
+                last_name: profile.ref_last_name,
+                relationship: profile.ref_relationship,
+                phone_number: profile.ref_telephone,
+            }
+        }
     })
     // console.log('isItemsLoaded', isItemsLoaded.value)
     // if (!isItemsLoaded.value) {
