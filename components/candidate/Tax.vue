@@ -21,6 +21,7 @@
                                 v-model="tax.num_of_child"
                                 label="จำนวนบุตร"
                                 hint="หากไม่มีใส่ 0"
+                                persistent-hint
                                 density="compact"
                                 variant="outlined"
                                 maxLength="1"
@@ -96,11 +97,11 @@
                         </v-col>
                         <v-col cols="3">
                             <v-radio-group v-model="tax.loan" inline>
-                                <v-radio label="ไม่มี" value="N"></v-radio>
-                                <v-radio label="มี" value="Y"></v-radio>
+                                <v-radio label="ไม่มี" value="ไม่มี"></v-radio>
+                                <v-radio label="มี" value="มี"></v-radio>
                             </v-radio-group>
                         </v-col>
-                        <v-col v-if="tax.loan == 'Y'">
+                        <v-col v-if="tax.loan == 'มี'">
                             <v-text-field
                                 v-model="tax.loan_amount"
                                 label="จำนวนเงิน (บาท)"
@@ -121,11 +122,11 @@
                         </v-col>
                         <v-col cols="3">
                             <v-radio-group v-model="tax.insurance" inline>
-                                <v-radio label="ไม่มี" value="N"></v-radio>
-                                <v-radio label="มี" value="Y"></v-radio>
+                                <v-radio label="ไม่มี" value="ไม่มี"></v-radio>
+                                <v-radio label="มี" value="มี"></v-radio>
                             </v-radio-group>
                         </v-col>
-                        <v-col v-if="tax.insurance == 'Y'">
+                        <v-col v-if="tax.insurance == 'มี'">
                             <v-text-field
                                 v-model="tax.insurance_amount"
                                 label="จำนวนเงิน (บาท)"
@@ -146,11 +147,11 @@
                         </v-col>
                         <v-col cols="3">
                             <v-radio-group v-model="tax.donate" inline>
-                                <v-radio label="ไม่มี" value="N"></v-radio>
-                                <v-radio label="มี" value="Y"></v-radio>
+                                <v-radio label="ไม่มี" value="ไม่มี"></v-radio>
+                                <v-radio label="มี" value="มี"></v-radio>
                             </v-radio-group>
                         </v-col>
-                        <v-col v-if="tax.donate == 'Y'">
+                        <v-col v-if="tax.donate == 'มี'">
                             <v-text-field
                                 v-model="tax.donate_amount"
                                 label="จำนวนเงิน (บาท)"
@@ -171,11 +172,11 @@
                         </v-col>
                         <v-col cols="3">
                             <v-radio-group v-model="tax.fund" inline>
-                                <v-radio label="ไม่มี" value="N"></v-radio>
-                                <v-radio label="มี" value="Y"></v-radio>
+                                <v-radio label="ไม่มี" value="ไม่มี"></v-radio>
+                                <v-radio label="มี" value="มี"></v-radio>
                             </v-radio-group>
                         </v-col>
-                        <v-col v-if="tax.fund == 'Y'">
+                        <v-col v-if="tax.fund == 'มี'">
                             <v-text-field
                                 v-model="tax.fund_amount"
                                 label="จำนวนเงิน (บาท)"
@@ -196,35 +197,50 @@
                         </v-col>
                         <v-col cols="6">
                             <v-radio-group v-model="tax.marriage_income">
-                                <v-radio label="คู่สมรสไม่มีรายได้" value="1"></v-radio>
-                                <v-radio label="คู่สมรสมีรายได้ ไม่ลดหย่อนบุตร" value="2"></v-radio>
-                                <v-radio label="คู่สมรสมีรายได้ ลดหย่อนบุตร" value="3"></v-radio>
+                                <v-radio label="คู่สมรสไม่มีรายได้" value="คู่สมรสไม่มีรายได้"></v-radio>
+                                <v-radio label="คู่สมรสมีรายได้ ไม่ลดหย่อนบุตร" value="คู่สมรสมีรายได้ ไม่ลดหย่อนบุตร"></v-radio>
+                                <v-radio label="คู่สมรสมีรายได้ ลดหย่อนบุตร" value="คู่สมรสมีรายได้ ลดหย่อนบุตร"></v-radio>
                             </v-radio-group>
                         </v-col>
                     </v-row>
-                    <v-row v-if="tax.marriage_income == '1'">
-                        <v-col cols="4">
-                            เบี้ยประกันชีวิต (คู่สมรส) กรณีไม่มีเงินรายได้
-                            <span class="text-red-darken-1"> *</span></v-col
-                        >
-                        <v-col cols="3">
-                            <v-radio-group v-model="tax.marriage_insurance" inline>
-                                <v-radio label="ไม่มี" value="N"></v-radio>
-                                <v-radio label="มี" value="Y"></v-radio>
-                            </v-radio-group>
-                        </v-col>
-                        <v-col v-if="tax.marriage_insurance == 'Y'">
-                            <v-text-field
-                                v-model="tax.marriage_insurance_amount"
-                                label="จำนวนเงิน (บาท)"
-                                hint="โปรดระบุ"
-                                density="compact"
-                                variant="outlined"
-                                maxLength="10"
-                                :rules="rules_fieldEmpty"
+                    <v-expand-transition>
+                        <v-row v-if="tax.marriage_income == 'คู่สมรสไม่มีรายได้'">
+                            <v-col cols="4">
+                                เบี้ยประกันชีวิต (คู่สมรส) กรณีไม่มีเงินรายได้
+                                <span class="text-red-darken-1"> *</span></v-col
                             >
-                                <template #append>บาท</template>
-                            </v-text-field>
+                            <v-col cols="3">
+                                <v-radio-group v-model="tax.marriage_insurance" inline>
+                                    <v-radio label="ไม่มี" value="ไม่มี"></v-radio>
+                                    <v-radio label="มี" value="มี"></v-radio>
+                                </v-radio-group>
+                            </v-col>
+                            <v-col v-if="tax.marriage_insurance == 'มี'">
+                                <v-text-field
+                                    v-model="tax.marriage_insurance_amount"
+                                    label="จำนวนเงิน (บาท)"
+                                    hint="โปรดระบุ"
+                                    density="compact"
+                                    variant="outlined"
+                                    maxLength="10"
+                                    :rules="rules_fieldEmpty"
+                                >
+                                    <template #append>บาท</template>
+                                </v-text-field>
+                            </v-col>
+                        </v-row>
+                    </v-expand-transition>
+                    <v-row>
+                        <v-col cols="4">
+                            <p>ค่าอุปการะเลี้ยงดูบิดามารดา <span class="text-red-darken-1"> *</span></p>
+                        </v-col>
+                        <v-col cols="6">
+                            <v-radio-group v-model="tax.parent_support">
+                                <v-radio label="ไม่มี" value="ไม่มี"></v-radio>
+                                <v-radio label="บิดา" value="บิดา"></v-radio>
+                                <v-radio label="มารดา" value="มารดา"></v-radio>
+                                <v-radio label="บิดาและมารดา" value="บิดาและมารดา"></v-radio>
+                            </v-radio-group>
                         </v-col>
                     </v-row>
                 </v-container>
