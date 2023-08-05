@@ -173,13 +173,13 @@ export const usePersonalStore = defineStore('personal', {
                 computer_programs: '',
 
                 eng_language_details: {
-                    language_read: '',
-                    language_speak: '',
-                    language_write: '',
+                    language_read: null,
+                    language_speak: null,
+                    language_write: null,
 
-                    txt_language_read: '',
-                    txt_language_speak: '',
-                    txt_language_write: '',
+                    txt_language_read: null,
+                    txt_language_speak: null,
+                    txt_language_write: null,
                 },
 
                 language_test: null,
@@ -188,13 +188,13 @@ export const usePersonalStore = defineStore('personal', {
                 other_language: '',
 
                 other_language_details: {
-                    language_read: '',
-                    language_speak: '',
-                    language_write: '',
+                    language_read: null,
+                    language_speak: null,
+                    language_write: null,
 
-                    txt_language_read: '',
-                    txt_language_speak: '',
-                    txt_language_write: '',
+                    txt_language_read: null,
+                    txt_language_speak: null,
+                    txt_language_write: null,
                 },
 
                 sports: '',
@@ -410,7 +410,7 @@ export const usePersonalStore = defineStore('personal', {
 
                 job_list.push(jobObj)
             }
-            console.log("job_list", job_list)
+            console.log('job_list', job_list)
             return job_list
         },
     },

@@ -531,6 +531,63 @@ onMounted(async () => {
             marriage_insurance_amount: profile.money_at_spouse_insurance_baht,
             parent_support: profile.deductible_parents,
         },
+        talent: {
+            /** 
+            "typing_th": null,
+            "typing_en": null,
+            "computer_programs": null,
+            "eng_speak": "อื่น ๆ",
+            "txt_eng_speak": null,
+            "eng_read": "พอใช้",
+            "txt_eng_read": null,
+            "eng_write": "พอใช้",
+            "txt_eng_write": null,
+            "language_test": "605",
+            "language_score": "990",
+            "other_language": null,
+            "other_language_speak": null,
+            "txt_other_language_speak": null,
+            "other_language_read": null,
+            "txt_other_language_read": null,
+            "other_language_write": null,
+            "txt_other_language_write": null,
+            "sports": null,
+            "driver_license": "50467939",
+            "other_talents": null,
+            "specialization": null,
+            "announced_from" : null
+            */
+            typing_th: profile.typing_th,
+            typing_en: profile.typing_en,
+
+            language_score: profile.language_score,
+            language_test: profile.language_test,
+            eng_language_details: {
+                language_read: profile.eng_read,
+                language_write: profile.eng_write,
+                language_speak: profile.eng_speak,
+                txt_language_read: profile.txt_eng_read,
+                txt_language_write: profile.txt_eng_write,
+                txt_language_speak: profile.txt_eng_speak,
+            },
+
+            other_language: profile.other_language,
+            other_language_details: {
+                language_read: profile.other_language_read,
+                language_write: profile.other_language_write,
+                language_speak: profile.other_language_speak,
+                txt_language_read: profile.txt_other_language_read,
+                txt_language_write: profile.txt_other_language_write,
+            },
+
+
+            computer_programs: profile.computer_programs,
+            other_talents: profile.other_talents,
+            specialization: profile.specialization,
+            sports: profile.sports,
+            driver_license: profile.driver_license,
+            announced_from: profile.announced_from,
+        },
     })
     // console.log('isItemsLoaded', isItemsLoaded.value)
     // if (!isItemsLoaded.value) {

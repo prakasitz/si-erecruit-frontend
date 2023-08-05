@@ -87,12 +87,12 @@ export type Candidate = {
     created_at: Date
 }
 
-export type TalentLevel = '' | 'good' | 'fair' | 'other'
+export type TalentLevel = 'ดี' | 'พอใช้' | 'อื่น ๆ'
 export type YesNo = '' | 'Y' | 'N'
 export type Skill = {
     label: 'พูด' | 'อ่าน' | 'เขียน'
-    selected: TalentLevel
-    others: string | ''
+    selected: TalentLevel | null
+    others: string | null
 }
 
 export type LanguageLevelOption = {

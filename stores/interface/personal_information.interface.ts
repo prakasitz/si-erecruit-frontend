@@ -255,14 +255,14 @@ export interface ITalent {
 }
 
 export interface language {
-    language_speak: TalentLevel
-    txt_language_speak: string
+    language_speak: TalentLevel | null
+    txt_language_speak: string | null
 
-    language_read: TalentLevel
-    txt_language_read: string
+    language_read: TalentLevel | null
+    txt_language_read: string | null
 
-    language_write: TalentLevel
-    txt_language_write: string
+    language_write: TalentLevel | null
+    txt_language_write: string | null
 }
 
 interface ref_person {
