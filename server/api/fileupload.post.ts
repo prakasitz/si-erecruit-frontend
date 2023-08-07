@@ -5,6 +5,7 @@ import * as path from 'path'
 import { IncomingMessage, ServerResponse } from 'http'
 import url from 'url'
 import { dateToString } from '../../utils/date'
+import * as bcrypt from 'bcrypt'
 
 const handleFileUpload = async (req: IncomingMessage, res: ServerResponse) => {
     try {
@@ -73,47 +74,44 @@ export default defineEventHandler(async (event) => {
     }
 })
 
-
 async function uploadFile(userId: string, index: number, list: any): Promise<void> {
-    const fileInput = list[index].file;
+    const fileInput = list[index].file
     if (!fileInput) {
-      console.error('No file input element found.');
-      return;
+        console.error('No file input element found.')
+        return
     }
-  
-    const file = fileInput;
-    console.log("file:",file)
+
+    const file = fileInput
+    console.log('file:', file)
     if (!file) {
-      console.error('No file selected.');
-      return;
+        console.error('No file selected.')
+        return
     }
-  
+
     // If 'userId' is valid, create a directory with the userId as the destination
-    const directory = `./upload/${userId}`;
+    const directory = `./upload/candidate-id-${userId}`
     if (!fs.existsSync(directory)) {
-      fs.mkdirSync(directory, { recursive: true });
+        fs.mkdirSync(directory, { recursive: true })
     }
-    const now = new Date();
+    const now = new Date()
     // Construct the new file path
-    const newFileName = `${dateToString(now.toString(),"YYYYMMDD")}-${file[0].originalFilename}`;
-    const newPath = path.join(directory, newFileName);
+    const newFileName = `${dateToString(now.toString(), 'YYYYMMDD')}-${file[0].originalFilename}`
+    const newPath = path.join(directory, newFileName)
     console.log(file[0].filepath)
     console.log(newPath)
     // Move the temporary file to the desired destination
     fs.copyFile(file[0].filepath, newPath, (err) => {
-      if (err) {
-        console.error('Error moving file:', err);
-      } else {
-        console.log('File uploaded successfully at destination ',newPath);
-        deleteFile(file[0].filepath)
-    }
-    });
+        if (err) {
+            console.error('Error moving file:', err)
+        } else {
+            console.log('File uploaded successfully at destination ', newPath)
+            deleteFileTemp(file[0].filepath)
+        }
+    })
     // console.log(file[0].filepath)
-    
-  }
+}
 
-
-  function deleteFile (filePath: any) {
+function deleteFileTemp(filePath: any) {
     fs.unlink(filePath, (error: any) => {
         if (error) {
             console.error('Error deleting file:', error)

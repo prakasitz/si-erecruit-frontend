@@ -6,7 +6,7 @@
                 type="info"
                 variant="outlined"
                 icon="mdi-information-outline"
-                text="อัพโหลดไฟล์เอกสารเพิ่มเติม"
+                text="อัพโหลดไฟล์เอกสารเพิ่มเติม, ไฟล์จะต้องมีขนาดไม่เกิน 5MB และเป็นไฟล์ PDF เท่านั้น"
             >
             </v-alert>
 
@@ -17,20 +17,11 @@
 
             <p class="pb-4 text-h6">เอกสารแนบส่วนตัว</p>
             <v-divider></v-divider>
-
-            <!-- <v-list lines="two" density="compact">
-                <v-list-item v-for="detail in attach_personal_list" :title="detail.menu">
-                    <template v-slot:append>
-                        <v-file-input label="File input" density="compact"></v-file-input>
-                    </template>
-                </v-list-item>
-            </v-list> -->
-
-            <v-row class="px-2" v-for="(detail, index) in attach_personal_list" :key="index" :title="detail.menu">
+            <v-row class="px-2 mt-2" v-for="(detail, index) in attach_personal_list" :key="index" :title="detail.menu">
                 <v-col cols="6">
                     {{ detail.menu }}
                 </v-col>
-                <v-col cols="5">
+                <v-col>
                     <v-file-input
                         clearable
                         chips
@@ -42,18 +33,30 @@
                         label="File input"
                         density="compact"
                         accept=".pdf, application/pdf"
+                        :loading="detail.uploading"
+                        readonly
                         @change="onFileInputChange($event, index, attach_personal_list)"
                         @click:clear="resetFileInput(index, attach_personal_list)"
-                    ></v-file-input>
-                </v-col>
-                <v-col cols="1">
-                    <v-btn
-                        @click="onHandlePreView(index, attach_personal_list)"
-                        color="grey-lighten-1"
-                        icon="mdi-eye"
-                        variant="text"
-                    ></v-btn>
-                    <v-btn @click="uploadFile(index, attach_personal_list)"> Upload</v-btn>
+                    >
+                        <template #append>
+                            <v-btn
+                                @click="onHandlePreView(index, attach_personal_list)"
+                                :color="!detail.file ? 'grey-darken-4' : 'blue'"
+                                :icon="!detail.file ? 'mdi-eye-off' : 'mdi-eye'"
+                                :disabled="!detail.file"
+                                :loading="detail.uploading"
+                                variant="text"
+                            ></v-btn>
+                            <v-btn
+                                variant="text"
+                                :color="!detail.file ? 'grey-darken-4' : 'success'"
+                                :disabled="!detail.file"
+                                :icon="'mdi-upload'"
+                                :loading="detail.uploading"
+                                @click="onClickUpload(index, attach_personal_list)"
+                            ></v-btn>
+                        </template>
+                    </v-file-input>
                 </v-col>
             </v-row>
             <p class="pb-4 text-h6">เอกสารแนบวุฒิการศึกษา (เรียงจาก ระดับการศึกษาสูงสุด)</p>
@@ -183,21 +186,72 @@
 <script setup lang="ts">
 import { CandidateForm } from '~/utils/types'
 import { substrFilename } from '~/utils/string'
+import { FetchError } from 'ofetch'
 import usePreviewFiles from '@/composables/usePreviewFiles'
 const props = defineProps<{
     candidateForm: CandidateForm
 }>()
 
 const { handlePreview, uploadFile } = usePreviewFiles()
-
+const { dialogInfo, dialogError, showDialog } = useDialog()
 const fileSizeRules = [
-    (files: any) => !files || !files.some((file: any) => file.size > 5e6) || 'ไฟล์ต้องมีขนาดไม่เกิน 5 MB!',
-    (files: any) =>
-        !files || !files.some((file: any) => file.type != 'application/pdf') || 'ไฟล์ต้องเป็น pdf เท่านั้น!',
+    (files: File[]) => !files || !files.some((file: File) => file.size > 5e6) || 'ไฟล์ต้องมีขนาดไม่เกิน 5 MB!',
+    (files: File[]) =>
+        !files || !files.some((file: File) => file.type != 'application/pdf') || 'ไฟล์ต้องเป็น pdf เท่านั้น!',
 ]
 
+async function onClickUpload(index: number, list: AttachFile[]) {
+    let dialog = null
+    const section = list[index]
+    section.uploaded = false
+    section.uploading = false
+    try {
+        section.uploading = true
+        const { error } = await uploadFile(index, list)
+        if (error.value) throw error.value
+
+        section.uploaded = true
+        dialog = dialogInfo()
+        showDialog(
+            {
+                title: 'Upload Success',
+                message: `Upload successfully!.`,
+                actionButtons: [
+                    {
+                        text: 'Cancel',
+                        color: 'indigo',
+                    },
+                ],
+                persistent: false,
+            },
+            dialog
+        )
+    } catch (error: FetchError | any) {
+        section.uploaded = false
+        let errMsg = 'Api error: ' + error.data?.message || 'Unexpected error: ' + error.message
+        dialog = dialogError()
+        showDialog(
+            {
+                title: 'Upload Error',
+                message: `Upload failed, please try again later!, <br> ${errMsg}`,
+                actionButtons: [
+                    {
+                        text: 'Cancel',
+                        color: 'grey',
+                    },
+                ],
+                persistent: false,
+            },
+            dialog
+        )
+    } finally {
+        section.uploading = false
+    }
+}
+
 //function to check if there is change in the file input area to receive file
-function onFileInputChange(event: Event, index: number, list: any) {
+function onFileInputChange(event: Event, index: number, list: AttachFile[]) {
+    console.log('This is list: OnFileInputChange', list, index)
     const fileRef = (event.target as HTMLInputElement)?.files // Access the FileList from the input event
     const fileIndex = fileRef?.[0] || null
     console.log('this is fileIndex', fileIndex)
@@ -209,7 +263,7 @@ function onFileInputChange(event: Event, index: number, list: any) {
 }
 
 //function to handle the preview: handlePreview -->> previewFile
-function onHandlePreView(index: number, list: any) {
+function onHandlePreView(index: number, list: AttachFile[]) {
     console.log('This is list: OnHandlePreview', list)
     const fileIndex = list[index].file
     console.log('This is fileIndex: OnHandlePreview', fileIndex)
@@ -234,37 +288,60 @@ function onHandlePreView(index: number, list: any) {
 }
 
 //reset file input at the index position
-function resetFileInput(index: number, list: any) {
-    list[index].file = null
+function resetFileInput(index: number, list: AttachFile[]) {
+    list[index].file = undefined
 }
 
 const { data } = await useFetch('/api/delay', { server: false }) //ใช้ await เมื่อต้องการ ssr
 
-const attach_personal_list = ref([
+type AttachFile = {
+    menu: string
+    sub_menu?: string[]
+    filename: string
+    file: File | undefined
+    uploading: boolean
+    uploaded: boolean
+}
+
+const attach_personal_list = ref<AttachFile[]>([
     {
         menu: 'สำเนาบัตรประจำตัวประชาชนตนเอง *',
         filename: 'สำเนาบัตรประจำตัวประชาชนตนเอง.pdf',
-        file: null as File | null,
+        file: undefined,
+        uploading: false,
+        uploaded: false,
     },
-    { menu: 'สำเนาทะเบียนบ้านตนเอง *', filename: 'สำเนาทะเบียนบ้านตนเอง.pdf', file: null as File | null },
+    {
+        menu: 'สำเนาทะเบียนบ้านตนเอง *',
+        filename: 'สำเนาทะเบียนบ้านตนเอง.pdf',
+        file: undefined,
+        uploading: false,
+        uploaded: false,
+    },
     {
         menu: 'สำเนาหนังสือสำคัญแสดงการเปลี่ยนชื่อตนเอง(ถ้ามีการเปลี่ยน)',
         filename: 'สำเนาหนังสือสำคัญแสดงการเปลี่ยนชื่อตนเอง.pdf',
-        file: null as File | null,
+        file: undefined,
+        uploading: false,
+        uploaded: false,
     },
     {
         menu: 'สำเนาใบทะเบียนการสมรส/หย่าสมรสตนเอง',
         filename: 'สำเนาใบทะเบียนการสมรส/หย่าสมรสตนเอง',
-        file: null as File | null,
+        file: undefined,
+        uploading: false,
+        uploaded: false,
     },
     {
         menu: 'สำเนาเลขที่บัญชีธนาคารไทยพาณิชย์ ประเภทออมทรัพย์ (สาขาศิริราชเท่านั้น) *',
         filename: 'สำเนาเลขที่บัญชีธนาคารไทยพาณิชย์ ประเภทออมทรัพย์.pdf',
-        file: null as File | null,
+        file: undefined,
+        uploading: false,
+        uploaded: false,
     },
 ])
 
-const attach_education_list = ref([
+const attach_education_list = ref<AttachFile[]>([
     {
         menu: 'เรียงลำดับเอกสารดังนี้',
         sub_menu: [
@@ -277,11 +354,13 @@ const attach_education_list = ref([
             '7. สำเนาเอกสารผลคะแนนสอบภาษาอังกฤษ(กรณีปริญญาตรีขึ้นไปบังคับมี)',
         ],
         filename: 'เอกสารแนบวุฒิการศึกษา.pdf',
-        file: null as File | null,
+        uploaded: false,
+        uploading: false,
+        file: undefined,
     },
 ])
 
-const attach_family_list = ref([
+const attach_family_list = ref<AttachFile[]>([
     {
         menu: 'ข้อมูลญาติสายตรง-บิดา/มารดา เรียงลำดับเอกสารดังนี้',
         sub_menu: [
@@ -295,7 +374,9 @@ const attach_family_list = ref([
             '8. สำเนาใบมรณะบัตร (กรณี บิดา/มารดาผู้ให้กำเนิด เสียชีวิต) (ถ้ามี)',
         ],
         filename: 'ข้อมูลญาติสายตรงบิดาและมารดา.pdf',
-        file: null as File | null,
+        file: undefined,
+        uploading: false,
+        uploaded: false,
     },
     {
         menu: 'ข้อมูลญาติสายตรง-คู่สมรส/ข้อมูลหย่า เรียงลำดับเอกสารดังนี้',
@@ -305,7 +386,9 @@ const attach_family_list = ref([
             '3. สำเนาใบมรณะบัตรคู่สมรส (กรณีคู่สมรสถึงแก่กรรม) (ถ้ามี)',
         ],
         filename: 'ข้อมูลญาติสายตรงคู่สมรสและข้อมูลหย่า.pdf',
-        file: null as File | null,
+        file: undefined,
+        uploaded: false,
+        uploading: false,
     },
     {
         menu: 'ข้อมูลญาติสายตรง-บุตร เรียงลำดับเอกสารดังนี้',
@@ -316,12 +399,26 @@ const attach_family_list = ref([
             '4. สำเนาหนังสือสำคัญแสดงการเปลี่ยนชื่อ-ชื่อสกุลบุตร',
         ],
         filename: 'ข้อมูลญาติสายตรงและบุตร.pdf',
-        file: null as File | null,
+        file: undefined,
+        uploading: false,
+        uploaded: false,
     },
 ])
 
 const attach_private_list = ref([
-    { menu: 'ใบผ่านการเกณฑ์ทหาร', filename: 'ใบผ่านการเกณฑ์ทหาร.pdf', file: null as File | null },
-    { menu: 'ใบตรวจสุขภาพ/รับรองแพทย์', filename: 'ใบตรวจสุขภาพ/รับรองแพทย์.pdf', file: null as File | null },
+    {
+        menu: 'ใบผ่านการเกณฑ์ทหาร',
+        filename: 'ใบผ่านการเกณฑ์ทหาร.pdf',
+        file: undefined,
+        uploaded: false,
+        uploading: false,
+    },
+    {
+        menu: 'ใบตรวจสุขภาพ/รับรองแพทย์',
+        filename: 'ใบตรวจสุขภาพ/รับรองแพทย์.pdf',
+        file: undefined,
+        uploaded: false,
+        uploading: false,
+    },
 ])
 </script>

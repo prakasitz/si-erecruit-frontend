@@ -1,5 +1,3 @@
-import multer from 'multer'
-
 export default function usePreviewFiles() {
     return {
         previewFile,
@@ -31,39 +29,21 @@ function handlePreview(fileInput: File | null): void {
 }
 
 // async function uploadFile(fileInput: HTMLInputElement | null): Promise<void> {
-async function uploadFile(index: number, list: any): Promise<void> {
+async function uploadFile(index: number, list: any) {
+    const route = useRoute()
+    const userId = route.params.id
     const fileInput = list[index].file
-    if (!fileInput) {
-        console.error('No file input element found.')
-        return
-    }
 
-    // const file = fileInput.files?.[0];
+    if (!userId) throw new Error('User id not found.')
+    if (!fileInput) throw new Error('No file selected.')
+
     const file = fileInput
-
-    if (!file) {
-        console.error('No file selected.')
-        return
-    }
+    if (!file) throw new Error('No file selected.')
 
     const formData = new FormData()
     formData.append('filetoupload', file)
-
-    try {
-        const response = await fetch('/api/fileupload?userId=10452774', {
-            method: 'POST',
-            body: formData,
-        })
-
-        if (response.ok) {
-            console.log('File uploaded successfully!')
-            // Handle success case, e.g., show a success message
-        } else {
-            console.error('File upload failed:', response.statusText)
-            // Handle error case, e.g., show an error message
-        }
-    } catch (error) {
-        console.error('Error occurred during file upload:', error)
-        // Handle error case, e.g., show an error message
-    }
+    return useFetch(`/api/fileupload?userId=${userId}`, {
+        method: 'POST',
+        body: formData,
+    })
 }
