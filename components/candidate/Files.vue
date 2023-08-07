@@ -184,7 +184,7 @@
 </template>
 
 <script setup lang="ts">
-import { CandidateForm } from '~/utils/types'
+import { CandidateForm, AttachFile } from '~/utils/types'
 import { substrFilename } from '~/utils/string'
 import { FetchError } from 'ofetch'
 import usePreviewFiles from '@/composables/usePreviewFiles'
@@ -294,18 +294,10 @@ function resetFileInput(index: number, list: AttachFile[]) {
 
 const { data } = await useFetch('/api/delay', { server: false }) //ใช้ await เมื่อต้องการ ssr
 
-type AttachFile = {
-    menu: string
-    sub_menu?: string[]
-    filename: string
-    file: File | undefined
-    uploading: boolean
-    uploaded: boolean
-}
-
 const attach_personal_list = ref<AttachFile[]>([
     {
         menu: 'สำเนาบัตรประจำตัวประชาชนตนเอง *',
+        tag: '01-id_card',
         filename: 'สำเนาบัตรประจำตัวประชาชนตนเอง.pdf',
         file: undefined,
         uploading: false,
@@ -314,6 +306,7 @@ const attach_personal_list = ref<AttachFile[]>([
     {
         menu: 'สำเนาทะเบียนบ้านตนเอง *',
         filename: 'สำเนาทะเบียนบ้านตนเอง.pdf',
+        tag: '02-reg',
         file: undefined,
         uploading: false,
         uploaded: false,
@@ -321,6 +314,7 @@ const attach_personal_list = ref<AttachFile[]>([
     {
         menu: 'สำเนาหนังสือสำคัญแสดงการเปลี่ยนชื่อตนเอง(ถ้ามีการเปลี่ยน)',
         filename: 'สำเนาหนังสือสำคัญแสดงการเปลี่ยนชื่อตนเอง.pdf',
+        tag: '03-change_name',
         file: undefined,
         uploading: false,
         uploaded: false,
@@ -328,6 +322,7 @@ const attach_personal_list = ref<AttachFile[]>([
     {
         menu: 'สำเนาใบทะเบียนการสมรส/หย่าสมรสตนเอง',
         filename: 'สำเนาใบทะเบียนการสมรส/หย่าสมรสตนเอง',
+        tag: '04-marriage',
         file: undefined,
         uploading: false,
         uploaded: false,
@@ -335,6 +330,7 @@ const attach_personal_list = ref<AttachFile[]>([
     {
         menu: 'สำเนาเลขที่บัญชีธนาคารไทยพาณิชย์ ประเภทออมทรัพย์ (สาขาศิริราชเท่านั้น) *',
         filename: 'สำเนาเลขที่บัญชีธนาคารไทยพาณิชย์ ประเภทออมทรัพย์.pdf',
+        tag: '05-bank_acc',
         file: undefined,
         uploading: false,
         uploaded: false,
@@ -344,6 +340,7 @@ const attach_personal_list = ref<AttachFile[]>([
 const attach_education_list = ref<AttachFile[]>([
     {
         menu: 'เรียงลำดับเอกสารดังนี้',
+        tag: '06-education',
         sub_menu: [
             '1. สำเนาระเบียนแสดงผลการศึกษา หรือ Transcript',
             '2. สำเนาใบประกาศนียบัตรสำเร็จการศึกษา /หนังสือรับรองการสำเร็จการศึกษา',
@@ -363,6 +360,7 @@ const attach_education_list = ref<AttachFile[]>([
 const attach_family_list = ref<AttachFile[]>([
     {
         menu: 'ข้อมูลญาติสายตรง-บิดา/มารดา เรียงลำดับเอกสารดังนี้',
+        tag: '07-parent',
         sub_menu: [
             '1. สำเนาบัตรประจำตัวประชาชน บิดาผู้ให้กำเนิด',
             '2. สำเนาทะเบียนบ้าน บิดาผู้ให้กำเนิด',
@@ -380,6 +378,7 @@ const attach_family_list = ref<AttachFile[]>([
     },
     {
         menu: 'ข้อมูลญาติสายตรง-คู่สมรส/ข้อมูลหย่า เรียงลำดับเอกสารดังนี้',
+        tag: '08-marriage',
         sub_menu: [
             '1. สำเนาทะเบียนสมรส',
             '2. สำเนาบัตรประจำตัวประชาชนคู่สมรส (ถ่ายสำเนาเฉพาะด้านหน้าเท่านั้น) (ถ้ามี)',
@@ -392,6 +391,7 @@ const attach_family_list = ref<AttachFile[]>([
     },
     {
         menu: 'ข้อมูลญาติสายตรง-บุตร เรียงลำดับเอกสารดังนี้',
+        tag: '09-child',
         sub_menu: [
             '1. สำเนาสูติบัตรบุตร/บัตรประชาชน',
             '2. สำเนาทะเบียนบ้านบุตร',
@@ -405,9 +405,10 @@ const attach_family_list = ref<AttachFile[]>([
     },
 ])
 
-const attach_private_list = ref([
+const attach_private_list = ref<AttachFile[]>([
     {
         menu: 'ใบผ่านการเกณฑ์ทหาร',
+        tag: '10-military',
         filename: 'ใบผ่านการเกณฑ์ทหาร.pdf',
         file: undefined,
         uploaded: false,
@@ -415,6 +416,7 @@ const attach_private_list = ref([
     },
     {
         menu: 'ใบตรวจสุขภาพ/รับรองแพทย์',
+        tag: '11-health',
         filename: 'ใบตรวจสุขภาพ/รับรองแพทย์.pdf',
         file: undefined,
         uploaded: false,

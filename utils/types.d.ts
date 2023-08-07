@@ -61,9 +61,12 @@ export type DialogContext = {
     [key: string]: any
 }
 
-export type HavingOption = 'มี' | 'ไม่มี' 
+export type HavingOption = 'มี' | 'ไม่มี'
 
-export type MarriageIncomeOption = 'คู่สมรสไม่มีรายได้' | 'คู่สมรสมีรายได้ ไม่ลดหย่อนบุตร' | 'คู่สมรสมีรายได้ ลดหย่อนบุตร'
+export type MarriageIncomeOption =
+    | 'คู่สมรสไม่มีรายได้'
+    | 'คู่สมรสมีรายได้ ไม่ลดหย่อนบุตร'
+    | 'คู่สมรสมีรายได้ ลดหย่อนบุตร'
 
 /**
  * Compensation Option
@@ -93,6 +96,21 @@ export type Skill = {
     label: 'พูด' | 'อ่าน' | 'เขียน'
     selected: TalentLevel | null
     others: string | null
+}
+
+export type FileUploadHandler = {
+    file: formidable.File
+    tag: string
+}
+
+export type AttachFile = {
+    menu: string
+    tag: string
+    sub_menu?: string[]
+    filename: string
+    file: File | undefined
+    uploading: boolean
+    uploaded: boolean
 }
 
 export type LanguageLevelOption = {

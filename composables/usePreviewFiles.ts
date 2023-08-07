@@ -1,3 +1,5 @@
+import { AttachFile } from "~/utils/types"
+
 export default function usePreviewFiles() {
     return {
         previewFile,
@@ -29,10 +31,11 @@ function handlePreview(fileInput: File | null): void {
 }
 
 // async function uploadFile(fileInput: HTMLInputElement | null): Promise<void> {
-async function uploadFile(index: number, list: any) {
+async function uploadFile(index: number, list: AttachFile[]) {
     const route = useRoute()
     const userId = route.params.id
     const fileInput = list[index].file
+    const tag = list[index].tag
 
     if (!userId) throw new Error('User id not found.')
     if (!fileInput) throw new Error('No file selected.')
@@ -41,6 +44,7 @@ async function uploadFile(index: number, list: any) {
     if (!file) throw new Error('No file selected.')
 
     const formData = new FormData()
+    formData.append('tag', tag)
     formData.append('filetoupload', file)
     return useFetch(`/api/fileupload?userId=${userId}`, {
         method: 'POST',

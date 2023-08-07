@@ -6,6 +6,7 @@ import { IncomingMessage, ServerResponse } from 'http'
 import url from 'url'
 import { dateToString } from '../../utils/date'
 import * as bcrypt from 'bcrypt'
+import { FileUploadHandler } from '../../utils/types'
 
 const handleFileUpload = async (req: IncomingMessage, res: ServerResponse) => {
     try {
@@ -33,11 +34,12 @@ const handleFileUpload = async (req: IncomingMessage, res: ServerResponse) => {
 
             // Access the file using 'files.filetoupload'
             const uploadedFile = files.filetoupload as formidable.File
+            const tag = fields.tag
             //console.log('Uploaded file:', uploadedFile)
 
             // Continue with file upload processing
             // ...
-            const fileList = [{ file: uploadedFile }]
+            const fileList = [{ file: uploadedFile, tag }] as FileUploadHandler[]
             // Call the function to upload the files
             uploadFiles(userId, fileList)
                 .then(() => {
@@ -74,8 +76,10 @@ export default defineEventHandler(async (event) => {
     }
 })
 
-async function uploadFile(userId: string, index: number, list: any): Promise<void> {
+async function uploadFile(userId: string, index: number, list: FileUploadHandler[]): Promise<void> {
+    console.log(list)
     const fileInput = list[index].file
+    const tag = list[index].tag
     if (!fileInput) {
         console.error('No file input element found.')
         return
@@ -95,7 +99,7 @@ async function uploadFile(userId: string, index: number, list: any): Promise<voi
     }
     const now = new Date()
     // Construct the new file path
-    const newFileName = `${dateToString(now.toString(), 'YYYYMMDD')}-${file[0].originalFilename}`
+    const newFileName = `${tag}-${dateToString(now.toString(), 'YYYYMMDD')}-${file[0].originalFilename}`
     const newPath = path.join(directory, newFileName)
     console.log(file[0].filepath)
     console.log(newPath)
@@ -122,6 +126,7 @@ function deleteFileTemp(filePath: any) {
     })
 }
 async function uploadFiles(userId: string, list: any[]): Promise<void> {
+    console.log(list, userId)
     for (let i = 0; i < list.length; i++) {
         try {
             await uploadFile(userId, i, list)
