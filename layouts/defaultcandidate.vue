@@ -21,22 +21,6 @@
                     </v-col>
                 </v-row>
             </v-app-bar-title>
-
-            <template v-slot:append>
-                <v-btn size="x-large" variant="text" color="white" icon="mdi-cog-outline" id="settings-menu"> </v-btn>
-                <v-menu activator="#settings-menu">
-                    <v-list>
-                        <v-list-item
-                            v-for="item in ['admin', 'candidate']"
-                            :key="item"
-                            :value="item"
-                            @click="useNavigateTo(item)"
-                        >
-                            <v-list-item-title>{{ item }}</v-list-item-title>
-                        </v-list-item>
-                    </v-list>
-                </v-menu>
-            </template>
         </v-app-bar>
         <v-navigation-drawer v-model="drawer" location="left" permanent>
             <v-list class="text-xl">
@@ -122,7 +106,7 @@ const items4Candidate = [
     {
         title: 'จัดการข้อมูลผู้สมัคร',
         value: 'bar',
-        to: '/candidate/form/',
+        to: `/candidate/form/${route.params.id}`,
         nav: [
             {
                 title: 'หน้าหลัก',

@@ -3,6 +3,7 @@ import 'dayjs/locale/th' // load on demand
 import buddhistEra from 'dayjs/plugin/buddhistEra'
 import { create } from 'domain'
 import { Job, JobWithProfile, Profile } from '~/utils/types'
+import { useJobComponentStore } from '~/stores/job-component.store'
 
 dayjs.extend(buddhistEra)
 dayjs.locale('th')
@@ -12,6 +13,8 @@ export default function useJobManagement() {
         fetchJobs,
         getProfilesByJobId,
         deleteJob,
+        approveJob,
+        rePublishJob,
     }
 }
 
@@ -37,7 +40,7 @@ const fetchJobs = (jobId?: any, isTransform: boolean = false) => {
     let body: any = {}
     if (jobId) {
         body = {
-            job_ID: jobId,
+            job_ID: parseInt(jobId),
         }
     }
     return useFetch('/api/external/jobs/get', {
@@ -48,6 +51,7 @@ const fetchJobs = (jobId?: any, isTransform: boolean = false) => {
         method: 'POST',
         transform(data: any) {
             let tempData: any = data
+            if(data.length == 0) throw new Error('Fetch Jobs: Data not found or cannot transform data.')
             if (jobId) tempData = data[0]
             if (!isTransform)
                 return {
@@ -76,6 +80,7 @@ const fetchJobs = (jobId?: any, isTransform: boolean = false) => {
                     }
                 }
             )
+
             return transFormData
         },
         server: false,
@@ -107,9 +112,13 @@ const getProfilesByJobId = (jobId: string) => {
                     status: item.profile_status,
                     pid: item.id_card_number,
                     phone: item.cur_mobile ?? item.cur_telephone ?? 'ไม่มีข้อมูล',
-                    action: 'action',
+                    profile_ID: item.profile_ID,
                 }
             })
+            //* set component
+            // const jobComponentStore = useJobComponentStore()
+            const { setButtonShow } = useJobComponentStore()
+            setButtonShow(job.job_status)
             return { job, profiles }
         },
         server: false,
@@ -117,6 +126,79 @@ const getProfilesByJobId = (jobId: string) => {
 }
 
 const deleteJob = (jobId: string) => {
+    return useFetch(`/api/external/jobs/${jobId}`, {
+        headers: {
+            Accept: 'application/json',
+        },
+        method: 'DELETE',
+        server: false,
+    })
+}
+
+const approveJob = (jobId: string) => {
+    return useFetch(`/api/external/jobs/${jobId}`, {
+        headers: {
+            Accept: 'application/json',
+        },
+        method: 'DELETE',
+        server: false,
+    })
+}
+const cancelJob = (jobId: string) => {
+    return useFetch(`/api/external/jobs/${jobId}`, {
+        headers: {
+            Accept: 'application/json',
+        },
+        method: 'DELETE',
+        server: false,
+    })
+}
+const publishJob = (jobId: string) => {
+    return useFetch(`/api/external/jobs/${jobId}`, {
+        headers: {
+            Accept: 'application/json',
+        },
+        method: 'DELETE',
+        server: false,
+    })
+}
+const rePublishJob = (jobId: string) => {
+    return useFetch(`/api/external/jobs/${jobId}`, {
+        headers: {
+            Accept: 'application/json',
+        },
+        method: 'DELETE',
+        server: false,
+    })
+}
+const sendJobtoDMS = (jobId: string) => {
+    return useFetch(`/api/external/jobs/${jobId}`, {
+        headers: {
+            Accept: 'application/json',
+        },
+        method: 'DELETE',
+        server: false,
+    })
+}
+const suspendJob = (jobId: string) => {
+    return useFetch(`/api/external/jobs/${jobId}`, {
+        headers: {
+            Accept: 'application/json',
+        },
+        method: 'DELETE',
+        server: false,
+    })
+}
+const terminateJob = (jobId: string) => {
+    return useFetch(`/api/external/jobs/${jobId}`, {
+        headers: {
+            Accept: 'application/json',
+        },
+        method: 'DELETE',
+        server: false,
+    })
+}
+const verifyJob = (jobId: string) => {
     return useFetch(`/api/external/jobs/${jobId}`, {
         headers: {
             Accept: 'application/json',

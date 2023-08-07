@@ -128,7 +128,6 @@ export interface Props {
 const personalStore = usePersonalStore()
 const { education } = personalStore
 const { rules_fieldEmpty } = useFillRules()
-const flow = useDatePickerFlow()
 
 const props = defineProps<Props>()
 const emit = defineEmits(['update:trash'])

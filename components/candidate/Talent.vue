@@ -189,7 +189,7 @@
                         <v-col cols="2"><b>ทราบประกาศรับสมัครจาก</b></v-col>
                         <v-col>
                             <v-radio-group v-model="talent.announced_from">
-                                <v-radio label="บุคคลภายในมหาวิทยาลัย" value="hello"></v-radio>
+                                <v-radio label="บุคคลภายในมหาวิทยาลัย" value="บุคคลภายในมหาวิทยาลัย"></v-radio>
                             </v-radio-group>
                         </v-col>
                     </v-row>

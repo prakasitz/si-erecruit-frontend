@@ -3,6 +3,18 @@ export const deepCopy = (obj: object) => {
     return newObj
 }
 
+/**
+ * Extract the data and filter out null or empty values
+ * */
+export const extractObject = (obj: any) => {
+    return Object.entries(obj)
+        .filter(([, value]) => value !== null)
+        .reduce((acc: any, [key, value]) => {
+            acc[key] = value
+            return acc
+        }, {})
+}
+
 export const compareObjects = (obj1: any, obj2: any) => {
     // Get the keys of the objects
     const keys1 = Object.keys(obj1)
@@ -25,7 +37,6 @@ export const compareObjects = (obj1: any, obj2: any) => {
 }
 
 export const isTrue = (obj: any) => Object.values(obj).every((item) => item)
-
 
 export const checkObjectPropertiesNull = (obj: any) => {
     return Object.values(obj).every((prop) => prop === null)

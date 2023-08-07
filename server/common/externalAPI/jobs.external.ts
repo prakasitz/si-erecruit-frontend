@@ -1,4 +1,4 @@
-import { AxiosError } from 'axios'
+import { AxiosError, AxiosRequestConfig } from 'axios'
 import { H3Event, H3Error } from 'h3'
 import { ExternalAPIService } from './ExternalAPIService'
 
@@ -67,6 +67,132 @@ class JobsExternal extends ExternalAPIService {
                     Authorization: 'Bearer ' + accessToken,
                 },
             })
+            return resp.data
+        } catch (error: AxiosError | any) {
+            return this.handleError(error)
+        }
+    }
+
+    public async approveobById(jobId: number, event: H3Event) {
+        try {
+            const accessToken = this.getAccessToken(event)
+
+            const resp = await this.baseAPI.patch(`/${this.slug}/approved`,
+                {
+                    job_ID: jobId,
+                },
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + accessToken,
+                    }
+                },
+            )
+
+            return resp.data
+        } catch (error: AxiosError | any) {
+            return this.handleError(error)
+        }
+    }
+
+    public async cancelById(jobId: number, event: H3Event) {
+        try {
+            const accessToken = this.getAccessToken(event)
+
+            const resp = await this.baseAPI.patch(`/${this.slug}/cancel`,
+                {
+                    job_ID: jobId,
+                },
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + accessToken,
+                    }
+                },
+            )
+
+            return resp.data
+        } catch (error: AxiosError | any) {
+            return this.handleError(error)
+        }
+    }
+
+    public async rePublishById(jobId: number, event: H3Event) {
+        try {
+            const accessToken = this.getAccessToken(event)
+
+            const resp = await this.baseAPI.patch(`/${this.slug}/republish`,
+                {
+                    job_ID: jobId,
+                },
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + accessToken,
+                    }
+                },
+            )
+
+            return resp.data
+        } catch (error: AxiosError | any) {
+            return this.handleError(error)
+        }
+    }
+
+    public async suspendById(jobId: number, event: H3Event) {
+        try {
+            const accessToken = this.getAccessToken(event)
+
+            const resp = await this.baseAPI.patch(`/${this.slug}/suspended`,
+                {
+                    job_ID: jobId,
+                },
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + accessToken,
+                    }
+                },
+            )
+
+            return resp.data
+        } catch (error: AxiosError | any) {
+            return this.handleError(error)
+        }
+    }
+
+    public async terminateById(jobId: number, event: H3Event) {
+        try {
+            const accessToken = this.getAccessToken(event)
+
+            const resp = await this.baseAPI.patch(`/${this.slug}/terminate`,
+                {
+                    job_ID: jobId,
+                },
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + accessToken,
+                    }
+                },
+            )
+
+            return resp.data
+        } catch (error: AxiosError | any) {
+            return this.handleError(error)
+        }
+    }
+    
+    public async verifiedById(jobId: number, event: H3Event) {
+        try {
+            const accessToken = this.getAccessToken(event)
+
+            const resp = await this.baseAPI.patch(`/${this.slug}/verified`,
+                {
+                    job_ID: jobId,
+                },
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + accessToken,
+                    }
+                },
+            )
+
             return resp.data
         } catch (error: AxiosError | any) {
             return this.handleError(error)

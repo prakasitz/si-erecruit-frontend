@@ -1,4 +1,4 @@
-import { TalentLevel, YesNo } from '~/utils/types'
+import { CompensationOption, HavingOption, MarriageIncomeOption, TalentLevel, YesNo } from '~/utils/types'
 
 export interface IJobPosition {}
 
@@ -42,6 +42,17 @@ export interface IPersonalInfo {
 }
 
 export interface IAddressInfo {
+    /**
+     * @value false, mean use cur_address as address
+     * @value true, mean use reg_address as address
+     */
+    cur_same_address: boolean
+    /**
+     * @value false is reg_address
+     * @value true is cur_address
+     * @value null is use emer_address as address
+     **/
+    urg_same_address: boolean | null
     reg_address: address
     cur_address: address
     emer_address: address
@@ -85,10 +96,11 @@ export interface IEducation {
 }
 
 export interface IJob {
-    had_job: string
+    had_job: '0' | '1'
+    had_job_mahidol: '0' | '1'
+
     had_job_list: job[]
 
-    had_job_mahidol: string
     had_job_mahidol_detail: job_mahidol
 
     job_status: string // 1= กำลังทำงาน 2 = กำลังศึกษาต่อ 3 = ว่างงาน
@@ -113,20 +125,18 @@ export interface ITax {
     chlid_nonschool: number
     chlid_school: number
     chlid_endschool: number
-
-    loan: string
-    loan_amount: number
-    insurance: string
-    insurance_amount: number
-    donate: string
-    donate_amount: number
-    fund: string
-    fund_amount: number
-    marriage_income: string //(1= มีรายได้ 2=คู่สมรสมีรายได้ ไม่ลดหย่อนบุตร 3=คู่สมรสมีรายได้ ลดหย่อนบุตร)
-    marriage_insurance: string
-    marriage_insurance_amount: number
-    parent_support: string
-    parent_support_amount: number
+    loan?: HavingOption | null
+    loan_amount?: number | null
+    insurance?: HavingOption | null
+    insurance_amount?: number | null
+    donate?: HavingOption | null
+    donate_amount?: number | null
+    fund?: HavingOption | null
+    fund_amount?: number | null
+    marriage_income?: MarriageIncomeOption | null
+    marriage_insurance?: HavingOption | null
+    marriage_insurance_amount?: number | null
+    parent_support?: string | null
 }
 
 export interface address {
@@ -166,6 +176,7 @@ interface current_education {
 interface current_job {
     job_type: string
     position_name: string
+    salary: string
     duration_y: string
     duration_m: string
     company_name: string
@@ -173,7 +184,7 @@ interface current_job {
 }
 
 export interface education {
-    id: number
+    id?: number
     education_level: string
     degree: string
     major: string
@@ -202,7 +213,7 @@ export interface job_mahidol {
     still_doing: boolean
     end_date: string
     reason: string
-    got_compensation: YesNo
+    got_compensation: CompensationOption | null
 }
 
 export interface parent_info {
@@ -244,14 +255,14 @@ export interface ITalent {
 }
 
 export interface language {
-    language_speak: TalentLevel
-    txt_language_speak: string
+    language_speak: TalentLevel | null
+    txt_language_speak: string | null
 
-    language_read: TalentLevel
-    txt_language_read: string
+    language_read: TalentLevel | null
+    txt_language_read: string | null
 
-    language_write: TalentLevel
-    txt_language_write: string
+    language_write: TalentLevel | null
+    txt_language_write: string | null
 }
 
 interface ref_person {
@@ -261,6 +272,11 @@ interface ref_person {
     last_name: string
     relationship: string
     phone_number: string
-    address_option: string
+    /**
+     * @value false is reg_address
+     * @value true is cur_address
+     * @value null is use manual as address
+     */
+    ref_same_address: boolean | null
     address_detail: address
 }

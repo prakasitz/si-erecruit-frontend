@@ -57,7 +57,6 @@
                     placeholder="วัน/เดือน/ปี"
                     v-bind="defaultVueDatePickerStyle"
                     v-model="workExperienceFormModel.start_date"
-                    model-type="yyyy/MM/dd"
                     :rules="rules_fieldEmpty"
                 />
             </v-col>

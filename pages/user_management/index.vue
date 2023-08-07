@@ -4,7 +4,7 @@
             <v-card-item>
                 <v-card-title :style="{ 'font-size': '18px !important' }"> </v-card-title>
                 <v-data-table
-                    v-model:items-per-page="itemsPerPage"
+                    :items-per-page="10"
                     :headers="headers"
                     :items="desserts"
                     item-value="name"

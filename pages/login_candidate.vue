@@ -55,7 +55,9 @@
 </template>
 
 <script setup lang="ts">
-const { loginCandidate, checkPID } = useCandidate()
+import useCandidate from '~/composables/auth/useCandidate'
+
+const { checkPID } = useCandidate()
 
 const pid = ref('')
 const btn_disabled = ref()
@@ -81,29 +83,17 @@ definePageMeta({
         name: 'rotate',
     },
     layout: 'logincandidate',
-    middleware: 'is-auth',
+    name: 'login-candidate',
+    // middleware: 'is-auth',
 })
 
 async function onClick_CheckingPID(_id: string) {
-    const runtimeConfig = useRuntimeConfig()
     const resp = await checkPID()
-
     if (resp.data.value) {
         show_dialog.value = true
     } else {
         error_detail.value = `กรุณาตรวจสอบหมายเลขบัตรประจำตัวประชาชนอีกครั้ง`
         show_dialog_error.value = true
     }
-    // useFetch(`${runtimeConfig.public.baseApi}/candidate-information/getCandidateInformation`, {
-    //     method: 'POST',
-    //     body: { pid: pid.value },
-    // }).then((d: any) => {
-    //     if (d.data.value) {
-    //         show_dialog.value = true
-    //     } else {
-    //         error_detail.value = `กรุณาตรวจสอบหมายเลขบัตรประจำตัวประชาชนอีกครั้ง`
-    //         show_dialog_error.value = true
-    //     }
-    // })
 }
 </script>

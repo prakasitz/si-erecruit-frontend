@@ -1,3 +1,5 @@
+import { DialogContext } from "~/utils/types"
+
 export default function useDialog() {
     return {
         dialogInfo,
@@ -33,12 +35,4 @@ function dialogError() {
 
 function dialogConfirm() {
     return useState('dialogConfirm', () => false)
-}
-
-type DialogContext = {
-    title: string
-    message: string
-    actionButtons: any[]
-    persistent: boolean
-    [key: string]: any
 }

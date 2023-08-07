@@ -1,4 +1,5 @@
 import { MasterProvince, MasterTitleConferred } from '~/utils/types'
+import { defineStore } from 'pinia'
 
 export type MasterState = {
     provinces: MasterProvince[]

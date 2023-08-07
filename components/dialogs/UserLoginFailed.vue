@@ -18,6 +18,6 @@
     </v-row>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const topDialog = useTopDialog()
 </script>

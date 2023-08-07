@@ -12,8 +12,8 @@
             <v-card-item>
                 <v-card-title :style="{ 'font-size': '18px !important' }"> </v-card-title>
                 <v-data-table
-                    v-model:items-per-page="itemsPerPage"
-                    :headers="headers"
+                    :items-per-page="10"
+                    :headers="(headers as any)"
                     :items="jobs"
                     item-value="name"
                     class="elevation-1"
@@ -103,7 +103,7 @@ definePageMeta({
             title: 'จัดการงาน',
         },
     ],
-    middleware: ['hr-auth'],
+    middleware: ['hr-only'],
 })
 
 const headers = [

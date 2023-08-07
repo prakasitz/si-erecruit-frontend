@@ -1,12 +1,21 @@
 import { profileService } from '../../../common/externalAPI/profiles.external'
 import { IncomingMessage } from 'http'
-import { Formidable, formidable, Options, File, Files, errors } from 'formidable'
+import { formidable, Options, errors } from 'formidable'
 
-import { FileUpload } from '../../../../utils/types'
 import { H3Error } from 'h3'
 import { BadRequestError } from '../../../../utils/default'
 
 const router = createRouter()
+
+router.post(
+    '/get/:id',
+    defineEventHandler(async (event) => {
+        const id = getRouterParam(event, 'id')
+        if (!id) throw BadRequestError('id is required')
+        const resp = await profileService.get(event, { profile_ID: id })
+        return resp
+    })
+)
 
 router.post(
     '/import',

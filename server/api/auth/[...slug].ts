@@ -2,7 +2,7 @@ import { createRouter, defineEventHandler, useBase, H3Error, isError } from 'h3'
 import { getClientCredentials, isAuthenticated } from '../../common/authentication'
 import { externalAPIService } from '../../common/externalAPI/ExternalAPIService'
 import { handleErrorRoute } from '../../common/error'
-import { JSONResponse, RoleEnum, Roles } from '../../../utils/types'
+import { JSONResponse, Roles } from '../../../utils/types'
 import { verifyAccessToken, setCookieLogin } from '../../common/token'
 import { isMatchRegex } from '../../../utils/string'
 import { checkIsAuthenticated, checkPID, getUserInfo } from './auth.service'
@@ -42,7 +42,7 @@ router.get(
     '/userinfo',
     defineEventHandler(async (event) => {
         // ! CHECK USER FROM PAYLOAD
-        if (!event.context.user) throw userNotFoundError
+        if (!event.context.user) throw userNotFoundError()
         return getUserInfo(event)
     })
 )
@@ -51,6 +51,24 @@ router.post(
     '/check-pid',
     defineEventHandler(async (event) => {
         return checkPID(event)
+    })
+)
+
+router.post(
+    '/logout',
+    defineEventHandler(async (event) => {
+        const { role } = event.context.user
+        console.log('/logout')
+        console.log('user', event.context.user)
+        console.log('role', event.context.user.role)
+        console.log('role', role)
+        let redirectUrl = role.includes('HR') ? '/login' : '/login_candidate'
+        deleteCookie(event, 'access_token')
+        return {
+            status: 'success',
+            message: 'Logout success',
+            redirect: redirectUrl,
+        }
     })
 )
 
@@ -63,6 +81,10 @@ router.post(
     defineEventHandler(async (event) => {
         let role = getRequestHeader(event, 'x-role') as Roles | undefined
         let referer = getRequestHeader(event, 'referer') as string | undefined
+
+        //remove query string
+        referer = referer?.split('?')[0]
+
         console.log('Route /login:referer', referer)
         try {
             if (!role || !referer)
@@ -75,7 +97,7 @@ router.post(
             const body = await readBody(event)
 
             let { username, pid, password, isAuto } = body
-            let data: any = undefined
+            let dataOrError: any = undefined
             let isMatchReferer = null
 
             switch (role) {
@@ -83,7 +105,7 @@ router.post(
                     isMatchReferer = isMatchRegex(referer, /\/login$/)
                     if (!isMatchReferer) throw new Error(`Route /login: Referer not match., referer=${referer}`)
                     if (!username || !password) throw new Error(`Route /login: username and password is required`)
-                    data = await externalAPIService.HRLogin(username, password)
+                    dataOrError = await externalAPIService.HRLogin(username, password)
                     break
                 case 'CANDIDATE':
                     isMatchReferer = isMatchRegex(referer, /\/login_candidate$/)
@@ -95,26 +117,36 @@ router.post(
                         password = '908183'
                     }
 
-                    data = await externalAPIService.CandidateLogin(pid, password)
+                    dataOrError = await externalAPIService.CandidateLogin(pid, password)
                     break
                 default:
                     throw new Error(`Route /login: x-role not match., x-role=${role.toString()}`)
             }
 
-            if (!data.access_token) throw new Error(`Route /login: Response token invalid.`)
+            if (dataOrError instanceof H3Error) throw dataOrError
+            if (!dataOrError.access_token) throw new Error(`Route /login: Response token invalid.`)
 
             const devResult = {
-                data,
+                dataOrError,
                 _h: {
                     role: role,
                     referer: referer,
                 },
             }
 
-            setCookieLogin(event, { token: data.access_token })
+            setCookieLogin(event, { token: dataOrError.access_token })
+            setCookie(event, 'role', role, {
+                httpOnly: false,
+                sameSite: 'strict',
+                maxAge: 60 * 60 * 24, // 1 day
+            })
 
-            return { access_token: data.access_token, _: process.env.NODE_ENV !== 'production' ? devResult : undefined }
+            return {
+                access_token: dataOrError.access_token,
+                _: process.env.NODE_ENV !== 'production' ? devResult : undefined,
+            }
         } catch (error: H3Error | any) {
+            console.log(error)
             return handleErrorRoute(error)
         }
     })
