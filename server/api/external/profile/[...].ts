@@ -48,16 +48,11 @@ router.post(
 router.patch(
     '/suspended',
     defineEventHandler(async (event) => {
-
         const body = await readBody(event)
         // if (!jobId || !isStringNumber(jobId)) throw BadRequestError('Job ID must be a number')
-
         const tokenOrUndefined = getCookie(event, 'access_token')
-
         if (!tokenOrUndefined) return TokenNotFoundError()
-
         const response = await profileService.suspenedProfiles(body, event)
-
         return response
     })
 )
