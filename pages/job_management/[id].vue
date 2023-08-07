@@ -62,7 +62,7 @@
                         :items-per-page="10"
                         :headers="headers"
                         :items="profile.profiles"
-                        return-object
+                        item-value="profile_ID"
                         class="elevation-0"
                         show-select
                     >
@@ -91,9 +91,9 @@
                 <BtnProfileAction
                     v-if="buttonShow.BtnSuspend"
                     class="mx-1"
-                    text="Suspend ยังไม่ทำ"
+                    text="suspend"
                     color="warning"
-                    :data="{ profile_IDs: job.job_ID }"
+                    :data="{ profile_IDs: profilesSelected, job_ID: job.job_ID }"
                     :cb="suspendedProfile"
                 />
                 <BtnProfileAction
