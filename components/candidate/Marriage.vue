@@ -41,7 +41,9 @@
                             </v-col>
                         </v-row>
                     </v-expand-transition>
-                    <FormsChildForm class="my-4" v-for="i in parseInt(marriage.num_of_chlid)" :key="i" :index="i" />
+                    <div v-for="i in parseInt(marriage.num_of_chlid || '0')" :key="i">
+                        <FormsChildForm :index="i"></FormsChildForm>
+                    </div>
                 </v-container>
                 <v-divider></v-divider>
                 <v-container class="text-body-1">
@@ -119,15 +121,9 @@
                     <v-row>
                         <v-col cols="3">ที่อยู่บุคคลอ้างอิง<span class="text-red-darken-1"> *</span></v-col>
                         <v-col cols="6">
-                            <v-radio-group v-model="marriage.ref_person.ref_same_address" >
-                                <v-radio
-                                    label="ใช้ที่อยู่เดียวกันกับ ที่อยู่ตามทะเบียนบ้าน"
-                                    :value="0"
-                                ></v-radio>
-                                <v-radio
-                                    label="ใช้ที่อยู่เดียวกันกับ ที่อยู่ปัจจุบัน"
-                                    :value="1"
-                                ></v-radio>
+                            <v-radio-group v-model="marriage.ref_person.ref_same_address">
+                                <v-radio label="ใช้ที่อยู่เดียวกันกับ ที่อยู่ตามทะเบียนบ้าน" :value="0"></v-radio>
+                                <v-radio label="ใช้ที่อยู่เดียวกันกับ ที่อยู่ปัจจุบัน" :value="1"></v-radio>
                                 <v-radio label="กำหนดเอง" :value="null"></v-radio>
                             </v-radio-group>
                         </v-col>
@@ -253,11 +249,11 @@
 </template>
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia';
+import { storeToRefs } from 'pinia'
 import { usePersonalStore } from '../../stores/personal.store'
 
 import { CandidateForm } from '~/utils/types'
-import { address } from '~/stores/interface/personal_information.interface';
+import { address } from '~/stores/interface/personal_information.interface'
 const props = defineProps<{
     candidateForm: CandidateForm
 }>()
@@ -268,23 +264,31 @@ const formMarriage: Ref<HTMLFormElement | null> = ref<HTMLFormElement | null>(nu
 const personalStore = usePersonalStore()
 const { marriage, useCurAddressOnRefAddress, useRegAddressOnRefAddress, setDefaultChildList } = personalStore
 
-watch(marriage, ({status}) => {
-    if (status == '1') {
-        setDefaultChildList()
+watch(
+    marriage,
+    ({ status }) => {
+        if (status == '1') {
+            setDefaultChildList()
+        }
+    },
+    {
+        deep: true,
     }
-}, {
-    deep: true
-})
+)
 
-watch(marriage.ref_person, ({ref_same_address}) => {
-    if (ref_same_address === true) {
-        useCurAddressOnRefAddress()
-    } else if (ref_same_address === false) {
-        useRegAddressOnRefAddress()
-    } else {
-        marriage.ref_person.address_detail = deepCopy(defaultAddress) as address
+watch(
+    marriage.ref_person,
+    ({ ref_same_address }) => {
+        if (ref_same_address === true) {
+            useCurAddressOnRefAddress()
+        } else if (ref_same_address === false) {
+            useRegAddressOnRefAddress()
+        } else {
+            marriage.ref_person.address_detail = deepCopy(defaultAddress) as address
+        }
+    },
+    {
+        deep: true,
     }
-}, {
-    deep: true
-})
+)
 </script>
