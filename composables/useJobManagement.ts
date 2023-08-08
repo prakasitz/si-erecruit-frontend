@@ -1,7 +1,6 @@
 import dayjs from 'dayjs'
 import 'dayjs/locale/th' // load on demand
 import buddhistEra from 'dayjs/plugin/buddhistEra'
-import { create } from 'domain'
 import { Job, JobWithProfile, Profile } from '~/utils/types'
 import { useJobComponentStore } from '~/stores/job-component.store'
 
@@ -36,7 +35,6 @@ const canDelete = (jobStatus: string) => {
 }
 
 const fetchJobs = (jobId?: any, isTransform: boolean = false) => {
-    console.log(jobId, isTransform)
     let body: any = {}
     if (jobId) {
         body = {
@@ -49,9 +47,10 @@ const fetchJobs = (jobId?: any, isTransform: boolean = false) => {
             Accept: 'application/json',
         },
         method: 'POST',
+        key: 'fetchJobs' + (jobId ? jobId : ''),
         transform(data: any) {
             let tempData: any = data
-            if(data.length == 0) throw new Error('Fetch Jobs: Data not found or cannot transform data.')
+            if (data.length == 0) throw new Error('Fetch Jobs: Data not found or cannot transform data.')
             if (jobId) tempData = data[0]
             if (!isTransform)
                 return {
@@ -80,7 +79,6 @@ const fetchJobs = (jobId?: any, isTransform: boolean = false) => {
                     }
                 }
             )
-
             return transFormData
         },
         server: false,
@@ -93,6 +91,7 @@ const getProfilesByJobId = (jobId: string) => {
             Accept: 'application/json',
         },
         method: 'POST',
+        key: 'getProfilesByJobId' + jobId,
         transform(data) {
             const _data = data as JobWithProfile
             const job: Job = {
@@ -116,7 +115,6 @@ const getProfilesByJobId = (jobId: string) => {
                 }
             })
             //* set component
-            // const jobComponentStore = useJobComponentStore()
             const { setButtonShow } = useJobComponentStore()
             setButtonShow(job.job_status)
             return { job, profiles }
