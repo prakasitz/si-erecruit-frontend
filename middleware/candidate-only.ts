@@ -19,6 +19,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         }
     } catch (error: NuxtError | any) {
         console.log('error: middleware:candidate-only', error)
-        throw middlewareError(error, { to, from })
+        middlewareError(error, { to, from })
     }
 })

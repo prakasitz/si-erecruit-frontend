@@ -4,7 +4,7 @@
             <v-card class="mx-auto mb-5" width="90%">
                 <v-card-item>
                     <v-skeleton-loader
-                        :loading="pending"
+                        :loading="jobPending || profilePending"
                         type="heading, subtitle, table-tbody, table-tfoot"
                     ></v-skeleton-loader>
                 </v-card-item>
@@ -13,13 +13,13 @@
             <v-card class="mx-auto mb-5" width="90%">
                 <v-card-item>
                     <v-skeleton-loader
-                        :loading="pending"
+                        :loading="jobPending || profilePending"
                         type="heading, subtitle, table-tbody, table-tfoot"
                     ></v-skeleton-loader>
                 </v-card-item>
             </v-card>
         </div>
-        <div v-else-if="job">
+        <div v-if="job">
             <v-card class="mx-auto" width="90%">
                 <v-toolbar density="compact" color="main-color">
                     <v-card-title :style="{ 'font-size': '16px !important' }">
@@ -113,13 +113,6 @@
                     :cb="suspendJob"
                 />
             </div>
-        </div>
-        <div v-else>
-            {{
-                showError({
-                    statusCode: 404,
-                })
-            }}
         </div>
         <br />
     </div>

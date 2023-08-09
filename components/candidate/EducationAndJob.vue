@@ -46,12 +46,12 @@
                         <v-col cols="6"> เคยมีประวัติการทำงาน </v-col>
                         <v-col cols="6">
                             <v-radio-group v-model="job.had_job" hide-details inline>
-                                <v-radio label="ไม่เคย" value="N"></v-radio>
-                                <v-radio label="เคย" value="Y"></v-radio>
+                                <v-radio label="ไม่เคย" value="0"></v-radio>
+                                <v-radio label="เคย" value="1"></v-radio>
                             </v-radio-group>
                         </v-col>
                     </v-row>
-                    <div v-if="job.had_job == 'Y'">
+                    <div v-if="job.had_job == '1'">
                         <FormsWorkExperienceForm
                             v-for="i in job.had_job_list.length"
                             class="mt-7"
@@ -78,12 +78,12 @@
                         <v-col cols="6"> เคยมีประวัติการทำงานในมหาวิทยาลัยมหิดล </v-col>
                         <v-col cols="6">
                             <v-radio-group v-model="job.had_job_mahidol" hide-details inline>
-                                <v-radio label="ไม่เคย" value="N"></v-radio>
-                                <v-radio label="เคย" value="Y"></v-radio>
+                                <v-radio label="ไม่เคย" value="0"></v-radio>
+                                <v-radio label="เคย" value="1"></v-radio>
                             </v-radio-group>
                         </v-col>
                     </v-row>
-                    <div class="box-detail" v-if="job.had_job_mahidol == 'Y'">
+                    <div class="box-detail" v-if="job.had_job_mahidol == '1'">
                         <v-row>
                             <v-col cols="4"> ภาควิชา/หน่วยงาน <span class="text-red-darken-1"> *</span> </v-col>
                             <v-col>
@@ -181,8 +181,8 @@
                                     hide-details
                                     inline
                                 >
-                                    <v-radio label="ได้รับแล้ว" value="Y"></v-radio>
-                                    <v-radio label="ยังไม่ได้รับ" value="N"></v-radio>
+                                    <v-radio label="ได้รับแล้ว" value="01"></v-radio>
+                                    <v-radio label="ยังไม่ได้รับ" value="00"></v-radio>
                                 </v-radio-group>
                             </v-col>
                         </v-row>
@@ -217,6 +217,20 @@
                                 <v-text-field
                                     v-model="job.current_job.position_name"
                                     label="ขื่อตำแหน่งงาน"
+                                    density="compact"
+                                    variant="outlined"
+                                    maxLength="56"
+                                    :rules="rules_fieldEmpty"
+                                >
+                                </v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col cols="4">เงินเดือน <span class="text-red-darken-1"> *</span></v-col>
+                            <v-col>
+                                <v-text-field
+                                    v-model="job.current_job.salary"
+                                    label="เงินเดือน"
                                     density="compact"
                                     variant="outlined"
                                     maxLength="56"
@@ -503,6 +517,7 @@ watch(IsStudying, (newValue) => {
             company_province: '',
             duration_m: '',
             duration_y: '',
+            salary: '',
             job_type: '',
             position_name: '',
         }
@@ -522,6 +537,7 @@ watch(IsUnemployed, (newValue) => {
             company_province: '',
             duration_m: '',
             duration_y: '',
+            salary: '',
             job_type: '',
             position_name: '',
         }
@@ -540,7 +556,7 @@ watch(IsHasJobMahidol, (newValue) => {
         job.had_job_mahidol_detail = {
             department: '',
             end_date: '',
-            got_compensation: '',
+            got_compensation: null,
             position_name: '',
             reason: '',
             salary: '',

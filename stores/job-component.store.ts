@@ -27,7 +27,6 @@ export const useJobComponentStore = defineStore('JobComponent', {
     },
     actions: {
         setButtonShow(status: number) {
-
             this.buttonShow = {
                 BtnHeaderJob: false,
                 BtnDeleteJob: false,
@@ -45,12 +44,12 @@ export const useJobComponentStore = defineStore('JobComponent', {
                 BtnPublishable: false,
                 BtnSendSAP: false
             }
-
             buttonShow.map((item: btnShowWstatus) => {
                 if (item.status == status) {
                     this.buttonShow = item.btn_show
                 }
             });
+
         }
     }
 })

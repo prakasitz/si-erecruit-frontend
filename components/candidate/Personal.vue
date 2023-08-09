@@ -141,7 +141,7 @@
                                 </v-col>
                             </v-row>
                         </v-col>
-                        <v-col cols="12">
+                        <v-col v-if="false" cols="12">
                             <v-row>
                                 <v-col cols="3">
                                     <p>ชื่อเล่น <span class="text-red">*</span></p>
@@ -269,7 +269,7 @@
                                     <v-text-field
                                         density="compact"
                                         variant="outlined"
-                                        v-model="personal_info.age_year"
+                                        :model-value="calAge.years"
                                         readonly
                                     >
                                         <template #prepend>
@@ -284,7 +284,7 @@
                                     <v-text-field
                                         density="compact"
                                         variant="outlined"
-                                        v-model="personal_info.age_month"
+                                        :model-value="calAge.months"
                                         readonly
                                     >
                                         <template #append>
@@ -579,6 +579,7 @@ const personalStore = usePersonalStore()
 const { provinces, setTitle } = useMasterDataStore()
 
 const { personal_info, setBirthDate } = personalStore
+const { calAge } = storeToRefs(personalStore)
 
 const { search, loading, searchItems } = useSearchAutoComplete(provinces, 'province_name')
 const { rules_fieldEmpty } = useFillRules()

@@ -1,7 +1,6 @@
 import dayjs from 'dayjs'
 import 'dayjs/locale/th' // load on demand
 import buddhistEra from 'dayjs/plugin/buddhistEra'
-import { create } from 'domain'
 import { Job, JobWithProfile, Profile } from '~/utils/types'
 import { useJobComponentStore } from '~/stores/job-component.store'
 
@@ -14,7 +13,7 @@ export default function useJobManagement() {
         getProfilesByJobId,
         deleteJob,
         approveJob,
-        rePublishJob
+        rePublishJob,
     }
 }
 
@@ -24,8 +23,9 @@ export default function useJobManagement() {
 */
 const createDescription = (mu_job_ID: string, mu_job_name: string, create_date: string) => {
     let formatedCreateDate = dateToString(create_date, DateFormatEnum.DATE_TIME_BUDDHIST_1)
-    return `${mu_job_ID ?? '??'} - ${mu_job_name ?? '???'} | ${formatedCreateDate == 'Invalid Date' ? '???' : formatedCreateDate
-        }`
+    return `${mu_job_ID ?? '??'} - ${mu_job_name ?? '???'} | ${
+        formatedCreateDate == 'Invalid Date' ? '???' : formatedCreateDate
+    }`
 }
 
 // canDelete if jobStatus is 'importing', 'imported', 'created'
@@ -35,11 +35,10 @@ const canDelete = (jobStatus: string) => {
 }
 
 const fetchJobs = (jobId?: any, isTransform: boolean = false) => {
-    console.log(jobId, isTransform)
     let body: any = {}
     if (jobId) {
         body = {
-            job_ID: jobId,
+            job_ID: parseInt(jobId),
         }
     }
     return useFetch('/api/external/jobs/get', {
@@ -48,8 +47,10 @@ const fetchJobs = (jobId?: any, isTransform: boolean = false) => {
             Accept: 'application/json',
         },
         method: 'POST',
+        key: 'fetchJobs' + (jobId ? jobId : ''),
         transform(data: any) {
             let tempData: any = data
+            if (data.length == 0) throw new Error('Fetch Jobs: Data not found or cannot transform data.')
             if (jobId) tempData = data[0]
             if (!isTransform)
                 return {
@@ -78,9 +79,6 @@ const fetchJobs = (jobId?: any, isTransform: boolean = false) => {
                     }
                 }
             )
-
-
-
             return transFormData
         },
         server: false,
@@ -93,6 +91,7 @@ const getProfilesByJobId = (jobId: string) => {
             Accept: 'application/json',
         },
         method: 'POST',
+        key: 'getProfilesByJobId' + jobId,
         transform(data) {
             const _data = data as JobWithProfile
             const job: Job = {
@@ -115,10 +114,9 @@ const getProfilesByJobId = (jobId: string) => {
                     profile_ID: item.profile_ID,
                 }
             })
-            //* set component 
-            // const jobComponentStore = useJobComponentStore()
+            //* set component
             const { setButtonShow } = useJobComponentStore()
-            setButtonShow(job.job_status);
+            setButtonShow(job.job_status)
             return { job, profiles }
         },
         server: false,
@@ -207,4 +205,3 @@ const verifyJob = (jobId: string) => {
         server: false,
     })
 }
-

@@ -18,7 +18,7 @@
                         variant="outlined"
                         density="compact"
                         :rules="skill.selected ? rules_fieldEmpty : undefined"
-                        :disabled="skill.selected != 'other'"
+                        :disabled="skill.selected != 'อื่น ๆ'"
                     ></v-text-field>
                 </v-radio-group>
             </v-col>
@@ -49,25 +49,25 @@ const props = withDefaults(defineProps<Props>(), {
 const skillsRadio: Ref<Skill[]> = ref([
     {
         label: 'พูด',
-        selected: '',
-        others: '',
+        selected: props.languageFormModel.language_speak,
+        others: props.languageFormModel.txt_language_speak,
     },
     {
         label: 'อ่าน',
-        selected: '',
-        others: '',
+        selected: props.languageFormModel.language_read,
+        others: props.languageFormModel.txt_language_read,
     },
     {
         label: 'เขียน',
-        selected: '',
-        others: '',
+        selected: props.languageFormModel.language_write,
+        others: props.languageFormModel.txt_language_write,
     },
 ])
 
 const levels: Ref<LanguageLevelOption[]> = ref([
-    { label: 'ดี', value: 'good' },
-    { label: 'พอใช้', value: 'fair' },
-    { label: 'อื่นๆ โปรดระบุ', value: 'other' },
+    { label: 'ดี', value: 'ดี' },
+    { label: 'พอใช้', value: 'พอใช้' },
+    { label: 'อื่นๆ โปรดระบุ', value: 'อื่น ๆ' },
 ])
 
 watch(
@@ -75,7 +75,7 @@ watch(
     (newSkills) => {
         console.log(newSkills)
         for (const skill of newSkills) {
-            if (skill.selected != 'other') {
+            if (skill.selected != 'อื่น ๆ') {
                 skill.others = ''
             }
 
