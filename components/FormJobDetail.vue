@@ -128,7 +128,7 @@
             <BtnJobAction
                 v-if="buttonShow.BtnVerifyJob"
                 class="mx-1"
-                text="Verify"
+                text="verify"
                 color="main-color "
                 :jobId="job.job_ID"
                 :cb="verifiedJob"

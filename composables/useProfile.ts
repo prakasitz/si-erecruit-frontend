@@ -1,6 +1,7 @@
 import { profile } from 'console'
 import { Profile } from '~/utils/types'
 import { H3Event, H3Error } from 'h3'
+import { CandidateBaseCard } from '~/.nuxt/components'
 
 export default function useProfile() {
     return {
@@ -46,10 +47,11 @@ async function suspendedProfile(event: H3Event, data: { profile_IDs: number[], j
         server: false,
         body: data.profile_IDs
     })
-    if (resp?.data?.value.data) {
+
+    if (resp?.data?.value?.data) {
         return {
             status: true,
-            message: `asdadasd`,
+            message: `sdaskl;kglksgl;fjgkldsjfgkl`,
             callbackActionBtn: [
                 {
                     text: 'close',
@@ -57,15 +59,19 @@ async function suspendedProfile(event: H3Event, data: { profile_IDs: number[], j
                 },
             ],
         }
-    } else {
+    }
+    else if (resp?.error?.value?.data) {
+        return {
+            status: false,
+            message: resp?.error?.value?.data.message
+        }
+    }
+    else {
         return {
             status: false,
             message: `Sorry, something went wrong.`,
         }
     }
-
-
-
 }
 
 function getProfileById(id: string) {

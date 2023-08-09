@@ -91,9 +91,9 @@ const getProfilesByJobId = (jobId: string) => {
             Accept: 'application/json',
         },
         method: 'POST',
-        key: 'getProfilesByJobId' + jobId,
-        transform(data) {
-            const _data = data as JobWithProfile
+        key: 'getProfilesByJobId',
+        transform(data: JobWithProfile) {
+            const _data = data
             const job: Job = {
                 job_ID: _data['job_ID'],
                 job_name: _data['job_name'],
@@ -104,20 +104,20 @@ const getProfilesByJobId = (jobId: string) => {
                 mu_job_name: _data['mu_job_name'],
                 job_status_code: _data['job_status_code'],
             }
-            const profiles = _data['profile'].map((item: Profile) => {
+            const profile = _data['profile'].map((item: Profile) => {
                 return {
                     job_ID: item.job_ID,
                     fullname: item.nameTH + ' ' + item.lastnameTH,
-                    status: item.profile_status,
+                    profile_status: item.profile_status,
                     pid: item.id_card_number,
                     phone: item.cur_mobile ?? item.cur_telephone ?? 'ไม่มีข้อมูล',
                     profile_ID: item.profile_ID,
                 }
             })
-            //* set component
+            //* set component 
             const { setButtonShow } = useJobComponentStore()
-            setButtonShow(job.job_status)
-            return { job, profiles }
+            setButtonShow(job.job_status);
+            return { job, profile }
         },
         server: false,
     })
