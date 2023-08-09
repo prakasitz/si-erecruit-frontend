@@ -37,6 +37,31 @@ class ProfileExternal extends ExternalAPIService {
         }
     }
 
+
+    public async checkStatus(profile_IDs: number[], event: H3Event) {
+        if (!profile_IDs) throw new Error('profile_ID is required')
+        try {
+            const user = event.context?.user
+            console.log(user)
+            if (!user) throw UnauthorizedError("User doesn't exist")
+
+            if (user.role.includes('CANDIDATE')) throw UnauthorizedError("You don't have permission")
+
+            const accessToken = this.getAccessToken(event)
+            const resp = await this.baseAPI.post(
+                `/${this.slug}/getStatus`,
+                { profile_IDs: profile_IDs },
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + accessToken,
+                    },
+                }
+            )
+            return resp.data
+        } catch (error: AxiosError | any) {
+            return this.handleError(error)
+        }
+    }
     //working only non-proxy
     public async import(event: H3Event, { file }: { file: FileUpload[] }) {
         try {
@@ -82,7 +107,6 @@ class ProfileExternal extends ExternalAPIService {
     public async suspenedProfiles(profiles: number[], event: H3Event) {
         try {
             const accessToken = this.getAccessToken(event)
-
             const resp = await this.baseAPI.patch(`/${this.slug}/suspended`,
                 {
                     profile_IDs: profiles,
@@ -93,7 +117,6 @@ class ProfileExternal extends ExternalAPIService {
                     }
                 },
             )
-
             return resp.data
         } catch (error: AxiosError | any) {
             return this.handleError(error)

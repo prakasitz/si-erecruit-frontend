@@ -52,6 +52,31 @@ router.patch(
         // if (!jobId || !isStringNumber(jobId)) throw BadRequestError('Job ID must be a number')
         const tokenOrUndefined = getCookie(event, 'access_token')
         if (!tokenOrUndefined) return TokenNotFoundError()
+
+        const checkStatus = await profileService.checkStatus(body, event)
+        if (!checkStatus.data) {
+            throw createError({
+                statusCode: 400,
+                message: 'Not found any Profiles.',
+            })
+        }
+
+        const list_status = checkStatus.data;
+        let cantChangeProfiles: number[] = []
+        list_status.map((item: { profile_ID: number; profile_status: number }) => {
+            if (item.profile_status < 1 || item.profile_status > 2) {
+                cantChangeProfiles.push(item.profile_ID)
+            }
+        })
+
+        if (cantChangeProfiles.length > 0) {
+            throw createError({
+                statusCode: 400,
+                message: 'Cannot update these profiles.',
+            })
+        }
+        console.log(cantChangeProfiles.length > 0)
+
         const response = await profileService.suspenedProfiles(body, event)
         return response
     })
