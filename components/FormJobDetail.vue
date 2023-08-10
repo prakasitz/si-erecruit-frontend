@@ -79,8 +79,8 @@
             <BtnJobAction
                 v-if="buttonShow.BtnCancelledJob"
                 class="mx-1"
-                text="Cancel"
-                color=""
+                text="ยกเลิกงาน"
+                color="grey"
                 :jobId="job.job_ID"
                 :cb="cancelJob"
             />

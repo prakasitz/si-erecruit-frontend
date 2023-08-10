@@ -18,16 +18,16 @@ export const defaultChildrenInfo = {
 }
 
 export const defaultAddress: address = {
-        address_no: '',
-        address_moo: '',
-        address_village: '',
-        address_soi: '',
-        address_road: '',
-        address_district: '',
-        address_city: '',
-        address_province: null,
-        address_postcode: '',
-        address_country: '',
+    address_no: '',
+    address_moo: '',
+    address_village: '',
+    address_soi: '',
+    address_road: '',
+    address_district: '',
+    address_city: '',
+    address_province: null,
+    address_postcode: '',
+    address_country: '',
 }
 
 export const defaultDialogContext = {
@@ -124,8 +124,8 @@ export const buttonShow: btnShowWstatus[] = [
         btn_show: {
             BtnHeaderJob: true,
             BtnDeleteJob: false,
-            BtnPublishedJob: true,
-            BtnRepublished: false,
+            BtnPublishedJob: false,
+            BtnRepublished: true,
             BtnCancelledJob: false,
             BtnSuspendJob: false,
             BtnVerifyJob: false,

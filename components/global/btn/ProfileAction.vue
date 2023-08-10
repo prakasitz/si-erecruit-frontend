@@ -47,7 +47,7 @@ const confirmActionItem = (event: Event, item: any) => {
             {
                 title: `Something went wrong.`,
                 dialogColor: 'blue',
-                message: `sad`,
+                message: `กรุณาเลือก Profile`,
                 actionButtons: [
                     {
                         text: 'Cancel',

@@ -51,7 +51,7 @@ async function suspendedProfile(event: H3Event, data: { profile_IDs: number[], j
     if (resp?.data?.value?.data) {
         return {
             status: true,
-            message: `sdaskl;kglksgl;fjgkldsjfgkl`,
+            message: `บันทึกสำเร็จ`,
             callbackActionBtn: [
                 {
                     text: 'close',
