@@ -336,6 +336,7 @@ if (isCandidate.value) {
 }
 
 onMounted(async () => {
+
     let profile = data.value as Profile
     personalStore.$patch({
         personal_info: {
@@ -593,7 +594,6 @@ onMounted(async () => {
                 txt_language_write: profile.txt_other_language_write,
             },
 
-
             computer_programs: profile.computer_programs,
             other_talents: profile.other_talents,
             specialization: profile.specialization,
@@ -602,10 +602,7 @@ onMounted(async () => {
             announced_from: profile.announced_from,
         },
     })
-    // console.log('isItemsLoaded', isItemsLoaded.value)
-    // if (!isItemsLoaded.value) {
-    //     await loadMasterData()
-    // }
+
 })
 
 console.log(useRoute().name)
