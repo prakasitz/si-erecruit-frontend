@@ -25,7 +25,9 @@ export default function useMaster() {
     }
 }
 
-async function fetchProvince(mStore: Store<'master-data', MasterState, any, any>) {
+type MasterStore = Store<'master-data', MasterState, any, any>
+
+async function fetchProvince(mStore: MasterStore) {
     const response = await useApi('/master-data/province', {
         method: 'GET',
         callback: (responseStatus: boolean) => {
@@ -36,7 +38,7 @@ async function fetchProvince(mStore: Store<'master-data', MasterState, any, any>
     return response
 }
 
-async function fetchMaritalSatatus(mStore: Store<'master-data', MasterState, any, any>) {
+async function fetchMaritalSatatus(mStore: MasterStore) {
     const response = await useApi('/master-data/marital-status', {
         method: 'GET',
         callback: (responseStatus: boolean) => {
@@ -47,7 +49,7 @@ async function fetchMaritalSatatus(mStore: Store<'master-data', MasterState, any
     return response
 }
 
-async function fetchBlood(mStore: Store<'master-data', MasterState, any, any>) {
+async function fetchBlood(mStore: MasterStore) {
     const response = await useApi('/master-data/blood', {
         method: 'GET',
         callback: (responseStatus: boolean) => {
@@ -58,7 +60,7 @@ async function fetchBlood(mStore: Store<'master-data', MasterState, any, any>) {
     return response
 }
 
-async function fetchTitle(mStore: Store<'master-data', MasterState, any, any>) {
+async function fetchTitle(mStore: MasterStore) {
     const response = await useApi('/master-data/title', {
         method: 'GET',
         callback: (responseStatus: boolean) => {
@@ -69,7 +71,7 @@ async function fetchTitle(mStore: Store<'master-data', MasterState, any, any>) {
     return response
 }
 
-async function fetchTitleAcademic(mStore: Store<'master-data', MasterState, any, any>) {
+async function fetchTitleAcademic(mStore: MasterStore) {
     const response = await useApi('/master-data/title-academic', {
         method: 'GET',
         callback: (responseStatus: boolean) => {
@@ -80,7 +82,7 @@ async function fetchTitleAcademic(mStore: Store<'master-data', MasterState, any,
     return response
 }
 
-async function fetchTitleSpecial(mStore: Store<'master-data', MasterState, any, any>) {
+async function fetchTitleSpecial(mStore: MasterStore) {
     const response = await useApi('/master-data/title-special', {
         method: 'GET',
         callback: (responseStatus: boolean) => {
@@ -91,7 +93,7 @@ async function fetchTitleSpecial(mStore: Store<'master-data', MasterState, any, 
     return response
 }
 
-async function fetchTitleConferred(mStore: Store<'master-data', MasterState, any, any>) {
+async function fetchTitleConferred(mStore: MasterStore) {
     const response = await useApi('/master-data/title-conferred', {
         method: 'GET',
         callback: (responseStatus: boolean) => {
@@ -102,7 +104,7 @@ async function fetchTitleConferred(mStore: Store<'master-data', MasterState, any
     return response
 }
 
-async function fetchTitleMilitary(mStore: Store<'master-data', MasterState, any, any>) {
+async function fetchTitleMilitary(mStore: MasterStore) {
     const response = await useApi('/master-data/title-military', {
         method: 'GET',
         callback: (responseStatus: boolean) => {
@@ -113,7 +115,7 @@ async function fetchTitleMilitary(mStore: Store<'master-data', MasterState, any,
     return response
 }
 
-async function fetchTitleTH(mStore: Store<'master-data', MasterState, any, any>) {
+async function fetchTitleTH(mStore: MasterStore) {
     const response = await useApi('/master-data/titleTH', {
         method: 'GET',
         callback: (responseStatus: boolean) => {
@@ -124,7 +126,7 @@ async function fetchTitleTH(mStore: Store<'master-data', MasterState, any, any>)
     return response
 }
 
-async function fetchTitleEN(mStore: Store<'master-data', MasterState, any, any>) {
+async function fetchTitleEN(mStore: MasterStore) {
     const response = await useApi('/master-data/titleEN', {
         method: 'GET',
         callback: (responseStatus: boolean) => {
@@ -135,7 +137,7 @@ async function fetchTitleEN(mStore: Store<'master-data', MasterState, any, any>)
     return response
 }
 
-async function fetchMilitary(mStore: Store<'master-data', MasterState, any, any>) {
+async function fetchMilitary(mStore: MasterStore) {
     const response = await useApi('/master-data/military', {
         method: 'GET',
         callback: (responseStatus: boolean) => {
@@ -146,7 +148,7 @@ async function fetchMilitary(mStore: Store<'master-data', MasterState, any, any>
     return response
 }
 
-async function fetchReligion(mStore: Store<'master-data', MasterState, any, any>) {
+async function fetchReligion(mStore: MasterStore) {
     const response = await useApi('/master-data/religion', {
         method: 'GET',
         callback: (responseStatus: boolean) => {
@@ -157,7 +159,7 @@ async function fetchReligion(mStore: Store<'master-data', MasterState, any, any>
     return response
 }
 
-async function fetchLevel(mStore: Store<'master-data', MasterState, any, any>) {
+async function fetchLevel(mStore: MasterStore) {
     const response = await useApi('/master-data/level', {
         method: 'GET',
         callback: (responseStatus: boolean) => {
@@ -168,7 +170,7 @@ async function fetchLevel(mStore: Store<'master-data', MasterState, any, any>) {
     return response
 }
 
-async function fetchCertificate(mStore: Store<'master-data', MasterState, any, any>) {
+async function fetchCertificate(mStore: MasterStore) {
     console.log('fetchCertificate')
     const response = await useApi('/master-data/certificate', {
         method: 'GET',
@@ -180,7 +182,7 @@ async function fetchCertificate(mStore: Store<'master-data', MasterState, any, a
     return response
 }
 
-async function fetchMajor(mStore: Store<'master-data', MasterState, any, any>) {
+async function fetchMajor(mStore: MasterStore) {
     console.log('fetchMajor')
 
     const response = await useApi('/master-data/major', {
@@ -193,7 +195,7 @@ async function fetchMajor(mStore: Store<'master-data', MasterState, any, any>) {
     return response
 }
 
-async function fetchInstitute(mStore: Store<'master-data', MasterState, any, any>) {
+async function fetchInstitute(mStore: MasterStore) {
     const response = await useApi('/master-data/institute', {
         method: 'GET',
         callback: (responseStatus: boolean) => {
@@ -204,7 +206,7 @@ async function fetchInstitute(mStore: Store<'master-data', MasterState, any, any
     return response
 }
 
-async function fetchRace(mStore: Store<'master-data', MasterState, any, any>) {
+async function fetchRace(mStore: MasterStore) {
     const response = await useApi('/master-data/race', {
         method: 'GET',
         callback: (responseStatus: boolean) => {
@@ -215,7 +217,7 @@ async function fetchRace(mStore: Store<'master-data', MasterState, any, any>) {
     return response
 }
 
-async function fetchPosition(mStore: Store<'master-data', MasterState, any, any>) {
+async function fetchPosition(mStore: MasterStore) {
     const response = await useApi('/master-data/position', {
         method: 'GET',
         callback: (responseStatus: boolean) => {
