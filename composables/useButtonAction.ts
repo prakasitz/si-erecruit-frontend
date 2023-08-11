@@ -14,7 +14,7 @@ export default function useButtonAction() {
 
 const approveJob = async (event: any, item_id: number) => {
     try {
-        const resp = await useFetch(`/api/external/jobs/approved/${item_id}`, {
+        const resp = await useApi(`/api/external/jobs/approved/${item_id}`, {
             headers: {
                 Accept: 'application/json',
             },
@@ -50,7 +50,7 @@ const approveJob = async (event: any, item_id: number) => {
 
 const deleteJob = async (event: any, item_id: number) => {
     try {
-        const resp = await useFetch(`/api/external/jobs/${item_id}`, {
+        const resp = await useApi(`/api/external/jobs/${item_id}`, {
             headers: {
                 Accept: 'application/json',
             },
@@ -120,22 +120,34 @@ const cancelJob = async (event: any, item_id: number) => {
 }
 const publishJob = async (event: any, item_id: number) => {
     try {
+        console.log(item_id);
+        const resp = await useFetch(`/api/external/jobs/publish`, {
+            headers: {
+                Accept: 'application/json',
+            },
+            body: {
+                "job_ID": item_id
+            },
+            method: 'PUT',
+            server: false,
+        });
 
-        if (true) {
+        if (resp?.data?.value) {
             return {
                 status: true,
-                message: `ยังไม่ทำ`,
+                message: `Job ID: ${item_id} published!`,
                 callbackActionBtn: [
                     {
                         text: 'close',
-                        to: '/job_management',
                     },
                 ],
             }
-        } else {
+        } else if (resp?.error?.value) {
+            console.log(resp)
             return {
                 status: false,
-                message: `Sorry, something went wrong.`,
+                message: resp?.error?.value?.data.message
+
             }
         }
     } catch (e) {
