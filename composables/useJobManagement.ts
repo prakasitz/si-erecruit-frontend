@@ -14,6 +14,7 @@ export default function useJobManagement() {
         deleteJob,
         approveJob,
         rePublishJob,
+        publishJob
     }
 }
 
@@ -23,9 +24,8 @@ export default function useJobManagement() {
 */
 const createDescription = (mu_job_ID: string, mu_job_name: string, create_date: string) => {
     let formatedCreateDate = dateToString(create_date, DateFormatEnum.DATE_TIME_BUDDHIST_1)
-    return `${mu_job_ID ?? '??'} - ${mu_job_name ?? '???'} | ${
-        formatedCreateDate == 'Invalid Date' ? '???' : formatedCreateDate
-    }`
+    return `${mu_job_ID ?? '??'} - ${mu_job_name ?? '???'} | ${formatedCreateDate == 'Invalid Date' ? '???' : formatedCreateDate
+        }`
 }
 
 // canDelete if jobStatus is 'importing', 'imported', 'created'
@@ -152,11 +152,14 @@ const cancelJob = (jobId: string) => {
     })
 }
 const publishJob = (jobId: string) => {
-    return useFetch(`/api/external/jobs/${jobId}`, {
+    return useFetch(`/api/external/jobs/publish`, {
         headers: {
             Accept: 'application/json',
         },
-        method: 'DELETE',
+        body: {
+            "job_ID": jobId
+        },
+        method: 'PUT',
         server: false,
     })
 }
