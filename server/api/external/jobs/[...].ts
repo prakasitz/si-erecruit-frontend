@@ -148,4 +148,23 @@ router.patch(
     })
 )
 
+
+router.put(
+    '/publish/',
+    defineEventHandler(async (event) => {
+
+        const body = await readBody(event)
+        if (!body || !isStringNumber(body.job_ID)) throw BadRequestError('Job ID must be a number')
+
+        const tokenOrUndefined = getCookie(event, 'access_token')
+
+        if (!tokenOrUndefined) return TokenNotFoundError()
+
+        const response = await jobService.publishById(parseInt(body.job_ID), event)
+
+        return response
+    })
+)
+
+
 export default useBase('/api/external/jobs', router.handler)
