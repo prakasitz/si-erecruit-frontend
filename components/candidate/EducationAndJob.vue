@@ -413,6 +413,11 @@ const FormEducationAndJob: Ref<HTMLFormElement | null> = ref<HTMLFormElement | n
 
 const isFilledHadJobs = reactive<any>(Array(job.had_job_list.length))
 
+await useFetch('/api/external/master/level', {
+    method: 'GET',
+    key: 'master/level',
+})
+
 function confirmToChnageHadJob() {
     if (isFilledHadJobs.every((item: boolean) => item)) {
         if (confirm('ระบบจะล้างข้อมูลในส่วนนี้ทั้งหมด คุณต้องการเปลี่ยนหรือไม่ ?')) {
