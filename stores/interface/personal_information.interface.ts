@@ -183,12 +183,21 @@ interface current_job {
     company_province: string | null
 }
 
+
+/**
+ * @param education_level ระดับการศึกษา / Establishment
+ * @param degree คุณวุฒิ/ปริญญา / Certificate
+ * @param major สาขาวิชา /  Branch_of_Study
+ * @param school สถานศึกษา / Institute
+ */
 export interface education {
     id?: number
     education_level: string
     degree: string
     major: string
     school: string
+    major_other?: string
+    school_other?: string
     gpa: string
     start_date: string
     graduate_date: string

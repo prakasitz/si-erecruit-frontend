@@ -133,6 +133,8 @@ export const usePersonalStore = defineStore('personal', {
                         degree: '',
                         major: '',
                         school: '',
+                        major_other: '',
+                        school_other: '',
                         gpa: '',
                         start_date: '',
                         graduate_date: '',
@@ -378,12 +380,17 @@ export const usePersonalStore = defineStore('personal', {
                 let edu = `edu${i}` as 'edu1' | 'edu2' | 'edu3' | 'edu4'
                 const educationObj: education = {
                     education_level: rawData[`${edu}_level`],
-                    major: rawData[`${edu}_major`],
-                    degree: rawData[`${edu}_qual`],
-                    school: rawData[`${edu}_aca`],
+
                     gpa: rawData[`${edu}_grade`],
                     start_date: rawData[`${edu}_begin`],
                     graduate_date: rawData[`${edu}_end`],
+
+                    degree: rawData[`${edu}_qual`],
+                    major: rawData[`${edu}_major`],
+                    school: rawData[`${edu}_aca`],
+
+                    major_other: rawData[`${edu}_major_txt`],
+                    school_other: rawData[`${edu}_aca_txt`],
                 }
 
                 if (checkObjectPropertiesNull(educationObj)) break
