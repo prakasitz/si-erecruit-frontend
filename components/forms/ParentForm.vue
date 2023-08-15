@@ -5,7 +5,9 @@
                 <v-col cols="12">
                     <v-select
                         label="ยศ/ราชทินนาม"
-                        :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                        :items="tConferredData"
+                        :item-title="'output_text'"
+                        :item-value="'name_affix'"
                         variant="outlined"
                         density="compact"
                         hide-details
@@ -131,6 +133,8 @@ export interface Props {
 }
 
 const { rules_fieldEmpty } = useFillRules()
+
+const { data: tConferredData } = useNuxtData('master/title-conferred')
 // const select = ref(null)
 // const items = ['Item 1', 'Item 2', 'Item 3', 'Item 4']
 // const checkbox = ref(false)

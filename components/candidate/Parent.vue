@@ -1,5 +1,5 @@
 <template>
-    <CandidateBaseCard :candidate-form="props.candidateForm" :form-page="{ form: formParents }">
+    <CandidateBaseCard v-if="!pending" :candidate-form="props.candidateForm" :form-page="{ form: formParents }">
         <template #card-body>
             <v-alert
                 class="text-subtitle-2"
@@ -75,6 +75,13 @@ const formParents: Ref<HTMLFormElement | null> = ref<HTMLFormElement | null>(nul
 const personalStore = usePersonalStore()
 const { rules_fieldEmpty } = useFillRules()
 const { parent } = personalStore
+
+const { fetchTitleConferred } = useMaster()
+const { tConferredPending } = await fetchTitleConferred()
+
+const pending = computed(() => {
+    return tConferredPending.value
+})
 
 const parentDescription = 'ข้อมูลบิดา, มารดา ไว้ใช้ในการอ้างอิงกรณีการเบิกสวัสดิการให้แก่บุคคลดังกล่าว'
 
