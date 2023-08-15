@@ -36,14 +36,17 @@ async function fetchProvince() {
         provincePending: ref(false),
         provinceError: ref() as Ref<any>,
     }
-    if (cache.data.value) refObj.provinceData = cache.data
-    const { data, pending, error } = useFetch('/api/external/master/province', {
-        method: 'GET',
-        key: 'master/province',
-    })
-    refObj.provinceData = data
-    refObj.provincePending = pending
-    refObj.provinceError = error
+    if (cache.data.value) {
+        refObj.provinceData = cache.data
+    } else {
+        const { data, pending, error } = useFetch('/api/external/master/province', {
+            method: 'GET',
+            key: 'master/province',
+        })
+        refObj.provinceData = data
+        refObj.provincePending = pending
+        refObj.provinceError = error
+    }
     return refObj
 }
 
@@ -54,14 +57,17 @@ async function fetchMaritalSatatus() {
         mStatusPending: ref(false),
         mStatusError: ref() as Ref<any>,
     }
-    if (cache.data.value) refObj.mStatusData = cache.data
-    const { data, pending, error } = useFetch('/api/external/master/marital-status', {
-        method: 'GET',
-        key: 'master/marital-status',
-    })
-    refObj.mStatusData = data
-    refObj.mStatusPending = pending
-    refObj.mStatusError = error
+    if (cache.data.value) {
+        refObj.mStatusData = cache.data
+    } else {
+        const { data, pending, error } = useFetch('/api/external/master/marital-status', {
+            method: 'GET',
+            key: 'master/marital-status',
+        })
+        refObj.mStatusData = data
+        refObj.mStatusPending = pending
+        refObj.mStatusError = error
+    }
     return refObj
 }
 
@@ -72,14 +78,17 @@ async function fetchBlood() {
         bloodPending: ref(false),
         bloodError: ref() as Ref<any>,
     }
-    if (cache.data.value) refObj.bloodData = cache.data
-    const { data, pending, error } = useFetch('/api/external/master/blood', {
-        method: 'GET',
-        key: 'master/blood',
-    })
-    refObj.bloodData = data
-    refObj.bloodPending = pending
-    refObj.bloodError = error
+    if (cache.data.value) {
+        refObj.bloodData = cache.data
+    } else {
+        const { data, pending, error } = useFetch('/api/external/master/blood', {
+            method: 'GET',
+            key: 'master/blood',
+        })
+        refObj.bloodData = data
+        refObj.bloodPending = pending
+        refObj.bloodError = error
+    }
     return refObj
 }
 
@@ -90,14 +99,17 @@ async function fetchTitle() {
         tPending: ref(false),
         tError: ref() as Ref<any>,
     }
-    if (cache.data.value) refObj.tData = cache.data
-    const { data, pending, error } = useFetch('/api/external/master/title', {
-        method: 'GET',
-        key: 'master/title',
-    })
-    refObj.tData = data
-    refObj.tPending = pending
-    refObj.tError = error
+    if (cache.data.value) {
+        refObj.tData = cache.data
+    } else {
+        const { data, pending, error } = useFetch('/api/external/master/title', {
+            method: 'GET',
+            key: 'master/title',
+        })
+        refObj.tData = data
+        refObj.tPending = pending
+        refObj.tError = error
+    }
     return refObj
 }
 
@@ -108,14 +120,17 @@ async function fetchTitleTH() {
         tTHPending: ref(false),
         tTHError: ref() as Ref<any>,
     }
-    if (cache.data.value) refObj.tTHData = cache.data
-    const { data, pending, error } = useFetch('/api/external/master/titleTH', {
-        method: 'GET',
-        key: 'master/titleTH',
-    })
-    refObj.tTHData = data
-    refObj.tTHPending = pending
-    refObj.tTHError = error
+    if (cache.data.value) {
+        refObj.tTHData = cache.data
+    } else {
+        const { data, pending, error } = useFetch('/api/external/master/titleTH', {
+            method: 'GET',
+            key: 'master/titleTH',
+        })
+        refObj.tTHData = data
+        refObj.tTHPending = pending
+        refObj.tTHError = error
+    }
     return refObj
 }
 
@@ -126,14 +141,17 @@ async function fetchTitleEN() {
         tENPending: ref(false),
         tENError: ref() as Ref<any>,
     }
-    if (cache.data.value) refObj.tENData = cache.data
-    const { data, pending, error } = useFetch('/api/external/master/titleEN', {
-        method: 'GET',
-        key: 'master/titleEN',
-    })
-    refObj.tENData = data
-    refObj.tENPending = pending
-    refObj.tENError = error
+    if (cache.data.value) {
+        refObj.tENData = cache.data
+    } else {
+        const { data, pending, error } = useFetch('/api/external/master/titleEN', {
+            method: 'GET',
+            key: 'master/titleEN',
+        })
+        refObj.tENData = data
+        refObj.tENPending = pending
+        refObj.tENError = error
+    }
     return refObj
 }
 
@@ -144,14 +162,17 @@ async function fetchTitleAcademic() {
         tAcademicPending: ref(false),
         tAcademicError: ref() as Ref<any>,
     }
-    if (cache.data.value) refObj.tAcademicData = cache.data
-    const { data, pending, error } = useFetch('/api/external/master/title-academic', {
-        method: 'GET',
-        key: 'master/title-academic',
-    })
-    refObj.tAcademicData = data
-    refObj.tAcademicPending = pending
-    refObj.tAcademicError = error
+    if (cache.data.value) {
+        refObj.tAcademicData = cache.data
+    } else {
+        const { data, pending, error } = useFetch('/api/external/master/title-academic', {
+            method: 'GET',
+            key: 'master/title-academic',
+        })
+        refObj.tAcademicData = data
+        refObj.tAcademicPending = pending
+        refObj.tAcademicError = error
+    }
     return refObj
 }
 
@@ -162,14 +183,17 @@ async function fetchTitleSpecial() {
         tSpecialPending: ref(false),
     }
 
-    if (cache.data.value) refObj.tSpecialData = cache.data
-    const { data, pending, error } = useFetch('/api/external/master/title-special', {
-        method: 'GET',
-        key: 'master/title-special',
-    })
+    if (cache.data.value) {
+        refObj.tSpecialData = cache.data
+    } else {
+        const { data, pending, error } = useFetch('/api/external/master/title-special', {
+            method: 'GET',
+            key: 'master/title-special',
+        })
 
-    refObj.tSpecialData = data
-    refObj.tSpecialPending = pending
+        refObj.tSpecialData = data
+        refObj.tSpecialPending = pending
+    }
     return refObj
 }
 
@@ -180,15 +204,17 @@ async function fetchTitleConferred() {
         tConferredPending: ref(false),
     }
 
-    if (cache.data.value) refObj.tConferredData = cache.data
+    if (cache.data.value) {
+        refObj.tConferredData = cache.data
+    } else {
+        const { data, pending, error } = useFetch('/api/external/master/title-conferred', {
+            method: 'GET',
+            key: 'master/title-conferred',
+        })
+        refObj.tConferredData = data
+        refObj.tConferredPending = pending
+    }
 
-    const { data, pending, error } = useFetch('/api/external/master/title-conferred', {
-        method: 'GET',
-        key: 'master/title-conferred',
-    })
-
-    refObj.tConferredData = data
-    refObj.tConferredPending = pending
     return refObj
 }
 
@@ -199,14 +225,16 @@ async function fetchTitleMilitary() {
         tMilitaryPending: ref(false),
     }
 
-    if (cache.data.value) refObj.tMilitaryData = cache.data
-
-    const { data, pending, error } = useFetch('/api/external/master/title-military', {
-        method: 'GET',
-        key: 'master/title-military',
-    })
-    refObj.tMilitaryData = data
-    refObj.tMilitaryPending = pending
+    if (cache.data.value) {
+        refObj.tMilitaryData = cache.data
+    } else {
+        const { data, pending, error } = useFetch('/api/external/master/title-military', {
+            method: 'GET',
+            key: 'master/title-military',
+        })
+        refObj.tMilitaryData = data
+        refObj.tMilitaryPending = pending
+    }
     return refObj
 }
 
