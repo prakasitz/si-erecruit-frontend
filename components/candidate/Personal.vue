@@ -14,11 +14,13 @@
                                 <v-col cols="8">
                                     <v-select
                                         label="กรุณาเลือก"
-                                        :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
                                         variant="outlined"
                                         density="compact"
                                         hide-details
                                         v-model="personal_info.title_conferrend"
+                                        :items="tConferredData"
+                                        :item-title="'output_text'"
+                                        :item-value="'name_affix'"
                                     >
                                     </v-select>
                                 </v-col>
@@ -32,11 +34,13 @@
                                 <v-col cols="8">
                                     <v-select
                                         label="กรุณาเลือก"
-                                        :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
                                         variant="outlined"
                                         density="compact"
                                         hide-details
                                         v-model="personal_info.title_spacial"
+                                        :items="tSpecialData"
+                                        :item-title="'output_text'"
+                                        :item-value="'name_affix'"
                                     >
                                     </v-select>
                                 </v-col>
@@ -50,11 +54,13 @@
                                 <v-col cols="8">
                                     <v-select
                                         label="กรุณาเลือก"
-                                        :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
                                         variant="outlined"
                                         density="compact"
                                         hide-details
                                         v-model="personal_info.title_academic"
+                                        :items="tAcademicData"
+                                        :item-title="'output_text'"
+                                        :item-value="'name_affix'"
                                     >
                                     </v-select>
                                 </v-col>
@@ -68,11 +74,13 @@
                                 <v-col cols="8">
                                     <v-select
                                         label="กรุณาเลือก"
-                                        :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
                                         variant="outlined"
                                         density="compact"
                                         hide-details
                                         v-model="personal_info.title_milirtary"
+                                        :items="tMilitaryData"
+                                        :item-title="'output_text'"
+                                        :item-value="'name_affix'"
                                     >
                                     </v-select>
                                 </v-col>
@@ -560,6 +568,28 @@ import { usePersonalStore } from '../../stores/personal.store'
 import { useMasterDataStore } from '../../stores/master.store'
 import { storeToRefs } from 'pinia'
 import { CandidateForm } from '~/utils/types'
+
+const {
+    fetchTitleConferred,
+    fetchTitleSpecial,
+    fetchTitleMilitary,
+    fetchTitleAcademic,
+    fetchTitleTH,
+    fetchTitleEN,
+    fetchProvince,
+    fetchBlood,
+} = useMaster()
+
+const { tTHData } = await fetchTitleTH()
+const { tENData } = await fetchTitleEN()
+const { tConferredData } = await fetchTitleConferred()
+const { tMilitaryData } = await fetchTitleMilitary()
+const { tAcademicData } = await fetchTitleAcademic()
+const { tSpecialData } = await fetchTitleSpecial()
+
+const { provinceData } = await fetchProvince()
+const { bloodData } = await fetchBlood()
+
 const props = defineProps<{
     candidateForm: CandidateForm
 }>()
@@ -573,8 +603,6 @@ const {
     method: 'GET',
 })
 
-console.log('title', mTitles.value)
-
 const personalStore = usePersonalStore()
 const { provinces, setTitle } = useMasterDataStore()
 
@@ -583,6 +611,9 @@ const { calAge } = storeToRefs(personalStore)
 
 const { search, loading, searchItems } = useSearchAutoComplete(provinces, 'province_name')
 const { rules_fieldEmpty } = useFillRules()
+
+
+
 const formPersonal: Ref<HTMLFormElement | null> = ref<HTMLFormElement | null>(null)
 const birtDate = computed({
     set(v: string) {
