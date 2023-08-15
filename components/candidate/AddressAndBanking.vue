@@ -326,9 +326,8 @@
 </template>
 
 <script setup lang="ts">
-import { MasterProvince } from '~/utils/types'
+
 import { usePersonalStore } from '../../stores/personal.store'
-import { useMasterDataStore } from '~/stores/master.store'
 import { storeToRefs } from 'pinia'
 
 import { CandidateForm } from '~/utils/types'
@@ -336,17 +335,16 @@ const props = defineProps<{
     candidateForm: CandidateForm
 }>()
 
-const masterDataStore = useMasterDataStore()
 const personalStore = usePersonalStore()
-const { provinces } = useMasterDataStore()
 const { address, banking, license, ss } = personalStore
 const { curIsRegAddress, emerIsCurAddress, emerIsRegAddress } = storeToRefs(personalStore)
 
-const { fetchProvince } = useMaster()
+const { fetchProvince, fetchCountryRace } = useMaster()
 const { provinceData, provincePending } = await fetchProvince()
+const { countryRacePending } = await fetchCountryRace()
 
 const pending = computed(() => {
-    return provincePending.value
+    return provincePending.value || countryRacePending.value
 })
 
 const { rules_fieldEmpty } = useFillRules()

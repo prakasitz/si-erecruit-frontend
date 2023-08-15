@@ -1,5 +1,5 @@
 <template>
-    <CandidateBaseCard :candidate-form="props.candidateForm" :form-page="{ form: FormEducationAndJob }">
+    <CandidateBaseCard v-if="!pending" :candidate-form="props.candidateForm" :form-page="{ form: FormEducationAndJob }">
         <template #card-body>
             <v-form ref="FormEducationAndJob">
                 <v-alert
@@ -284,7 +284,9 @@
                                     label="จังหวัด"
                                     variant="outlined"
                                     density="compact"
-                                    :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                                    :items="provinceData"
+                                    :item-title="'province_name'"
+                                    :item-value="'province_code'"
                                     :rules="rules_fieldEmpty"
                                 ></v-autocomplete>
                             </v-col>
@@ -412,6 +414,12 @@ const { HasJob, IsWorking, IsStudying, IsUnemployed, IsHasJobMahidol } = storeTo
 const FormEducationAndJob: Ref<HTMLFormElement | null> = ref<HTMLFormElement | null>(null)
 
 const isFilledHadJobs = reactive<any>(Array(job.had_job_list.length))
+
+const { fetchProvince, fetchPosition } = useMaster()
+const { provinceData, provincePending } = await fetchProvince()
+// const {} = await fetchPosition()
+
+const pending = computed(() => provincePending.value)
 
 await useFetch('/api/external/master/level', {
     method: 'GET',

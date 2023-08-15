@@ -135,7 +135,6 @@
 </template>
 <script setup lang="ts">
 import { parent_info } from '~/stores/interface/personal_information.interface'
-import { ref } from 'vue'
 
 export interface Props {
     parentFormModel: parent_info

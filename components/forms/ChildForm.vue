@@ -10,10 +10,12 @@
                     <v-select
                         density="compact"
                         variant="outlined"
-                        label="Select"
+                        label="กรุณาเลือก"
                         v-model="childFormModel.title"
-                        :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                        :items="tData"
                         :rules="rules_fieldEmpty"
+                        :item-title="'long_text'"
+                        :item-value="'form_of_address_key'"
                     ></v-select>
                 </v-col>
             </v-row>
@@ -74,49 +76,56 @@
                 </v-col>
                 <v-col cols="3"> จังหวัดที่เกิด <span class="text-red-darken-1"> *</span></v-col>
                 <v-col cols="3">
-                    <v-select
+                    <v-autocomplete
                         :rules="rules_fieldEmpty"
                         v-model="childFormModel.birth_province"
                         density="compact"
                         variant="outlined"
-                        label="Select"
-                        :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-                    ></v-select
+                        label="กรุณาเลือก"
+                        :items="provinceData"
+                        :item-title="'province_name'"
+                        :item-value="'province_code'"
+                    ></v-autocomplete
                 ></v-col>
             </v-row>
 
             <v-row>
                 <v-col cols="3"> สัญชาติ <span class="text-red-darken-1"> *</span></v-col>
                 <v-col cols="3"
-                    ><v-select
+                    ><v-autocomplete
                         :rules="rules_fieldEmpty"
                         v-model="childFormModel.ethnicity"
-                        label="Select"
+                        label="กรุณาเลือก"
                         density="compact"
                         variant="outlined"
-                        :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-                    ></v-select
+                        :items="countryRaceData"
+                        :item-title="'nationality'"
+                        :item-value="'cty'"
+                    ></v-autocomplete
                 ></v-col>
                 <v-col cols="3"> เชื้อชาติ <span class="text-red-darken-1"> *</span></v-col>
                 <v-col cols="3">
-                    <v-select
+                    <v-autocomplete
                         :rules="rules_fieldEmpty"
                         v-model="childFormModel.nationality"
-                        label="Select"
+                        label="กรุณาเลือก"
                         density="compact"
                         variant="outlined"
-                        :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-                    ></v-select
+                        :items="countryRaceData"
+                        :item-title="'nationality'"
+                        :item-value="'cty'"
+                    ></v-autocomplete
                 ></v-col>
             </v-row>
             <v-row>
                 <v-col cols="3"> ศาสนา <span class="text-red-darken-1"> *</span></v-col>
                 <v-radio-group inline :rules="rules_fieldEmpty" v-model="childFormModel.religion">
-                    <v-radio label="พุทธ" value="พุทธ"></v-radio>
-                    <v-radio label="คริสต์ " value="คริสต์ "></v-radio>
-                    <v-radio label="อิสลาม  " value="อิสลาม  "></v-radio>
-                    <v-radio label="ฮินดู  " value="ฮินดู  "></v-radio>
-                    <v-radio label="ไม่ระบุ" value="ไม่ระบุ"></v-radio>
+                    <v-radio
+                        v-for="religion in religionData"
+                        class="mr-4"
+                        :label="religion.religious_denomination_long_text"
+                        :value="religion.religious_denomination_key"
+                    ></v-radio>
                 </v-radio-group>
             </v-row>
             <v-row>
@@ -146,6 +155,11 @@ const personalStore = usePersonalStore()
 const { marriage } = personalStore
 const { rules_fieldEmpty } = useFillRules()
 const props = defineProps<Props>()
+
+const { data: tData } = useNuxtData('master/title')
+const { data: countryRaceData } = useNuxtData('master/country-race')
+const { data: religionData } = useNuxtData('master/religion')
+const { data: provinceData } = useNuxtData('master/province')
 
 const childFormModel = reactive<children_info>({
     id: props.index,

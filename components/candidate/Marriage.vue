@@ -1,5 +1,5 @@
 <template>
-    <CandidateBaseCard :candidate-form="props.candidateForm" :form-page="{ form: formMarriage }">
+    <CandidateBaseCard v-if="!pending" :candidate-form="props.candidateForm" :form-page="{ form: formMarriage }">
         <template #card-body>
             <v-form ref="formMarriage">
                 <v-alert
@@ -57,7 +57,9 @@
                                 v-model="marriage.ref_person.title"
                                 density="compact"
                                 variant="outlined"
-                                :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                                :items="tTHData"
+                                :item-title="'long_text'"
+                                :item-value="'form_of_address_key'"
                             ></v-select>
                         </v-col>
                     </v-row>
@@ -214,16 +216,16 @@
                                 >
                                 </v-text-field>
                             </v-col>
-                            <v-col cols="4"
-                                ><v-text-field
+                            <v-col cols="4">
+                                <v-autocomplete
                                     v-model="marriage.ref_person.address_detail.address_province"
                                     label="จังหวัด *"
-                                    density="compact"
                                     variant="outlined"
-                                    maxLength="2"
-                                    :rules="rules_fieldEmpty"
-                                >
-                                </v-text-field>
+                                    density="compact"
+                                    :items="provinceData"
+                                    :item-title="'province_name'"
+                                    :item-value="'province_code'"
+                                ></v-autocomplete>
                             </v-col>
                         </v-row>
                         <v-row class="mt-0">
@@ -249,17 +251,29 @@
 </template>
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
 import { usePersonalStore } from '../../stores/personal.store'
-
 import { CandidateForm } from '~/utils/types'
 import { address } from '~/stores/interface/personal_information.interface'
+
 const props = defineProps<{
     candidateForm: CandidateForm
 }>()
 
 const { rules_fieldEmpty } = useFillRules()
 const formMarriage: Ref<HTMLFormElement | null> = ref<HTMLFormElement | null>(null)
+
+const { fetchTitle, fetchTitleTH, fetchReligion, fetchCountryRace, fetchProvince } = useMaster()
+const { tPending } = await fetchTitle()
+const { tTHData, tTHPending } = await fetchTitleTH()
+const { religionPending } = await fetchReligion()
+const { countryRacePending } = await fetchCountryRace()
+const { provinceData, provincePending } = await fetchProvince()
+
+const pending = computed(() => {
+    return (
+        tPending.value || religionPending.value || countryRacePending.value || provincePending.value || tTHPending.value
+    )
+})
 
 const personalStore = usePersonalStore()
 const { marriage, useCurAddressOnRefAddress, useRegAddressOnRefAddress, setDefaultChildList } = personalStore

@@ -61,7 +61,7 @@ class MasterExternal extends ExternalAPIService {
         }
     }
 
-    public async getTitle(adult: undefined | string, event: H3Event) {
+    public async getTitle(event: H3Event) {
         try {
             await this.initializeToken()
             const resp = await this.baseAPI.get(`/${this.masterSlug}/title`, {
@@ -73,12 +73,6 @@ class MasterExternal extends ExternalAPIService {
             if (!resp.data) throw new Error(`getTitle: Data not found`)
 
             let result: any = resp.data
-            if (adult == '1') {
-                result = resp.data.filter((obj: any) => ['1', '2', '3'].includes(obj.form_of_address_key))
-            } else {
-                result = resp.data.filter((obj: any) => ['4', '5'].includes(obj.form_of_address_key))
-            }
-
             return result
         } catch (error: AxiosError | any) {
             return this.handleError(error)

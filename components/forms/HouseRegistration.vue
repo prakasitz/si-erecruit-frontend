@@ -115,7 +115,10 @@
                         variant="outlined"
                         density="compact"
                         hide-details
-                        :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                        countryRaceData
+                        :items="countryRaceData"
+                        :item-title="'name'"
+                        :item-value="'cty'"
                         :rules="rules_fieldEmpty"
                     ></v-autocomplete>
                 </v-col>
@@ -139,4 +142,5 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const { data: provinceData } = useNuxtData('master/province')
+const { data: countryRaceData } = useNuxtData('master/country-race')
 </script>

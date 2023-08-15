@@ -7,14 +7,8 @@ const router = createRouter()
 router.get(
     '/title',
     defineEventHandler(async (event) => {
-        const q = getQuery(event)
-        let adult = q.adult as string | undefined
-        if (![undefined, '0', '1'].includes(adult)) {
-            throw BadRequestError("adult must be '0' or '1'")
-        } else {
-            const data = await masterService.getTitle(adult, event)
-            return data
-        }
+        const data = await masterService.getTitle(event)
+        return data
     })
 )
 
@@ -106,7 +100,7 @@ router.get(
             masterService.getProvince(event),
             masterService.getMaritalStatus(event),
             masterService.getBlood(event),
-            masterService.getTitle(undefined, event),
+            masterService.getTitle(event),
             masterService.getTitleEN(event),
             masterService.getTitleTH(event),
             masterService.getTitleMilitary(event),
