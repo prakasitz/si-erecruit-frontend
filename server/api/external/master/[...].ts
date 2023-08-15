@@ -117,6 +117,15 @@ router.get(
 )
 
 router.get(
+    '/position',
+    defineEventHandler(async (event) => {
+        const data = await masterService.getPosition(event)
+        return data
+    })
+)
+
+
+router.get(
     '/level',
     defineEventHandler(async (event) => {
         const data = await masterService.getLevel(event)

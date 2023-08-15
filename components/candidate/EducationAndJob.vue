@@ -104,19 +104,34 @@
                                     label="กรุณาเลือก"
                                     variant="outlined"
                                     density="compact"
-                                    :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
                                     :rules="rules_fieldEmpty"
+                                    :items="[
+                                        'ข้าราชการ',
+                                        'พนักงานมหาวิทยาลัย (พม.)',
+                                        'พนักงานมหาวิทยาลัย (ชื่อส่วนงาน) (พศ.)',
+                                        'ลูกจ้างชั่วคราว',
+                                    ]"
                                 ></v-select>
                             </v-col>
                             <v-col cols="2"> ตำแหน่ง <span class="text-red-darken-1"> *</span> </v-col>
                             <v-col cols="3">
-                                <v-text-field
+                                <v-autocomplete
+                                    v-model="job.had_job_mahidol_detail.position_name"
+                                    label="กรุณาเลือก"
+                                    variant="outlined"
+                                    density="compact"
+                                    :rules="rules_fieldEmpty"
+                                    :items="positionData"
+                                    :item-title="'OM_Position_Title'"
+                                    :item-value="'OM_Position_ID'"
+                                ></v-autocomplete>
+                                <!-- <v-text-field
                                     v-model="job.had_job_mahidol_detail.position_name"
                                     density="compact"
                                     variant="outlined"
                                     maxLength="100"
                                     :rules="rules_fieldEmpty"
-                                ></v-text-field>
+                                ></v-text-field> -->
                             </v-col>
                         </v-row>
                         <v-row>
@@ -417,9 +432,11 @@ const isFilledHadJobs = reactive<any>(Array(job.had_job_list.length))
 
 const { fetchProvince, fetchPosition } = useMaster()
 const { provinceData, provincePending } = await fetchProvince()
-// const {} = await fetchPosition()
+const { positionData, positionPending } = await fetchPosition()
 
-const pending = computed(() => provincePending.value)
+const pending = computed(() => {
+    return provincePending.value || positionPending.value
+})
 
 await useFetch('/api/external/master/level', {
     method: 'GET',

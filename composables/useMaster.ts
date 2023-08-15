@@ -134,8 +134,6 @@ async function fetchCountryRace() {
     return refObj
 }
 
-
-
 async function fetchTitle() {
     const cache = useNuxtData('master/title')
     const refObj = {
@@ -340,15 +338,26 @@ async function fetchInstitute(mStore: MasterStore) {
     return response
 }
 
-async function fetchPosition(mStore: MasterStore) {
-    const response = await useApi('/master-data/position', {
-        method: 'GET',
-        callback: (responseStatus: boolean) => {
-            mStore.$state.isLoaded.positions = responseStatus
-        },
-    })
-    mStore.setPosition(response.data.value)
-    return response
+async function fetchPosition() {
+    const cache = useNuxtData('master/position')
+    const refObj = {
+        positionData: ref() as Ref<any>,
+        positionPending: ref(false),
+        positionError: ref() as Ref<any>,
+    }
+
+    if (cache.data.value) {
+        refObj.positionData = cache.data
+    } else {
+        const { data, pending, error } = useFetch('/api/external/master/position', {
+            method: 'GET',
+            key: 'master/position',
+        })
+        refObj.positionData = data
+        refObj.positionPending = pending
+        refObj.positionError = error
+    }
+    return refObj
 }
 
 async function loadMasterData() {
