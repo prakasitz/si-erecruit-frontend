@@ -297,10 +297,9 @@ const route = useRoute()
 const masterDataStore = useMasterDataStore()
 const personalStore = usePersonalStore()
 const userStore = useUserStore()
+
 const { isItemsLoaded } = storeToRefs(masterDataStore)
-const { calAge } = storeToRefs(personalStore)
 const { isCandidate } = storeToRefs(userStore)
-const { loadMasterData } = useMaster()
 
 const { getProfileById } = useProfile()
 const { data, pending, error } = await getProfileById(route.params.id as string)
@@ -336,7 +335,6 @@ if (isCandidate.value) {
 }
 
 onMounted(async () => {
-
     let profile = data.value as Profile
     personalStore.$patch({
         personal_info: {
@@ -469,12 +467,12 @@ onMounted(async () => {
         },
         education: {
             education_select: 1,
-            education_list: personalStore.mapEducationList(profile),
+            education_list: await personalStore.mapEducationList(profile),
         },
         job: {
             had_job: profile.chk_work_out ?? '0',
             had_job_mahidol: profile.chk_work_in ?? '0',
-            had_job_list: personalStore.mapJobList(profile),
+            had_job_list: await personalStore.mapJobList(profile),
             job_status: profile.cur_working,
             had_job_mahidol_detail: {
                 department: profile.work_in_org,
@@ -602,7 +600,6 @@ onMounted(async () => {
             announced_from: profile.announced_from,
         },
     })
-
 })
 
 console.log(useRoute().name)

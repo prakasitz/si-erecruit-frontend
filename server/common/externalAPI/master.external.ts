@@ -85,6 +85,42 @@ class MasterExternal extends ExternalAPIService {
         }
     }
 
+    public async getTitleTH(event: H3Event) {
+        try {
+            await this.initializeToken()
+            const resp = await this.baseAPI.get(`/${this.masterSlug}/titleTH`, {
+                headers: {
+                    Authorization: 'Bearer ' + this.token,
+                },
+            })
+
+            if (!resp.data) throw new Error(`getTitleTH: Data not found`)
+
+            let result: any = resp.data
+            return result
+        } catch (error: AxiosError | any) {
+            return this.handleError(error)
+        }
+    }
+
+    public async getTitleEN(event: H3Event) {
+        try {
+            await this.initializeToken()
+            const resp = await this.baseAPI.get(`/${this.masterSlug}/titleEN`, {
+                headers: {
+                    Authorization: 'Bearer ' + this.token,
+                },
+            })
+
+            if (!resp.data) throw new Error(`getTitleEN: Data not found`)
+
+            let result: any = resp.data
+            return result
+        } catch (error: AxiosError | any) {
+            return this.handleError(error)
+        }
+    }
+
     public async getTitleSpecial(event: H3Event) {
         try {
             await this.initializeToken()
@@ -167,42 +203,6 @@ class MasterExternal extends ExternalAPIService {
             })
 
             if (!resp.data) throw new Error(`getMilitary: Data not found`)
-
-            let result: any = resp.data
-            return result
-        } catch (error: AxiosError | any) {
-            return this.handleError(error)
-        }
-    }
-
-    public async getTitleTH(event: H3Event) {
-        try {
-            await this.initializeToken()
-            const resp = await this.baseAPI.get(`/${this.masterSlug}/titleTH`, {
-                headers: {
-                    Authorization: 'Bearer ' + this.token,
-                },
-            })
-
-            if (!resp.data) throw new Error(`getTitleTH: Data not found`)
-
-            let result: any = resp.data
-            return result
-        } catch (error: AxiosError | any) {
-            return this.handleError(error)
-        }
-    }
-
-    public async getTitleEN(event: H3Event) {
-        try {
-            await this.initializeToken()
-            const resp = await this.baseAPI.get(`/${this.masterSlug}/titleEN`, {
-                headers: {
-                    Authorization: 'Bearer ' + this.token,
-                },
-            })
-
-            if (!resp.data) throw new Error(`getTitleEN: Data not found`)
 
             let result: any = resp.data
             return result

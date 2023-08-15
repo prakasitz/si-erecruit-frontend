@@ -19,6 +19,70 @@ router.get(
 )
 
 router.get(
+    '/title-conferred',
+    defineEventHandler(async (event) => {
+        const data = await masterService.getTitleConferred(event)
+        return data
+    })
+)
+
+router.get(
+    '/title-special',
+    defineEventHandler(async (event) => {
+        const data = await masterService.getTitleSpecial(event)
+        return data
+    })
+)
+
+router.get(
+    '/title-academic',
+    defineEventHandler(async (event) => {
+        const data = await masterService.getTitleAcademic(event)
+        return data
+    })
+)
+
+router.get(
+    '/title-military',
+    defineEventHandler(async (event) => {
+        const data = await masterService.getTitleMilitary(event)
+        return data
+    })
+)
+
+router.get(
+    '/titleTH',
+    defineEventHandler(async (event) => {
+        const data = await masterService.getTitleTH(event)
+        return data
+    })
+)
+
+router.get(
+    '/titleEN',
+    defineEventHandler(async (event) => {
+        const data = await masterService.getTitleEN(event)
+        return data
+    })
+)
+
+router.get(
+    '/province',
+    defineEventHandler(async (event) => {
+        const data = await masterService.getProvince(event)
+        return data
+    })
+)
+
+router.get(
+    '/blood',
+    defineEventHandler(async (event) => {
+        const data = await masterService.getBlood(event)
+        return data
+    })
+)
+
+router.get(
     '/all',
     defineEventHandler(async (event) => {
         //promise all

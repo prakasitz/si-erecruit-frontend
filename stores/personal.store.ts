@@ -374,7 +374,7 @@ export const usePersonalStore = defineStore('personal', {
             this.marriage.ref_person.address_detail = deepCopy(this.address.cur_address)
         },
 
-        mapEducationList(rawData: Profile) {
+        async mapEducationList(rawData: Profile) {
             const education_list = [] as education[]
             for (let i = 1; i <= 4; i++) {
                 let edu = `edu${i}` as 'edu1' | 'edu2' | 'edu3' | 'edu4'
@@ -393,14 +393,15 @@ export const usePersonalStore = defineStore('personal', {
                     school_other: rawData[`${edu}_aca_txt`],
                 }
 
-                if (checkObjectPropertiesNull(educationObj)) break
+                const isNull = await checkObjectPropertiesNull(educationObj)
+                if (isNull) break
 
                 educationObj.id = i
                 education_list.push(educationObj)
             }
             return education_list
         },
-        mapJobList(rawData: Profile) {
+        async mapJobList(rawData: Profile) {
             const job_list = [] as job[]
             for (let i = 1; i <= 4; i++) {
                 let emp = `emp${i}` as 'emp1' | 'emp2' | 'emp3' | 'emp4'
@@ -413,7 +414,9 @@ export const usePersonalStore = defineStore('personal', {
                     end_date: rawData[`${emp}_end`],
                     reason: rawData[`${emp}_exit_reason`],
                 }
-                if (checkObjectPropertiesNull(jobObj)) break
+
+                const isNull = await checkObjectPropertiesNull(jobObj)
+                if (isNull) break
 
                 job_list.push(jobObj)
             }
