@@ -76,11 +76,12 @@ const personalStore = usePersonalStore()
 const { rules_fieldEmpty } = useFillRules()
 const { parent } = personalStore
 
-const { fetchTitleConferred } = useMaster()
+const { fetchTitleConferred, fetchTitleTH } = useMaster()
 const { tConferredPending } = await fetchTitleConferred()
+const { tTHPending } = await fetchTitleTH()
 
 const pending = computed(() => {
-    return tConferredPending.value
+    return tConferredPending.value || tTHPending.value
 })
 
 const parentDescription = 'ข้อมูลบิดา, มารดา ไว้ใช้ในการอ้างอิงกรณีการเบิกสวัสดิการให้แก่บุคคลดังกล่าว'

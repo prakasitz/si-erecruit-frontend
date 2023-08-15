@@ -17,12 +17,15 @@
                 <v-col cols="12">
                     <v-select
                         label="คำนำหน้า *"
-                        :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                        
                         variant="outlined"
                         density="compact"
                         hide-details
                         v-model="props.parentFormModel.title_name"
                         :rules="rules_fieldEmpty"
+                        :items="tTHData"
+                        :item-title="'long_text'"
+                        :item-value="'form_of_address_key'"
                     ></v-select>
                 </v-col>
 
@@ -135,6 +138,8 @@ export interface Props {
 const { rules_fieldEmpty } = useFillRules()
 
 const { data: tConferredData } = useNuxtData('master/title-conferred')
+const { data: tTHData } = useNuxtData('master/titleTH')
+
 // const select = ref(null)
 // const items = ['Item 1', 'Item 2', 'Item 3', 'Item 4']
 // const checkbox = ref(false)
