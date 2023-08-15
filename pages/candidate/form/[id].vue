@@ -338,14 +338,26 @@ onMounted(async () => {
     let profile = data.value as Profile
     personalStore.$patch({
         personal_info: {
+            title_name_th: profile.title_name_th,
+            title_name_en: profile.title_name_en,
+
+            title_special: profile.title_special,
+            title_academic: profile.title_academic,
+            title_military: profile.title_military,
+
+            title_conferred: profile.title_conferred,
+
             first_name_th: profile.nameTH,
             last_name_th: profile.lastnameTH,
             first_name_en: profile.first_name_en,
             last_name_en: profile.last_name_en,
             email_address: profile.email_address,
+            province_when: profile.province_when,
             birth_date: profile.birth_date,
             height: profile.height,
             weight: profile.weight,
+
+            blood_type: profile.blood_type,
 
             id_card_number: profile.id_card_number,
             id_card_issue_date: profile.id_card_issue_date,
