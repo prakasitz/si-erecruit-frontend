@@ -83,6 +83,22 @@ router.get(
 )
 
 router.get(
+    '/country-race',
+    defineEventHandler(async (event) => {
+        const data = await masterService.getRace(event)
+        return data
+    })
+)
+
+router.get(
+    '/religion',
+    defineEventHandler(async (event) => {
+        const data = await masterService.getReligion(event)
+        return data
+    })
+)
+
+router.get(
     '/all',
     defineEventHandler(async (event) => {
         //promise all

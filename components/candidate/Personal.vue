@@ -508,11 +508,13 @@
                                 </v-col>
                                 <v-col cols="8">
                                     <v-autocomplete
-                                        v-model="personal_info.nationality"
                                         label="กรุณาเลือก"
                                         variant="outlined"
                                         density="compact"
-                                        :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                                        v-model="personal_info.nationality"
+                                        :items="countryRaceData"
+                                        :item-title="'nationality'"
+                                        :item-value="'cty'"
                                         :rules="rules_fieldEmpty"
                                     ></v-autocomplete>
                                 </v-col>
@@ -525,11 +527,13 @@
                                 </v-col>
                                 <v-col cols="8">
                                     <v-autocomplete
-                                        v-model="personal_info.race"
                                         label="กรุณาเลือก"
                                         variant="outlined"
                                         density="compact"
-                                        :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                                        v-model="personal_info.race"
+                                        :items="countryRaceData"
+                                        :item-title="'nationality'"
+                                        :item-value="'cty'"
                                         :rules="rules_fieldEmpty"
                                     ></v-autocomplete>
                                 </v-col>
@@ -548,11 +552,12 @@
                                         hide-details
                                         :rules="rules_fieldEmpty"
                                     >
-                                        <v-radio class="mr-4" label="พุทธ" value="1"></v-radio>
-                                        <v-radio class="mr-4" label="คริสต์" value="2"></v-radio>
-                                        <v-radio class="mr-4" label="อิสลาม" value="3"></v-radio>
-                                        <v-radio class="mr-4" label="ฮินดู" value="4"></v-radio>
-                                        <v-radio class="mr-4" label="ไม่ระบุ" value="5"></v-radio>
+                                        <v-radio
+                                            v-for="religion in religionData"
+                                            class="mr-4"
+                                            :label="religion.religious_denomination_long_text"
+                                            :value="religion.religious_denomination_key"
+                                        ></v-radio>
                                     </v-radio-group>
                                 </v-col>
                             </v-row>
@@ -579,6 +584,8 @@ const {
     fetchTitleEN,
     fetchProvince,
     fetchBlood,
+    fetchReligion,
+    fetchCountryRace,
 } = useMaster()
 
 const { tTHData, tTHPending } = await fetchTitleTH()
@@ -587,6 +594,8 @@ const { tConferredData, tConferredPending } = await fetchTitleConferred()
 const { tMilitaryData, tMilitaryPending } = await fetchTitleMilitary()
 const { tAcademicData, tAcademicPending } = await fetchTitleAcademic()
 const { tSpecialData, tSpecialPending } = await fetchTitleSpecial()
+const { countryRaceData, countryRacePending } = await fetchCountryRace()
+const { religionData, religionPending } = await fetchReligion()
 
 const { provinceData, provincePending } = await fetchProvince()
 const { bloodData, bloodPending } = await fetchBlood()
@@ -600,7 +609,9 @@ const pending = computed(() => {
         tAcademicPending.value ||
         tSpecialPending.value ||
         provincePending.value ||
-        bloodPending.value
+        bloodPending.value ||
+        religionPending.value ||
+        countryRacePending.value
     )
 })
 

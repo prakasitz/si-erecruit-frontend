@@ -14,7 +14,7 @@ export default function useMaster() {
         fetchMajor,
         fetchMaritalSatatus,
         fetchPosition,
-        fetchRace,
+        fetchCountryRace,
         fetchReligion,
         fetchMilitary,
         fetchTitle,
@@ -91,6 +91,50 @@ async function fetchBlood() {
     }
     return refObj
 }
+
+async function fetchReligion() {
+    const cache = useNuxtData('master/religion')
+    const refObj = {
+        religionData: ref() as Ref<any>,
+        religionPending: ref(false),
+        religionError: ref() as Ref<any>,
+    }
+    if (cache.data.value) {
+        refObj.religionData = cache.data
+    } else {
+        const { data, pending, error } = useFetch('/api/external/master/religion', {
+            method: 'GET',
+            key: 'master/religion',
+        })
+        refObj.religionData = data
+        refObj.religionPending = pending
+        refObj.religionError = error
+    }
+    return refObj
+}
+
+async function fetchCountryRace() {
+    const cache = useNuxtData('master/country-race')
+    const refObj = {
+        countryRaceData: ref() as Ref<any>,
+        countryRacePending: ref(false),
+        countryRaceError: ref() as Ref<any>,
+    }
+    if (cache.data.value) {
+        refObj.countryRaceData = cache.data
+    } else {
+        const { data, pending, error } = useFetch('/api/external/master/country-race', {
+            method: 'GET',
+            key: 'master/country-race',
+        })
+        refObj.countryRaceData = data
+        refObj.countryRacePending = pending
+        refObj.countryRaceError = error
+    }
+    return refObj
+}
+
+
 
 async function fetchTitle() {
     const cache = useNuxtData('master/title')
@@ -249,17 +293,6 @@ async function fetchMilitary(mStore: MasterStore) {
     return response
 }
 
-async function fetchReligion(mStore: MasterStore) {
-    const response = await useApi('/master-data/religion', {
-        method: 'GET',
-        callback: (responseStatus: boolean) => {
-            mStore.$state.isLoaded.religions = responseStatus
-        },
-    })
-    mStore.setReligion(response.data.value)
-    return response
-}
-
 async function fetchLevel(mStore: MasterStore) {
     const response = await useApi('/master-data/level', {
         method: 'GET',
@@ -304,17 +337,6 @@ async function fetchInstitute(mStore: MasterStore) {
         },
     })
     mStore.setInstitute(response.data.value)
-    return response
-}
-
-async function fetchRace(mStore: MasterStore) {
-    const response = await useApi('/master-data/race', {
-        method: 'GET',
-        callback: (responseStatus: boolean) => {
-            mStore.$state.isLoaded.races = responseStatus
-        },
-    })
-    mStore.setRace(response.data.value)
     return response
 }
 

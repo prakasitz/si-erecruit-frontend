@@ -17,7 +17,6 @@
                 <v-col cols="12">
                     <v-select
                         label="คำนำหน้า *"
-                        
                         variant="outlined"
                         density="compact"
                         hide-details
@@ -88,24 +87,30 @@
                     ></v-text-field>
                 </v-col>
                 <v-col cols="6">
-                    <v-text-field
-                        v-model="props.parentFormModel.race"
-                        hide-details
+                    <v-autocomplete
                         label="สัญชาติ *"
-                        density="compact"
                         variant="outlined"
+                        density="compact"
+                        hide-details
+                        v-model="props.parentFormModel.race"
+                        :items="countryRaceData"
+                        :item-title="'nationality'"
+                        :item-value="'cty'"
                         :rules="rules_fieldEmpty"
-                    ></v-text-field>
+                    ></v-autocomplete>
                 </v-col>
                 <v-col cols="6">
-                    <v-text-field
-                        v-model="props.parentFormModel.nationality"
-                        hide-details
+                    <v-autocomplete
                         label="เชื้อชาติ *"
-                        density="compact"
                         variant="outlined"
+                        density="compact"
+                        hide-details
+                        v-model="props.parentFormModel.nationality"
+                        :items="countryRaceData"
+                        :item-title="'nationality'"
+                        :item-value="'cty'"
                         :rules="rules_fieldEmpty"
-                    ></v-text-field>
+                    ></v-autocomplete>
                 </v-col>
                 <v-col>
                     <v-radio-group
@@ -116,11 +121,12 @@
                         hide-details
                         :rules="rules_fieldEmpty"
                     >
-                        <v-radio class="mr-4" label="พุทธ" value="1"></v-radio>
-                        <v-radio class="mr-4" label="คริสต์" value="2"></v-radio>
-                        <v-radio class="mr-4" label="อิสลาม" value="3"></v-radio>
-                        <v-radio class="mr-4" label="ฮินดู" value="4"></v-radio>
-                        <v-radio class="mr-4" label="ไม่ระบุ" value="5"></v-radio>
+                        <v-radio
+                            v-for="religion in religionData"
+                            class="mr-4"
+                            :label="religion.religious_denomination_long_text"
+                            :value="religion.religious_denomination_key"
+                        ></v-radio>
                     </v-radio-group>
                 </v-col>
             </v-row>
@@ -139,6 +145,8 @@ const { rules_fieldEmpty } = useFillRules()
 
 const { data: tConferredData } = useNuxtData('master/title-conferred')
 const { data: tTHData } = useNuxtData('master/titleTH')
+const { data: countryRaceData } = useNuxtData('master/country-race')
+const { data: religionData } = useNuxtData('master/religion')
 
 // const select = ref(null)
 // const items = ['Item 1', 'Item 2', 'Item 3', 'Item 4']

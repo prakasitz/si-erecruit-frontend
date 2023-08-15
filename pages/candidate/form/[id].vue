@@ -358,6 +358,11 @@ onMounted(async () => {
             weight: profile.weight,
 
             blood_type: profile.blood_type,
+            nationality: profile.nationality,
+            race: profile.race,
+            religion: profile.religion,
+
+            military_status: profile.military,
 
             id_card_number: profile.id_card_number,
             id_card_issue_date: profile.id_card_issue_date,
