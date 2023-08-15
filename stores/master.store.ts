@@ -12,7 +12,7 @@ export type MasterState = {
     title_specials: any[]
     title_academics: any[]
     title_military: any[]
-    title_conferrends: MasterTitleConferred[]
+    title_conferreds: MasterTitleConferred[]
     religions: any[]
     levels: any[]
     certificates: any[]
@@ -32,7 +32,7 @@ export type MasterState = {
         title_specials: boolean
         title_academics: boolean
         title_military: boolean
-        title_conferrends: boolean
+        title_conferreds: boolean
         religions: boolean
         levels: boolean
         certificates: boolean
@@ -56,7 +56,7 @@ export const useMasterDataStore = defineStore('master_data', {
             title_specials: [] as any[],
             title_academics: [] as any[],
             title_military: [] as any[],
-            title_conferrends: [] as MasterTitleConferred[],
+            title_conferreds: [] as MasterTitleConferred[],
             religions: [] as any[],
             levels: [] as any[],
             certificates: [] as any[],
@@ -76,7 +76,7 @@ export const useMasterDataStore = defineStore('master_data', {
                 title_specials: false as boolean,
                 title_academics: false as boolean,
                 title_military: false as boolean,
-                title_conferrends: false as boolean,
+                title_conferreds: false as boolean,
                 religions: false as boolean,
                 levels: false as boolean,
                 certificates: false as boolean,
@@ -132,11 +132,11 @@ export const useMasterDataStore = defineStore('master_data', {
         },
 
         setTitleConferrend(data: any) {
-            this.title_conferrends = data
+            this.title_conferreds = data
         },
 
         setReligion(data: any) {
-            this.title_conferrends = data
+            this.title_conferreds = data
         },
 
         setLevel(data: any) {

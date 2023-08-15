@@ -1,5 +1,5 @@
 <template>
-    <CandidateBaseCard :candidate-form="props.candidateForm" :form-page="{ form: formPersonal }">
+    <CandidateBaseCard v-if="!pending" :candidate-form="props.candidateForm" :form-page="{ form: formPersonal }">
         <template #card-body>
             <v-form ref="formPersonal">
                 <!-- คำนำหน้า พิเศษ -->
@@ -17,7 +17,7 @@
                                         variant="outlined"
                                         density="compact"
                                         hide-details
-                                        v-model="personal_info.title_conferrend"
+                                        v-model="personal_info.title_conferred"
                                         :items="tConferredData"
                                         :item-title="'output_text'"
                                         :item-value="'name_affix'"
@@ -37,7 +37,7 @@
                                         variant="outlined"
                                         density="compact"
                                         hide-details
-                                        v-model="personal_info.title_spacial"
+                                        v-model="personal_info.title_special"
                                         :items="tSpecialData"
                                         :item-title="'output_text'"
                                         :item-value="'name_affix'"
@@ -77,7 +77,7 @@
                                         variant="outlined"
                                         density="compact"
                                         hide-details
-                                        v-model="personal_info.title_milirtary"
+                                        v-model="personal_info.title_military"
                                         :items="tMilitaryData"
                                         :item-title="'output_text'"
                                         :item-value="'name_affix'"
@@ -110,7 +110,7 @@
                                         :rules="rules_fieldEmpty"
                                     >
                                         <v-radio
-                                            v-for="title in mTitles"
+                                            v-for="title in tTHData"
                                             class="mr-4"
                                             :label="title.long_text"
                                             :value="title.form_of_address_key"
@@ -187,9 +187,12 @@
                                         hint="กรุณาเลือกคำนำหน้า"
                                         :rules="rules_fieldEmpty"
                                     >
-                                        <v-radio class="mr-4" label="Mr." value="1"></v-radio>
-                                        <v-radio class="mr-4" label="Mrs." value="2"></v-radio>
-                                        <v-radio class="mr-4" label="Miss" value="3"></v-radio>
+                                        <v-radio
+                                            v-for="title in tENData"
+                                            class="mr-4"
+                                            :label="title.long_text"
+                                            :value="title.form_of_address_key"
+                                        ></v-radio>
                                     </v-radio-group>
                                 </v-col>
                             </v-row>
@@ -312,15 +315,13 @@
                                     <v-autocomplete
                                         v-model="personal_info.province_when"
                                         label="กรุณาเลือก"
-                                        v-model:search="search"
-                                        :loading="loading"
-                                        :items="searchItems"
                                         hide-no-data
                                         hide-details
                                         variant="outlined"
                                         density="compact"
-                                        item-title="province_name"
-                                        item-value="province_code"
+                                        :items="provinceData"
+                                        :item-title="'province_name'"
+                                        :item-value="'province_code'"
                                     ></v-autocomplete>
                                 </v-col>
                             </v-row>
@@ -369,16 +370,14 @@
                                 <v-col cols="4">
                                     <v-autocomplete
                                         v-model="personal_info.id_card_province"
-                                        v-model:search="search"
-                                        :loading="loading"
-                                        :items="searchItems"
                                         hide-no-data
                                         hide-details
                                         label="จังหวัด *"
                                         variant="outlined"
                                         density="compact"
-                                        item-title="province_name"
-                                        item-value="province_code"
+                                        :items="provinceData"
+                                        :item-title="'province_name'"
+                                        :item-value="'province_code'"
                                     >
                                         <template #prepend>
                                             <div class="label-field-top">จังหวัด</div>
@@ -484,10 +483,12 @@
                                         hide-details
                                         :rules="rules_fieldEmpty"
                                     >
-                                        <v-radio class="mr-4" label="A" value="1"></v-radio>
-                                        <v-radio class="mr-4" label="AB" value="2"></v-radio>
-                                        <v-radio class="mr-4" label="B" value="3"></v-radio>
-                                        <v-radio class="mr-4" label="O" value="3"></v-radio>
+                                        <v-radio
+                                            v-for="blood in bloodData"
+                                            class="mr-4"
+                                            :label="blood.text_for_proficiency"
+                                            :value="blood.proficiency"
+                                        ></v-radio>
                                     </v-radio-group>
                                 </v-col>
                             </v-row>
@@ -580,39 +581,39 @@ const {
     fetchBlood,
 } = useMaster()
 
-const { tTHData } = await fetchTitleTH()
-const { tENData } = await fetchTitleEN()
-const { tConferredData } = await fetchTitleConferred()
-const { tMilitaryData } = await fetchTitleMilitary()
-const { tAcademicData } = await fetchTitleAcademic()
-const { tSpecialData } = await fetchTitleSpecial()
+const { tTHData, tTHPending } = await fetchTitleTH()
+const { tENData, tENPending } = await fetchTitleEN()
+const { tConferredData, tConferredPending } = await fetchTitleConferred()
+const { tMilitaryData, tMilitaryPending } = await fetchTitleMilitary()
+const { tAcademicData, tAcademicPending } = await fetchTitleAcademic()
+const { tSpecialData, tSpecialPending } = await fetchTitleSpecial()
 
-const { provinceData } = await fetchProvince()
-const { bloodData } = await fetchBlood()
+const { provinceData, provincePending } = await fetchProvince()
+const { bloodData, bloodPending } = await fetchBlood()
+
+const pending = computed(() => {
+    return (
+        tTHPending.value ||
+        tENPending.value ||
+        tConferredPending.value ||
+        tMilitaryPending.value ||
+        tAcademicPending.value ||
+        tSpecialPending.value ||
+        provincePending.value ||
+        bloodPending.value
+    )
+})
 
 const props = defineProps<{
     candidateForm: CandidateForm
 }>()
 
-const {
-    data: mTitles,
-    error,
-    refresh,
-    pending,
-} = await useApi('/external/master/title?adult=1', {
-    method: 'GET',
-})
-
 const personalStore = usePersonalStore()
-const { provinces, setTitle } = useMasterDataStore()
 
 const { personal_info, setBirthDate } = personalStore
 const { calAge } = storeToRefs(personalStore)
 
-const { search, loading, searchItems } = useSearchAutoComplete(provinces, 'province_name')
 const { rules_fieldEmpty } = useFillRules()
-
-
 
 const formPersonal: Ref<HTMLFormElement | null> = ref<HTMLFormElement | null>(null)
 const birtDate = computed({
@@ -628,10 +629,5 @@ const getMaxBirthDate = () => {
     let fifteenYearsAgo = new Date()
     fifteenYearsAgo.setFullYear(fifteenYearsAgo.getFullYear() - 15)
     return fifteenYearsAgo
-}
-
-const hints = {
-    bloodInfo: 'hint: กรุณาเลือกหมู่โลหิต',
-    religionInfo: 'hint: กรุณาเลือกศาสนา',
 }
 </script>
