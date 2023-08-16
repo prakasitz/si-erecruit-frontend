@@ -100,7 +100,7 @@ const cancelJob = async (event: any, item_id: number) => {
                 callbackActionBtn: [
                     {
                         text: 'close',
-                        to: '/job_management',
+                        href: `/job_management/${item_id}`,
                     },
                 ],
             }
@@ -139,6 +139,8 @@ const publishJob = async (event: any, item_id: number) => {
                 callbackActionBtn: [
                     {
                         text: 'close',
+                        href: `/job_management/${item_id}`,
+
                     },
                 ],
             }
@@ -176,7 +178,7 @@ const suspendJob = async (event: any, item_id: number) => {
                 callbackActionBtn: [
                     {
                         text: 'close',
-                        to: '/job_management',
+                        href: `/job_management/${item_id}`,
                     },
                 ],
             }
@@ -212,7 +214,7 @@ const republishJob = async (event: any, item_id: number) => {
                 callbackActionBtn: [
                     {
                         text: 'close',
-                        to: '/job_management',
+                        href: `/job_management/${item_id}`,
                     },
                 ],
             }
@@ -248,7 +250,7 @@ const terminateJob = async (event: any, item_id: number) => {
                 callbackActionBtn: [
                     {
                         text: 'close',
-                        to: '/job_management',
+                        href: `/job_management/${item_id}`,
                     },
                 ],
             }
@@ -284,7 +286,7 @@ const verifiedJob = async (event: any, item_id: number) => {
                 callbackActionBtn: [
                     {
                         text: 'close',
-                        to: '/job_management',
+                        href: `/job_management/${item_id}`,
                     },
                 ],
             }

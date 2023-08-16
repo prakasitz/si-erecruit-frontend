@@ -3,7 +3,6 @@
 </template>
 
 <script setup lang="ts">
-import { profile } from 'console'
 import { JobWithProfile } from '~/utils/types'
 
 export interface Props {
@@ -13,7 +12,7 @@ export interface Props {
     cb?: any
 }
 const { dialogConfirm, showDialog } = useDialog()
-
+const { suspendedProfile, publishableProfile } = useProfile()
 const props = defineProps<Props>()
 
 const confirmActionItem = (event: Event, item: any) => {
@@ -21,20 +20,72 @@ const confirmActionItem = (event: Event, item: any) => {
 
     if (props.text == 'verify') {
         isValidate = verifyValidate()
+    } else if (props.text == 'publish') {
+        isValidate = publishValidate()
     } else {
         isValidate = true
     }
 
     if (isValidate) {
-        showConfirmConponent()
+        showConfirmComponent()
+    }
+}
+
+const publishValidate = () => {
+    const profile = useNuxtData<JobWithProfile>('getProfilesByJobId').data.value
+    let profileListID: number[] = []
+    profile?.profile.map((item) => {
+        if (item.profile_status == 1) {
+            profileListID.push(item.profile_ID)
+        }
+    })
+
+    if (profileListID.length > 0) {
+        const dialog = dialogConfirm()
+
+        showDialog(
+            {
+                title: `Confirm to publish this job`,
+                dialogColor: 'amber',
+                message: `-ไม่สามารถ Publish job ได้ หากยังมี Profile ที่อยู่ในสถานะ <b>Imported</b> <br/>
+                <b>ต้องการเปลี่ยนสถานะ  Profile ที่ Imported เป็นสถานะอะไร? </b> `,
+                item: {
+                    id: { profile_IDs: profileListID, job_ID: props.jobId },
+                },
+                actionButtons: [
+                    {
+                        text: `Publishable`,
+                        variant: 'elevated',
+                        color: props.color,
+                        cb: publishableProfile,
+                    },
+                    {
+                        text: `Suspend`,
+                        variant: 'elevated',
+                        color: 'warning',
+                        cb: suspendedProfile,
+                    },
+                    {
+                        text: 'Cancel',
+                        color: 'gray',
+                    },
+                ],
+                persistent: true,
+            },
+            dialog
+        )
+        return false
+    } else {
+        
+        return true
     }
 }
 
 const verifyValidate = () => {
-    const a = useNuxtData<JobWithProfile>('getProfilesByJobId').data.value
+    const profile = useNuxtData<JobWithProfile>('getProfilesByJobId').data.value
     let submitted = 0
     let publishAsuspend = 0
-    a?.profile.map((item) => {
+    profile?.profile.map((item) => {
         if (item.profile_status == '4') {
             submitted = submitted + 1
         } else if (item.profile_status == 1 || item.profile_status == 2) {
@@ -42,7 +93,7 @@ const verifyValidate = () => {
         }
     })
     let message = []
-    console.log(!submitted)
+
     if (!submitted || publishAsuspend) {
         const dialog = dialogConfirm()
 
@@ -85,7 +136,7 @@ const verifyValidate = () => {
     return true
 }
 
-const showConfirmConponent = () => {
+const showConfirmComponent = () => {
     const dialog = dialogConfirm()
 
     showDialog(

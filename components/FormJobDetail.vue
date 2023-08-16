@@ -103,7 +103,7 @@
             <BtnJobAction
                 v-if="buttonShow.BtnPublishedJob"
                 class="mx-1"
-                text="Publish ยังไม่ทำ"
+                text="publish"
                 color="blue"
                 :jobId="job.job_ID"
                 :cb="publishJob"
