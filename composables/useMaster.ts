@@ -32,20 +32,20 @@ type MasterStore = Store<'master-data', MasterState, any, any>
 async function fetchProvince() {
     const cache = useNuxtData('master/province')
     const refObj = {
-        provinceData: ref() as Ref<any>,
-        provincePending: ref(false),
-        provinceError: ref() as Ref<any>,
+        data: ref() as Ref<any>,
+        pending: ref(false),
+        error: ref() as Ref<any>,
     }
     if (cache.data.value) {
-        refObj.provinceData = cache.data
+        refObj.data = cache.data
     } else {
         const { data, pending, error } = useFetch('/api/external/master/province', {
             method: 'GET',
             key: 'master/province',
         })
-        refObj.provinceData = data
-        refObj.provincePending = pending
-        refObj.provinceError = error
+        refObj.data = data
+        refObj.pending = pending
+        refObj.error = error
     }
     return refObj
 }
@@ -53,20 +53,21 @@ async function fetchProvince() {
 async function fetchMaritalSatatus() {
     const cache = useNuxtData('master/marital-status')
     const refObj = {
-        mStatusData: ref() as Ref<any>,
-        mStatusPending: ref(false),
-        mStatusError: ref() as Ref<any>,
+        data: ref() as Ref<any>,
+        pending: ref(false),
+        error: ref() as Ref<any>,
+
     }
     if (cache.data.value) {
-        refObj.mStatusData = cache.data
+        refObj.data = cache.data
     } else {
         const { data, pending, error } = useFetch('/api/external/master/marital-status', {
             method: 'GET',
             key: 'master/marital-status',
         })
-        refObj.mStatusData = data
-        refObj.mStatusPending = pending
-        refObj.mStatusError = error
+        refObj.data = data
+        refObj.pending = pending
+        refObj.error = error
     }
     return refObj
 }
@@ -74,20 +75,21 @@ async function fetchMaritalSatatus() {
 async function fetchBlood() {
     const cache = useNuxtData('master/blood')
     const refObj = {
-        bloodData: ref() as Ref<any>,
-        bloodPending: ref(false),
-        bloodError: ref() as Ref<any>,
+        data: ref() as Ref<any>,
+        pending: ref(false),
+        error: ref() as Ref<any>,
+
     }
     if (cache.data.value) {
-        refObj.bloodData = cache.data
+        refObj.data = cache.data
     } else {
         const { data, pending, error } = useFetch('/api/external/master/blood', {
             method: 'GET',
             key: 'master/blood',
         })
-        refObj.bloodData = data
-        refObj.bloodPending = pending
-        refObj.bloodError = error
+        refObj.data = data
+        refObj.pending = pending
+        refObj.error = error
     }
     return refObj
 }
@@ -95,20 +97,21 @@ async function fetchBlood() {
 async function fetchReligion() {
     const cache = useNuxtData('master/religion')
     const refObj = {
-        religionData: ref() as Ref<any>,
-        religionPending: ref(false),
-        religionError: ref() as Ref<any>,
+        data: ref() as Ref<any>,
+        pending: ref(false),
+        error: ref() as Ref<any>,
+
     }
     if (cache.data.value) {
-        refObj.religionData = cache.data
+        refObj.data = cache.data
     } else {
         const { data, pending, error } = useFetch('/api/external/master/religion', {
             method: 'GET',
             key: 'master/religion',
         })
-        refObj.religionData = data
-        refObj.religionPending = pending
-        refObj.religionError = error
+        refObj.data = data
+        refObj.pending = pending
+        refObj.error = error
     }
     return refObj
 }
@@ -116,20 +119,21 @@ async function fetchReligion() {
 async function fetchCountryRace() {
     const cache = useNuxtData('master/country-race')
     const refObj = {
-        countryRaceData: ref() as Ref<any>,
-        countryRacePending: ref(false),
-        countryRaceError: ref() as Ref<any>,
+        data: ref() as Ref<any>,
+        pending: ref(false),
+        error: ref() as Ref<any>,
+
     }
     if (cache.data.value) {
-        refObj.countryRaceData = cache.data
+        refObj.data = cache.data
     } else {
         const { data, pending, error } = useFetch('/api/external/master/country-race', {
             method: 'GET',
             key: 'master/country-race',
         })
-        refObj.countryRaceData = data
-        refObj.countryRacePending = pending
-        refObj.countryRaceError = error
+        refObj.data = data
+        refObj.pending = pending
+        refObj.error = error
     }
     return refObj
 }
@@ -137,20 +141,20 @@ async function fetchCountryRace() {
 async function fetchTitle() {
     const cache = useNuxtData('master/title')
     const refObj = {
-        tData: ref() as Ref<any>,
-        tPending: ref(false),
-        tError: ref() as Ref<any>,
+        data: ref() as Ref<any>,
+        pending: ref(false),
+        error: ref() as Ref<any>,
     }
     if (cache.data.value) {
-        refObj.tData = cache.data
+        refObj.data = cache.data
     } else {
         const { data, pending, error } = useFetch('/api/external/master/title', {
             method: 'GET',
             key: 'master/title',
         })
-        refObj.tData = data
-        refObj.tPending = pending
-        refObj.tError = error
+        refObj.data = data
+        refObj.pending = pending
+        refObj.error = error
     }
     return refObj
 }
@@ -158,20 +162,20 @@ async function fetchTitle() {
 async function fetchTitleTH() {
     const cache = useNuxtData('master/titleTH')
     const refObj = {
-        tTHData: ref() as Ref<any>,
-        tTHPending: ref(false),
-        tTHError: ref() as Ref<any>,
+        data: ref() as Ref<any>,
+        pending: ref(false),
+        error: ref() as Ref<any>,
     }
     if (cache.data.value) {
-        refObj.tTHData = cache.data
+        refObj.data = cache.data
     } else {
         const { data, pending, error } = useFetch('/api/external/master/titleTH', {
             method: 'GET',
             key: 'master/titleTH',
         })
-        refObj.tTHData = data
-        refObj.tTHPending = pending
-        refObj.tTHError = error
+        refObj.data = data
+        refObj.pending = pending
+        refObj.error = error
     }
     return refObj
 }
@@ -179,20 +183,20 @@ async function fetchTitleTH() {
 async function fetchTitleEN() {
     const cache = useNuxtData('master/titleEN')
     const refObj = {
-        tENData: ref() as Ref<any>,
-        tENPending: ref(false),
-        tENError: ref() as Ref<any>,
+        data: ref() as Ref<any>,
+        pending: ref(false),
+        error: ref() as Ref<any>,
     }
     if (cache.data.value) {
-        refObj.tENData = cache.data
+        refObj.data = cache.data
     } else {
         const { data, pending, error } = useFetch('/api/external/master/titleEN', {
             method: 'GET',
             key: 'master/titleEN',
         })
-        refObj.tENData = data
-        refObj.tENPending = pending
-        refObj.tENError = error
+        refObj.data = data
+        refObj.pending = pending
+        refObj.error = error
     }
     return refObj
 }
@@ -200,20 +204,21 @@ async function fetchTitleEN() {
 async function fetchTitleAcademic() {
     const cache = useNuxtData('master/title-academic')
     const refObj = {
-        tAcademicData: ref() as Ref<any>,
-        tAcademicPending: ref(false),
-        tAcademicError: ref() as Ref<any>,
+        data: ref() as Ref<any>,
+        pending: ref(false),
+        error: ref() as Ref<any>,
+
     }
     if (cache.data.value) {
-        refObj.tAcademicData = cache.data
+        refObj.data = cache.data
     } else {
         const { data, pending, error } = useFetch('/api/external/master/title-academic', {
             method: 'GET',
             key: 'master/title-academic',
         })
-        refObj.tAcademicData = data
-        refObj.tAcademicPending = pending
-        refObj.tAcademicError = error
+        refObj.data = data
+        refObj.pending = pending
+        refObj.error = error
     }
     return refObj
 }
@@ -221,20 +226,22 @@ async function fetchTitleAcademic() {
 async function fetchTitleSpecial() {
     const cache = useNuxtData('master/title-special')
     const refObj = {
-        tSpecialData: ref() as Ref<any>,
-        tSpecialPending: ref(false),
+        data: ref() as Ref<any>,
+        pending: ref(false),
+        error: ref() as Ref<any>,
+
     }
 
     if (cache.data.value) {
-        refObj.tSpecialData = cache.data
+        refObj.data = cache.data
     } else {
         const { data, pending, error } = useFetch('/api/external/master/title-special', {
             method: 'GET',
             key: 'master/title-special',
         })
 
-        refObj.tSpecialData = data
-        refObj.tSpecialPending = pending
+        refObj.data = data
+        refObj.pending = pending
     }
     return refObj
 }
@@ -242,19 +249,21 @@ async function fetchTitleSpecial() {
 async function fetchTitleConferred() {
     const cache = useNuxtData('master/title-conferred')
     const refObj = {
-        tConferredData: ref() as Ref<any>,
-        tConferredPending: ref(false),
+        data: ref() as Ref<any>,
+        pending: ref(false),
+        error: ref() as Ref<any>,
+
     }
 
     if (cache.data.value) {
-        refObj.tConferredData = cache.data
+        refObj.data = cache.data
     } else {
         const { data, pending, error } = useFetch('/api/external/master/title-conferred', {
             method: 'GET',
             key: 'master/title-conferred',
         })
-        refObj.tConferredData = data
-        refObj.tConferredPending = pending
+        refObj.data = data
+        refObj.pending = pending
     }
 
     return refObj
@@ -263,19 +272,21 @@ async function fetchTitleConferred() {
 async function fetchTitleMilitary() {
     const cache = useNuxtData('master/title-military')
     const refObj = {
-        tMilitaryData: ref() as Ref<any>,
-        tMilitaryPending: ref(false),
+        data: ref() as Ref<any>,
+        pending: ref(false),
+        error: ref() as Ref<any>,
+
     }
 
     if (cache.data.value) {
-        refObj.tMilitaryData = cache.data
+        refObj.data = cache.data
     } else {
         const { data, pending, error } = useFetch('/api/external/master/title-military', {
             method: 'GET',
             key: 'master/title-military',
         })
-        refObj.tMilitaryData = data
-        refObj.tMilitaryPending = pending
+        refObj.data = data
+        refObj.pending = pending
     }
     return refObj
 }
@@ -291,15 +302,24 @@ async function fetchMilitary(mStore: MasterStore) {
     return response
 }
 
-async function fetchLevel(mStore: MasterStore) {
-    const response = await useApi('/master-data/level', {
-        method: 'GET',
-        callback: (responseStatus: boolean) => {
-            mStore.$state.isLoaded.levels = responseStatus
-        },
-    })
-    mStore.setLevel(response.data.value)
-    return response
+async function fetchLevel() {
+    const cache = useNuxtData('master/level')
+    const refObj = {
+        data: ref() as Ref<any>,
+        pending: ref(false),
+    }
+
+    if (cache.data.value) {
+        refObj.data = cache.data
+    } else {
+        const { data, pending, error } = await useFetch('/api/external/master/level', {
+            method: 'GET',
+            key: 'master/level',
+        })
+        refObj.data = data
+        refObj.pending = pending
+    }
+    return refObj
 }
 
 async function fetchCertificate(mStore: MasterStore) {
@@ -341,21 +361,21 @@ async function fetchInstitute(mStore: MasterStore) {
 async function fetchPosition() {
     const cache = useNuxtData('master/position')
     const refObj = {
-        positionData: ref() as Ref<any>,
-        positionPending: ref(false),
-        positionError: ref() as Ref<any>,
+        data: ref() as Ref<any>,
+        pending: ref(false),
+        error: ref() as Ref<any>,
     }
 
     if (cache.data.value) {
-        refObj.positionData = cache.data
+        refObj.data = cache.data
     } else {
         const { data, pending, error } = useFetch('/api/external/master/position', {
             method: 'GET',
             key: 'master/position',
         })
-        refObj.positionData = data
-        refObj.positionPending = pending
-        refObj.positionError = error
+        refObj.data = data
+        refObj.pending = pending
+        refObj.error = error
     }
     return refObj
 }

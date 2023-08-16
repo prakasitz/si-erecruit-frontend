@@ -263,11 +263,11 @@ const { rules_fieldEmpty } = useFillRules()
 const formMarriage: Ref<HTMLFormElement | null> = ref<HTMLFormElement | null>(null)
 
 const { fetchTitle, fetchTitleTH, fetchReligion, fetchCountryRace, fetchProvince } = useMaster()
-const { tPending } = await fetchTitle()
-const { tTHData, tTHPending } = await fetchTitleTH()
-const { religionPending } = await fetchReligion()
-const { countryRacePending } = await fetchCountryRace()
-const { provinceData, provincePending } = await fetchProvince()
+const { pending: tPending } = await fetchTitle()
+const { data: tTHData, pending: tTHPending } = await fetchTitleTH()
+const { pending: religionPending } = await fetchReligion()
+const { pending: countryRacePending } = await fetchCountryRace()
+const { data: provinceData, pending: provincePending } = await fetchProvince()
 
 const pending = computed(() => {
     return (

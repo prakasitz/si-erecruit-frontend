@@ -17,11 +17,10 @@
                             <v-col col="3">
                                 <v-radio label="เป็นคุณวุฒิที่ใช้บรรจุ" :value="i"></v-radio>
                             </v-col>
-                            <v-col cols="9" class="py-5">
-                                <FormsEducationForm
+                            <v-col cols="9" class="py-5" v-if="education.education_list.length > 0">
+                                <LazyFormsEducationForm
                                     :education-form-model="education.education_list[i - 1]"
                                     class="mt-7"
-                                    v-if="education.education_list.length > 0"
                                     :key="i"
                                     :index="i"
                                     @update:trash="(v: number) => removeEducationByIndex(v)"
@@ -430,17 +429,13 @@ const FormEducationAndJob: Ref<HTMLFormElement | null> = ref<HTMLFormElement | n
 
 const isFilledHadJobs = reactive<any>(Array(job.had_job_list.length))
 
-const { fetchProvince, fetchPosition } = useMaster()
-const { provinceData, provincePending } = await fetchProvince()
-const { positionData, positionPending } = await fetchPosition()
+const { fetchProvince, fetchPosition, fetchLevel } = useMaster()
+const { data: provinceData, pending: provincePending } = await fetchProvince()
+const { data: positionData, pending: positionPending } = await fetchPosition()
+const { pending: levelPending } = await fetchLevel()
 
 const pending = computed(() => {
-    return provincePending.value || positionPending.value
-})
-
-await useFetch('/api/external/master/level', {
-    method: 'GET',
-    key: 'master/level',
+    return provincePending.value || positionPending.value || levelPending.value
 })
 
 function confirmToChnageHadJob() {

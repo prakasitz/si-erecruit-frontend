@@ -1,5 +1,9 @@
 <template>
-    <CandidateBaseCard v-if="!pending" :candidate-form="props.candidateForm" :form-page="{ form: formAddressAndBanking }">
+    <CandidateBaseCard
+        v-if="!pending"
+        :candidate-form="props.candidateForm"
+        :form-page="{ form: formAddressAndBanking }"
+    >
         <template #card-body>
             <v-form ref="formAddressAndBanking">
                 <v-container class="text-body-1">
@@ -326,7 +330,6 @@
 </template>
 
 <script setup lang="ts">
-
 import { usePersonalStore } from '../../stores/personal.store'
 import { storeToRefs } from 'pinia'
 
@@ -340,8 +343,8 @@ const { address, banking, license, ss } = personalStore
 const { curIsRegAddress, emerIsCurAddress, emerIsRegAddress } = storeToRefs(personalStore)
 
 const { fetchProvince, fetchCountryRace } = useMaster()
-const { provinceData, provincePending } = await fetchProvince()
-const { countryRacePending } = await fetchCountryRace()
+const { data: provinceData, pending: provincePending } = await fetchProvince()
+const { pending: countryRacePending } = await fetchCountryRace()
 
 const pending = computed(() => {
     return provincePending.value || countryRacePending.value

@@ -49,7 +49,9 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-col cols="3"> สถานศึกษา <span v-if="instituteData.length !== 0" class="text-red-darken-1"> *</span></v-col>
+            <v-col cols="3">
+                สถานศึกษา <span v-if="instituteData.length !== 0" class="text-red-darken-1"> *</span></v-col
+            >
             <v-col>
                 <v-autocomplete
                     v-model="educationFormModel.school"
@@ -176,7 +178,7 @@ const masterDataStore = useMasterDataStore()
 
 const { data: levelData } = useNuxtData('master/level')
 
-const { data: cerData, pending: cerPending } = await useFetch('/api/external/master/certificate', {
+const { data: cerData, pending: cerPending } =  await useFetch('/api/external/master/certificate', {
     method: 'GET',
     query: {
         lv: currentEduLevel,
@@ -184,7 +186,7 @@ const { data: cerData, pending: cerPending } = await useFetch('/api/external/mas
     key: 'master/certificate' + currentEduLevel.value,
     watch: [currentEduLevel],
 })
-const { data: majorData, pending: majorPending } = await useFetch('/api/external/master/major', {
+const { data: majorData, pending: majorPending } =  await useFetch('/api/external/master/major', {
     method: 'GET',
     query: {
         lv: currentEduLevel,
@@ -192,7 +194,7 @@ const { data: majorData, pending: majorPending } = await useFetch('/api/external
     key: 'master/major' + currentEduLevel.value,
     watch: [currentEduLevel],
 })
-const { data: instituteData, pending: institutePending } = await useFetch('/api/external/master/institute', {
+const { data: instituteData, pending: institutePending } =  await useFetch('/api/external/master/institute', {
     method: 'GET',
     query: {
         lv: currentEduLevel,
@@ -201,7 +203,9 @@ const { data: instituteData, pending: institutePending } = await useFetch('/api/
     watch: [currentEduLevel],
 })
 
-const test = ref(true)
+const pending = computed(() => {
+    return cerPending.value || majorPending.value || institutePending.value
+})
 
 watch(currentEduLevel, (old_edu, new_edu) => {
     console.log({

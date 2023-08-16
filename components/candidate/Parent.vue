@@ -77,10 +77,10 @@ const { rules_fieldEmpty } = useFillRules()
 const { parent } = personalStore
 
 const { fetchTitleConferred, fetchTitleTH, fetchReligion, fetchCountryRace } = useMaster()
-const { tConferredPending } = await fetchTitleConferred()
-const { tTHPending } = await fetchTitleTH()
-const { religionPending } = await fetchReligion()
-const { countryRacePending } = await fetchCountryRace()
+const { pending: tConferredPending } = await fetchTitleConferred()
+const { pending: tTHPending } = await fetchTitleTH()
+const { pending: religionPending } = await fetchReligion()
+const { pending: countryRacePending } = await fetchCountryRace()
 
 const pending = computed(() => {
     return tConferredPending.value || tTHPending.value || religionPending.value || countryRacePending.value

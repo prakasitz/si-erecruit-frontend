@@ -588,17 +588,17 @@ const {
     fetchCountryRace,
 } = useMaster()
 
-const { tTHData, tTHPending } = await fetchTitleTH()
-const { tENData, tENPending } = await fetchTitleEN()
-const { tConferredData, tConferredPending } = await fetchTitleConferred()
-const { tMilitaryData, tMilitaryPending } = await fetchTitleMilitary()
-const { tAcademicData, tAcademicPending } = await fetchTitleAcademic()
-const { tSpecialData, tSpecialPending } = await fetchTitleSpecial()
-const { countryRaceData, countryRacePending } = await fetchCountryRace()
-const { religionData, religionPending } = await fetchReligion()
+const { data: tTHData, pending: tTHPending } = await fetchTitleTH()
+const { data: tENData, pending: tENPending } = await fetchTitleEN()
+const { data: tConferredData, pending: tConferredPending } = await fetchTitleConferred()
+const { data: tMilitaryData, pending: tMilitaryPending } = await fetchTitleMilitary()
+const { data: tAcademicData, pending: tAcademicPending } = await fetchTitleAcademic()
+const { data: tSpecialData, pending: tSpecialPending } = await fetchTitleSpecial()
+const { data: countryRaceData, pending: countryRacePending } = await fetchCountryRace()
+const { data: religionData, pending: religionPending } = await fetchReligion()
 
-const { provinceData, provincePending } = await fetchProvince()
-const { bloodData, bloodPending } = await fetchBlood()
+const { data: provinceData, pending: provincePending } = await fetchProvince()
+const { data: bloodData, pending: bloodPending } = await fetchBlood()
 
 const pending = computed(() => {
     return (
