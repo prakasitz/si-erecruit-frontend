@@ -95,7 +95,7 @@
             <BtnJobAction
                 v-if="buttonShow.BtnApproveJob"
                 class="mx-1"
-                text="Approve"
+                text="approve"
                 color="green"
                 :jobId="job.job_ID"
                 :cb="approveJob"
