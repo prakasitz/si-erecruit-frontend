@@ -68,7 +68,7 @@
                     >
                         <template v-slot:item.status="{ item }">
                             <v-chip :color="profileStatusComputed(item.raw.profile_status)?.profile_status_color">
-                              123123
+                                123123
                             </v-chip>
                         </template>
                         <template v-slot:item.action="{ item }">
@@ -101,8 +101,8 @@
                     class="mx-1"
                     text="Publishable ยังไม่ทำ"
                     color="blue"
-                    :data="jobData.job_ID"
-                    :cb="suspendedProfile"
+                    :data="{ profile_IDs: profilesSelected, job_ID: jobData.job_ID }"
+                    :cb="publishableProfile"
                 />
                 <BtnProfileAction
                     v-if="buttonShow.BtnSendSAP"
@@ -146,7 +146,7 @@ definePageMeta({
 const route = useRoute()
 let jobId = route.params.id as string
 const { getProfilesByJobId, fetchJobs } = useJobManagement()
-const { suspendedProfile } = useProfile()
+const { suspendedProfile, publishableProfile } = useProfile()
 const { data: jobData, pending: jobPending } = fetchJobs(jobId)
 const { data: profilesData, pending: profilePending } = getProfilesByJobId(jobId)
 
