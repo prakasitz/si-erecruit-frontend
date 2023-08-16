@@ -74,7 +74,7 @@
             <v-row>
                 <v-col md="6" sm="12" cols="12">
                     <v-text-field
-                        v-model="props.addressModel.address_city"
+                        v-model="props.addressModel.address_amphur"
                         label="อำเภอ/เขต *"
                         hide-details
                         density="compact"

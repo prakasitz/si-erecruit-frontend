@@ -109,7 +109,7 @@
                         <v-col cols="2"> เบอร์ติดต่อ <span class="text-red-darken-1"> *</span></v-col>
                         <v-col cols="4">
                             <v-text-field
-                                v-model="marriage.ref_person.phone_number"
+                                v-model="marriage.ref_person.telephone"
                                 label=""
                                 hint="โปรดระบุ"
                                 density="compact"
@@ -206,7 +206,7 @@
                             <v-col cols="3"></v-col>
                             <v-col cols="4">
                                 <v-text-field
-                                    v-model="marriage.ref_person.address_detail.address_city"
+                                    v-model="marriage.ref_person.address_detail.address_amphur"
                                     label="อำเภอ/เขต *"
                                     hint=" โปรดระบุ"
                                     density="compact"

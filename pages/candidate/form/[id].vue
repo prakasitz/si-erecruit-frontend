@@ -376,7 +376,7 @@ onMounted(async () => {
             cur_same_address: profile.cur_same_address,
             urg_same_address: profile.urg_same_address,
             reg_address: {
-                address_city: profile.reg_amphur,
+                address_amphur: profile.reg_amphur,
                 address_district: profile.reg_district,
                 address_country: profile.reg_country,
                 address_moo: profile.reg_moo,
@@ -388,7 +388,7 @@ onMounted(async () => {
                 address_village: profile.reg_village,
             },
             cur_address: {
-                address_city: profile.cur_amphur,
+                address_amphur: profile.cur_amphur,
                 address_district: profile.cur_district,
                 address_country: profile.cur_country,
                 address_moo: profile.cur_moo,
@@ -399,8 +399,8 @@ onMounted(async () => {
                 address_soi: profile.cur_soi,
                 address_village: profile.cur_village,
             },
-            emer_address: {
-                address_city: profile.urg_amphur,
+            urg_address: {
+                address_amphur: profile.urg_amphur,
                 address_district: profile.urg_district,
                 address_country: profile.urg_country,
                 address_moo: profile.urg_moo,
@@ -466,10 +466,10 @@ onMounted(async () => {
                 frist_name: profile.ref_first_name,
                 last_name: profile.ref_last_name,
                 relationship: profile.ref_relationship,
-                phone_number: profile.ref_telephone,
+                telephone: profile.ref_telephone,
                 ref_same_address: profile.ref_same_address,
                 address_detail: {
-                    address_city: profile.ref_amphur,
+                    address_amphur: profile.ref_amphur,
                     address_district: profile.ref_district,
                     address_country: profile.ref_amphur,
                     address_moo: profile.ref_moo,
@@ -487,9 +487,9 @@ onMounted(async () => {
             education_list: await personalStore.mapEducationList(profile),
         },
         job: {
-            had_job: profile.chk_work_out ?? '0',
-            had_job_mahidol: profile.chk_work_in ?? '0',
-            had_job_list: await personalStore.mapJobList(profile),
+            chk_work_out: profile.chk_work_out ?? '0',
+            chk_work_in: profile.chk_work_in ?? '0',
+            work_out_list: await personalStore.mapJobList(profile),
             job_status: profile.cur_working,
             had_job_mahidol_detail: {
                 department: profile.work_in_org,

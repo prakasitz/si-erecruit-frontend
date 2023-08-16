@@ -18,16 +18,16 @@ export const defaultChildrenInfo = {
 }
 
 export const defaultAddress: address = {
-        address_no: '',
-        address_moo: '',
-        address_village: '',
-        address_soi: '',
-        address_road: '',
-        address_district: '',
-        address_city: '',
-        address_province: null,
-        address_postcode: '',
-        address_country: '',
+    address_no: '',
+    address_moo: '',
+    address_village: '',
+    address_soi: '',
+    address_road: '',
+    address_district: '',
+    address_amphur: '',
+    address_province: null,
+    address_postcode: '',
+    address_country: '',
 }
 
 export const defaultDialogContext = {

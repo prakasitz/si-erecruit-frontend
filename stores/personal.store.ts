@@ -75,7 +75,7 @@ export const usePersonalStore = defineStore('personal', {
                     address_soi: '',
                     address_road: '',
                     address_district: '',
-                    address_city: '',
+                    address_amphur: '',
                     address_province: null,
                     address_postcode: '',
                     address_country: '',
@@ -87,19 +87,19 @@ export const usePersonalStore = defineStore('personal', {
                     address_soi: '',
                     address_road: '',
                     address_district: '',
-                    address_city: '',
+                    address_amphur: '',
                     address_province: null,
                     address_postcode: '',
                     address_country: '',
                 },
-                emer_address: {
+                urg_address: {
                     address_no: '',
                     address_moo: '',
                     address_village: '',
                     address_soi: '',
                     address_road: '',
                     address_district: '',
-                    address_city: '',
+                    address_amphur: '',
                     address_province: null,
                     address_postcode: '',
                     address_country: '',
@@ -210,8 +210,8 @@ export const usePersonalStore = defineStore('personal', {
                 announced_from: '',
             },
             job: {
-                had_job: '0',
-                had_job_list: [
+                chk_work_out: '0',
+                work_out_list: [
                     {
                         company_name: '',
                         end_date: '',
@@ -223,7 +223,7 @@ export const usePersonalStore = defineStore('personal', {
                     },
                 ],
 
-                had_job_mahidol: '0',
+                chk_work_in: '0',
                 had_job_mahidol_detail: {
                     department: '',
                     end_date: '',
@@ -263,7 +263,7 @@ export const usePersonalStore = defineStore('personal', {
                 children_list: [],
                 ref_person: {
                     address_detail: {
-                        address_city: '',
+                        address_amphur: '',
                         address_district: '',
                         address_moo: '',
                         address_no: '',
@@ -278,7 +278,7 @@ export const usePersonalStore = defineStore('personal', {
                     ref_same_address: null,
                     frist_name: '',
                     last_name: '',
-                    phone_number: '',
+                    telephone: '',
                     relationship: '',
                     title: '',
                     id: 0,
@@ -305,11 +305,11 @@ export const usePersonalStore = defineStore('personal', {
         }
     },
     getters: {
-        HasJob: ({ job }): boolean => job.had_job == '1',
+        HasJob: ({ job }): boolean => job.chk_work_out == '1',
         IsWorking: ({ job }): boolean => job.job_status == 'กำลังทำงาน',
         IsStudying: ({ job }): boolean => job.job_status == 'กำลังศึกษาต่อ',
         IsUnemployed: ({ job }): boolean => job.job_status == 'ว่างงาน',
-        IsHasJobMahidol: ({ job }): boolean => job.had_job_mahidol == '1',
+        IsHasJobMahidol: ({ job }): boolean => job.chk_work_in == '1',
         curIsRegAddress: ({ address }): boolean => address.cur_same_address == true,
         emerIsRegAddress: ({ address }): boolean => address.urg_same_address == false,
         emerIsCurAddress: ({ address }): boolean => address.urg_same_address == true,
@@ -352,7 +352,7 @@ export const usePersonalStore = defineStore('personal', {
         },
         removeJobList(index: number) {
             index -= 1
-            this.job.had_job_list.splice(index, 1)
+            this.job.work_out_list.splice(index, 1)
         },
         removeEducationList(index: number) {
             index -= 1
@@ -362,13 +362,13 @@ export const usePersonalStore = defineStore('personal', {
             this.address.cur_address = deepCopy(this.address.reg_address)
         },
         useRegAddressOnEmerAddress() {
-            this.address.emer_address = deepCopy(this.address.reg_address)
+            this.address.urg_address = deepCopy(this.address.reg_address)
         },
         useRegAddressOnRefAddress() {
             this.marriage.ref_person.address_detail = deepCopy(this.address.reg_address)
         },
         useCurAddressOnEmerAddress() {
-            this.address.emer_address = deepCopy(this.address.cur_address)
+            this.address.urg_address = deepCopy(this.address.cur_address)
         },
         useCurAddressOnRefAddress() {
             this.marriage.ref_person.address_detail = deepCopy(this.address.cur_address)
