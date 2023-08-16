@@ -122,6 +122,26 @@ class ProfileExternal extends ExternalAPIService {
             return this.handleError(error)
         }
     }
+
+
+    public async publishProfiles(profiles: number[], event: H3Event) {
+        try {
+            const accessToken = this.getAccessToken(event)
+            const resp = await this.baseAPI.patch(`/${this.slug}/publishable`,
+                {
+                    profile_IDs: profiles,
+                },
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + accessToken,
+                    }
+                },
+            )
+            return resp.data
+        } catch (error: AxiosError | any) {
+            return this.handleError(error)
+        }
+    }
 }
 
 export const profileService = new ProfileExternal()

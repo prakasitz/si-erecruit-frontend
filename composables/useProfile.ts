@@ -9,8 +9,9 @@ export default function useProfile() {
         getUserInfo,
         getStatus,
         importProfile,
+        getProfileById,
         suspendedProfile,
-        getProfileById
+        publishableProfile
     }
 }
 
@@ -55,7 +56,7 @@ async function suspendedProfile(event: H3Event, data: { profile_IDs: number[], j
             callbackActionBtn: [
                 {
                     text: 'close',
-                    to: `/job_management/${data.job_ID}`,
+                    href: `/job_management/${data.job_ID}`,
                 },
             ],
         }
@@ -73,6 +74,47 @@ async function suspendedProfile(event: H3Event, data: { profile_IDs: number[], j
         }
     }
 }
+
+
+
+async function publishableProfile(event: H3Event, data: { profile_IDs: number[], job_ID: number }) {
+
+    const resp = await useApi(`/api/external/profile/publishable`, {
+        headers: {
+            Accept: 'application/json',
+        },
+        method: 'PATCH',
+        server: false,
+        body: data.profile_IDs
+    })
+
+    if (resp?.data?.value?.data) {
+        return {
+            status: true,
+            message: `บันทึกสำเร็จ`,
+            callbackActionBtn: [
+                {
+                    text: 'close',
+                    href: `/job_management/${data.job_ID}`,
+                },
+            ],
+        }
+    }
+    else if (resp?.error?.value?.data) {
+        return {
+            status: false,
+            message: resp?.error?.value?.data.message
+        }
+    }
+    else {
+        return {
+            status: false,
+            message: `Sorry, something went wrong.`,
+        }
+    }
+}
+
+
 
 function getProfileById(id: string) {
     return useApi(`/api/external/profile/get/${parseInt(id)}`, {
