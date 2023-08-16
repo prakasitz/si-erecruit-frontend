@@ -178,28 +178,28 @@ const masterDataStore = useMasterDataStore()
 
 const { data: levelData } = useNuxtData('master/level')
 
-const { data: cerData, pending: cerPending } =  await useFetch('/api/external/master/certificate', {
+const { data: cerData, pending: cerPending } = await useFetch('/api/external/master/certificate', {
     method: 'GET',
     query: {
         lv: currentEduLevel,
     },
-    key: 'master/certificate' + currentEduLevel.value,
+    key: 'master/certificate-' + currentEduLevel.value,
     watch: [currentEduLevel],
 })
-const { data: majorData, pending: majorPending } =  await useFetch('/api/external/master/major', {
+const { data: majorData, pending: majorPending } = await useFetch('/api/external/master/major', {
     method: 'GET',
     query: {
         lv: currentEduLevel,
     },
-    key: 'master/major' + currentEduLevel.value,
+    key: 'master/major-' + currentEduLevel.value,
     watch: [currentEduLevel],
 })
-const { data: instituteData, pending: institutePending } =  await useFetch('/api/external/master/institute', {
+const { data: instituteData, pending: institutePending } = await useFetch('/api/external/master/institute', {
     method: 'GET',
     query: {
         lv: currentEduLevel,
     },
-    key: 'master/institute' + currentEduLevel.value,
+    key: 'master/institute-' + currentEduLevel.value,
     watch: [currentEduLevel],
 })
 

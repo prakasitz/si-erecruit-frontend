@@ -18,7 +18,7 @@
                                 <v-radio label="เป็นคุณวุฒิที่ใช้บรรจุ" :value="i"></v-radio>
                             </v-col>
                             <v-col cols="9" class="py-5" v-if="education.education_list.length > 0">
-                                <LazyFormsEducationForm
+                                <FormsEducationForm
                                     :education-form-model="education.education_list[i - 1]"
                                     class="mt-7"
                                     :key="i"

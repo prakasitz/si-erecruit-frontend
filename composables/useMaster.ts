@@ -8,10 +8,10 @@ export default function useMaster() {
         loadMasterData,
         fetchProvince,
         fetchBlood,
-        fetchCertificate,
-        fetchInstitute,
         fetchLevel,
-        fetchMajor,
+        // fetchCertificate,
+        // fetchInstitute,
+        // fetchMajor,
         fetchMaritalSatatus,
         fetchPosition,
         fetchCountryRace,
@@ -56,7 +56,6 @@ async function fetchMaritalSatatus() {
         data: ref() as Ref<any>,
         pending: ref(false),
         error: ref() as Ref<any>,
-
     }
     if (cache.data.value) {
         refObj.data = cache.data
@@ -78,7 +77,6 @@ async function fetchBlood() {
         data: ref() as Ref<any>,
         pending: ref(false),
         error: ref() as Ref<any>,
-
     }
     if (cache.data.value) {
         refObj.data = cache.data
@@ -100,7 +98,6 @@ async function fetchReligion() {
         data: ref() as Ref<any>,
         pending: ref(false),
         error: ref() as Ref<any>,
-
     }
     if (cache.data.value) {
         refObj.data = cache.data
@@ -122,7 +119,6 @@ async function fetchCountryRace() {
         data: ref() as Ref<any>,
         pending: ref(false),
         error: ref() as Ref<any>,
-
     }
     if (cache.data.value) {
         refObj.data = cache.data
@@ -207,7 +203,6 @@ async function fetchTitleAcademic() {
         data: ref() as Ref<any>,
         pending: ref(false),
         error: ref() as Ref<any>,
-
     }
     if (cache.data.value) {
         refObj.data = cache.data
@@ -229,7 +224,6 @@ async function fetchTitleSpecial() {
         data: ref() as Ref<any>,
         pending: ref(false),
         error: ref() as Ref<any>,
-
     }
 
     if (cache.data.value) {
@@ -252,7 +246,6 @@ async function fetchTitleConferred() {
         data: ref() as Ref<any>,
         pending: ref(false),
         error: ref() as Ref<any>,
-
     }
 
     if (cache.data.value) {
@@ -275,7 +268,6 @@ async function fetchTitleMilitary() {
         data: ref() as Ref<any>,
         pending: ref(false),
         error: ref() as Ref<any>,
-
     }
 
     if (cache.data.value) {
@@ -312,7 +304,7 @@ async function fetchLevel() {
     if (cache.data.value) {
         refObj.data = cache.data
     } else {
-        const { data, pending, error } = await useFetch('/api/external/master/level', {
+        const { data, pending, error } = useFetch('/api/external/master/level', {
             method: 'GET',
             key: 'master/level',
         })
@@ -322,41 +314,80 @@ async function fetchLevel() {
     return refObj
 }
 
-async function fetchCertificate(mStore: MasterStore) {
-    console.log('fetchCertificate')
-    const response = await useApi('/master-data/certificate', {
-        method: 'GET',
-        callback: (responseStatus: boolean) => {
-            mStore.$state.isLoaded.certificates = responseStatus
-        },
-    })
-    mStore.setCertificate(response.data.value)
-    return response
-}
+// async function fetchCertificate(level: Ref<string>) {
+//     console.log('level', level.value)
+//     const cache = useNuxtData('master/certificate-' + level.value)
+//     const refObj = {
+//         data: ref() as Ref<any>,
+//         pending: ref(false),
+//     }
 
-async function fetchMajor(mStore: MasterStore) {
-    console.log('fetchMajor')
+//     if (cache.data.value) {
+//         refObj.data = cache.data
+//     } else {
+//         const { data, pending, error } = useFetch('/api/external/master/certificate', {
+//             method: 'GET',
+//             key: 'master/certificate-' + level.value,
+//             query: {
+//                 lv: level,
+//             },
+//             watch: [level],
+//         })
+//         refObj.data = data
+//         refObj.pending = pending
+//     }
+//     return refObj
+// }
 
-    const response = await useApi('/master-data/major', {
-        method: 'GET',
-        callback: (responseStatus: boolean) => {
-            mStore.$state.isLoaded.majors = responseStatus
-        },
-    })
-    mStore.setMajor(response.data.value)
-    return response
-}
+// async function fetchMajor(level: Ref<string>) {
+//     console.log('level', level.value)
+//     const cache = useNuxtData('master/major-' + level.value)
+//     const refObj = {
+//         data: ref() as Ref<any>,
+//         pending: ref(false),
+//     }
 
-async function fetchInstitute(mStore: MasterStore) {
-    const response = await useApi('/master-data/institute', {
-        method: 'GET',
-        callback: (responseStatus: boolean) => {
-            mStore.$state.isLoaded.institutes = responseStatus
-        },
-    })
-    mStore.setInstitute(response.data.value)
-    return response
-}
+//     if (cache.data.value) {
+//         refObj.data = cache.data
+//     } else {
+//         const { data, pending, error } = useFetch('/api/external/master/major', {
+//             method: 'GET',
+//             key: 'master/major-' + level.value,
+//             query: {
+//                 lv: level,
+//             },
+//             watch: [level],
+//         })
+//         refObj.data = data
+//         refObj.pending = pending
+//     }
+//     return refObj
+// }
+
+// async function fetchInstitute(level: Ref<string>) {
+//     console.log('level', level.value)
+//     const cache = useNuxtData('master/institute-' + level.value)
+//     const refObj = {
+//         data: ref() as Ref<any>,
+//         pending: ref(false),
+//     }
+
+//     if (cache.data.value) {
+//         refObj.data = cache.data
+//     } else {
+//         const { data, pending, error } = useFetch('/api/external/master/institute', {
+//             method: 'GET',
+//             key: 'master/institute-' + level.value,
+//             query: {
+//                 lv: level,
+//             },
+//             watch: [level],
+//         })
+//         refObj.data = data
+//         refObj.pending = pending
+//     }
+//     return refObj
+// }
 
 async function fetchPosition() {
     const cache = useNuxtData('master/position')
