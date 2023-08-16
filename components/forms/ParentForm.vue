@@ -134,7 +134,7 @@
     </v-card>
 </template>
 <script setup lang="ts">
-import { parent_info } from '~/stores/interface/personal_information.interface'
+import { parent_info } from '~/utils/interface/personal_information.interface'
 
 export interface Props {
     parentFormModel: parent_info
@@ -180,3 +180,4 @@ const hints = {
     personalID: 'hint: ไม่มี ให้ปล่อยว่าง',
 }
 </script>
+~/utils/interface/personal_information.interface

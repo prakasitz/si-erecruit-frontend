@@ -23,7 +23,7 @@
                 <v-col cols="4">ชื่อ-นามสกุล (ภาษาไทย) <span class="text-red-darken-1"> *</span></v-col>
                 <v-col cols="4">
                     <v-text-field
-                        v-model="childFormModel.frist_name"
+                        v-model="childFormModel.first_name"
                         label="ชื่อ"
                         density="compact"
                         variant="outlined"
@@ -94,7 +94,7 @@
                 <v-col cols="3"
                     ><v-autocomplete
                         :rules="rules_fieldEmpty"
-                        v-model="childFormModel.ethnicity"
+                        v-model="childFormModel.race"
                         label="กรุณาเลือก"
                         density="compact"
                         variant="outlined"
@@ -144,7 +144,7 @@
 </template>
 
 <script setup lang="ts">
-import { children_info } from '~/stores/interface/personal_information.interface'
+import { children_info } from '~/utils/interface/personal_information.interface'
 import { usePersonalStore } from '~/stores/personal.store'
 
 export interface Props {
@@ -164,13 +164,13 @@ const { data: provinceData } = useNuxtData('master/province')
 const childFormModel = reactive<children_info>({
     id: props.index,
     title: '',
-    frist_name: '',
+    first_name: '',
     last_name: '',
     id_card: '',
     birth_date: '',
     child_welfare: '',
     birth_province: null,
-    ethnicity: null,
+    race: null,
     nationality: null,
     religion: '',
 })
@@ -183,3 +183,4 @@ onUnmounted(() => {
     marriage.children_list.pop()
 })
 </script>
+~/utils/interface/personal_information.interface

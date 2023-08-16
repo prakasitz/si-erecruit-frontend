@@ -4,7 +4,7 @@
     "private": true,
     "scripts": {
         "build": "nuxt build",
-        "predev": "node predev.js",
+        "predev": "node ./predev1.js",
         "dev": "nuxt dev --dotenv .env.local",
         "generate": "nuxt generate",
         "preview": "nuxt preview --dotenv .env.local",

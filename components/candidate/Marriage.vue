@@ -69,7 +69,7 @@
                         <v-col cols="4">
                             <v-text-field
                                 :rules="rules_fieldEmpty"
-                                v-model="marriage.ref_person.frist_name"
+                                v-model="marriage.ref_person.first_name"
                                 label="ชื่อ"
                                 hint="โปรดระบุ"
                                 density="compact"
@@ -253,7 +253,7 @@
 <script setup lang="ts">
 import { usePersonalStore } from '../../stores/personal.store'
 import { CandidateForm } from '~/utils/types'
-import { address } from '~/stores/interface/personal_information.interface'
+import { address } from '~/utils/interface/personal_information.interface'
 
 const props = defineProps<{
     candidateForm: CandidateForm
@@ -306,3 +306,4 @@ watch(
     }
 )
 </script>
+~/utils/interface/personal_information.interface

@@ -463,7 +463,7 @@ onMounted(async () => {
             num_of_chlid: profile.number_of_children,
             ref_person: {
                 title: profile.ref_title_name,
-                frist_name: profile.ref_first_name,
+                first_name: profile.ref_first_name,
                 last_name: profile.ref_last_name,
                 relationship: profile.ref_relationship,
                 telephone: profile.ref_telephone,
@@ -563,6 +563,7 @@ onMounted(async () => {
                 language_speak: profile.other_language_speak,
                 txt_language_read: profile.txt_other_language_read,
                 txt_language_write: profile.txt_other_language_write,
+                txt_language_speak: profile.txt_other_language_speak,
             },
 
             computer_programs: profile.computer_programs,

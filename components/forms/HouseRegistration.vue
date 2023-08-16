@@ -128,7 +128,7 @@
 </template>
 
 <script setup lang="ts">
-import { address } from '~/stores/interface/personal_information.interface'
+import { address } from '~/utils/interface/personal_information.interface'
 
 export interface Props {
     isDisabled: boolean
@@ -144,3 +144,4 @@ const props = withDefaults(defineProps<Props>(), {
 const { data: provinceData } = useNuxtData('master/province')
 const { data: countryRaceData } = useNuxtData('master/country-race')
 </script>
+~/utils/interface/personal_information.interface

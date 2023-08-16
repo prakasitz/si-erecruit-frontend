@@ -412,7 +412,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
 import { usePersonalStore } from '../../stores/personal.store'
-import { IEducation, IJob, job, education } from '~/stores/interface/personal_information.interface'
+import { IEducation, IJob, job, education } from '~/utils/interface/personal_information.interface'
 import { storeToRefs } from 'pinia'
 
 import { CandidateForm } from '~/utils/types'
@@ -602,3 +602,4 @@ onBeforeMount(() => {
     }
 })
 </script>
+~/utils/interface/personal_information.interface

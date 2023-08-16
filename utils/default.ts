@@ -1,4 +1,4 @@
-import { address, job } from '~/stores/interface/personal_information.interface'
+import { address, job } from '~/utils/interface/personal_information.interface'
 import { VueDatePickerProps } from '@vuepic/vue-datepicker'
 import { btnShowWstatus } from './types'
 

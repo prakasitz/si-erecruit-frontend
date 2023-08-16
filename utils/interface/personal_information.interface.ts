@@ -1,5 +1,20 @@
 import { CompensationOption, HavingOption, MarriageIncomeOption, TalentLevel, YesNo } from '~/utils/types'
 
+export interface IPersonalStore {
+    job_position: any
+    personal_info: IPersonalInfo
+    address: IAddressInfo
+    banking: IBankingInfo
+    license: ILisence
+    ss: ISocailSecurityOfficeInfo
+    education: IEducation
+    talent: ITalent
+    job: IJob
+    parent: IParent
+    marriage: IMarriage
+    tax: ITax
+}
+
 export interface IJobPosition {}
 
 export interface IPersonalInfo {
@@ -156,13 +171,13 @@ export interface address {
 export interface children_info {
     id: number
     title: string
-    frist_name: string
+    first_name: string
     last_name: string
     id_card: string
     birth_date: string
     birth_province: string | null
     nationality: string | null
-    ethnicity: string | null
+    race: string | null
     religion: string
     child_welfare: string
 }
@@ -276,7 +291,7 @@ export interface language {
 export interface ref_person {
     id: number
     title: string
-    frist_name: string
+    first_name: string
     last_name: string
     relationship: string
     telephone: string

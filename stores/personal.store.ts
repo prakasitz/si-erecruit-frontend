@@ -1,42 +1,11 @@
-import {
-    IAddressInfo,
-    IBankingInfo,
-    IEducation,
-    IJob,
-    ILisence,
-    IMarriage,
-    IParent,
-    IPersonalInfo,
-    ISocailSecurityOfficeInfo,
-    ITalent,
-    ITax,
-    address,
-    education,
-    job,
-    job_mahidol,
-} from './interface/personal_information.interface'
+import { IPersonalStore, children_info, education, job } from '../utils/interface/personal_information.interface'
 
 import { Profile } from '~/utils/types'
 
 import { defineStore } from 'pinia'
 
-interface State {
-    job_position: any
-    personal_info: IPersonalInfo
-    address: IAddressInfo
-    banking: IBankingInfo
-    license: ILisence
-    ss: ISocailSecurityOfficeInfo
-    education: IEducation
-    talent: ITalent
-    job: IJob
-    parent: IParent
-    marriage: IMarriage
-    tax: ITax
-}
-
 export const usePersonalStore = defineStore('personal', {
-    state: (): State => {
+    state: (): IPersonalStore => {
         return {
             job_position: {},
             personal_info: {
@@ -276,7 +245,7 @@ export const usePersonalStore = defineStore('personal', {
                         id: 0,
                     },
                     ref_same_address: null,
-                    frist_name: '',
+                    first_name: '',
                     last_name: '',
                     telephone: '',
                     relationship: '',
@@ -372,6 +341,39 @@ export const usePersonalStore = defineStore('personal', {
         },
         useCurAddressOnRefAddress() {
             this.marriage.ref_person.address_detail = deepCopy(this.address.cur_address)
+        },
+
+        async mapChildrenList(rawData: Profile) {
+            const children_list: children_info[] = []
+
+            for (let i = 1; i <= 3; i++) {
+                let child = `child${i}` as 'child1' | 'child2' | 'child3'
+                const child_obj: children_info = {
+                    id: i,
+                    title: rawData[`${child}_title_name`],
+                    first_name: rawData[`${child}_first_name`],
+                    last_name: rawData[`${child}_last_name`],
+                    id_card: rawData[`${child}_id_card_number`],
+                    birth_date: rawData[`${child}_birth_date`],
+                    birth_province: rawData[`${child}_province`],
+                    nationality: rawData[`${child}_nationality`],
+                    race: rawData[`txt_${child}_race`] || rawData[`${child}_race`],
+                    religion: rawData[`txt_${child}_religion`] || rawData[`${child}_religion`],
+                    child_welfare: rawData[`${child}_welfare`],
+                    // legit_date: rawData[`${child}_legit_date`],
+                    // legit_no: rawData[`${child}_legit_no`],
+                    // bd_cert_date: rawData[`${child}_bd_cert_date`],
+                    // bd_cert_no: rawData[`${child}_bd_cert_no`],
+                }
+
+                if (await checkObjectPropertiesNull(child_obj)) {
+                    break
+                }
+
+                children_list.push(child_obj)
+            }
+
+            return children_list
         },
 
         async mapEducationList(rawData: Profile) {
