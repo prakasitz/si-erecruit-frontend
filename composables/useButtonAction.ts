@@ -29,7 +29,7 @@ const approveJob = async (event: any, item_id: number) => {
                 callbackActionBtn: [
                     {
                         text: 'close',
-                        to: '/job_management',
+                        href: `/job_management/${item_id}`,
                     },
                 ],
             }
