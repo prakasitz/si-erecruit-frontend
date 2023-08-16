@@ -17,6 +17,16 @@ router.post(
     })
 )
 
+router.put(
+    '/:id',
+    defineEventHandler(async (event) => {
+        const id = getRouterParam(event, 'id')
+        if (!id) throw BadRequestError('id is required')
+        const resp = await profileService.get(event, { profile_ID: id })
+        return resp
+    })
+)
+
 router.post(
     '/import',
     defineEventHandler(async (event) => {

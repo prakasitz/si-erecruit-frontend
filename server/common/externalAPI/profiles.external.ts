@@ -3,7 +3,7 @@ import { ExternalAPIService } from './ExternalAPIService'
 import { H3Event } from 'h3'
 import * as fs from 'fs'
 import FormData from 'form-data'
-import { FileUpload } from '../../../utils/types'
+import { FileUpload, Profile } from '../../../utils/types'
 import { UnauthorizedError } from '../../../utils/default'
 
 class ProfileExternal extends ExternalAPIService {
@@ -12,11 +12,89 @@ class ProfileExternal extends ExternalAPIService {
         super()
     }
 
+    private generateProfileJSON(data: any): Profile {
+        const profile: Profile = {
+            title_name_th: data.title_name_th,
+            title_name_en: data.title_name_en,
+            title_special: data.title_special,
+            title_academic: data.title_academic,
+            title_military: data.title_military,
+            title_conferred: data.title_conferred,
+            nameTH: data.first_name_th,
+            lastnameTH: data.last_name_th,
+            // nickname_th: data.nickname_th,
+            first_name_en: data.first_name_en,
+            last_name_en: data.last_name_en,
+            email_address: data.email_address,
+            birth_date: data.birth_date,
+            province_when: data.province_when,
+            age_year: data.age_year,
+            age_month: data.age_month,
+            id_card_number: data.id_card_number,
+            id_card_amphur: data.id_card_amphur,
+            id_card_province: data.id_card_province,
+            id_card_issue_date: data.id_card_issue_date,
+            id_card_expire_date: data.id_card_expire_date,
+            height: data.height,
+            weight: data.weight,
+            blood_type: data.blood_type,
+            race: data.race,
+            nationality: data.nationality,
+            religion: data.religion,
+
+
+        }
+
+        return profile
+    }
+
+    public async submit(event: H3Event, { profile_ID }: { profile_ID: string }) {
+        if (!profile_ID) throw new Error('profile_ID is required')
+        try {
+            const user = event.context?.user
+            if (!user) throw UnauthorizedError("User doesn't exist")
+            if (user.role.includes('CANDIDATE', 'HR')) throw UnauthorizedError("You don't have permission")
+            const accessToken = this.getAccessToken(event)
+            const resp = await this.baseAPI.put(
+                `/${this.slug}/update/${profile_ID}`,
+                {},
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + accessToken,
+                    },
+                }
+            )
+        } catch (error: AxiosError | any) {
+            return this.handleError(error)
+        }
+    }
+
+    public async draft(event: H3Event, { profile_ID }: { profile_ID: string }) {
+        if (!profile_ID) throw new Error('profile_ID is required')
+        try {
+            const user = event.context?.user
+            if (!user) throw UnauthorizedError("User doesn't exist")
+            if (user.role.includes('CANDIDATE', 'HR')) throw UnauthorizedError("You don't have permission")
+
+            const accessToken = this.getAccessToken(event)
+            const resp = await this.baseAPI.put(
+                `/${this.slug}/draft/${profile_ID}`,
+                {},
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + accessToken,
+                    },
+                }
+            )
+        } catch (error: AxiosError | any) {
+            return this.handleError(error)
+        }
+    }
+
     public async get(event: H3Event, { profile_ID }: { profile_ID: string }) {
         if (!profile_ID) throw new Error('profile_ID is required')
         try {
             const user = event.context?.user
-            console.log(user)
             if (!user) throw UnauthorizedError("User doesn't exist")
 
             if (user.role.includes('CANDIDATE')) throw UnauthorizedError("You don't have permission")
