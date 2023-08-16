@@ -11,17 +11,19 @@ export interface Props {
     jobId: number
     cb?: any
 }
-const { dialogConfirm, showDialog } = useDialog()
+const { dialogWarning, dialogConfirm, showDialog } = useDialog()
 const { suspendedProfile, publishableProfile } = useProfile()
 const props = defineProps<Props>()
 
-const confirmActionItem = (event: Event, item: any) => {
+const confirmActionItem = async (event: Event, item: any) => {
     let isValidate = false
 
     if (props.text == 'verify') {
-        isValidate = verifyValidate()
+        isValidate = await verifyValidate()
     } else if (props.text == 'publish') {
-        isValidate = publishValidate()
+        isValidate = await publishValidate()
+    } else if (props.text == 'approve') {
+        isValidate = await approveValidate()
     } else {
         isValidate = true
     }
@@ -30,8 +32,63 @@ const confirmActionItem = (event: Event, item: any) => {
         showConfirmComponent()
     }
 }
+const approveValidate = async () => {
+    await refreshNuxtData('getProfilesByJobId')
+    const profile = useNuxtData<JobWithProfile>('getProfilesByJobId').data.value
+    let haveVerified: number = 0
+    profile?.profile.map((item) => {
+        item.profile_status == 5 && (haveVerified = haveVerified + 1)
+    })
 
-const publishValidate = () => {
+    if (!haveVerified) {
+        const dialog = dialogWarning()
+
+        showDialog(
+            {
+                title: `Something went wrong.`,
+                dialogColor: 'blue',
+                message: `ต้องมี Prolile สถานะ Verified อย่างน้อย 1 Prolile`,
+                actionButtons: [
+                    {
+                        text: 'Cancel',
+                        color: 'gray',
+                    },
+                ],
+                persistent: true,
+            },
+            dialog
+        )
+    } else {
+        const dialog = dialogConfirm()
+        showDialog(
+            {
+                title: `Confirm to publish this job`,
+                dialogColor: 'amber',
+                message: `ทั้งหมด <b>${haveVerified}</b> Profile ที่ถูกดำเนินการ <br/>ต้องการ Approve Job นี้หรือไม่?`,
+                item: {
+                    id: props.jobId,
+                },
+                actionButtons: [
+                    {
+                        text: `Approved`,
+                        variant: 'elevated',
+                        color: props.color,
+                        cb: props.cb,
+                    },
+                    {
+                        text: 'Cancel',
+                        color: 'gray',
+                    },
+                ],
+                persistent: true,
+            },
+            dialog
+        )
+    }
+    return false
+}
+const publishValidate = async () => {
+    await refreshNuxtData('getProfilesByJobId')
     const profile = useNuxtData<JobWithProfile>('getProfilesByJobId').data.value
     let profileListID: number[] = []
     profile?.profile.map((item) => {
@@ -76,12 +133,11 @@ const publishValidate = () => {
         )
         return false
     } else {
-        
         return true
     }
 }
-
-const verifyValidate = () => {
+const verifyValidate = async () => {
+    await refreshNuxtData('getProfilesByJobId')
     const profile = useNuxtData<JobWithProfile>('getProfilesByJobId').data.value
     let submitted = 0
     let publishAsuspend = 0
