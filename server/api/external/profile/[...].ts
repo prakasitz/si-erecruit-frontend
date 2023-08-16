@@ -49,7 +49,8 @@ router.patch(
     '/suspended',
     defineEventHandler(async (event) => {
         const body = await readBody(event)
-        // if (!jobId || !isStringNumber(jobId)) throw BadRequestError('Job ID must be a number')
+        let canBeStatus = [1, 2]
+
         const tokenOrUndefined = getCookie(event, 'access_token')
         if (!tokenOrUndefined) return TokenNotFoundError()
 
@@ -64,7 +65,48 @@ router.patch(
         const list_status = checkStatus.data;
         let cantChangeProfiles: number[] = []
         list_status.map((item: { profile_ID: number; profile_status: number }) => {
-            if (item.profile_status < 1 || item.profile_status > 2) {
+
+            if (!canBeStatus.includes(item.profile_status)) {
+                cantChangeProfiles.push(item.profile_ID)
+            }
+        })
+
+        console.log(cantChangeProfiles)
+        if (cantChangeProfiles.length > 0) {
+            throw createError({
+                statusCode: 400,
+                message: 'Cannot update these profiles.',
+            })
+        }
+        console.log(cantChangeProfiles.length > 0)
+
+        const response = await profileService.suspenedProfiles(body, event)
+        return response
+    })
+)
+
+router.patch(
+    '/publishable',
+    defineEventHandler(async (event) => {
+        const body = await readBody(event)
+        let canBeStatus = [1, 3]
+
+        const tokenOrUndefined = getCookie(event, 'access_token')
+        if (!tokenOrUndefined) return TokenNotFoundError()
+
+        const checkStatus = await profileService.checkStatus(body, event)
+
+        if (!checkStatus.data) {
+            throw createError({
+                statusCode: 400,
+                message: 'Not found any Profiles.',
+            })
+        }
+
+        const list_status = checkStatus.data;
+        let cantChangeProfiles: number[] = []
+        list_status.map((item: { profile_ID: number; profile_status: number }) => {
+            if (!canBeStatus.includes(item.profile_status)) {
                 cantChangeProfiles.push(item.profile_ID)
             }
         })
@@ -75,9 +117,8 @@ router.patch(
                 message: 'Cannot update these profiles.',
             })
         }
-        console.log(cantChangeProfiles.length > 0)
 
-        const response = await profileService.suspenedProfiles(body, event)
+        const response = await profileService.publishProfiles(body, event)
         return response
     })
 )
