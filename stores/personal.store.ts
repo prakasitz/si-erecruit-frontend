@@ -2,6 +2,8 @@ import { IPersonalStore, children_info, education, job } from '../utils/interfac
 
 import { Profile } from '~/utils/types'
 
+import { checkObjectPropertiesNull, deepCopy } from '../utils/object'
+
 import { defineStore } from 'pinia'
 
 export const usePersonalStore = defineStore('personal', {
@@ -349,7 +351,6 @@ export const usePersonalStore = defineStore('personal', {
             for (let i = 1; i <= 3; i++) {
                 let child = `child${i}` as 'child1' | 'child2' | 'child3'
                 const child_obj: children_info = {
-                    id: i,
                     title: rawData[`${child}_title_name`],
                     first_name: rawData[`${child}_first_name`],
                     last_name: rawData[`${child}_last_name`],
@@ -357,8 +358,8 @@ export const usePersonalStore = defineStore('personal', {
                     birth_date: rawData[`${child}_birth_date`],
                     birth_province: rawData[`${child}_province`],
                     nationality: rawData[`${child}_nationality`],
-                    race: rawData[`txt_${child}_race`] || rawData[`${child}_race`],
-                    religion: rawData[`txt_${child}_religion`] || rawData[`${child}_religion`],
+                    race: rawData[`${child}_race`] || rawData[`txt_${child}_race`],
+                    religion: rawData[`${child}_religion`] || rawData[`txt_${child}_religion`],
                     child_welfare: rawData[`${child}_welfare`],
                     // legit_date: rawData[`${child}_legit_date`],
                     // legit_no: rawData[`${child}_legit_no`],
@@ -370,6 +371,7 @@ export const usePersonalStore = defineStore('personal', {
                     break
                 }
 
+                child_obj.id = i
                 children_list.push(child_obj)
             }
 
