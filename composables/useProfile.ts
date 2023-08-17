@@ -1,7 +1,11 @@
+import { storeToRefs } from 'pinia'
+import { usePersonalStore } from '~/stores/personal.store'
 import { Profile } from '~/utils/types'
 
 export default function useProfile() {
     return {
+        submit,
+        draft,
         loginCandidate,
         getUserInfo,
         getStatus,
@@ -15,6 +19,33 @@ async function loginCandidate() {}
 async function getUserInfo() {}
 
 async function getStatus() {}
+
+async function submit(id: string) {
+    const personalStore = usePersonalStore()
+    const _data = personalStore.$state
+    _data.marriage.children_list.push({
+        birth_date: '2021-09-09',
+        birth_province: '23',
+        child_welfare: '1',
+        first_name: 'สมชาย',
+        id: 1,
+        id_card: '1234567890123',
+        last_name: 'สมหญิง',
+        nationality: 'TH',
+        race: 'TH',
+        religion: '01',
+        title: 'ด.ช.',
+    })
+    await useApi(`/api/external/profile/draft/${parseInt(id)}`, {
+        body: {
+            ..._data,
+        },
+        method: 'PUT',
+        key: 'submit',
+    })
+}
+
+async function draft() {}
 
 function getProfileById(id: string) {
     return useApi(`/api/external/profile/get/${parseInt(id)}`, {

@@ -255,6 +255,7 @@
             </v-col>
         </v-row>
         <br />
+        <v-btn @click="onSubmited">บันทึกข้อมูล</v-btn>
     </div>
 </template>
 
@@ -328,13 +329,19 @@ const eye1 = ref(false)
 const eye2 = ref(false)
 const panelShow = ref('secret')
 
-if (isCandidate.value) {
-    setPageLayout('defaultcandidate')
-} else {
-    setPageLayout('default')
+const onSubmited = async () => {
+    const { submit } = useProfile()
+    await submit(route.params.id as string)
+    console.log('submited')
 }
 
 onMounted(async () => {
+    if (isCandidate.value) {
+        setPageLayout('defaultcandidate')
+    } else {
+        setPageLayout('default')
+    }
+
     let profile = data.value as Profile
     personalStore.$patch({
         personal_info: {
@@ -461,6 +468,7 @@ onMounted(async () => {
         marriage: {
             status: profile.marital_status,
             num_of_chlid: profile.number_of_children,
+            children_list: await personalStore.mapChildrenList(profile),
             ref_person: {
                 title: profile.ref_title_name,
                 first_name: profile.ref_first_name,
