@@ -14,6 +14,8 @@
                         v-model="props.childFormModel.title"
                         :items="tData"
                         :rules="rules_fieldEmpty"
+                        :item-title="'long_text'"
+                        :item-value="'form_of_address_key'"
                     ></v-select>
                 </v-col>
             </v-row>
@@ -74,39 +76,45 @@
                 </v-col>
                 <v-col cols="3"> จังหวัดที่เกิด <span class="text-red-darken-1"> *</span></v-col>
                 <v-col cols="3">
-                    <v-select
+                    <v-autocomplete
                         :rules="rules_fieldEmpty"
                         v-model="props.childFormModel.birth_province"
                         density="compact"
                         variant="outlined"
-                        label="Select"
-                        :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-                    ></v-select
+                        label="กรุณาเลือก"
+                        :items="provinceData"
+                        :item-title="'province_name'"
+                        :item-value="'province_code'"
+                    ></v-autocomplete
                 ></v-col>
             </v-row>
 
             <v-row>
                 <v-col cols="3"> สัญชาติ <span class="text-red-darken-1"> *</span></v-col>
                 <v-col cols="3"
-                    ><v-select
+                    ><v-autocomplete
                         :rules="rules_fieldEmpty"
                         v-model="props.childFormModel.race"
                         label="กรุณาเลือก"
                         density="compact"
                         variant="outlined"
-                        :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-                    ></v-select
+                        :items="countryRaceData"
+                        :item-title="'nationality'"
+                        :item-value="'cty'"
+                    ></v-autocomplete
                 ></v-col>
                 <v-col cols="3"> เชื้อชาติ <span class="text-red-darken-1"> *</span></v-col>
                 <v-col cols="3">
-                    <v-select
+                    <v-autocomplete
                         :rules="rules_fieldEmpty"
                         v-model="props.childFormModel.nationality"
                         label="กรุณาเลือก"
                         density="compact"
                         variant="outlined"
-                        :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-                    ></v-select
+                        :items="countryRaceData"
+                        :item-title="'nationality'"
+                        :item-value="'cty'"
+                    ></v-autocomplete
                 ></v-col>
             </v-row>
             <v-row>

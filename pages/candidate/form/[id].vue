@@ -297,10 +297,9 @@ const route = useRoute()
 const masterDataStore = useMasterDataStore()
 const personalStore = usePersonalStore()
 const userStore = useUserStore()
+
 const { isItemsLoaded } = storeToRefs(masterDataStore)
-const { calAge } = storeToRefs(personalStore)
 const { isCandidate } = storeToRefs(userStore)
-const { loadMasterData } = useMaster()
 
 const { getProfileById } = useProfile()
 const { data, pending, error } = await getProfileById(route.params.id as string)
@@ -339,14 +338,31 @@ onMounted(async () => {
     let profile = data.value as Profile
     personalStore.$patch({
         personal_info: {
+            title_name_th: profile.title_name_th,
+            title_name_en: profile.title_name_en,
+
+            title_special: profile.title_special,
+            title_academic: profile.title_academic,
+            title_military: profile.title_military,
+
+            title_conferred: profile.title_conferred,
+
             first_name_th: profile.nameTH,
             last_name_th: profile.lastnameTH,
             first_name_en: profile.first_name_en,
             last_name_en: profile.last_name_en,
             email_address: profile.email_address,
+            province_when: profile.province_when,
             birth_date: profile.birth_date,
             height: profile.height,
             weight: profile.weight,
+
+            blood_type: profile.blood_type,
+            nationality: profile.nationality,
+            race: profile.race,
+            religion: profile.religion,
+
+            military_status: profile.military,
 
             id_card_number: profile.id_card_number,
             id_card_issue_date: profile.id_card_issue_date,
@@ -468,12 +484,12 @@ onMounted(async () => {
         },
         education: {
             education_select: 1,
-            education_list: personalStore.mapEducationList(profile),
+            education_list: await personalStore.mapEducationList(profile),
         },
         job: {
             had_job: profile.chk_work_out ?? '0',
             had_job_mahidol: profile.chk_work_in ?? '0',
-            had_job_list: personalStore.mapJobList(profile),
+            had_job_list: await personalStore.mapJobList(profile),
             job_status: profile.cur_working,
             had_job_mahidol_detail: {
                 department: profile.work_in_org,
@@ -508,25 +524,6 @@ onMounted(async () => {
             },
         },
         tax: {
-            /*
-            "child_tax": "มี",
-            "child_tax_amount": "0",
-            "child_amount_not_att_school": "0",
-            "child_amount_studying": "0",
-            "child_amount_graduating": "0",
-            "loan": "ไม่มี",
-            "loan_baht": "12452",
-            "insurance": "มี",
-            "insurance_baht": "0456",
-            "donation": "ไม่มี",
-            "donation_baht": "0",
-            "fund": "ไม่มี",
-            "fund_baht": "64545",
-            "money_at_spouse": null,
-            "money_at_spouse_insurance": null,
-            "money_at_spouse_insurance_baht": null,
-            "deductible_parents": "บิดาและมารดา",
-            */
             num_of_child: profile.child_tax_amount,
             chlid_nonschool: profile.child_amount_not_att_school,
             chlid_school: profile.child_amount_studying,
@@ -545,31 +542,6 @@ onMounted(async () => {
             parent_support: profile.deductible_parents,
         },
         talent: {
-            /** 
-            "typing_th": null,
-            "typing_en": null,
-            "computer_programs": null,
-            "eng_speak": "อื่น ๆ",
-            "txt_eng_speak": null,
-            "eng_read": "พอใช้",
-            "txt_eng_read": null,
-            "eng_write": "พอใช้",
-            "txt_eng_write": null,
-            "language_test": "605",
-            "language_score": "990",
-            "other_language": null,
-            "other_language_speak": null,
-            "txt_other_language_speak": null,
-            "other_language_read": null,
-            "txt_other_language_read": null,
-            "other_language_write": null,
-            "txt_other_language_write": null,
-            "sports": null,
-            "driver_license": "50467939",
-            "other_talents": null,
-            "specialization": null,
-            "announced_from" : null
-            */
             typing_th: profile.typing_th,
             typing_en: profile.typing_en,
 
@@ -593,7 +565,6 @@ onMounted(async () => {
                 txt_language_write: profile.txt_other_language_write,
             },
 
-
             computer_programs: profile.computer_programs,
             other_talents: profile.other_talents,
             specialization: profile.specialization,
@@ -602,10 +573,6 @@ onMounted(async () => {
             announced_from: profile.announced_from,
         },
     })
-    // console.log('isItemsLoaded', isItemsLoaded.value)
-    // if (!isItemsLoaded.value) {
-    //     await loadMasterData()
-    // }
 })
 
 console.log(useRoute().name)

@@ -3,10 +3,10 @@ import { CompensationOption, HavingOption, MarriageIncomeOption, TalentLevel, Ye
 export interface IJobPosition {}
 
 export interface IPersonalInfo {
-    title_conferrend?: string
+    title_conferred?: string
     title_academic?: string
-    title_milirtary?: string
-    title_spacial?: string
+    title_military?: string
+    title_special?: string
 
     title_name_th: string
     first_name_th: string
@@ -183,12 +183,20 @@ interface current_job {
     company_province: string | null
 }
 
+/**
+ * @param education_level ระดับการศึกษา / Establishment
+ * @param degree คุณวุฒิ/ปริญญา / Certificate
+ * @param major สาขาวิชา /  Branch_of_Study
+ * @param school สถานศึกษา / Institute
+ */
 export interface education {
     id?: number
     education_level: string
     degree: string
     major: string
     school: string
+    major_other?: string
+    school_other?: string
     gpa: string
     start_date: string
     graduate_date: string

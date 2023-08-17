@@ -7,135 +7,283 @@ export default function useMaster() {
     return {
         loadMasterData,
         fetchProvince,
-        fetchTitleConferred,
         fetchBlood,
-        fetchCertificate,
-        fetchInstitute,
         fetchLevel,
-        fetchMajor,
+        // fetchCertificate,
+        // fetchInstitute,
+        // fetchMajor,
         fetchMaritalSatatus,
         fetchPosition,
-        fetchRace,
+        fetchCountryRace,
         fetchReligion,
+        fetchMilitary,
         fetchTitle,
         fetchTitleEN,
         fetchTitleTH,
         fetchTitleMilitary,
         fetchTitleSpecial,
+        fetchTitleAcademic,
+        fetchTitleConferred,
     }
 }
 
-async function fetchProvince(mStore: Store<'master-data', MasterState, any, any>) {
-    const response = await useApi('/master-data/province', {
-        method: 'GET',
-        callback: (responseStatus: boolean) => {
-            mStore.$state.isLoaded.provinces = responseStatus
-        },
-    })
-    mStore.setProvince(response.data.value)
-    return response
+type MasterStore = Store<'master-data', MasterState, any, any>
+
+async function fetchProvince() {
+    const cache = useNuxtData('master/province')
+    const refObj = {
+        data: ref() as Ref<any>,
+        pending: ref(false),
+        error: ref() as Ref<any>,
+    }
+    if (cache.data.value) {
+        refObj.data = cache.data
+    } else {
+        const { data, pending, error } = useFetch('/api/external/master/province', {
+            method: 'GET',
+            key: 'master/province',
+        })
+        refObj.data = data
+        refObj.pending = pending
+        refObj.error = error
+    }
+    return refObj
 }
 
-async function fetchMaritalSatatus(mStore: Store<'master-data', MasterState, any, any>) {
-    const response = await useApi('/master-data/marital-status', {
-        method: 'GET',
-        callback: (responseStatus: boolean) => {
-            mStore.$state.isLoaded.marital_status = responseStatus
-        },
-    })
-    mStore.setMaritalStatus(response.data.value)
-    return response
+async function fetchMaritalSatatus() {
+    const cache = useNuxtData('master/marital-status')
+    const refObj = {
+        data: ref() as Ref<any>,
+        pending: ref(false),
+        error: ref() as Ref<any>,
+    }
+    if (cache.data.value) {
+        refObj.data = cache.data
+    } else {
+        const { data, pending, error } = useFetch('/api/external/master/marital-status', {
+            method: 'GET',
+            key: 'master/marital-status',
+        })
+        refObj.data = data
+        refObj.pending = pending
+        refObj.error = error
+    }
+    return refObj
 }
 
-async function fetchBlood(mStore: Store<'master-data', MasterState, any, any>) {
-    const response = await useApi('/master-data/blood', {
-        method: 'GET',
-        callback: (responseStatus: boolean) => {
-            mStore.$state.isLoaded.blood = responseStatus
-        },
-    })
-    mStore.setBlood(response.data.value)
-    return response
+async function fetchBlood() {
+    const cache = useNuxtData('master/blood')
+    const refObj = {
+        data: ref() as Ref<any>,
+        pending: ref(false),
+        error: ref() as Ref<any>,
+    }
+    if (cache.data.value) {
+        refObj.data = cache.data
+    } else {
+        const { data, pending, error } = useFetch('/api/external/master/blood', {
+            method: 'GET',
+            key: 'master/blood',
+        })
+        refObj.data = data
+        refObj.pending = pending
+        refObj.error = error
+    }
+    return refObj
 }
 
-async function fetchTitle(mStore: Store<'master-data', MasterState, any, any>) {
-    const response = await useApi('/master-data/title', {
-        method: 'GET',
-        callback: (responseStatus: boolean) => {
-            mStore.$state.isLoaded.title = responseStatus
-        },
-    })
-    mStore.setTitle(response.data.value)
-    return response
+async function fetchReligion() {
+    const cache = useNuxtData('master/religion')
+    const refObj = {
+        data: ref() as Ref<any>,
+        pending: ref(false),
+        error: ref() as Ref<any>,
+    }
+    if (cache.data.value) {
+        refObj.data = cache.data
+    } else {
+        const { data, pending, error } = useFetch('/api/external/master/religion', {
+            method: 'GET',
+            key: 'master/religion',
+        })
+        refObj.data = data
+        refObj.pending = pending
+        refObj.error = error
+    }
+    return refObj
 }
 
-async function fetchTitleAcademic(mStore: Store<'master-data', MasterState, any, any>) {
-    const response = await useApi('/master-data/title-academic', {
-        method: 'GET',
-        callback: (responseStatus: boolean) => {
-            mStore.$state.isLoaded.title_academics = responseStatus
-        },
-    })
-    mStore.setTitleAcademic(response.data.value)
-    return response
+async function fetchCountryRace() {
+    const cache = useNuxtData('master/country-race')
+    const refObj = {
+        data: ref() as Ref<any>,
+        pending: ref(false),
+        error: ref() as Ref<any>,
+    }
+    if (cache.data.value) {
+        refObj.data = cache.data
+    } else {
+        const { data, pending, error } = useFetch('/api/external/master/country-race', {
+            method: 'GET',
+            key: 'master/country-race',
+        })
+        refObj.data = data
+        refObj.pending = pending
+        refObj.error = error
+    }
+    return refObj
 }
 
-async function fetchTitleSpecial(mStore: Store<'master-data', MasterState, any, any>) {
-    const response = await useApi('/master-data/title-special', {
-        method: 'GET',
-        callback: (responseStatus: boolean) => {
-            mStore.$state.isLoaded.title_specials = responseStatus
-        },
-    })
-    mStore.setTitleSpecial(response.data.value)
-    return response
+async function fetchTitle() {
+    const cache = useNuxtData('master/title')
+    const refObj = {
+        data: ref() as Ref<any>,
+        pending: ref(false),
+        error: ref() as Ref<any>,
+    }
+    if (cache.data.value) {
+        refObj.data = cache.data
+    } else {
+        const { data, pending, error } = useFetch('/api/external/master/title', {
+            method: 'GET',
+            key: 'master/title',
+        })
+        refObj.data = data
+        refObj.pending = pending
+        refObj.error = error
+    }
+    return refObj
 }
 
-async function fetchTitleConferred(mStore: Store<'master-data', MasterState, any, any>) {
-    const response = await useApi('/master-data/title-conferred', {
-        method: 'GET',
-        callback: (responseStatus: boolean) => {
-            mStore.$state.isLoaded.title_conferrends = responseStatus
-        },
-    })
-    mStore.setTitleConferrend(response.data.value)
-    return response
+async function fetchTitleTH() {
+    const cache = useNuxtData('master/titleTH')
+    const refObj = {
+        data: ref() as Ref<any>,
+        pending: ref(false),
+        error: ref() as Ref<any>,
+    }
+    if (cache.data.value) {
+        refObj.data = cache.data
+    } else {
+        const { data, pending, error } = useFetch('/api/external/master/titleTH', {
+            method: 'GET',
+            key: 'master/titleTH',
+        })
+        refObj.data = data
+        refObj.pending = pending
+        refObj.error = error
+    }
+    return refObj
 }
 
-async function fetchTitleMilitary(mStore: Store<'master-data', MasterState, any, any>) {
-    const response = await useApi('/master-data/title-military', {
-        method: 'GET',
-        callback: (responseStatus: boolean) => {
-            mStore.$state.isLoaded.title_military = responseStatus
-        },
-    })
-    mStore.setTitleMilitary(response.data.value)
-    return response
+async function fetchTitleEN() {
+    const cache = useNuxtData('master/titleEN')
+    const refObj = {
+        data: ref() as Ref<any>,
+        pending: ref(false),
+        error: ref() as Ref<any>,
+    }
+    if (cache.data.value) {
+        refObj.data = cache.data
+    } else {
+        const { data, pending, error } = useFetch('/api/external/master/titleEN', {
+            method: 'GET',
+            key: 'master/titleEN',
+        })
+        refObj.data = data
+        refObj.pending = pending
+        refObj.error = error
+    }
+    return refObj
 }
 
-async function fetchTitleTH(mStore: Store<'master-data', MasterState, any, any>) {
-    const response = await useApi('/master-data/titleTH', {
-        method: 'GET',
-        callback: (responseStatus: boolean) => {
-            mStore.$state.isLoaded.titleTH = responseStatus
-        },
-    })
-    mStore.setTitleTH(response.data.value)
-    return response
+async function fetchTitleAcademic() {
+    const cache = useNuxtData('master/title-academic')
+    const refObj = {
+        data: ref() as Ref<any>,
+        pending: ref(false),
+        error: ref() as Ref<any>,
+    }
+    if (cache.data.value) {
+        refObj.data = cache.data
+    } else {
+        const { data, pending, error } = useFetch('/api/external/master/title-academic', {
+            method: 'GET',
+            key: 'master/title-academic',
+        })
+        refObj.data = data
+        refObj.pending = pending
+        refObj.error = error
+    }
+    return refObj
 }
 
-async function fetchTitleEN(mStore: Store<'master-data', MasterState, any, any>) {
-    const response = await useApi('/master-data/titleEN', {
-        method: 'GET',
-        callback: (responseStatus: boolean) => {
-            mStore.$state.isLoaded.titleEN = responseStatus
-        },
-    })
-    mStore.setTitleEN(response.data.value)
-    return response
+async function fetchTitleSpecial() {
+    const cache = useNuxtData('master/title-special')
+    const refObj = {
+        data: ref() as Ref<any>,
+        pending: ref(false),
+        error: ref() as Ref<any>,
+    }
+
+    if (cache.data.value) {
+        refObj.data = cache.data
+    } else {
+        const { data, pending, error } = useFetch('/api/external/master/title-special', {
+            method: 'GET',
+            key: 'master/title-special',
+        })
+
+        refObj.data = data
+        refObj.pending = pending
+    }
+    return refObj
 }
 
-async function fetchMilitary(mStore: Store<'master-data', MasterState, any, any>) {
+async function fetchTitleConferred() {
+    const cache = useNuxtData('master/title-conferred')
+    const refObj = {
+        data: ref() as Ref<any>,
+        pending: ref(false),
+        error: ref() as Ref<any>,
+    }
+
+    if (cache.data.value) {
+        refObj.data = cache.data
+    } else {
+        const { data, pending, error } = useFetch('/api/external/master/title-conferred', {
+            method: 'GET',
+            key: 'master/title-conferred',
+        })
+        refObj.data = data
+        refObj.pending = pending
+    }
+
+    return refObj
+}
+
+async function fetchTitleMilitary() {
+    const cache = useNuxtData('master/title-military')
+    const refObj = {
+        data: ref() as Ref<any>,
+        pending: ref(false),
+        error: ref() as Ref<any>,
+    }
+
+    if (cache.data.value) {
+        refObj.data = cache.data
+    } else {
+        const { data, pending, error } = useFetch('/api/external/master/title-military', {
+            method: 'GET',
+            key: 'master/title-military',
+        })
+        refObj.data = data
+        refObj.pending = pending
+    }
+    return refObj
+}
+
+async function fetchMilitary(mStore: MasterStore) {
     const response = await useApi('/master-data/military', {
         method: 'GET',
         callback: (responseStatus: boolean) => {
@@ -146,111 +294,144 @@ async function fetchMilitary(mStore: Store<'master-data', MasterState, any, any>
     return response
 }
 
-async function fetchReligion(mStore: Store<'master-data', MasterState, any, any>) {
-    const response = await useApi('/master-data/religion', {
-        method: 'GET',
-        callback: (responseStatus: boolean) => {
-            mStore.$state.isLoaded.religions = responseStatus
-        },
-    })
-    mStore.setReligion(response.data.value)
-    return response
+async function fetchLevel() {
+    const cache = useNuxtData('master/level')
+    const refObj = {
+        data: ref() as Ref<any>,
+        pending: ref(false),
+    }
+
+    if (cache.data.value) {
+        refObj.data = cache.data
+    } else {
+        const { data, pending, error } = useFetch('/api/external/master/level', {
+            method: 'GET',
+            key: 'master/level',
+        })
+        refObj.data = data
+        refObj.pending = pending
+    }
+    return refObj
 }
 
-async function fetchLevel(mStore: Store<'master-data', MasterState, any, any>) {
-    const response = await useApi('/master-data/level', {
-        method: 'GET',
-        callback: (responseStatus: boolean) => {
-            mStore.$state.isLoaded.levels = responseStatus
-        },
-    })
-    mStore.setLevel(response.data.value)
-    return response
-}
+// async function fetchCertificate(level: Ref<string>) {
+//     console.log('level', level.value)
+//     const cache = useNuxtData('master/certificate-' + level.value)
+//     const refObj = {
+//         data: ref() as Ref<any>,
+//         pending: ref(false),
+//     }
 
-async function fetchCertificate(mStore: Store<'master-data', MasterState, any, any>) {
-    console.log('fetchCertificate')
-    const response = await useApi('/master-data/certificate', {
-        method: 'GET',
-        callback: (responseStatus: boolean) => {
-            mStore.$state.isLoaded.certificates = responseStatus
-        },
-    })
-    mStore.setCertificate(response.data.value)
-    return response
-}
+//     if (cache.data.value) {
+//         refObj.data = cache.data
+//     } else {
+//         const { data, pending, error } = useFetch('/api/external/master/certificate', {
+//             method: 'GET',
+//             key: 'master/certificate-' + level.value,
+//             query: {
+//                 lv: level,
+//             },
+//             watch: [level],
+//         })
+//         refObj.data = data
+//         refObj.pending = pending
+//     }
+//     return refObj
+// }
 
-async function fetchMajor(mStore: Store<'master-data', MasterState, any, any>) {
-    console.log('fetchMajor')
+// async function fetchMajor(level: Ref<string>) {
+//     console.log('level', level.value)
+//     const cache = useNuxtData('master/major-' + level.value)
+//     const refObj = {
+//         data: ref() as Ref<any>,
+//         pending: ref(false),
+//     }
 
-    const response = await useApi('/master-data/major', {
-        method: 'GET',
-        callback: (responseStatus: boolean) => {
-            mStore.$state.isLoaded.majors = responseStatus
-        },
-    })
-    mStore.setMajor(response.data.value)
-    return response
-}
+//     if (cache.data.value) {
+//         refObj.data = cache.data
+//     } else {
+//         const { data, pending, error } = useFetch('/api/external/master/major', {
+//             method: 'GET',
+//             key: 'master/major-' + level.value,
+//             query: {
+//                 lv: level,
+//             },
+//             watch: [level],
+//         })
+//         refObj.data = data
+//         refObj.pending = pending
+//     }
+//     return refObj
+// }
 
-async function fetchInstitute(mStore: Store<'master-data', MasterState, any, any>) {
-    const response = await useApi('/master-data/institute', {
-        method: 'GET',
-        callback: (responseStatus: boolean) => {
-            mStore.$state.isLoaded.institutes = responseStatus
-        },
-    })
-    mStore.setInstitute(response.data.value)
-    return response
-}
+// async function fetchInstitute(level: Ref<string>) {
+//     console.log('level', level.value)
+//     const cache = useNuxtData('master/institute-' + level.value)
+//     const refObj = {
+//         data: ref() as Ref<any>,
+//         pending: ref(false),
+//     }
 
-async function fetchRace(mStore: Store<'master-data', MasterState, any, any>) {
-    const response = await useApi('/master-data/race', {
-        method: 'GET',
-        callback: (responseStatus: boolean) => {
-            mStore.$state.isLoaded.races = responseStatus
-        },
-    })
-    mStore.setRace(response.data.value)
-    return response
-}
+//     if (cache.data.value) {
+//         refObj.data = cache.data
+//     } else {
+//         const { data, pending, error } = useFetch('/api/external/master/institute', {
+//             method: 'GET',
+//             key: 'master/institute-' + level.value,
+//             query: {
+//                 lv: level,
+//             },
+//             watch: [level],
+//         })
+//         refObj.data = data
+//         refObj.pending = pending
+//     }
+//     return refObj
+// }
 
-async function fetchPosition(mStore: Store<'master-data', MasterState, any, any>) {
-    const response = await useApi('/master-data/position', {
-        method: 'GET',
-        callback: (responseStatus: boolean) => {
-            mStore.$state.isLoaded.positions = responseStatus
-        },
-    })
-    mStore.setPosition(response.data.value)
-    return response
+async function fetchPosition() {
+    const cache = useNuxtData('master/position')
+    const refObj = {
+        data: ref() as Ref<any>,
+        pending: ref(false),
+        error: ref() as Ref<any>,
+    }
+
+    if (cache.data.value) {
+        refObj.data = cache.data
+    } else {
+        const { data, pending, error } = useFetch('/api/external/master/position', {
+            method: 'GET',
+            key: 'master/position',
+        })
+        refObj.data = data
+        refObj.pending = pending
+        refObj.error = error
+    }
+    return refObj
 }
 
 async function loadMasterData() {
     const store = (await useMasterDataStore()) as any
     try {
-        await fetchCertificate(store)
-        await fetchInstitute(store)
-        await fetchLevel(store)
-        await fetchMajor(store)
-        await fetchPosition(store)
-        await fetchRace(store)
-        await fetchReligion(store)
-
-        await fetchMaritalSatatus(store)
-        await fetchBlood(store)
-
-        await fetchTitle(store)
-        await fetchTitleSpecial(store)
-        await fetchTitleAcademic(store)
-        await fetchTitleConferred(store)
-        await fetchTitleMilitary(store)
-        await fetchTitleTH(store)
-        await fetchTitleEN(store)
-
-        await fetchMilitary(store)
-
-        await fetchProvince(store)
+        // await fetchCertificate(store)
+        // await fetchInstitute(store)
+        // await fetchLevel(store)
+        // await fetchMajor(store)
+        // await fetchPosition(store)
+        // await fetchRace(store)
+        // await fetchReligion(store)
+        // await fetchMaritalSatatus(store)
+        // await fetchBlood(store)
+        // await fetchTitle(store)
+        // await fetchTitleSpecial(store)
+        // await fetchTitleAcademic(store)
+        // await fetchTitleConferred(store)
+        // await fetchTitleMilitary(store)
+        // await fetchTitleTH(store)
+        // await fetchTitleEN(store)
+        // await fetchMilitary(store)
+        // await fetchProvince(store)
     } catch (error: any) {
         showError({ statusCode: 500, statusMessage: error.message })
     }

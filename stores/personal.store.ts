@@ -133,6 +133,8 @@ export const usePersonalStore = defineStore('personal', {
                         degree: '',
                         major: '',
                         school: '',
+                        major_other: '',
+                        school_other: '',
                         gpa: '',
                         start_date: '',
                         graduate_date: '',
@@ -372,28 +374,34 @@ export const usePersonalStore = defineStore('personal', {
             this.marriage.ref_person.address_detail = deepCopy(this.address.cur_address)
         },
 
-        mapEducationList(rawData: Profile) {
+        async mapEducationList(rawData: Profile) {
             const education_list = [] as education[]
             for (let i = 1; i <= 4; i++) {
                 let edu = `edu${i}` as 'edu1' | 'edu2' | 'edu3' | 'edu4'
                 const educationObj: education = {
                     education_level: rawData[`${edu}_level`],
-                    major: rawData[`${edu}_major`],
-                    degree: rawData[`${edu}_qual`],
-                    school: rawData[`${edu}_aca`],
+
                     gpa: rawData[`${edu}_grade`],
                     start_date: rawData[`${edu}_begin`],
                     graduate_date: rawData[`${edu}_end`],
+
+                    degree: rawData[`${edu}_qual`],
+                    major: rawData[`${edu}_major`],
+                    school: rawData[`${edu}_aca`],
+
+                    major_other: rawData[`${edu}_major_txt`],
+                    school_other: rawData[`${edu}_aca_txt`],
                 }
 
-                if (checkObjectPropertiesNull(educationObj)) break
+                const isNull = await checkObjectPropertiesNull(educationObj)
+                if (isNull) break
 
                 educationObj.id = i
                 education_list.push(educationObj)
             }
             return education_list
         },
-        mapJobList(rawData: Profile) {
+        async mapJobList(rawData: Profile) {
             const job_list = [] as job[]
             for (let i = 1; i <= 4; i++) {
                 let emp = `emp${i}` as 'emp1' | 'emp2' | 'emp3' | 'emp4'
@@ -406,7 +414,9 @@ export const usePersonalStore = defineStore('personal', {
                     end_date: rawData[`${emp}_end`],
                     reason: rawData[`${emp}_exit_reason`],
                 }
-                if (checkObjectPropertiesNull(jobObj)) break
+
+                const isNull = await checkObjectPropertiesNull(jobObj)
+                if (isNull) break
 
                 job_list.push(jobObj)
             }

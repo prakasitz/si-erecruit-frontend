@@ -1,5 +1,5 @@
 <template>
-    <CandidateBaseCard :candidate-form="props.candidateForm" :form-page="{ form: FormEducationAndJob }">
+    <CandidateBaseCard v-if="!pending" :candidate-form="props.candidateForm" :form-page="{ form: FormEducationAndJob }">
         <template #card-body>
             <v-form ref="FormEducationAndJob">
                 <v-alert
@@ -17,11 +17,10 @@
                             <v-col col="3">
                                 <v-radio label="เป็นคุณวุฒิที่ใช้บรรจุ" :value="i"></v-radio>
                             </v-col>
-                            <v-col cols="9" class="py-5">
+                            <v-col cols="9" class="py-5" v-if="education.education_list.length > 0">
                                 <FormsEducationForm
                                     :education-form-model="education.education_list[i - 1]"
                                     class="mt-7"
-                                    v-if="education.education_list.length > 0"
                                     :key="i"
                                     :index="i"
                                     @update:trash="(v: number) => removeEducationByIndex(v)"
@@ -104,19 +103,34 @@
                                     label="กรุณาเลือก"
                                     variant="outlined"
                                     density="compact"
-                                    :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
                                     :rules="rules_fieldEmpty"
+                                    :items="[
+                                        'ข้าราชการ',
+                                        'พนักงานมหาวิทยาลัย (พม.)',
+                                        'พนักงานมหาวิทยาลัย (ชื่อส่วนงาน) (พศ.)',
+                                        'ลูกจ้างชั่วคราว',
+                                    ]"
                                 ></v-select>
                             </v-col>
                             <v-col cols="2"> ตำแหน่ง <span class="text-red-darken-1"> *</span> </v-col>
                             <v-col cols="3">
-                                <v-text-field
+                                <v-autocomplete
+                                    v-model="job.had_job_mahidol_detail.position_name"
+                                    label="กรุณาเลือก"
+                                    variant="outlined"
+                                    density="compact"
+                                    :rules="rules_fieldEmpty"
+                                    :items="positionData"
+                                    :item-title="'OM_Position_Title'"
+                                    :item-value="'OM_Position_ID'"
+                                ></v-autocomplete>
+                                <!-- <v-text-field
                                     v-model="job.had_job_mahidol_detail.position_name"
                                     density="compact"
                                     variant="outlined"
                                     maxLength="100"
                                     :rules="rules_fieldEmpty"
-                                ></v-text-field>
+                                ></v-text-field> -->
                             </v-col>
                         </v-row>
                         <v-row>
@@ -284,7 +298,9 @@
                                     label="จังหวัด"
                                     variant="outlined"
                                     density="compact"
-                                    :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                                    :items="provinceData"
+                                    :item-title="'province_name'"
+                                    :item-value="'province_code'"
                                     :rules="rules_fieldEmpty"
                                 ></v-autocomplete>
                             </v-col>
@@ -412,6 +428,15 @@ const { HasJob, IsWorking, IsStudying, IsUnemployed, IsHasJobMahidol } = storeTo
 const FormEducationAndJob: Ref<HTMLFormElement | null> = ref<HTMLFormElement | null>(null)
 
 const isFilledHadJobs = reactive<any>(Array(job.had_job_list.length))
+
+const { fetchProvince, fetchPosition, fetchLevel } = useMaster()
+const { data: provinceData, pending: provincePending } = await fetchProvince()
+const { data: positionData, pending: positionPending } = await fetchPosition()
+const { pending: levelPending } = await fetchLevel()
+
+const pending = computed(() => {
+    return provincePending.value || positionPending.value || levelPending.value
+})
 
 function confirmToChnageHadJob() {
     if (isFilledHadJobs.every((item: boolean) => item)) {

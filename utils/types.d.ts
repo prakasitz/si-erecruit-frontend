@@ -61,9 +61,12 @@ export type DialogContext = {
     [key: string]: any
 }
 
-export type HavingOption = 'มี' | 'ไม่มี' 
+export type HavingOption = 'มี' | 'ไม่มี'
 
-export type MarriageIncomeOption = 'คู่สมรสไม่มีรายได้' | 'คู่สมรสมีรายได้ ไม่ลดหย่อนบุตร' | 'คู่สมรสมีรายได้ ลดหย่อนบุตร'
+export type MarriageIncomeOption =
+    | 'คู่สมรสไม่มีรายได้'
+    | 'คู่สมรสมีรายได้ ไม่ลดหย่อนบุตร'
+    | 'คู่สมรสมีรายได้ ลดหย่อนบุตร'
 
 /**
  * Compensation Option

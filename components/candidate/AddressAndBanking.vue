@@ -1,5 +1,9 @@
 <template>
-    <CandidateBaseCard :candidate-form="props.candidateForm" :form-page="{ form: formAddressAndBanking }">
+    <CandidateBaseCard
+        v-if="!pending"
+        :candidate-form="props.candidateForm"
+        :form-page="{ form: formAddressAndBanking }"
+    >
         <template #card-body>
             <v-form ref="formAddressAndBanking">
                 <v-container class="text-body-1">
@@ -256,16 +260,14 @@
                                                     <v-col>
                                                         <v-autocomplete
                                                             v-model="ss.ss_card_province"
-                                                            v-model:search="ProvinceSearchBox.search.value"
-                                                            :loading="ProvinceSearchBox.loading.value"
-                                                            :items="ProvinceSearchBox.searchItems.value"
                                                             hide-no-data
                                                             hide-details
                                                             label="จังหวัด *"
                                                             variant="outlined"
                                                             density="compact"
-                                                            item-title="province_name"
-                                                            item-value="province_code"
+                                                            :item-title="'province_name'"
+                                                            :item-value="'province_code'"
+                                                            :items="provinceData"
                                                         ></v-autocomplete>
                                                     </v-col>
                                                 </v-row>
@@ -328,9 +330,7 @@
 </template>
 
 <script setup lang="ts">
-import { MasterProvince } from '~/utils/types'
 import { usePersonalStore } from '../../stores/personal.store'
-import { useMasterDataStore } from '~/stores/master.store'
 import { storeToRefs } from 'pinia'
 
 import { CandidateForm } from '~/utils/types'
@@ -338,15 +338,21 @@ const props = defineProps<{
     candidateForm: CandidateForm
 }>()
 
-const masterDataStore = useMasterDataStore()
 const personalStore = usePersonalStore()
-const { provinces } = useMasterDataStore()
 const { address, banking, license, ss } = personalStore
 const { curIsRegAddress, emerIsCurAddress, emerIsRegAddress } = storeToRefs(personalStore)
 
+const { fetchProvince, fetchCountryRace } = useMaster()
+const { data: provinceData, pending: provincePending } = await fetchProvince()
+const { pending: countryRacePending } = await fetchCountryRace()
+
+const pending = computed(() => {
+    return provincePending.value || countryRacePending.value
+})
+
 const { rules_fieldEmpty } = useFillRules()
 const formAddressAndBanking: Ref<HTMLFormElement | null> = ref<HTMLFormElement | null>(null)
-const flow = useDatePickerFlow()
+
 const hints = {
     followHomeland: 'hint: กรุณากรอก ที่อยู่ตามทะเบียนบ้าน *',
     followCurrent: 'hint: กรุณากรอก ที่อยู่ปัจจุบัน *',
@@ -401,8 +407,6 @@ const ForDisabledCheckBox = reactive({
     'hide-details': false,
     'persistent-hint': true,
 })
-
-const ProvinceSearchBox = useSearchAutoComplete(provinces, 'province_name')
 
 watch(isSamePersonalID, (newValue) => {
     if (newValue === true) {

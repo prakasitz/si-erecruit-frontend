@@ -12,7 +12,7 @@ export type MasterState = {
     title_specials: any[]
     title_academics: any[]
     title_military: any[]
-    title_conferrends: MasterTitleConferred[]
+    title_conferreds: MasterTitleConferred[]
     religions: any[]
     levels: any[]
     certificates: any[]
@@ -32,7 +32,7 @@ export type MasterState = {
         title_specials: boolean
         title_academics: boolean
         title_military: boolean
-        title_conferrends: boolean
+        title_conferreds: boolean
         religions: boolean
         levels: boolean
         certificates: boolean
@@ -56,7 +56,7 @@ export const useMasterDataStore = defineStore('master_data', {
             title_specials: [] as any[],
             title_academics: [] as any[],
             title_military: [] as any[],
-            title_conferrends: [] as MasterTitleConferred[],
+            title_conferreds: [] as MasterTitleConferred[],
             religions: [] as any[],
             levels: [] as any[],
             certificates: [] as any[],
@@ -76,7 +76,7 @@ export const useMasterDataStore = defineStore('master_data', {
                 title_specials: false as boolean,
                 title_academics: false as boolean,
                 title_military: false as boolean,
-                title_conferrends: false as boolean,
+                title_conferreds: false as boolean,
                 religions: false as boolean,
                 levels: false as boolean,
                 certificates: false as boolean,
@@ -91,75 +91,75 @@ export const useMasterDataStore = defineStore('master_data', {
         isItemsLoaded: (state) => isTrue(state.isLoaded),
     },
     actions: {
-        async setProvince(data: any) {
+        setProvince(data: any) {
             this.provinces = data
         },
 
-        async setMaritalStatus(data: any) {
+        setMaritalStatus(data: any) {
             this.marital_status = data
         },
 
-        async setMilitary(data: any) {
+        setMilitary(data: any) {
             this.military = data
         },
 
-        async setBlood(data: any) {
+        setBlood(data: any) {
             this.blood = data
         },
 
-        async setTitle(data: any) {
+        setTitle(data: any) {
             this.title = data
         },
 
-        async setTitleTH(data: any) {
+        setTitleTH(data: any) {
             this.titleTH = data
         },
 
-        async setTitleEN(data: any) {
+        setTitleEN(data: any) {
             this.titleEN = data
         },
 
-        async setTitleSpecial(data: any) {
+        setTitleSpecial(data: any) {
             this.title_specials = data
         },
 
-        async setTitleAcademic(data: any) {
+        setTitleAcademic(data: any) {
             this.title_academics = data
         },
 
-        async setTitleMilitary(data: any) {
+        setTitleMilitary(data: any) {
             this.title_military = data
         },
 
-        async setTitleConferrend(data: any) {
-            this.title_conferrends = data
+        setTitleConferrend(data: any) {
+            this.title_conferreds = data
         },
 
-        async setReligion(data: any) {
-            this.title_conferrends = data
+        setReligion(data: any) {
+            this.title_conferreds = data
         },
 
-        async setLevel(data: any) {
+        setLevel(data: any) {
             this.levels = data
         },
 
-        async setCertificate(data: any) {
+        setCertificate(data: any) {
             this.certificates = data
         },
 
-        async setMajor(data: any) {
+        setMajor(data: any) {
             this.majors = data
         },
 
-        async setInstitute(data: any) {
+        setInstitute(data: any) {
             this.institutes = data
         },
 
-        async setRace(data: any) {
+        setRace(data: any) {
             this.races = data
         },
 
-        async setPosition(data: any) {
+        setPosition(data: any) {
             this.positions = data
         },
     },

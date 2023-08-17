@@ -3,6 +3,7 @@ import { NuxtError } from 'nuxt/app'
 export default function useErrorHandler() {
     return {
         middlewareError,
+        showTokenExpired
     }
 }
 

@@ -47,7 +47,7 @@ const fetchJobs = (jobId?: any, isTransform: boolean = false) => {
             Accept: 'application/json',
         },
         method: 'POST',
-        key: 'fetchJobs' + (jobId ? jobId : ''),
+        key: 'fetchJobs',
         transform(data: any) {
             let tempData: any = data
             if (data.length == 0) throw new Error('Fetch Jobs: Data not found or cannot transform data.')
@@ -92,8 +92,8 @@ const getProfilesByJobId = (jobId: string) => {
         },
         method: 'POST',
         key: 'getProfilesByJobId',
-        transform(data: JobWithProfile) {
-            const _data = data
+        transform(data) {
+            const _data = data as JobWithProfile
             const job: Job = {
                 job_ID: _data['job_ID'],
                 job_name: _data['job_name'],
