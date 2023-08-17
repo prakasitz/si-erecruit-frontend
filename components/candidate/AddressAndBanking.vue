@@ -83,7 +83,7 @@
                                 <v-col cols="12">
                                     <v-expand-transition>
                                         <div v-if="!emerIsCurrent && !emerIsHomeland">
-                                            <FormsHouseRegistration :address-model="address.emer_address" />
+                                            <FormsHouseRegistration :address-model="address.urg_address" />
                                         </div>
                                     </v-expand-transition>
                                 </v-col>

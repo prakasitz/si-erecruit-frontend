@@ -74,7 +74,7 @@
                         <v-col cols="4">
                             <v-text-field
                                 :rules="rules_fieldEmpty"
-                                v-model="marriage.ref_person.frist_name"
+                                v-model="marriage.ref_person.first_name"
                                 label="ชื่อ"
                                 hint="โปรดระบุ"
                                 density="compact"
@@ -114,7 +114,7 @@
                         <v-col cols="2"> เบอร์ติดต่อ <span class="text-red-darken-1"> *</span></v-col>
                         <v-col cols="4">
                             <v-text-field
-                                v-model="marriage.ref_person.phone_number"
+                                v-model="marriage.ref_person.telephone"
                                 label=""
                                 hint="โปรดระบุ"
                                 density="compact"
@@ -211,7 +211,7 @@
                             <v-col cols="3"></v-col>
                             <v-col cols="4">
                                 <v-text-field
-                                    v-model="marriage.ref_person.address_detail.address_city"
+                                    v-model="marriage.ref_person.address_detail.address_amphur"
                                     label="อำเภอ/เขต *"
                                     hint=" โปรดระบุ"
                                     density="compact"
@@ -259,7 +259,6 @@
 import { usePersonalStore } from '../../stores/personal.store'
 
 import { address, children_info } from '~/utils/interface/personal_information.interface'
-import { VueElement } from 'nuxt/dist/app/compat/capi'
 
 import { CandidateForm } from '~/utils/types'
 
@@ -347,3 +346,4 @@ watch(
     }
 )
 </script>
+~/utils/interface/personal_information.interface

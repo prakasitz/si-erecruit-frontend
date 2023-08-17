@@ -1,5 +1,20 @@
 import { CompensationOption, HavingOption, MarriageIncomeOption, TalentLevel, YesNo } from '~/utils/types'
 
+export interface IPersonalStore {
+    job_position: any
+    personal_info: IPersonalInfo
+    address: IAddressInfo
+    banking: IBankingInfo
+    license: ILisence
+    ss: ISocailSecurityOfficeInfo
+    education: IEducation
+    talent: ITalent
+    job: IJob
+    parent: IParent
+    marriage: IMarriage
+    tax: ITax
+}
+
 export interface IJobPosition {}
 
 export interface IPersonalInfo {
@@ -50,12 +65,12 @@ export interface IAddressInfo {
     /**
      * @value false is reg_address
      * @value true is cur_address
-     * @value null is use emer_address as address
+     * @value null is use urg_address as address
      **/
     urg_same_address: boolean | null
     reg_address: address
     cur_address: address
-    emer_address: address
+    urg_address: address
 
     cur_telephone?: string
     cur_mobile: string
@@ -96,10 +111,10 @@ export interface IEducation {
 }
 
 export interface IJob {
-    had_job: '0' | '1'
-    had_job_mahidol: '0' | '1'
+    chk_work_out: '0' | '1'
+    chk_work_in: '0' | '1'
 
-    had_job_list: job[]
+    work_out_list: job[]
 
     had_job_mahidol_detail: job_mahidol
 
@@ -147,33 +162,33 @@ export interface address {
     address_soi: string
     address_road: string
     address_district: string
-    address_city: string
+    address_amphur: string
     address_province: string | null
     address_postcode: string
     address_country: string
 }
 
 export interface children_info {
-    id: number
+    id?: number
     title: string
-    frist_name: string
+    first_name: string
     last_name: string
     id_card: string
     birth_date: string
     birth_province: string | null
     nationality: string | null
-    ethnicity: string | null
+    race: string | null
     religion: string
     child_welfare: string
 }
-interface current_education {
+export interface current_education {
     education_level: string
     school: string
     major: string
     graduate_date: string
 }
 
-interface current_job {
+export interface current_job {
     job_type: string
     position_name: string
     salary: string
@@ -273,13 +288,13 @@ export interface language {
     txt_language_write: string | null
 }
 
-interface ref_person {
+export interface ref_person {
     id: number
     title: string
-    frist_name: string
+    first_name: string
     last_name: string
     relationship: string
-    phone_number: string
+    telephone: string
     /**
      * @value false is reg_address
      * @value true is cur_address

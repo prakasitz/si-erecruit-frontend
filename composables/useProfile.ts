@@ -1,25 +1,63 @@
-import { profile } from 'console'
 import { Profile } from '~/utils/types'
 import { H3Event, H3Error } from 'h3'
-import { CandidateBaseCard } from '~/.nuxt/components'
+import { usePersonalStore } from '~/stores/personal.store'
 
 export default function useProfile() {
     return {
+        submit,
+        draft,
         loginCandidate,
         getUserInfo,
         getStatus,
         importProfile,
         getProfileById,
         suspendedProfile,
-        publishableProfile
+        publishableProfile,
     }
 }
 
-async function loginCandidate() { }
+async function loginCandidate() {}
 
-async function getUserInfo() { }
+async function getUserInfo() {}
 
-async function getStatus() { }
+async function getStatus() {}
+
+async function submit(id: string) {
+    const personalStore = usePersonalStore()
+    const _data = personalStore.$state
+    _data.marriage.children_list.push({
+        birth_date: '2021-09-09',
+        birth_province: '23',
+        child_welfare: '1',
+        first_name: 'สมชาย',
+        id: 1,
+        id_card: '1234567890123',
+        last_name: 'สมหญิง',
+        nationality: 'TH',
+        race: 'TH',
+        religion: '01',
+        title: 'ด.ช.',
+    })
+    await useApi(`/api/external/profile/draft/${parseInt(id)}`, {
+        body: {
+            ..._data,
+        },
+        method: 'PUT',
+        key: 'submit',
+    })
+}
+
+async function draft() {}
+
+function getProfileById(id: string) {
+    return useApi(`/api/external/profile/get/${parseInt(id)}`, {
+        method: 'POST',
+        key: 'getProfileById',
+        transform: ({ profile }: { profile: Profile }) => {
+            return profile
+        },
+    })
+}
 
 async function importProfile(files: File[]) {
     if (files.length == 0) return
@@ -39,14 +77,14 @@ async function importProfile(files: File[]) {
     return { data: data.value, pending: pending.value, error: error.value }
 }
 
-async function suspendedProfile(event: H3Event, data: { profile_IDs: number[], job_ID: number }) {
+async function suspendedProfile(event: H3Event, data: { profile_IDs: number[]; job_ID: number }) {
     const resp = await useApi(`/api/external/profile/suspended`, {
         headers: {
             Accept: 'application/json',
         },
         method: 'PATCH',
         server: false,
-        body: data.profile_IDs
+        body: data.profile_IDs,
     })
 
     if (resp?.data?.value?.data) {
@@ -60,14 +98,12 @@ async function suspendedProfile(event: H3Event, data: { profile_IDs: number[], j
                 },
             ],
         }
-    }
-    else if (resp?.error?.value?.data) {
+    } else if (resp?.error?.value?.data) {
         return {
             status: false,
-            message: resp?.error?.value?.data.message
+            message: resp?.error?.value?.data.message,
         }
-    }
-    else {
+    } else {
         return {
             status: false,
             message: `Sorry, something went wrong.`,
@@ -75,17 +111,14 @@ async function suspendedProfile(event: H3Event, data: { profile_IDs: number[], j
     }
 }
 
-
-
-async function publishableProfile(event: H3Event, data: { profile_IDs: number[], job_ID: number }) {
-
+async function publishableProfile(event: H3Event, data: { profile_IDs: number[]; job_ID: number }) {
     const resp = await useApi(`/api/external/profile/publishable`, {
         headers: {
             Accept: 'application/json',
         },
         method: 'PATCH',
         server: false,
-        body: data.profile_IDs
+        body: data.profile_IDs,
     })
 
     if (resp?.data?.value?.data) {
@@ -99,29 +132,15 @@ async function publishableProfile(event: H3Event, data: { profile_IDs: number[],
                 },
             ],
         }
-    }
-    else if (resp?.error?.value?.data) {
+    } else if (resp?.error?.value?.data) {
         return {
             status: false,
-            message: resp?.error?.value?.data.message
+            message: resp?.error?.value?.data.message,
         }
-    }
-    else {
+    } else {
         return {
             status: false,
             message: `Sorry, something went wrong.`,
         }
     }
-}
-
-
-
-function getProfileById(id: string) {
-    return useApi(`/api/external/profile/get/${parseInt(id)}`, {
-        method: 'POST',
-        key: 'getProfileById',
-        transform: ({ profile }: { profile: Profile }) => {
-            return profile
-        },
-    })
 }

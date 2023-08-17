@@ -1,4 +1,4 @@
-import { address, job } from '~/stores/interface/personal_information.interface'
+import { address, job } from '~/utils/interface/personal_information.interface'
 import { VueDatePickerProps } from '@vuepic/vue-datepicker'
 import { btnShowWstatus } from './types'
 
@@ -17,6 +17,20 @@ export const defaultChildrenInfo = {
     children_list: [],
 }
 
+export const defaultChildInfo = {
+    id: 1,
+    title: '',
+    first_name: '',
+    last_name: '',
+    id_card: '',
+    birth_date: '',
+    child_welfare: '',
+    birth_province: null,
+    race: null,
+    nationality: null,
+    religion: '',
+}
+
 export const defaultAddress: address = {
     address_no: '',
     address_moo: '',
@@ -24,7 +38,7 @@ export const defaultAddress: address = {
     address_soi: '',
     address_road: '',
     address_district: '',
-    address_city: '',
+    address_amphur: '',
     address_province: null,
     address_postcode: '',
     address_country: '',

@@ -1,42 +1,13 @@
-import {
-    IAddressInfo,
-    IBankingInfo,
-    IEducation,
-    IJob,
-    ILisence,
-    IMarriage,
-    IParent,
-    IPersonalInfo,
-    ISocailSecurityOfficeInfo,
-    ITalent,
-    ITax,
-    address,
-    education,
-    job,
-    job_mahidol,
-} from './interface/personal_information.interface'
+import { IPersonalStore, children_info, education, job } from '../utils/interface/personal_information.interface'
 
 import { Profile } from '~/utils/types'
 
+import { checkObjectPropertiesNull, deepCopy } from '../utils/object'
+
 import { defineStore } from 'pinia'
 
-interface State {
-    job_position: any
-    personal_info: IPersonalInfo
-    address: IAddressInfo
-    banking: IBankingInfo
-    license: ILisence
-    ss: ISocailSecurityOfficeInfo
-    education: IEducation
-    talent: ITalent
-    job: IJob
-    parent: IParent
-    marriage: IMarriage
-    tax: ITax
-}
-
 export const usePersonalStore = defineStore('personal', {
-    state: (): State => {
+    state: (): IPersonalStore => {
         return {
             job_position: {},
             personal_info: {
@@ -75,7 +46,7 @@ export const usePersonalStore = defineStore('personal', {
                     address_soi: '',
                     address_road: '',
                     address_district: '',
-                    address_city: '',
+                    address_amphur: '',
                     address_province: null,
                     address_postcode: '',
                     address_country: '',
@@ -87,19 +58,19 @@ export const usePersonalStore = defineStore('personal', {
                     address_soi: '',
                     address_road: '',
                     address_district: '',
-                    address_city: '',
+                    address_amphur: '',
                     address_province: null,
                     address_postcode: '',
                     address_country: '',
                 },
-                emer_address: {
+                urg_address: {
                     address_no: '',
                     address_moo: '',
                     address_village: '',
                     address_soi: '',
                     address_road: '',
                     address_district: '',
-                    address_city: '',
+                    address_amphur: '',
                     address_province: null,
                     address_postcode: '',
                     address_country: '',
@@ -210,8 +181,8 @@ export const usePersonalStore = defineStore('personal', {
                 announced_from: '',
             },
             job: {
-                had_job: '0',
-                had_job_list: [
+                chk_work_out: '0',
+                work_out_list: [
                     {
                         company_name: '',
                         end_date: '',
@@ -223,7 +194,7 @@ export const usePersonalStore = defineStore('personal', {
                     },
                 ],
 
-                had_job_mahidol: '0',
+                chk_work_in: '0',
                 had_job_mahidol_detail: {
                     department: '',
                     end_date: '',
@@ -263,7 +234,7 @@ export const usePersonalStore = defineStore('personal', {
                 children_list: [],
                 ref_person: {
                     address_detail: {
-                        address_city: '',
+                        address_amphur: '',
                         address_district: '',
                         address_moo: '',
                         address_no: '',
@@ -276,9 +247,9 @@ export const usePersonalStore = defineStore('personal', {
                         id: 0,
                     },
                     ref_same_address: null,
-                    frist_name: '',
+                    first_name: '',
                     last_name: '',
-                    phone_number: '',
+                    telephone: '',
                     relationship: '',
                     title: '',
                     id: 0,
@@ -305,11 +276,11 @@ export const usePersonalStore = defineStore('personal', {
         }
     },
     getters: {
-        HasJob: ({ job }): boolean => job.had_job == '1',
+        HasJob: ({ job }): boolean => job.chk_work_out == '1',
         IsWorking: ({ job }): boolean => job.job_status == 'กำลังทำงาน',
         IsStudying: ({ job }): boolean => job.job_status == 'กำลังศึกษาต่อ',
         IsUnemployed: ({ job }): boolean => job.job_status == 'ว่างงาน',
-        IsHasJobMahidol: ({ job }): boolean => job.had_job_mahidol == '1',
+        IsHasJobMahidol: ({ job }): boolean => job.chk_work_in == '1',
         curIsRegAddress: ({ address }): boolean => address.cur_same_address == true,
         emerIsRegAddress: ({ address }): boolean => address.urg_same_address == false,
         emerIsCurAddress: ({ address }): boolean => address.urg_same_address == true,
@@ -352,7 +323,7 @@ export const usePersonalStore = defineStore('personal', {
         },
         removeJobList(index: number) {
             index -= 1
-            this.job.had_job_list.splice(index, 1)
+            this.job.work_out_list.splice(index, 1)
         },
         removeEducationList(index: number) {
             index -= 1
@@ -362,16 +333,49 @@ export const usePersonalStore = defineStore('personal', {
             this.address.cur_address = deepCopy(this.address.reg_address)
         },
         useRegAddressOnEmerAddress() {
-            this.address.emer_address = deepCopy(this.address.reg_address)
+            this.address.urg_address = deepCopy(this.address.reg_address)
         },
         useRegAddressOnRefAddress() {
             this.marriage.ref_person.address_detail = deepCopy(this.address.reg_address)
         },
         useCurAddressOnEmerAddress() {
-            this.address.emer_address = deepCopy(this.address.cur_address)
+            this.address.urg_address = deepCopy(this.address.cur_address)
         },
         useCurAddressOnRefAddress() {
             this.marriage.ref_person.address_detail = deepCopy(this.address.cur_address)
+        },
+
+        async mapChildrenList(rawData: Profile) {
+            const children_list: children_info[] = []
+
+            for (let i = 1; i <= 3; i++) {
+                let child = `child${i}` as 'child1' | 'child2' | 'child3'
+                const child_obj: children_info = {
+                    title: rawData[`${child}_title_name`],
+                    first_name: rawData[`${child}_first_name`],
+                    last_name: rawData[`${child}_last_name`],
+                    id_card: rawData[`${child}_id_card_number`],
+                    birth_date: rawData[`${child}_birth_date`],
+                    birth_province: rawData[`${child}_province`],
+                    nationality: rawData[`${child}_nationality`],
+                    race: rawData[`${child}_race`] || rawData[`txt_${child}_race`],
+                    religion: rawData[`${child}_religion`] || rawData[`txt_${child}_religion`],
+                    child_welfare: rawData[`${child}_welfare`],
+                    // legit_date: rawData[`${child}_legit_date`],
+                    // legit_no: rawData[`${child}_legit_no`],
+                    // bd_cert_date: rawData[`${child}_bd_cert_date`],
+                    // bd_cert_no: rawData[`${child}_bd_cert_no`],
+                }
+
+                if (await checkObjectPropertiesNull(child_obj)) {
+                    break
+                }
+
+                child_obj.id = i
+                children_list.push(child_obj)
+            }
+
+            return children_list
         },
 
         async mapEducationList(rawData: Profile) {

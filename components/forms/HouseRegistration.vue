@@ -74,7 +74,7 @@
             <v-row>
                 <v-col md="6" sm="12" cols="12">
                     <v-text-field
-                        v-model="props.addressModel.address_city"
+                        v-model="props.addressModel.address_amphur"
                         label="อำเภอ/เขต *"
                         hide-details
                         density="compact"
@@ -128,7 +128,7 @@
 </template>
 
 <script setup lang="ts">
-import { address } from '~/stores/interface/personal_information.interface'
+import { address } from '~/utils/interface/personal_information.interface'
 
 export interface Props {
     isDisabled: boolean

@@ -154,7 +154,7 @@
 <script setup lang="ts">
 import { useMasterDataStore } from '~/stores/master.store'
 import { usePersonalStore } from '../../stores/personal.store'
-import { IEducation, education } from '~/stores/interface/personal_information.interface'
+import { IEducation, education } from '~/utils/interface/personal_information.interface'
 
 export interface Props {
     index: number
@@ -241,3 +241,4 @@ watch(currentEduLevel, (old_edu, new_edu) => {
 
 console.log('isLoaded', masterDataStore.isLoaded)
 </script>
+

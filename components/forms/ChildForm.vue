@@ -144,7 +144,7 @@
 </template>
 
 <script setup lang="ts">
-import { children_info } from '~/stores/interface/personal_information.interface'
+import { children_info } from '~/utils/interface/personal_information.interface'
 import { usePersonalStore } from '~/stores/personal.store'
 
 export interface Props {

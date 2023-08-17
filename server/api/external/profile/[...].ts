@@ -4,6 +4,8 @@ import { formidable, Options, errors } from 'formidable'
 import { BadRequestError, TokenNotFoundError } from '../../../../utils/default'
 
 import { H3Error } from 'h3'
+import { IPersonalStore } from '../../../../utils/interface/personal_information.interface'
+import { generateProfileJSON } from '../../../utils/profile'
 
 const router = createRouter()
 
@@ -14,6 +16,19 @@ router.post(
         if (!id) throw BadRequestError('id is required')
         const resp = await profileService.get(event, { profile_ID: id })
         return resp
+    })
+)
+
+router.put(
+    '/draft/:id',
+    defineEventHandler(async (event) => {
+        const id = getRouterParam(event, 'id')
+        const body = await readBody(event)
+        const { personal_info, education, marriage } = body as IPersonalStore
+        return generateProfileJSON(body)
+        // if (!id) throw BadRequestError('id is required')
+        // const resp = await profileService.get(event, { profile_ID: id })
+        // return resp
     })
 )
 
@@ -62,10 +77,9 @@ router.patch(
             })
         }
 
-        const list_status = checkStatus.data;
+        const list_status = checkStatus.data
         let cantChangeProfiles: number[] = []
         list_status.map((item: { profile_ID: number; profile_status: number }) => {
-
             if (!canBeStatus.includes(item.profile_status)) {
                 cantChangeProfiles.push(item.profile_ID)
             }
@@ -103,7 +117,7 @@ router.patch(
             })
         }
 
-        const list_status = checkStatus.data;
+        const list_status = checkStatus.data
         let cantChangeProfiles: number[] = []
         list_status.map((item: { profile_ID: number; profile_status: number }) => {
             if (!canBeStatus.includes(item.profile_status)) {

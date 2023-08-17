@@ -44,27 +44,27 @@
                     <v-row>
                         <v-col cols="6"> เคยมีประวัติการทำงาน </v-col>
                         <v-col cols="6">
-                            <v-radio-group v-model="job.had_job" hide-details inline>
+                            <v-radio-group v-model="job.chk_work_out" hide-details inline>
                                 <v-radio label="ไม่เคย" value="0"></v-radio>
                                 <v-radio label="เคย" value="1"></v-radio>
                             </v-radio-group>
                         </v-col>
                     </v-row>
-                    <div v-if="job.had_job == '1'">
+                    <div v-if="job.chk_work_out == '1'">
                         <FormsWorkExperienceForm
-                            v-for="i in job.had_job_list.length"
+                            v-for="i in job.work_out_list.length"
                             class="mt-7"
                             :key="i"
                             :index="i"
                             @update:trash="(v: number) => removeJobByIndex(v)"
                             @get:is-filled="hadJobFilleds"
-                            :work-experience-form-model="job.had_job_list[i - 1]"
+                            :work-experience-form-model="job.work_out_list[i - 1]"
                         />
                         <div class="text-right">
                             <v-btn
                                 class="btn-candidate-add my-2"
                                 text="+ เพิ่ม"
-                                v-if="job.had_job_list.length < 10"
+                                v-if="job.work_out_list.length < 10"
                                 @click="add_job()"
                             ></v-btn>
                         </div>
@@ -76,13 +76,13 @@
                     <v-row>
                         <v-col cols="6"> เคยมีประวัติการทำงานในมหาวิทยาลัยมหิดล </v-col>
                         <v-col cols="6">
-                            <v-radio-group v-model="job.had_job_mahidol" hide-details inline>
+                            <v-radio-group v-model="job.chk_work_in" hide-details inline>
                                 <v-radio label="ไม่เคย" value="0"></v-radio>
                                 <v-radio label="เคย" value="1"></v-radio>
                             </v-radio-group>
                         </v-col>
                     </v-row>
-                    <div class="box-detail" v-if="job.had_job_mahidol == '1'">
+                    <div class="box-detail" v-if="job.chk_work_in == '1'">
                         <v-row>
                             <v-col cols="4"> ภาควิชา/หน่วยงาน <span class="text-red-darken-1"> *</span> </v-col>
                             <v-col>
@@ -412,7 +412,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
 import { usePersonalStore } from '../../stores/personal.store'
-import { IEducation, IJob, job, education } from '~/stores/interface/personal_information.interface'
+import { IEducation, IJob, job, education } from '~/utils/interface/personal_information.interface'
 import { storeToRefs } from 'pinia'
 
 import { CandidateForm } from '~/utils/types'
@@ -427,7 +427,7 @@ const { HasJob, IsWorking, IsStudying, IsUnemployed, IsHasJobMahidol } = storeTo
 
 const FormEducationAndJob: Ref<HTMLFormElement | null> = ref<HTMLFormElement | null>(null)
 
-const isFilledHadJobs = reactive<any>(Array(job.had_job_list.length))
+const isFilledHadJobs = reactive<any>(Array(job.work_out_list.length))
 
 const { fetchProvince, fetchPosition, fetchLevel } = useMaster()
 const { data: provinceData, pending: provincePending } = await fetchProvince()
@@ -449,7 +449,7 @@ function confirmToChnageHadJob() {
 }
 
 function resetToDefaultHadJobList() {
-    job.had_job_list = []
+    job.work_out_list = []
     add_job()
 }
 
@@ -468,9 +468,9 @@ function add_job() {
         start_date: '',
     }
 
-    if (job.had_job_list.length < 3) {
+    if (job.work_out_list.length < 3) {
         personalStore.$patch((state) => {
-            state.job.had_job_list.push(old_job)
+            state.job.work_out_list.push(old_job)
         })
     }
 }
@@ -491,7 +491,7 @@ function addeducation() {
         start_date: '',
     }
 
-    if (job.had_job_list.length < 3) {
+    if (job.work_out_list.length < 3) {
         personalStore.$patch((state) => {
             state.education.education_list.push(educated)
         })
@@ -594,9 +594,9 @@ watch(IsHasJobMahidol, (newValue) => {
 
 onBeforeMount(() => {
     //only one time
-    for (let i in job.had_job_list) {
-        console.log(i, job.had_job_list[i])
-        if (compareObjects(job.had_job_list[i], default_job)) {
+    for (let i in job.work_out_list) {
+        console.log(i, job.work_out_list[i])
+        if (compareObjects(job.work_out_list[i], default_job)) {
             isFilledHadJobs[i] = false
         }
     }
