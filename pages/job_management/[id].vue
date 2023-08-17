@@ -19,7 +19,7 @@
                 </v-card-item>
             </v-card>
         </div>
-        <div v-if="job">
+        <div v-else-if="jobData">
             <v-card class="mx-auto" width="90%">
                 <v-toolbar density="compact" color="main-color">
                     <v-card-title :style="{ 'font-size': '16px !important' }">
@@ -29,7 +29,7 @@
                 <div
                     v-if="
                         ['cancelled', 'suspended', 'terminated'].find(
-                            (item) => item == job.job_status_code.job_status_text.toLowerCase()
+                            (item) => item == jobData.job_status_code.job_status_text.toLowerCase()
                         )
                     "
                 >
@@ -40,12 +40,12 @@
                         min-height="100%"
                         :style="{ opacity: '20%', zIndex: '1000' }"
                     >
-                        <h1 class="d-flex align-center">{{ job.job_status_code.job_status_text }}</h1>
+                        <h1 class="d-flex align-center">{{ jobData.job_status_code.job_status_text }}</h1>
                     </v-sheet>
                 </div>
                 <v-card-text class="d-flex justify-center">
                     <v-container>
-                        <FormJobDetail :job="job" :profileCount="profile.profiles.length"></FormJobDetail>
+                        <FormJobDetail :job="jobData" :profileCount="profilesData!.profile.length"></FormJobDetail>
                     </v-container>
                 </v-card-text>
             </v-card>
@@ -60,18 +60,18 @@
                     <v-data-table
                         v-model="profilesSelected"
                         :items-per-page="10"
-                        :headers="headers"
-                        :items="profile.profiles"
-                        return-object
+                        :headers="(headers as any)"
+                        :items="profilesData!.profile"
+                        item-value="profile_ID"
                         class="elevation-0"
                         show-select
                     >
                         <template v-slot:item.status="{ item }">
-                            <v-chip :color="profileStatusComputed(item.raw.status).profile_status_color">
-                                {{ profileStatusComputed(item.raw.status).profile_status_text }}
+                            <v-chip :color="profileStatusComputed(item.raw.profile_status)?.profile_status_color">
+                                123123
                             </v-chip>
                         </template>
-                        <template v-slot:item.action="{ item }" :key="item.raw.profile_ID">
+                        <template v-slot:item.action="{ item }">
                             <NuxtLink :to="`/candidate/form/${item.raw.profile_ID}`">
                                 <v-icon size="small" class="me-2"> mdi-eye </v-icon>
                             </NuxtLink>
@@ -85,32 +85,32 @@
                     class="mx-1"
                     text="Export ยังไม่ทำ"
                     color="indigo"
-                    :jobId="job.job_ID"
-                    :cb="cancelJob"
+                    :data="jobData.job_ID"
+                    :cb="suspendedProfile"
                 />
                 <BtnProfileAction
                     v-if="buttonShow.BtnSuspend"
                     class="mx-1"
-                    text="Suspend ยังไม่ทำ"
+                    text="suspend"
                     color="warning"
-                    :jobId="job.job_ID"
-                    :cb="deleteJob"
+                    :data="{ profile_IDs: profilesSelected, job_ID: jobData.job_ID }"
+                    :cb="suspendedProfile"
                 />
                 <BtnProfileAction
                     v-if="buttonShow.BtnPublishable"
                     class="mx-1"
                     text="Publishable ยังไม่ทำ"
                     color="blue"
-                    :jobId="job.job_ID"
-                    :cb="terminateJob"
+                    :data="{ profile_IDs: profilesSelected, job_ID: jobData.job_ID }"
+                    :cb="publishableProfile"
                 />
                 <BtnProfileAction
                     v-if="buttonShow.BtnSendSAP"
                     class="mx-1"
                     text="SAP ยังไม่ทำ"
                     color="purple"
-                    :jobId="job.job_ID"
-                    :cb="suspendJob"
+                    :data="jobData.job_ID"
+                    :cb="suspendedProfile"
                 />
             </div>
         </div>
@@ -118,7 +118,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { useJobComponentStore } from '~/stores/job-component.store'
 
@@ -128,9 +128,6 @@ definePageMeta({
         name: 'rotate',
     },
 
-    pageTransition: {
-        name: 'rotate',
-    },
     breadcrumbs: [
         {
             title: 'หน้าหลัก',
@@ -147,11 +144,12 @@ definePageMeta({
     middleware: ['hr-only'],
 })
 const route = useRoute()
-let jobId = route.params.id
-
+let jobId = route.params.id as string
 const { getProfilesByJobId, fetchJobs } = useJobManagement()
-const { data: job, pending: jobPending, error: jobError } =  fetchJobs(jobId)
-const { data: profile, pending: profilePending, error: profileError } =  getProfilesByJobId(jobId)
+const { suspendedProfile, publishableProfile } = useProfile()
+const { data: jobData, pending: jobPending } = fetchJobs(jobId)
+const { data: profilesData, pending: profilePending } = getProfilesByJobId(jobId)
+
 const useJobComponent = useJobComponentStore()
 const { buttonShow } = storeToRefs(useJobComponent)
 
@@ -204,7 +202,7 @@ const profileStatus = [
 ]
 
 const profileStatusComputed = computed(() => {
-    return (status) => {
+    return (status: any) => {
         const obj = profileStatus.find((item) => item.profile_status_code == status)
         return obj
     }
@@ -213,7 +211,7 @@ const profileStatusComputed = computed(() => {
 const headers = [
     // { title: 'No.', align: 'start', key: 'no' },
     { title: 'ชื่อ นามสกุล', align: 'start', key: 'fullname', width: 200 },
-    { title: 'สถานะ', align: 'center', key: 'status' },
+    { title: 'สถานะ', align: 'center', key: 'profile_status' },
     { title: 'เลขบัตรประชาชน', align: 'start', key: 'pid' },
     { title: 'เบอร์โทรศัพท์', align: 'start', key: 'phone' },
     { title: 'จัดการ', align: 'center', key: 'action' },

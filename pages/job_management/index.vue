@@ -84,11 +84,6 @@
 import { NuxtError } from 'nuxt/app'
 import { FetchError } from 'ofetch'
 
-const { fetchJobs, deleteJob } = useJobManagement()
-const { dialogConfirm, showDialog } = useDialog()
-
-const route = useRoute()
-
 definePageMeta({
     title: 'จัดการงาน',
     pageTransition: {
@@ -105,6 +100,11 @@ definePageMeta({
     ],
     middleware: ['hr-only'],
 })
+
+const { fetchJobs, deleteJob } = useJobManagement()
+const { dialogConfirm, showDialog } = useDialog()
+
+const route = useRoute()
 
 const headers = [
     { title: 'ID', align: 'start', key: 'job_ID', width: '5%' },

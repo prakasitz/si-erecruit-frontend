@@ -1,9 +1,9 @@
 import { profileService } from '../../../common/externalAPI/profiles.external'
 import { IncomingMessage } from 'http'
 import { formidable, Options, errors } from 'formidable'
+import { BadRequestError, TokenNotFoundError } from '../../../../utils/default'
 
 import { H3Error } from 'h3'
-import { BadRequestError } from '../../../../utils/default'
 
 const router = createRouter()
 
@@ -42,6 +42,84 @@ router.post(
                 profileService.deleteFile(bodyFormData!.file![0].filepath)
             }
         }
+    })
+)
+
+router.patch(
+    '/suspended',
+    defineEventHandler(async (event) => {
+        const body = await readBody(event)
+        let canBeStatus = [1, 2]
+
+        const tokenOrUndefined = getCookie(event, 'access_token')
+        if (!tokenOrUndefined) return TokenNotFoundError()
+
+        const checkStatus = await profileService.checkStatus(body, event)
+        if (!checkStatus.data) {
+            throw createError({
+                statusCode: 400,
+                message: 'Not found any Profiles.',
+            })
+        }
+
+        const list_status = checkStatus.data;
+        let cantChangeProfiles: number[] = []
+        list_status.map((item: { profile_ID: number; profile_status: number }) => {
+
+            if (!canBeStatus.includes(item.profile_status)) {
+                cantChangeProfiles.push(item.profile_ID)
+            }
+        })
+
+        console.log(cantChangeProfiles)
+        if (cantChangeProfiles.length > 0) {
+            throw createError({
+                statusCode: 400,
+                message: 'Cannot update these profiles.',
+            })
+        }
+        console.log(cantChangeProfiles.length > 0)
+
+        const response = await profileService.suspenedProfiles(body, event)
+        return response
+    })
+)
+
+router.patch(
+    '/publishable',
+    defineEventHandler(async (event) => {
+        const body = await readBody(event)
+        let canBeStatus = [1, 3]
+
+        const tokenOrUndefined = getCookie(event, 'access_token')
+        if (!tokenOrUndefined) return TokenNotFoundError()
+
+        const checkStatus = await profileService.checkStatus(body, event)
+
+        if (!checkStatus.data) {
+            throw createError({
+                statusCode: 400,
+                message: 'Not found any Profiles.',
+            })
+        }
+
+        const list_status = checkStatus.data;
+        let cantChangeProfiles: number[] = []
+        list_status.map((item: { profile_ID: number; profile_status: number }) => {
+            if (!canBeStatus.includes(item.profile_status)) {
+                cantChangeProfiles.push(item.profile_ID)
+            }
+        })
+
+        if (cantChangeProfiles.length > 0) {
+            throw createError({
+                statusCode: 400,
+                message: 'Cannot update these profiles.',
+            })
+        }
+
+        const response = await profileService.publishProfiles(body, event)
+        return response
     })
 )
 

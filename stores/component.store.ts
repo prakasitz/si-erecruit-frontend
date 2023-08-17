@@ -5,6 +5,7 @@ export interface ComponentState {
     onBoarding: number
 }
 
+
 export const useComponentStore = defineStore('component', {
     state: (): ComponentState => {
         return {

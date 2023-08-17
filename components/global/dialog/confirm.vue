@@ -18,7 +18,7 @@
             <v-card-text>
                 <v-sheet class="mx-4 d-flex justify-center">
                     <template v-if="context.message && !loading && !success && !error">
-                        {{ context.message }}
+                        <div v-html="context.message"></div>
                     </template>
                     <template v-if="loading">
                         <v-progress-circular indeterminate size="100" :width="'6'"></v-progress-circular>

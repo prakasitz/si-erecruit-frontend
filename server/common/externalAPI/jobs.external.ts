@@ -136,6 +136,35 @@ class JobsExternal extends ExternalAPIService {
         }
     }
 
+    public async publishById(jobId: number, event: H3Event) {
+        try {
+            const accessToken = this.getAccessToken(event)
+
+            const resp = await this.baseAPI.put(`/${this.slug}/publish`,
+                {
+                    job_ID: jobId,
+                },
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + accessToken,
+                    }
+                },
+            )
+
+            return resp.data
+        } catch (error: AxiosError | any) {
+            if (error?.response?.data?.statusCode) {
+                return createError({
+                    statusCode: error.response.data.statusCode,
+                    statusMessage: error.response.data.message,
+                    stack: undefined,
+                })
+            } else {
+                return this.handleError(error)
+            }
+        }
+    }
+
     public async suspendById(jobId: number, event: H3Event) {
         try {
             const accessToken = this.getAccessToken(event)
@@ -177,7 +206,7 @@ class JobsExternal extends ExternalAPIService {
             return this.handleError(error)
         }
     }
-    
+
     public async verifiedById(jobId: number, event: H3Event) {
         try {
             const accessToken = this.getAccessToken(event)

@@ -79,8 +79,8 @@
             <BtnJobAction
                 v-if="buttonShow.BtnCancelledJob"
                 class="mx-1"
-                text="Cancel"
-                color=""
+                text="ยกเลิกงาน"
+                color="grey"
                 :jobId="job.job_ID"
                 :cb="cancelJob"
             />
@@ -95,7 +95,7 @@
             <BtnJobAction
                 v-if="buttonShow.BtnApproveJob"
                 class="mx-1"
-                text="Approve"
+                text="approve"
                 color="green"
                 :jobId="job.job_ID"
                 :cb="approveJob"
@@ -103,7 +103,7 @@
             <BtnJobAction
                 v-if="buttonShow.BtnPublishedJob"
                 class="mx-1"
-                text="Publish ยังไม่ทำ"
+                text="publish"
                 color="blue"
                 :jobId="job.job_ID"
                 :cb="publishJob"
@@ -128,7 +128,7 @@
             <BtnJobAction
                 v-if="buttonShow.BtnVerifyJob"
                 class="mx-1"
-                text="Verify"
+                text="verify"
                 color="main-color "
                 :jobId="job.job_ID"
                 :cb="verifiedJob"
