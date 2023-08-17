@@ -4,6 +4,8 @@ import { formidable, Options, errors } from 'formidable'
 
 import { H3Error } from 'h3'
 import { BadRequestError } from '../../../../utils/default'
+import { IPersonalStore } from '../../../../utils/interface/personal_information.interface'
+import { generateProfileJSON } from '../../../utils/profile'
 
 const router = createRouter()
 
@@ -18,12 +20,15 @@ router.post(
 )
 
 router.put(
-    '/:id',
+    '/draft/:id',
     defineEventHandler(async (event) => {
         const id = getRouterParam(event, 'id')
-        if (!id) throw BadRequestError('id is required')
-        const resp = await profileService.get(event, { profile_ID: id })
-        return resp
+        const body = await readBody(event)
+        const { personal_info, education, marriage } = body as IPersonalStore
+        return generateProfileJSON(body)
+        // if (!id) throw BadRequestError('id is required')
+        // const resp = await profileService.get(event, { profile_ID: id })
+        // return resp
     })
 )
 
