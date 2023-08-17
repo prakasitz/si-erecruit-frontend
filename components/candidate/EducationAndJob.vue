@@ -602,4 +602,3 @@ onBeforeMount(() => {
     }
 })
 </script>
-~/utils/interface/personal_information.interface

@@ -144,4 +144,3 @@ const props = withDefaults(defineProps<Props>(), {
 const { data: provinceData } = useNuxtData('master/province')
 const { data: countryRaceData } = useNuxtData('master/country-race')
 </script>
-~/utils/interface/personal_information.interface

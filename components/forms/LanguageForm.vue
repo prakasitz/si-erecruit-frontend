@@ -100,4 +100,3 @@ watch(
     { deep: true }
 )
 </script>
-~/utils/interface/personal_information.interface

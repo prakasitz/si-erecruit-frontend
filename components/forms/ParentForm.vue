@@ -180,4 +180,3 @@ const hints = {
     personalID: 'hint: ไม่มี ให้ปล่อยว่าง',
 }
 </script>
-~/utils/interface/personal_information.interface
