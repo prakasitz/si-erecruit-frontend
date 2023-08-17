@@ -104,7 +104,6 @@
                             <v-col cols="8">
                                 <v-text-field
                                     v-model="job.had_job_mahidol_detail.sap_type"
-                                    label="กรุณาเลือก"
                                     variant="outlined"
                                     density="compact"
                                     :rules="[...rules_fieldEmpty, (v: string) => v.length <= 50 || 'ต้องไม่เกิน 50 ตัวอักษร']"
@@ -114,12 +113,7 @@
                                 <v-menu v-model="showOptions">
                                     <template v-slot:activator="{ props }">
                                         <!-- hide -->
-                                        <div
-                                            v-bind="props"
-                                            :style="{
-                                                visibility: 'hidden',
-                                            }"
-                                        ></div>
+                                        <div v-bind="props"></div>
                                     </template>
                                     <v-list>
                                         <v-list-item
