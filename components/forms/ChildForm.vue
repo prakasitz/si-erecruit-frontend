@@ -10,9 +10,9 @@
                     <v-select
                         density="compact"
                         variant="outlined"
-                        label="Select"
-                        v-model="childFormModel.title"
-                        :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                        label="กรุณาเลือก"
+                        v-model="props.childFormModel.title"
+                        :items="tData"
                         :rules="rules_fieldEmpty"
                     ></v-select>
                 </v-col>
@@ -21,7 +21,7 @@
                 <v-col cols="4">ชื่อ-นามสกุล (ภาษาไทย) <span class="text-red-darken-1"> *</span></v-col>
                 <v-col cols="4">
                     <v-text-field
-                        v-model="childFormModel.frist_name"
+                        v-model="props.childFormModel.first_name"
                         label="ชื่อ"
                         density="compact"
                         variant="outlined"
@@ -32,7 +32,7 @@
                 </v-col>
                 <v-col cols="4">
                     <v-text-field
-                        v-model="childFormModel.last_name"
+                        v-model="props.childFormModel.last_name"
                         label="นามสกุล"
                         hint="ไม่ต้องใส่ - "
                         density="compact"
@@ -47,7 +47,7 @@
                 <v-col cols="4"> หมายเลขบัตรประชาชน <span class="text-red-darken-1"> *</span></v-col>
                 <v-col cols="6">
                     <v-text-field
-                        v-model="childFormModel.id_card"
+                        v-model="props.childFormModel.id_card"
                         hint="ไม่ต้องใส่ - "
                         density="compact"
                         variant="outlined"
@@ -60,7 +60,7 @@
             <v-row>
                 <v-col cols="3"> วัน/เดือน/ปี เกิด <span class="text-red-darken-1"> *</span></v-col>
                 <v-col cols="3">
-                    <v-input v-model="childFormModel.birth_date" :rules="rules_fieldEmpty">
+                    <v-input v-model="props.childFormModel.birth_date" :rules="rules_fieldEmpty">
                         <template #default="{ isValid }">
                             <VueDatePicker
                                 placeholder="วัน/เดือน/ปี เกิด"
@@ -76,7 +76,7 @@
                 <v-col cols="3">
                     <v-select
                         :rules="rules_fieldEmpty"
-                        v-model="childFormModel.birth_province"
+                        v-model="props.childFormModel.birth_province"
                         density="compact"
                         variant="outlined"
                         label="Select"
@@ -90,8 +90,8 @@
                 <v-col cols="3"
                     ><v-select
                         :rules="rules_fieldEmpty"
-                        v-model="childFormModel.ethnicity"
-                        label="Select"
+                        v-model="props.childFormModel.race"
+                        label="กรุณาเลือก"
                         density="compact"
                         variant="outlined"
                         :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
@@ -101,8 +101,8 @@
                 <v-col cols="3">
                     <v-select
                         :rules="rules_fieldEmpty"
-                        v-model="childFormModel.nationality"
-                        label="Select"
+                        v-model="props.childFormModel.nationality"
+                        label="กรุณาเลือก"
                         density="compact"
                         variant="outlined"
                         :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
@@ -111,22 +111,23 @@
             </v-row>
             <v-row>
                 <v-col cols="3"> ศาสนา <span class="text-red-darken-1"> *</span></v-col>
-                <v-radio-group inline :rules="rules_fieldEmpty" v-model="childFormModel.religion">
-                    <v-radio label="พุทธ" value="พุทธ"></v-radio>
-                    <v-radio label="คริสต์ " value="คริสต์ "></v-radio>
-                    <v-radio label="อิสลาม  " value="อิสลาม  "></v-radio>
-                    <v-radio label="ฮินดู  " value="ฮินดู  "></v-radio>
-                    <v-radio label="ไม่ระบุ" value="ไม่ระบุ"></v-radio>
+                <v-radio-group inline :rules="rules_fieldEmpty" v-model="props.childFormModel.religion">
+                    <v-radio
+                        v-for="religion in religionData"
+                        class="mr-4"
+                        :label="religion.religious_denomination_long_text"
+                        :value="religion.religious_denomination_key"
+                    ></v-radio>
                 </v-radio-group>
             </v-row>
             <v-row>
                 <v-col cols="3"> สวัสดิการบุตร <span class="text-red-darken-1"> *</span></v-col>
                 <v-col>
-                    <v-radio-group :rules="rules_fieldEmpty" v-model="childFormModel.child_welfare">
-                        <v-radio label="ไม่มี" value="ไม่มี"></v-radio>
-                        <v-radio label="บุตรเป็นคนไร้ความสามารถ " value="บุตรเป็นคนไร้ความสามารถ "></v-radio>
-                        <v-radio label="เบิกสวัสดิการกับท่านเอง " value="เบิกสวัสดิการกับท่านเอง "></v-radio>
-                        <v-radio label="เบิกสวัสดิการกับคู่สมรส " value="เบิกสวัสดิการกับคู่สมรส "></v-radio>
+                    <v-radio-group :rules="rules_fieldEmpty" v-model="props.childFormModel.child_welfare">
+                        <v-radio label="ไม่มี" value="1"></v-radio>
+                        <v-radio label="บุตรเป็นคนไร้ความสามารถ" value="2"></v-radio>
+                        <v-radio label="เบิกสวัสดิการกับท่านเอง" value="3"></v-radio>
+                        <v-radio label="เบิกสวัสดิการกับคู่สมรส" value="4"></v-radio>
                     </v-radio-group>
                 </v-col>
             </v-row>
@@ -140,32 +141,15 @@ import { usePersonalStore } from '~/stores/personal.store'
 
 export interface Props {
     index: number
+    childFormModel: children_info
 }
 
 const personalStore = usePersonalStore()
-const { marriage } = personalStore
 const { rules_fieldEmpty } = useFillRules()
 const props = defineProps<Props>()
 
-const childFormModel = reactive<children_info>({
-    id: props.index,
-    title: '',
-    frist_name: '',
-    last_name: '',
-    id_card: '',
-    birth_date: '',
-    child_welfare: '',
-    birth_province: null,
-    ethnicity: null,
-    nationality: null,
-    religion: '',
-})
-
-onMounted(() => {
-    marriage.children_list.push(childFormModel)
-})
-
-onUnmounted(() => {
-    marriage.children_list.pop()
-})
+const { data: tData } = useNuxtData('master/title')
+const { data: countryRaceData } = useNuxtData('master/country-race')
+const { data: religionData } = useNuxtData('master/religion')
+const { data: provinceData } = useNuxtData('master/province')
 </script>

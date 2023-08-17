@@ -28,21 +28,26 @@
                             <v-col cols="4"> จำนวนบุตร (เจ้าตัว) <span class="text-red-darken-1"> *</span></v-col>
                             <v-col cols="6">
                                 <v-text-field
-                                    :rules="rules_fieldEmpty"
+                                    ref="numChlidTxt"
+                                    type="number"
                                     v-model="marriage.num_of_chlid"
-                                    label="จำนวน"
-                                    hint="ไม่มีใส่ 0"
+                                    :rules="[
+                                        ...rules_fieldEmpty,
+                                        (v) => (v >= 0 && v <= 3) || 'จำนวนบุตรต้องไม่เกิน 3 คน',
+                                    ]"
+                                    label="จำนวน (ไม่มีใส่ 0)"
+                                    min="0"
+                                    max="3"
                                     density="compact"
                                     variant="outlined"
-                                    maxLength="1"
                                 >
                                     <template #append>คน</template>
                                 </v-text-field>
                             </v-col>
                         </v-row>
                     </v-expand-transition>
-                    <div v-for="i in parseInt(marriage.num_of_chlid || '0')" :key="i">
-                        <FormsChildForm :index="i"></FormsChildForm>
+                    <div v-for="(child, i) in marriage.children_list" :key="i">
+                        <FormsChildForm :index="i + 1" :childFormModel="child"></FormsChildForm>
                     </div>
                 </v-container>
                 <v-divider></v-divider>
@@ -252,14 +257,32 @@
 import { storeToRefs } from 'pinia'
 import { usePersonalStore } from '../../stores/personal.store'
 
+import { address, children_info } from '~/utils/interface/personal_information.interface'
+import { VueElement } from 'nuxt/dist/app/compat/capi'
+
 import { CandidateForm } from '~/utils/types'
-import { address } from '~/stores/interface/personal_information.interface'
+
 const props = defineProps<{
     candidateForm: CandidateForm
 }>()
 
 const { rules_fieldEmpty } = useFillRules()
 const formMarriage: Ref<HTMLFormElement | null> = ref<HTMLFormElement | null>(null)
+
+const numChlidTxt = ref<any | null>(null)
+
+const { fetchTitle, fetchTitleTH, fetchReligion, fetchCountryRace, fetchProvince } = useMaster()
+const { pending: tPending } = await fetchTitle()
+const { data: tTHData, pending: tTHPending } = await fetchTitleTH()
+const { pending: religionPending } = await fetchReligion()
+const { pending: countryRacePending } = await fetchCountryRace()
+const { data: provinceData, pending: provincePending } = await fetchProvince()
+
+const pending = computed(() => {
+    return (
+        tPending.value || religionPending.value || countryRacePending.value || provincePending.value || tTHPending.value
+    )
+})
 
 const personalStore = usePersonalStore()
 const { marriage, useCurAddressOnRefAddress, useRegAddressOnRefAddress, setDefaultChildList } = personalStore
@@ -273,6 +296,37 @@ watch(
     },
     {
         deep: true,
+    }
+)
+watch(
+    () => marriage.num_of_chlid,
+    (newValue) => {
+        if (newValue === null || newValue === '' || parseInt(newValue) > 3 || parseInt(newValue) < 0) {
+            return
+        }
+
+        const numToAdd = parseInt(newValue) - marriage.children_list.length
+
+        if (numToAdd > 0) {
+            for (let i = 0; i < numToAdd; i++) {
+                const newChild = deepCopy(defaultChildInfo) as children_info
+                newChild.id = marriage.children_list.length + 1
+                marriage.children_list.push(newChild)
+            }
+        } else if (numToAdd < 0) {
+            const numToRemove = -numToAdd
+            for (let i = 0; i < numToRemove; i++) {
+                const curChild = deepCopy(marriage.children_list[marriage.children_list.length - 1]) as children_info
+                delete curChild.id
+
+                let objIsNullorEmpty = Object.keys(curChild).every((key: any) => {
+                    // @ts-ignore
+                    return curChild[key] === null || curChild[key] === ''
+                })
+                console.log(curChild, objIsNullorEmpty)
+                marriage.children_list.pop()
+            }
+        }
     }
 )
 
