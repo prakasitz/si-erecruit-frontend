@@ -17,6 +17,20 @@ export const defaultChildrenInfo = {
     children_list: [],
 }
 
+export const defaultChildInfo = {
+    id: 1,
+    title: '',
+    first_name: '',
+    last_name: '',
+    id_card: '',
+    birth_date: '',
+    child_welfare: '',
+    birth_province: null,
+    race: null,
+    nationality: null,
+    religion: '',
+}
+
 export const defaultAddress: address = {
     address_no: '',
     address_moo: '',
