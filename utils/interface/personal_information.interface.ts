@@ -169,7 +169,7 @@ export interface address {
 }
 
 export interface children_info {
-    id: number
+    id?: number
     title: string
     first_name: string
     last_name: string
