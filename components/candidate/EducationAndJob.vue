@@ -90,15 +90,43 @@
                                     v-model="job.had_job_mahidol_detail.department"
                                     density="compact"
                                     variant="outlined"
-                                    maxLength="100"
-                                    :rules="rules_fieldEmpty"
-                                ></v-text-field>
+                                    :rules="[...rules_fieldEmpty, (v: string) => v.length <= 40 || 'ต้องไม่เกิน 40 ตัวอักษร']"
+                                    counter="40"
+                                >
+                                    <template #prepend-inner>
+                                        <v-chip label class="ma-2">มหาวิทยาลัยมหิดล</v-chip>
+                                    </template>
+                                </v-text-field>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col cols="4"> ประเภทการจ้างของบุคลากร <span class="text-red-darken-1"> *</span> </v-col>
                             <v-col cols="8">
-                                <v-select
+                                <v-text-field
+                                    v-model="job.had_job_mahidol_detail.sap_type"
+                                    variant="outlined"
+                                    density="compact"
+                                    :rules="[...rules_fieldEmpty, (v: string) => v.length <= 50 || 'ต้องไม่เกิน 50 ตัวอักษร']"
+                                    @update:focused="handleFocus"
+                                >
+                                </v-text-field>
+                                <v-menu v-model="showOptions">
+                                    <template v-slot:activator="{ props }">
+                                        <!-- hide -->
+                                        <div v-bind="props"></div>
+                                    </template>
+                                    <v-list>
+                                        <v-list-item
+                                            @click="selectItem($event, item)"
+                                            v-for="(item, index) in selectItems"
+                                            :key="index"
+                                            :value="item"
+                                        >
+                                            <v-list-item-title>{{ item }}</v-list-item-title>
+                                        </v-list-item>
+                                    </v-list>
+                                </v-menu>
+                                <!-- <v-select
                                     v-model="job.had_job_mahidol_detail.sap_type"
                                     label="กรุณาเลือก"
                                     variant="outlined"
@@ -110,30 +138,18 @@
                                         'พนักงานมหาวิทยาลัย (ชื่อส่วนงาน) (พศ.)',
                                         'ลูกจ้างชั่วคราว',
                                     ]"
-                                ></v-select>
+                                ></v-select> -->
                             </v-col>
-
                         </v-row>
                         <v-row>
                             <v-col cols="4"> ตำแหน่ง <span class="text-red-darken-1"> *</span> </v-col>
                             <v-col cols="8">
-                                <v-autocomplete
-                                    v-model="job.had_job_mahidol_detail.position_name"
-                                    label="กรุณาเลือก"
-                                    variant="outlined"
-                                    density="compact"
-                                    :rules="rules_fieldEmpty"
-                                    :items="positionData"
-                                    :item-title="'OM_Position_Title'"
-                                    :item-value="'OM_Position_ID'"
-                                ></v-autocomplete>
-                                <!-- <v-text-field
+                                <v-text-field
                                     v-model="job.had_job_mahidol_detail.position_name"
                                     density="compact"
                                     variant="outlined"
-                                    maxLength="100"
-                                    :rules="rules_fieldEmpty"
-                                ></v-text-field> -->
+                                    :rules="[...rules_fieldEmpty, (v: string) => v.length <= 25 || 'ต้องไม่เกิน 25 ตัวอักษร']"
+                                ></v-text-field>
                             </v-col>
                         </v-row>
                         <v-row>
@@ -144,7 +160,10 @@
                                     density="compact"
                                     variant="outlined"
                                     maxLength="8"
-                                    :rules="rules_fieldEmpty"
+                                    type="number"
+                                    min="0"
+                                    max="999999"
+                                    :rules="[...rules_fieldEmpty, (v: number) => v >= 0 && v <= 999999 || 'ต้องไม่เกิน 999,999']"
                                 ></v-text-field>
                             </v-col>
                         </v-row>
@@ -184,8 +203,8 @@
                                     v-model="job.had_job_mahidol_detail.reason"
                                     density="compact"
                                     variant="outlined"
-                                    maxLength="100"
-                                    :rules="rules_fieldEmpty"
+                                    :rules="[...rules_fieldEmpty, (v: string) => v.length <= 50 || 'ต้องไม่เกิน 50 ตัวอักษร']"
+                                    counter="50"
                                 ></v-text-field>
                             </v-col>
                         </v-row>
@@ -236,8 +255,8 @@
                                     label="ขื่อตำแหน่งงาน"
                                     density="compact"
                                     variant="outlined"
-                                    maxLength="56"
-                                    :rules="rules_fieldEmpty"
+                                    :rules="[...rules_fieldEmpty, (v: string) => v.length <= 50 || 'ต้องไม่เกิน 50 ตัวอักษร']"
+                                    counter="50"
                                 >
                                 </v-text-field>
                             </v-col>
@@ -250,8 +269,10 @@
                                     label="เงินเดือน"
                                     density="compact"
                                     variant="outlined"
-                                    maxLength="56"
-                                    :rules="rules_fieldEmpty"
+                                    type="number"
+                                    min="0"
+                                    max="999999"
+                                    :rules="[...rules_fieldEmpty, (v: number) => v >= 0 && v <= 999999 || 'ต้องไม่เกิน 999,999']"
                                 >
                                 </v-text-field>
                             </v-col>
@@ -264,8 +285,10 @@
                                     hint="ไม่ถึง 1 ให้ใส่ 0"
                                     density="compact"
                                     variant="outlined"
-                                    maxLength="2"
-                                    :rules="rules_fieldEmpty"
+                                    min="0"
+                                    max="99"
+                                    type="number"
+                                    :rules="[...rules_fieldEmpty, (v: number) => v >= 0 && v <= 99 || 'ต้องไม่เกิน 99']"
                                 >
                                     <template #append>ปี</template>
                                 </v-text-field>
@@ -276,8 +299,10 @@
                                     hint="ไม่ถึง 1 ให้ใส่ 0"
                                     density="compact"
                                     variant="outlined"
+                                    min="0"
+                                    max="11"
                                     maxLength="2"
-                                    :rules="rules_fieldEmpty"
+                                    :rules="[...rules_fieldEmpty, (v: number) => v >= 0 && v <= 11 || 'ต้องไม่เกิน 11']"
                                 >
                                     <template #append>เดือน</template>
                                 </v-text-field>
@@ -291,8 +316,8 @@
                                     label="ชื่อสถานที่"
                                     density="compact"
                                     variant="outlined"
-                                    maxLength="100"
-                                    :rules="rules_fieldEmpty"
+                                    :rules="[...rules_fieldEmpty, (v: string) => v.length <= 50 || 'ต้องไม่เกิน 50 ตัวอักษร']"
+                                    counter="50"
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="4">
@@ -315,11 +340,10 @@
                             <v-col cols="6">
                                 <v-text-field
                                     v-model="job.current_education.education_level"
-                                    hide-details
                                     density="compact"
                                     variant="outlined"
-                                    maxLength="100"
-                                    :rules="rules_fieldEmpty"
+                                    :rules="[...rules_fieldEmpty, (v: string) => v.length <= 10 || 'ต้องไม่เกิน 10 ตัวอักษร']"
+                                    counter="10"
                                 ></v-text-field>
                             </v-col>
                         </v-row>
@@ -328,11 +352,10 @@
                             <v-col cols="6">
                                 <v-text-field
                                     v-model="job.current_education.school"
-                                    hide-details
                                     density="compact"
                                     variant="outlined"
-                                    maxLength="120"
-                                    :rules="rules_fieldEmpty"
+                                    :rules="[...rules_fieldEmpty, (v: string) => v.length <= 100 || 'ต้องไม่เกิน 100 ตัวอักษร']"
+                                    counter="100"
                                 ></v-text-field>
                             </v-col>
                         </v-row>
@@ -341,11 +364,10 @@
                             <v-col cols="6">
                                 <v-text-field
                                     v-model="job.current_education.major"
-                                    hide-details
                                     density="compact"
                                     variant="outlined"
-                                    maxLength="120"
-                                    :rules="rules_fieldEmpty"
+                                    :rules="[...rules_fieldEmpty, (v: string) => v.length <= 50 || 'ต้องไม่เกิน 50 ตัวอักษร']"
+                                    counter="50"
                                 ></v-text-field>
                             </v-col>
                         </v-row>
@@ -354,11 +376,11 @@
                             <v-col cols="6">
                                 <v-text-field
                                     v-model="job.current_education.graduate_date"
-                                    hide-details
                                     density="compact"
                                     variant="outlined"
-                                    maxLength="120"
-                                    :rules="rules_fieldEmpty"
+                                    type="number"
+                                    :rules="[...rules_fieldEmpty, (v: string) => v.length <= 4 || 'ต้องไม่เกิน 4 ตัวอักษร']"
+                                    counter="4"
                                 ></v-text-field>
                             </v-col>
                         </v-row>
@@ -372,8 +394,10 @@
                                     hint="ไม่ถึง 1 ให้ใส่ 0"
                                     density="compact"
                                     variant="outlined"
-                                    maxLength="2"
-                                    :rules="rules_fieldEmpty"
+                                    type="number"
+                                    min="0"
+                                    max="99"
+                                    :rules="[...rules_fieldEmpty, (v: number) => v >= 0 && v <= 99 || 'ต้องไม่เกิน 99']"
                                 >
                                     <template #append>ปี</template>
                                 </v-text-field>
@@ -384,8 +408,10 @@
                                     hint="ไม่ถึง 1 ให้ใส่ 0"
                                     density="compact"
                                     variant="outlined"
-                                    maxLength="2"
-                                    :rules="rules_fieldEmpty"
+                                    type="number"
+                                    min="0"
+                                    max="11"
+                                    :rules="[...rules_fieldEmpty, (v: number) => v >= 0 && v <= 11 || 'ต้องไม่เกิน 11']"
                                 >
                                     <template #append>เดือน</template>
                                 </v-text-field>
@@ -396,12 +422,11 @@
                             <v-col cols="6">
                                 <v-text-field
                                     v-model="job.current_unemployee.reason"
-                                    hide-details
                                     label="เหตุผลที่ว่างงาน"
                                     density="compact"
                                     variant="outlined"
-                                    maxLength="200"
-                                    :rules="rules_fieldEmpty"
+                                    :rules="[...rules_fieldEmpty, (v: string) => v.length <= 50 || 'ต้องไม่เกิน 50 ตัวอักษร']"
+                                    counter="50"
                                 ></v-text-field>
                             </v-col>
                         </v-row>
@@ -432,14 +457,34 @@ const FormEducationAndJob: Ref<HTMLFormElement | null> = ref<HTMLFormElement | n
 
 const isFilledHadJobs = reactive<any>(Array(job.work_out_list.length))
 
-const { fetchProvince, fetchPosition, fetchLevel } = useMaster()
+const { fetchProvince, fetchLevel } = useMaster()
 const { data: provinceData, pending: provincePending } = await fetchProvince()
-const { data: positionData, pending: positionPending } = await fetchPosition()
 const { pending: levelPending } = await fetchLevel()
 
 const pending = computed(() => {
-    return provincePending.value || positionPending.value || levelPending.value
+    return provincePending.value || levelPending.value
 })
+
+const selectItems = ref([
+    'ข้าราชการ',
+    'พนักงานมหาวิทยาลัย (พม.)',
+    'พนักงานมหาวิทยาลัย (ชื่อส่วนงาน) (พศ.)',
+    'ลูกจ้างชั่วคราว',
+])
+const showOptions = ref(false)
+function handleFocus(focused: boolean) {
+    // Show the options when the field is focused
+    if (focused) {
+        showOptions.value = true
+    }
+}
+
+function selectItem(event: any, item: any) {
+    // Update the selected item and hide the options
+    job.had_job_mahidol_detail.sap_type = item
+
+    showOptions.value = false
+}
 
 function confirmToChnageHadJob() {
     if (isFilledHadJobs.every((item: boolean) => item)) {
