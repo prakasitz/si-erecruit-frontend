@@ -44,6 +44,7 @@ async function submit(id: string) {
         },
         method: 'PUT',
         key: 'submit',
+        watch: false,
     })
 }
 
