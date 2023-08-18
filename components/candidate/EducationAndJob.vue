@@ -97,7 +97,7 @@
                         </v-row>
                         <v-row>
                             <v-col cols="4"> ประเภทการจ้างของบุคลากร <span class="text-red-darken-1"> *</span> </v-col>
-                            <v-col cols="3">
+                            <v-col cols="8">
                                 <v-select
                                     v-model="job.had_job_mahidol_detail.sap_type"
                                     label="กรุณาเลือก"
@@ -112,8 +112,11 @@
                                     ]"
                                 ></v-select>
                             </v-col>
-                            <v-col cols="2"> ตำแหน่ง <span class="text-red-darken-1"> *</span> </v-col>
-                            <v-col cols="3">
+
+                        </v-row>
+                        <v-row>
+                            <v-col cols="4"> ตำแหน่ง <span class="text-red-darken-1"> *</span> </v-col>
+                            <v-col cols="8">
                                 <v-autocomplete
                                     v-model="job.had_job_mahidol_detail.position_name"
                                     label="กรุณาเลือก"
