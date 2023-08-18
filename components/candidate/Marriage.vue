@@ -131,8 +131,8 @@
                         <v-col cols="3">ที่อยู่บุคคลอ้างอิง<span class="text-red-darken-1"> *</span></v-col>
                         <v-col cols="6">
                             <v-radio-group v-model="marriage.ref_person.ref_same_address">
-                                <v-radio label="ใช้ที่อยู่เดียวกันกับ ที่อยู่ตามทะเบียนบ้าน" :value="0"></v-radio>
-                                <v-radio label="ใช้ที่อยู่เดียวกันกับ ที่อยู่ปัจจุบัน" :value="1"></v-radio>
+                                <v-radio label="ใช้ที่อยู่เดียวกันกับ ที่อยู่ตามทะเบียนบ้าน" :value="false"></v-radio>
+                                <v-radio label="ใช้ที่อยู่เดียวกันกับ ที่อยู่ปัจจุบัน" :value="true"></v-radio>
                                 <v-radio label="กำหนดเอง" :value="null"></v-radio>
                             </v-radio-group>
                         </v-col>
@@ -339,8 +339,8 @@ watch(
 )
 
 watch(
-    marriage.ref_person,
-    ({ ref_same_address }) => {
+    () => marriage.ref_person.ref_same_address,
+    (ref_same_address) => {
         if (ref_same_address === true) {
             useCurAddressOnRefAddress()
         } else if (ref_same_address === false) {
@@ -354,4 +354,3 @@ watch(
     }
 )
 </script>
-~/utils/interface/personal_information.interface
