@@ -344,7 +344,12 @@
                                         v-model="personal_info.id_card_number"
                                         density="compact"
                                         variant="outlined"
-                                        :rules="rules_fieldEmpty"
+                                        :rules="
+                                            fieldRules({
+                                                length: 13,
+                                                type: 'number',
+                                            })
+                                        "
                                     ></v-text-field>
                                 </v-col>
                             </v-row>
@@ -443,10 +448,19 @@
                                     <v-text-field
                                         v-model="personal_info.height"
                                         density="compact"
-                                        placeholder="0.00"
+                                        placeholder="000.00"
                                         variant="outlined"
                                         suffix="เซนติเมตร"
-                                        :rules="rules_fieldEmpty"
+                                        :rules="
+                                            fieldRules({
+                                                length: 7,
+                                                type: 'number',
+                                                options: {
+                                                    min: 0,
+                                                    max: 250,
+                                                },
+                                            })
+                                        "
                                     >
                                     </v-text-field>
                                 </v-col>
@@ -624,7 +638,7 @@ const personalStore = usePersonalStore()
 const { personal_info, setBirthDate } = personalStore
 const { calAge } = storeToRefs(personalStore)
 
-const { rules_fieldEmpty } = useFillRules()
+const { rules_fieldEmpty, fieldRules } = useFillRules()
 
 const formPersonal: Ref<HTMLFormElement | null> = ref<HTMLFormElement | null>(null)
 const birtDate = computed({
