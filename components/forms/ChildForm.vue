@@ -36,7 +36,6 @@
                     <v-text-field
                         v-model="props.childFormModel.last_name"
                         label="นามสกุล"
-                        hint="ไม่ต้องใส่ - "
                         density="compact"
                         variant="outlined"
                         maxLength="50"
@@ -53,7 +52,6 @@
                         hint="ไม่ต้องใส่ - "
                         density="compact"
                         variant="outlined"
-                        maxLength="13"
                         :rules="rules_fieldEmpty"
                     >
                     </v-text-field>
@@ -66,10 +64,10 @@
                         <template #default="{ isValid }">
                             <VueDatePicker
                                 placeholder="วัน/เดือน/ปี เกิด"
-                                :="defaultVueDatePickerStyle"
                                 v-model="childFormModel.birth_date"
                                 :rules="rules_fieldEmpty"
                                 :state="(isValid.value as boolean)"
+                                :="defaultVueDatePickerStyle"
                             />
                         </template>
                     </v-input>
