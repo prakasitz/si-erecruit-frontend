@@ -208,32 +208,27 @@ export function generateProfileJSON({
         //marriage
         marital_status: marriage.status,
 
-        // Titles
-        mate_title_name: '',
-        mate_title_special: '',
-        mate_wish_title_name: '',
-        mate_wish_last_name: '',
-
-        mate_first_name: '',
-        mate_last_name: '',
-        mate_birth_date: '',
-        mate_id_card_number: '',
-        mate_nationality: '',
-        mate_race: '',
-        mate_religion: '',
-
-        mate_date_of_marriage: '',
-        mate_no_marriage: '',
-
-        mate_career: '',
-
-        mate_living: '',
-        mate_death_date: '',
-        mate_death_no: '',
-
-        txt_mate_nationality: '',
-        txt_mate_race: '',
-        txt_mate_religion: '',
+        // Mate info
+        mate_title_name: marriage.mate_info.mate_title_name,
+        mate_title_special: marriage.mate_info.mate_title_special,
+        mate_wish_title_name: marriage.mate_info.mate_wish_title_name,
+        mate_wish_last_name: marriage.mate_info.mate_wish_last_name,
+        mate_first_name: marriage.mate_info.mate_first_name,
+        mate_last_name: marriage.mate_info.mate_last_name,
+        mate_birth_date: marriage.mate_info.mate_birth_date,
+        mate_id_card_number: marriage.mate_info.mate_id_card_number,
+        mate_nationality: marriage.mate_info.mate_nationality,
+        mate_race: marriage.mate_info.mate_race,
+        mate_religion: marriage.mate_info.mate_religion,
+        mate_date_of_marriage: marriage.mate_info.mate_date_of_marriage,
+        mate_no_marriage: marriage.mate_info.mate_no_marriage,
+        mate_career: marriage.mate_info.mate_career,
+        mate_living: marriage.mate_info.mate_living,
+        mate_death_date: marriage.mate_info.mate_death_date,
+        mate_death_no: marriage.mate_info.mate_death_no,
+        txt_mate_nationality: marriage.mate_info.txt_mate_nationality,
+        txt_mate_race: marriage.mate_info.txt_mate_race,
+        txt_mate_religion: marriage.mate_info.txt_mate_religion,
 
         number_of_children: marriage.num_of_chlid,
         //children_list

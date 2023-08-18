@@ -186,7 +186,7 @@
                         </v-col>
                         <v-col cols="12" class="pt-0">
                             <v-expand-transition>
-                                <v-card flat v-if="ss.ss_have">
+                                <v-sheet flat v-if="ss.ss_have">
                                     <v-container fluid class="pt-1 py-0">
                                         <v-row no-gutters>
                                             <v-col cols="8" offset="3" class="pb-2">
@@ -214,7 +214,7 @@
 
                                             <v-col cols="8" offset="3" class="pb-5">
                                                 <v-row>
-                                                    <v-col cols="3">
+                                                    <v-col cols="4">
                                                         <p>ออกให้ ณ วันที่<span class="text-red">*</span></p>
                                                     </v-col>
                                                     <v-col>
@@ -230,10 +230,10 @@
 
                                             <v-col cols="8" offset="3" class="pb-5">
                                                 <v-row>
-                                                    <v-col cols="3">
+                                                    <v-col cols="4">
                                                         <p>วันที่หมดอายุ<span class="text-red">*</span></p>
                                                     </v-col>
-                                                    <v-col cols="9">
+                                                    <v-col>
                                                         <VueDatePicker
                                                             placeholder="วัน/เดือน/ปี"
                                                             :="defaultVueDatePickerStyle"
@@ -274,7 +274,7 @@
                                             </v-col>
                                         </v-row>
                                     </v-container>
-                                </v-card>
+                                </v-sheet>
                             </v-expand-transition>
                         </v-col>
                     </v-row>

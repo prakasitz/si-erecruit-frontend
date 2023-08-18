@@ -56,6 +56,7 @@ export const defaultVueDatePickerStyle: VueDatePickerProps = {
     enableTimePicker: false,
     hideNavigation: ['time'],
     modelType: 'yyyy-MM-dd',
+    format: 'dd/MM/yyyy',
 }
 
 export const UnauthorizedError = (msg: string = 'Unauthorized') =>

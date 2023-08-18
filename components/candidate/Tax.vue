@@ -74,7 +74,7 @@
                             </v-col>
                             <v-col cols="6">
                                 <v-text-field
-                                    v-model="tax.chlid_school"
+                                    v-model="tax.chlid_endschool"
                                     label="จำนวน"
                                     hint="หากไม่มีใส่ 0"
                                     density="compact"
