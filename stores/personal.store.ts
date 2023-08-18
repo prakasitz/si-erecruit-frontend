@@ -231,6 +231,28 @@ export const usePersonalStore = defineStore('personal', {
             marriage: {
                 status: '',
                 num_of_chlid: '0',
+                mate_info: {
+                    mate_title_name: null,
+                    mate_title_special: null,
+                    mate_wish_title_name: null,
+                    mate_wish_last_name: null,
+                    mate_first_name: null,
+                    mate_last_name: null,
+                    mate_birth_date: null,
+                    mate_id_card_number: null,
+                    mate_nationality: null,
+                    mate_race: null,
+                    mate_religion: null,
+                    mate_date_of_marriage: null,
+                    mate_no_marriage: null,
+                    mate_career: null,
+                    mate_living: null,
+                    mate_death_date: null,
+                    mate_death_no: null,
+                    txt_mate_nationality: null,
+                    txt_mate_race: null,
+                    txt_mate_religion: null,
+                },
                 children_list: [],
                 ref_person: {
                     address_detail: {

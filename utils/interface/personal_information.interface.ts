@@ -130,6 +130,7 @@ export interface IJob {
 
 export interface IMarriage {
     status: string
+    mate_info: mate_info
     num_of_chlid: string
     children_list: children_info[]
     ref_person: ref_person
@@ -166,6 +167,29 @@ export interface address {
     address_province: string | null
     address_postcode: string
     address_country: string
+}
+
+export interface mate_info {
+    mate_title_name: string | null
+    mate_title_special: string | null
+    mate_wish_title_name: string | null
+    mate_wish_last_name: string | null
+    mate_first_name: string | null
+    mate_last_name: string | null
+    mate_birth_date: string | null
+    mate_id_card_number: string | null
+    mate_nationality: string | null
+    mate_race: string | null
+    mate_religion: string | null
+    mate_date_of_marriage: string | null
+    mate_no_marriage: string | null
+    mate_career: string | null
+    mate_living: string | null
+    mate_death_date: string | null
+    mate_death_no: string | null
+    txt_mate_nationality: string | null
+    txt_mate_race: string | null
+    txt_mate_religion: string | null
 }
 
 export interface children_info {

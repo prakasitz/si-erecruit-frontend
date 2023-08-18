@@ -24,28 +24,30 @@
                         </v-col>
                     </v-row>
                     <v-expand-transition>
-                        <v-row v-if="marriage.status !== '1'">
-                            <v-col cols="4"> จำนวนบุตร (เจ้าตัว) <span class="text-red-darken-1"> *</span></v-col>
-                            <v-col cols="6">
-                                <v-text-field
-                                    ref="numChlidTxt"
-                                    type="number"
-                                    v-model="marriage.num_of_chlid"
-                                    :rules="[
-                                        ...rules_fieldEmpty,
-                                        (v) => (v >= 0 && v <= 3) || 'จำนวนบุตรต้องไม่เกิน 3 คน',
-                                    ]"
-                                    label="จำนวน (ไม่มีใส่ 0)"
-                                    min="0"
-                                    max="3"
-                                    density="compact"
-                                    variant="outlined"
-                                >
-                                    <template #append>คน</template>
-                                </v-text-field>
-                            </v-col>
-                        </v-row>
+                        <div v-if="marriage.status === '2'">
+                            <FormsMateForm :MateFormModel="marriage.mate_info" />
+                            <v-divider class="my-6"></v-divider>
+                        </div>
                     </v-expand-transition>
+
+                    <v-row>
+                        <v-col cols="4"> จำนวนบุตร (เจ้าตัว) <span class="text-red-darken-1"> *</span></v-col>
+                        <v-col cols="6">
+                            <v-text-field
+                                ref="numChlidTxt"
+                                type="number"
+                                v-model="marriage.num_of_chlid"
+                                :rules="[...rules_fieldEmpty, (v) => (v >= 0 && v <= 3) || 'จำนวนบุตรต้องไม่เกิน 3 คน']"
+                                label="จำนวน (ไม่มีใส่ 0)"
+                                min="0"
+                                max="3"
+                                density="compact"
+                                variant="outlined"
+                            >
+                                <template #append>คน</template>
+                            </v-text-field>
+                        </v-col>
+                    </v-row>
                     <div v-for="(child, i) in marriage.children_list" :key="i">
                         <FormsChildForm :index="i + 1" :childFormModel="child"></FormsChildForm>
                     </div>
@@ -271,16 +273,22 @@ const formMarriage: Ref<HTMLFormElement | null> = ref<HTMLFormElement | null>(nu
 
 const numChlidTxt = ref<any | null>(null)
 
-const { fetchTitle, fetchTitleTH, fetchReligion, fetchCountryRace, fetchProvince } = useMaster()
-const { pending: tPending } = await fetchTitle()
+const { fetchTitle, fetchTitleSpecial, fetchTitleTH, fetchReligion, fetchCountryRace, fetchProvince } = useMaster()
 const { data: tTHData, pending: tTHPending } = await fetchTitleTH()
+const { pending: tPending } = await fetchTitle()
+const { pending: tSpecialPending } = await fetchTitleSpecial()
 const { pending: religionPending } = await fetchReligion()
 const { pending: countryRacePending } = await fetchCountryRace()
 const { data: provinceData, pending: provincePending } = await fetchProvince()
 
 const pending = computed(() => {
     return (
-        tPending.value || religionPending.value || countryRacePending.value || provincePending.value || tTHPending.value
+        tPending.value ||
+        tSpecialPending.value ||
+        religionPending.value ||
+        countryRacePending.value ||
+        provincePending.value ||
+        tTHPending.value
     )
 })
 
