@@ -6,6 +6,6 @@
     <td>Action</td>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const props = defineProps(['menu', 'filename', 'action'])
 </script>

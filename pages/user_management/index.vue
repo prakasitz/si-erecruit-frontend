@@ -50,7 +50,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 definePageMeta({
     title: 'จัดการผู้ใช้งาน',
     pageTransition: {
