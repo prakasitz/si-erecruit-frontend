@@ -92,35 +92,10 @@ async function signIn() {
     try {
         overlay.value = true
         let redirectOrNull = route.query.redirect as string | null
-
         await login(username.value, password.value, RoleEnum.HR)
         await navigateTo({ path: redirectOrNull || '/' })
-
-        // const res = await useHR().loginHR(username.value, password.value)
-        // console.log('signIn', res?.data)
-        // await navigateTo({ path: '/' })
     } catch (error: H3Error | any) {
-        // show error only init page
-        if (error instanceof H3Error) {
-            let errorObj = error.data ?? error
-            throw showError({
-                ...errorObj,
-                stack: undefined,
-            })
-        } else {
-            console.error('Internal Error', error)
-            throw showError({
-                statusCode: 500,
-                message: error.message,
-                stack: undefined,
-            })
-        }
-
-        // if (error instanceof H3Error && error.statusCode == 401) {
-        //     topDialog.value = true
-        // } else {
-        //     throw showError({ statusCode: 500, statusMessage: 'Internal Server Error', message: error.message })
-        // }
+        throw error
     } finally {
         overlay.value = false
     }

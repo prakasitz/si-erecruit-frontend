@@ -3,15 +3,21 @@ import { NuxtError } from 'nuxt/app'
 export default function useErrorHandler() {
     return {
         middlewareError,
-        showTokenExpired
+        showTokenExpired,
     }
 }
 
 function middlewareError(error: NuxtError | any, { to, from }: any) {
+    console.log('error-middlewareError', error)
     if (error.statusCode === 401) {
         showTokenExpired(to)
     } else {
-        throw error
+        throw createError({
+            statusCode: error.statusCode,
+            message: error.data.message,
+            stack: undefined,
+            fatal: true,
+        })
     }
 }
 

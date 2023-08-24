@@ -9,7 +9,7 @@ export const useAuth = () => {
         const { setUserInfo } = userStore
         console.log('setUser', user)
         setUserInfo(user)
-    } 
+    }
 
     // This function is currently commented out and not in use.
     // const setCookie = (cookie: any) => {
@@ -36,6 +36,8 @@ export const useAuth = () => {
             throw createError({
                 statusCode: error.statusCode,
                 message: error.data.message,
+                stack: undefined,
+                fatal: true,
             })
         }
     }
