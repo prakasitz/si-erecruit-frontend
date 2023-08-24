@@ -1,7 +1,7 @@
 import { profileService } from '../../../common/externalAPI/profiles.external'
 import { IncomingMessage } from 'http'
 import { formidable, Options, errors } from 'formidable'
-import { BadRequestError, TokenNotFoundError } from '../../../../utils/default'
+import { BadRequestError, TokenNotFoundError, UnauthorizedError } from '../../../../utils/default'
 
 import { H3Error } from 'h3'
 import { IPersonalStore } from '../../../../utils/interface/personal_information.interface'

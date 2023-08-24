@@ -15,7 +15,7 @@
                     ><br />
                 </v-card-title>
             </v-toolbar>
-            <v-card-text> {{ context.message }} </v-card-text>
+            <v-card-text v-html="context.message"> </v-card-text>
             <v-card-actions v-if="context.actionButtons && context.actionButtons.length > 0">
                 <v-spacer></v-spacer>
                 <template v-for="button in context.actionButtons">

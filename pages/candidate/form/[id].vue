@@ -273,6 +273,7 @@ import { useMasterDataStore } from '~/stores/master.store'
 import { usePersonalStore } from '~/stores/personal.store'
 import { useUserStore } from '~/stores/user.store'
 import { Profile } from '~/utils/types'
+import { FetchError } from 'ofetch'
 
 definePageMeta({
     title: 'จัดการข้อมูลผู้สมัคร',
@@ -294,6 +295,7 @@ definePageMeta({
 
 const router = useRouter()
 const route = useRoute()
+const { dialogError, showDialog } = await useDialog()
 
 // Master Store
 const masterDataStore = useMasterDataStore()
@@ -332,11 +334,30 @@ const panelShow = ref('secret')
 
 const onSubmited = async () => {
     const { submit } = useProfile()
+    const { showErrorOnDialog } = useErrorHandler()
     const { data: submitData, pending: submitPending, error } = await submit(route.params.id as string)
     if (error.value) {
-        alert('error')
+        showErrorOnDialog({
+            error: error.value,
+        })
     } else {
-        alert('submited')
+        const { dialogInfo } = useDialog()
+        const dialog = dialogInfo()
+        showDialog(
+            {
+                title: 'บันทึกข้อมูลฉบับร่างสำเร็จ',
+                message: 'ข้อมูลของท่านได้ถูกบันทึกเรียบร้อยแล้ว',
+                actionButtons: [
+                    {
+                        text: `Colse`,
+                        variant: 'elevated',
+                        color: 'primary',
+                    },
+                ],
+                persistent: true,
+            },
+            dialog
+        )
     }
 }
 
@@ -349,7 +370,6 @@ onMounted(async () => {
 
     let profile = data.value as Profile
     if (profile == null && error.value == null) {
-        const { dialogError, showDialog } = await useDialog()
         const dialog = dialogError()
         showDialog(
             {

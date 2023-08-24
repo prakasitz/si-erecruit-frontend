@@ -1,9 +1,11 @@
 import { NuxtError } from 'nuxt/app'
+import { FetchError } from 'ofetch'
 
 export default function useErrorHandler() {
     return {
         middlewareError,
         showTokenExpired,
+        showErrorOnDialog,
     }
 }
 
@@ -18,6 +20,32 @@ function middlewareError(error: NuxtError | any, { to, from }: any) {
             stack: undefined,
             fatal: true,
         })
+    }
+}
+
+function showErrorOnDialog({ title, detail, error }: { title?: string; detail?: string; error: FetchError<any> }) {
+    const { dialogError, showDialog } = useDialog()
+    const dialog = dialogError()
+    const { statusCode, data, message } = error
+    const { showTokenExpired } = useErrorHandler()
+    const route = useRoute()
+    let titleStr = title || `เกิดข้อผิดพลาด: (${statusCode})`
+    let messageStr = detail || '<br> กรุณาติดต่อผู้ดูแลระบบ หรือลองใหม่อีกครั้ง ⚠'
+    switch (statusCode) {
+        case 401:
+            showTokenExpired(route.fullPath)
+            break
+        default:
+            showDialog(
+                {
+                    title: titleStr,
+                    message: (data.message || message) + messageStr,
+                    actionButtons: [],
+                    persistent: false,
+                },
+                dialog
+            )
+            break
     }
 }
 
