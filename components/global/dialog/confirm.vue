@@ -64,7 +64,7 @@ interface BtnActionCallBack {
     callbackActionBtn: any[]
 }
 
-const { dialogConfirm, dialogContext } = useDialog()
+const { dialogConfirm, dialogContext } = await useDialog()
 const dialog = dialogConfirm()
 const context = dialogContext()
 const success = ref(false)

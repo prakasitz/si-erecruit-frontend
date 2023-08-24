@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 const bgColor = 'red-darken-3'
-const { dialogError, dialogContext } = useDialog()
+const { dialogError, dialogContext } = await useDialog()
 const dialog = dialogError()
 const context = dialogContext()
 

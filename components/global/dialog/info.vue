@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-const { dialogInfo, dialogContext } = useDialog()
+const { dialogInfo, dialogContext } = await useDialog()
 
 const bgColor = 'indigo'
 const dialog = dialogInfo()
