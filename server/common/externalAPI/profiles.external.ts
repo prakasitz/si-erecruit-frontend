@@ -34,23 +34,20 @@ class ProfileExternal extends ExternalAPIService {
         }
     }
 
-    public async draft(event: H3Event, { profile_ID }: { profile_ID: string }) {
-        if (!profile_ID) throw new Error('profile_ID is required')
+    public async draft(event: H3Event, profileObj: any) {
+        if (!profileObj.profile_ID) throw new Error('profile_ID is required')
         try {
             const user = event.context?.user
             if (!user) throw UnauthorizedError("User doesn't exist")
             if (user.role.includes('CANDIDATE', 'HR')) throw UnauthorizedError("You don't have permission")
 
             const accessToken = this.getAccessToken(event)
-            const resp = await this.baseAPI.put(
-                `/${this.slug}/draft/${profile_ID}`,
-                {},
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + accessToken,
-                    },
-                }
-            )
+            const resp = await this.baseAPI.put(`/${this.slug}/draft`, profileObj, {
+                headers: {
+                    Authorization: 'Bearer ' + accessToken,
+                },
+            })
+            return resp.data
         } catch (error: AxiosError | any) {
             return this.handleError(error)
         }
@@ -79,7 +76,6 @@ class ProfileExternal extends ExternalAPIService {
             return this.handleError(error)
         }
     }
-
 
     public async checkStatus(profile_IDs: number[], event: H3Event) {
         if (!profile_IDs) throw new Error('profile_ID is required')
@@ -150,15 +146,16 @@ class ProfileExternal extends ExternalAPIService {
     public async suspenedProfiles(profiles: number[], event: H3Event) {
         try {
             const accessToken = this.getAccessToken(event)
-            const resp = await this.baseAPI.patch(`/${this.slug}/suspended`,
+            const resp = await this.baseAPI.patch(
+                `/${this.slug}/suspended`,
                 {
                     profile_IDs: profiles,
                 },
                 {
                     headers: {
                         Authorization: 'Bearer ' + accessToken,
-                    }
-                },
+                    },
+                }
             )
             return resp.data
         } catch (error: AxiosError | any) {
@@ -166,19 +163,19 @@ class ProfileExternal extends ExternalAPIService {
         }
     }
 
-
     public async publishProfiles(profiles: number[], event: H3Event) {
         try {
             const accessToken = this.getAccessToken(event)
-            const resp = await this.baseAPI.patch(`/${this.slug}/publishable`,
+            const resp = await this.baseAPI.patch(
+                `/${this.slug}/publishable`,
                 {
                     profile_IDs: profiles,
                 },
                 {
                     headers: {
                         Authorization: 'Bearer ' + accessToken,
-                    }
-                },
+                    },
+                }
             )
             return resp.data
         } catch (error: AxiosError | any) {

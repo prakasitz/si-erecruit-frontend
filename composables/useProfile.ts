@@ -38,7 +38,8 @@ async function submit(id: string) {
         religion: '01',
         title: 'ด.ช.',
     })
-    await useApi(`/api/external/profile/draft/${parseInt(id)}`, {
+
+    return useApi(`/api/external/profile/draft/${parseInt(id)}`, {
         body: {
             ..._data,
         },

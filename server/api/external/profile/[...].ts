@@ -23,12 +23,18 @@ router.put(
     '/draft/:id',
     defineEventHandler(async (event) => {
         const id = getRouterParam(event, 'id')
+
+        if (!id) throw BadRequestError('id is required')
+
         const body = await readBody(event)
-        const { personal_info, education, marriage } = body as IPersonalStore
-        return generateProfileJSON(body)
-        // if (!id) throw BadRequestError('id is required')
-        // const resp = await profileService.get(event, { profile_ID: id })
-        // return resp
+        const obj: { profile_ID?: string } = { profile_ID: id }
+        const updateObj = generateProfileJSON(body)
+
+        const resp = await profileService.draft(event, {
+            ...obj,
+            ...updateObj,
+        })
+        return resp
     })
 )
 

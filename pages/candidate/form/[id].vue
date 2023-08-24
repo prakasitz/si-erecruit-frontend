@@ -332,8 +332,12 @@ const panelShow = ref('secret')
 
 const onSubmited = async () => {
     const { submit } = useProfile()
-    await submit(route.params.id as string)
-    console.log('submited')
+    const { data: submitData, pending: submitPending, error } = await submit(route.params.id as string)
+    if (error.value) {
+        alert('error')
+    } else {
+        alert('submited')
+    }
 }
 
 onMounted(async () => {
@@ -344,7 +348,7 @@ onMounted(async () => {
     }
 
     let profile = data.value as Profile
-    if (profile == null) {
+    if (profile == null && error.value == null) {
         const { dialogError, showDialog } = await useDialog()
         const dialog = dialogError()
         showDialog(
