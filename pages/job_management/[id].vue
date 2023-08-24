@@ -66,9 +66,9 @@
                         class="elevation-0"
                         show-select
                     >
-                        <template v-slot:item.status="{ item }">
+                        <template v-slot:item.profile_status="{ item }">
                             <v-chip :color="profileStatusComputed(item.raw.profile_status)?.profile_status_color">
-                                123123
+                                {{ profileStatusComputed(item.raw.profile_status)?.profile_status_text }}
                             </v-chip>
                         </template>
                         <template v-slot:item.action="{ item }">
