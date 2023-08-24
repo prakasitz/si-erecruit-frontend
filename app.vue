@@ -123,10 +123,10 @@ const loading = ref(true)
 const nuxtApp = useNuxtApp()
 
 nuxtApp.hook('page:finish', () => {
-    if (loading.value == true) {
-        setTimeout(() => {
+    setTimeout(() => {
+        if (loading.value == true) {
             loading.value = false
-        }, 500)
-    }
+        }
+    }, 500)
 })
 </script>
