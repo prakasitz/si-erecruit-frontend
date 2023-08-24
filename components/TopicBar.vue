@@ -62,7 +62,7 @@ type MenuItem = {
 }
 
 export interface Props {
-    labels?: any[]
+    labels: any[]
 }
 
 const props = withDefaults(defineProps<Props>(), {

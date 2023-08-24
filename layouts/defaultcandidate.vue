@@ -58,7 +58,7 @@
             </v-list>
         </v-navigation-drawer>
 
-        <TopicBar :labels="route.meta.breadcrumbs" />
+        <TopicBar :labels="(route.meta.breadcrumbs as any[])" />
 
         <v-main :style="{ 'min-height': '90%', 'margin-top': '36px' }" class="bg-background-color">
             <slot> </slot>
@@ -96,7 +96,7 @@ useHead({
 const drawer = ref(true)
 const group = ref(null)
 
-const items4Candidate = [
+const items4Candidate: any = [
     {
         title: 'หน้าหลัก',
         value: 'foo',
