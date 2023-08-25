@@ -20,7 +20,7 @@ export const useAuth = () => {
     const login = async (username: any, password: any, role: Roles) => {
         try {
             const pidOrUserName = role === 'CANDIDATE' ? 'pid' : 'username'
-            const { error, data } = await useApi('/auth/login', {
+            const { data, error } = await useApi('/auth/login', {
                 method: 'POST',
                 headers: {
                     'X-Role': role,
