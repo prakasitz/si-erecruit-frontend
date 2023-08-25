@@ -374,7 +374,6 @@ const onSubmited = async () => {
 
 const mappingProfileToStore = async () => {
     let profile = profileData.value as Profile
-    console.log('profileprofileprofileprofile', profile)
     if (profile == null && profileError.value == null) {
         const dialog = dialogError()
         showDialog(
