@@ -99,7 +99,7 @@ async function loginCandidate(pid?: string | undefined, password?: string | unde
             if (error instanceof H3Error && error.statusCode == 401) {
                 invalidPassword.value = !invalidPassword.value
             } else {
-                throw showError({ statusCode: 500, statusMessage: 'Internal Server Error' })
+                throw showError({ statusCode: 500, statusMessage: 'Internal Server Error', message: error.message })
             }
         }
     }
