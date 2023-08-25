@@ -1,3 +1,7 @@
+html {
+    overflow-y: inherit !important;
+}
+
 b,
 strong {
     font-family: 'Krub-Bold';
