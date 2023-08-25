@@ -156,18 +156,52 @@ export type VuetifyForm = {
     resetValidation: () => void
 }
 
-export type User = {
-    id: number
-    first_name: string
-    last_name?: string
-    pid?: string
-    permissions: string | null
-    role: Roles
-    csrf_token?: string
-    is_active: boolean
-    last_login: Date | null
-    created_at: Date
+/*
+            user: {
+                displayname: null,
+                role: null,
+            },
+
+            sub: null,
+            employee_id: null,
+            department: null,
+
+            commonid: null,
+            commonname: null,
+            secret: null,
+            exp: null,
+*/
+
+export interface jwtToken {
+    aud: string
+    iss?: string
+    nbf?: number
+    iat: number
+    exp: number
+    sub: string
 }
+
+export interface jwtAdfs extends jwtToken {
+    role: Roles[]
+    email?: string
+    upn?: string
+    Department?: string
+    group?: string[]
+    auth_time?: Date
+}
+
+export interface jwtCandidate extends jwtToken {
+    role: Roles[]
+    displayname: string
+    commonid: string
+    commonname: string
+    secret: string
+}
+
+// create interface for fn(user Context<jwtAdfs>) => user.role
+export type ContextUser<T = jwtAdfs | jwtCandidate> = T 
+
+export type Permission = 'can-access-admin' | 'can-access-hr' | 'can-access-candidate' | 'can-access-hr-candidate' 
 
 export type TokenSession = {
     access_token: string
