@@ -1,7 +1,9 @@
 import axios, { AxiosError, AxiosInstance } from 'axios'
 import { H3Event, H3Error } from 'h3'
 import { getClientCredentials } from '../authentication'
-import { TokenNotFoundError } from '../../../utils/default'
+import { TokenNotFoundError, UnauthorizedError } from '../../../utils/default'
+import { ContextUser, Permission } from '../../../utils/types'
+import { hasPermission } from '../permission'
 
 export class ExternalAPIService {
     protected token: string | undefined
@@ -23,6 +25,13 @@ export class ExternalAPIService {
         let accessTokenWithBearer = getCookie(event, 'access_token')
         if (!accessTokenWithBearer) return TokenNotFoundError('message from getAccessToken')
         return accessTokenWithBearer.split(' ')[1]
+    }
+
+    protected checkPermission(event: H3Event, permission: Permission) {
+        const user = event.context?.user as ContextUser<any>
+        if (!user) throw UnauthorizedError("User doesn't exist")
+        if (!hasPermission(user, permission))
+            throw UnauthorizedError(`You don't have permission, Current permission: ${permission}`)
     }
 
     protected async initializeToken() {

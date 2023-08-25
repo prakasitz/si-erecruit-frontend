@@ -16,9 +16,7 @@ class ProfileExternal extends ExternalAPIService {
     public async submit(event: H3Event, { profile_ID }: { profile_ID: string }) {
         if (!profile_ID) throw new Error('profile_ID is required')
         try {
-            const user = event.context?.user
-            if (!user) throw UnauthorizedError("User doesn't exist")
-            if (user.role.includes('CANDIDATE', 'HR')) throw UnauthorizedError("You don't have permission")
+            this.checkPermission(event, 'can-access-candidate')
             const accessToken = this.getAccessToken(event)
             const resp = await this.baseAPI.put(
                 `/${this.slug}/update/${profile_ID}`,
@@ -37,10 +35,7 @@ class ProfileExternal extends ExternalAPIService {
     public async draft(event: H3Event, profileObj: any) {
         if (!profileObj.profile_ID) throw new Error('profile_ID is required')
         try {
-            const user = event.context?.user
-            if (!user) throw UnauthorizedError("User doesn't exist")
-            if (user.role.includes('CANDIDATE', 'HR')) throw UnauthorizedError("You don't have permission")
-
+            this.checkPermission(event, 'can-access-hr-candidate')
             const accessToken = this.getAccessToken(event)
             const resp = await this.baseAPI.put(`/${this.slug}/draft`, profileObj, {
                 headers: {
@@ -56,18 +51,16 @@ class ProfileExternal extends ExternalAPIService {
     public async get(event: H3Event, { profile_ID }: { profile_ID: string }) {
         if (!profile_ID) throw new Error('profile_ID is required')
         try {
-            const user = event.context?.user
-            if (!user) throw UnauthorizedError("User doesn't exist")
+            this.checkPermission(event, 'can-access-hr-candidate')
+            // const accessToken = this.getAccessToken(event)
+            await this.initializeToken()
 
-            if (user.role.includes('CANDIDATE')) throw UnauthorizedError("You don't have permission")
-
-            const accessToken = this.getAccessToken(event)
             const resp = await this.baseAPI.post(
                 `/${this.slug}/get/${profile_ID}`,
                 {},
                 {
                     headers: {
-                        Authorization: 'Bearer ' + accessToken,
+                        Authorization: 'Bearer ' + this.token,
                     },
                 }
             )
@@ -80,12 +73,7 @@ class ProfileExternal extends ExternalAPIService {
     public async checkStatus(profile_IDs: number[], event: H3Event) {
         if (!profile_IDs) throw new Error('profile_ID is required')
         try {
-            const user = event.context?.user
-            console.log(user)
-            if (!user) throw UnauthorizedError("User doesn't exist")
-
-            if (user.role.includes('CANDIDATE')) throw UnauthorizedError("You don't have permission")
-
+            this.checkPermission(event, 'can-access-hr')
             const accessToken = this.getAccessToken(event)
             const resp = await this.baseAPI.post(
                 `/${this.slug}/getStatus`,

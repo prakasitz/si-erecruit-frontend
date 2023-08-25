@@ -1,22 +1,27 @@
-import { User } from '../../utils/types'
+import { ContextUser, Permission, jwtAdfs, jwtCandidate } from '../../utils/types'
 
-export function canAccessAdmin(user: User): boolean {
-    if (user.role === 'SUPER_ADMIN' || user.role === 'ADMIN') return true
-
+export function canAccessAdmin(user: ContextUser<jwtAdfs>): boolean {
+    if (user.role.some((role) => role === 'SUPER_ADMIN' || role === 'ADMIN')) return true
     return false
 }
 
-export function canAccessHR(user: User): boolean {
-    if (user.role === 'HR') return true
-
+export function canAccessHR(user: ContextUser<jwtAdfs>): boolean {
+    if (user.role.some((role) => role === 'HR')) return true
     return false
 }
 
-export function hasPermission(user: User, permission: string): boolean {
+export function canAccessCandidate(user: ContextUser<jwtCandidate>): boolean {
+    if (user.role.some((role) => role === 'CANDIDATE')) return true
+    return false
+}
+
+export function hasPermission(user: ContextUser<any>, permission: Permission): boolean {
     // Check if user has the permission
     const permissions = {
         'can-access-admin': canAccessAdmin(user),
-        'can-access-hr-user': canAccessHR(user),
+        'can-access-hr': canAccessHR(user),
+        'can-access-candidate': canAccessHR(user),
+        'can-access-hr-candidate': canAccessHR(user) || canAccessCandidate(user),
     }
 
     // If permission does not exist, return false
