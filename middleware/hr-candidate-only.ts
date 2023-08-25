@@ -10,12 +10,15 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         await useAuth().me()
         const { isHR, isCandidate } = storeToRefs(useUserStore())
         console.log('middleware:hr-candidate-only', isHR.value, isCandidate.value)
+
         if (!isHR.value && !isCandidate.value) {
             // return navigateTo({ name: 'login-candidate' })
             throw createError({
                 statusCode: 403,
                 message: 'You are not authorized to access this page.',
             })
+        } else {
+            setPageLayout(isHR.value ? 'default' : 'defaultcandidate')
         }
     } catch (error: NuxtError | any) {
         console.log('error: middleware:hr-candidate-only', error)
