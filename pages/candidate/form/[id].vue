@@ -162,7 +162,12 @@
                                             <v-alert-title class="mb-2 text-h6 text-indigo-darken-2">
                                                 การเข้าสู่ระบบและการบันทึกข้อมูล
                                             </v-alert-title>
-                                            <div :style="{ 'font-size': '0.9rem', lineHeight: '1.4rem !important' }">
+                                            <div
+                                                :style="{
+                                                    'font-size': '0.9rem',
+                                                    lineHeight: '1.4rem !important',
+                                                }"
+                                            >
                                                 <p class="mb-4">
                                                     ผู้ใช้งาน จะต้อง<b class="text-decoration-underline">จำรหัสผ่าน</b
                                                     >ที่ระบบได้กำหนดให้ เป็นตัวเลข 6 ตัว (ดังแสดงด้านบน)
@@ -190,7 +195,12 @@
                                             <v-alert-title class="mb-2 text-h6 text-indigo-darken-2">
                                                 การส่งข้อมูล
                                             </v-alert-title>
-                                            <div :style="{ 'font-size': '0.9rem', lineHeight: '1.4rem !important' }">
+                                            <div
+                                                :style="{
+                                                    'font-size': '0.9rem',
+                                                    lineHeight: '1.4rem !important',
+                                                }"
+                                            >
                                                 <p class="mb-4">
                                                     ผู้ใช้งาน จะต้องทำการป้อนข้อมูลครบถ้วนให้และถูกต้อง
                                                     และทำเครื่องหมายถูกที่
@@ -219,7 +229,12 @@
                                             <v-alert-title class="mb-2 text-h6 text-indigo-darken-2">
                                                 การพิมพ์แบบฟอร์มและเอกสารแนบ</v-alert-title
                                             >
-                                            <div :style="{ 'font-size': '0.9rem', lineHeight: '1.4rem !important' }">
+                                            <div
+                                                :style="{
+                                                    'font-size': '0.9rem',
+                                                    lineHeight: '1.4rem !important',
+                                                }"
+                                            >
                                                 <p class="mb-4">
                                                     เมื่อผู้ใช้งาน ได้ทำการส่งข้อมูลแล้ว
                                                     ระบบจะปรากฎหน้าเว็บที่อธิบายรายละเอียดในการพิมพ์
@@ -269,11 +284,9 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { useMasterDataStore } from '~/stores/master.store'
 import { usePersonalStore } from '~/stores/personal.store'
 import { useUserStore } from '~/stores/user.store'
 import { Profile } from '~/utils/types'
-import { FetchError } from 'ofetch'
 
 definePageMeta({
     title: 'จัดการข้อมูลผู้สมัคร',
@@ -297,23 +310,21 @@ const router = useRouter()
 const route = useRoute()
 const { dialogError, showDialog } = await useDialog()
 
-// Master Store
-const masterDataStore = useMasterDataStore()
 const personalStore = usePersonalStore()
 const userStore = useUserStore()
-
-const { isItemsLoaded } = storeToRefs(masterDataStore)
 const { isCandidate } = storeToRefs(userStore)
 
 const { getProfileById } = useProfile()
-const { data, pending, error } = await getProfileById(route.params.id as string)
-// const onboarding = useState<number>('onBoarding')
-// const candidateForms = useState<CandidateForm[]>('candidateForms')
+
+const { data: profileData, pending, error: profileError } = await getProfileById(route.params.id as string)
+
 const pidFormat = computed(() => {
     // Convert the personalID to a string (in case it's a number)
-    const idString = data.value?.id_card_number.toString() ?? ''
+    if (profileData.value == null) return ''
 
-    if (idString.length == 0) return '<ไม่มีข้อมูล>'
+    const idString = profileData.value.id_card_number.toString() ?? ''
+
+    if (idString.length == 0) return ''
     if (idString.length !== 13) return idString
 
     // Split the ID into chunks of 1, 4, 5, 2, and 1 digits
@@ -361,15 +372,10 @@ const onSubmited = async () => {
     }
 }
 
-onMounted(async () => {
-    if (isCandidate.value) {
-        setPageLayout('defaultcandidate')
-    } else {
-        setPageLayout('default')
-    }
-
-    let profile = data.value as Profile
-    if (profile == null && error.value == null) {
+const mappingProfileToStore = async () => {
+    let profile = profileData.value as Profile
+    console.log('profileprofileprofileprofile', profile)
+    if (profile == null && profileError.value == null) {
         const dialog = dialogError()
         showDialog(
             {
@@ -377,9 +383,10 @@ onMounted(async () => {
                 message: 'ไม่พบข้อมูลผู้สมัครที่ท่านต้องการ กรุณาติดต่อผู้ดูแลระบบ',
                 actionButtons: [
                     {
-                        text: `ย้อนกลับ`,
+                        text: `Colse`,
                         variant: 'elevated',
-                        onclick: () => router.back(),
+                        href: isCandidate.value ? '/candidate/' : '/job_management/',
+                        // onclick: router.back,
                     },
                 ],
                 persistent: true,
@@ -389,7 +396,7 @@ onMounted(async () => {
     } else {
         personalStore.$patch({
             personal_info: {
-                title_name_th: profile.title_name_th || '',
+                title_name_th: profile.title_name_th,
                 title_name_en: profile.title_name_en,
 
                 title_special: profile.title_special,
@@ -649,6 +656,16 @@ onMounted(async () => {
             },
         })
     }
+}
+
+watchEffect(async () => {
+    if (!pending.value) {
+        await mappingProfileToStore()
+    }
+})
+
+onMounted(async () => {
+    console.log('onMounted-[id]')
 })
 
 console.log(useRoute().name)

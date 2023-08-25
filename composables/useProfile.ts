@@ -52,7 +52,7 @@ async function submit(id: string) {
 async function draft() {}
 
 function getProfileById(id: string) {
-    return useApi(`/api/external/profile/get/${parseInt(id)}`, {
+    return useFetch(`/api/external/profile/get/${parseInt(id)}`, {
         method: 'POST',
         key: 'getProfileById',
         transform: ({ profile }: { profile: Profile }) => {
