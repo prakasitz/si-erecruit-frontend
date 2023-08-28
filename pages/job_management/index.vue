@@ -47,7 +47,9 @@
                         <p class="text-caption">{{ item.raw.desc }}</p>
                     </template>
                     <template v-slot:item.job_status="{ item }">
-                        <v-chip :class="item.raw.job_status_color">{{ item.raw.job_status }}</v-chip>
+                        <v-chip :class="jobStatusComputed(item.raw.job_status)?.zjob_status_color">{{
+                            item.raw.job_status
+                        }}</v-chip>
                     </template>
                     <template v-slot:item.action="{ item }">
                         <v-btn
@@ -114,6 +116,73 @@ const headers = [
 ]
 
 const search = ref()
+
+const jobStatusComputed = computed(() => {
+    return (status: any) => {
+        console.log(status)
+        const obj = jobStatusMaster.find((item) => item.job_status_text == status)
+        console.log(obj)
+        return obj
+    }
+})
+
+const jobStatusMaster = [
+    {
+        job_status_code: 0,
+        job_status_text: 'Created',
+        zjob_status_color: 'label-light-info',
+    },
+    {
+        job_status_code: 1,
+        job_status_text: 'Importing',
+        zjob_status_color: 'label-light-megna',
+    },
+    {
+        job_status_code: 2,
+        job_status_text: 'Fail Imported',
+        zjob_status_color: 'label-megna',
+    },
+    {
+        job_status_code: 3,
+        job_status_text: 'Imported',
+        zjob_status_color: 'label-primary',
+    },
+    {
+        job_status_code: 4,
+        job_status_text: 'Published',
+        zjob_status_color: 'label-danger',
+    },
+    {
+        job_status_code: 5,
+        job_status_text: 'Suspended',
+        zjob_status_color: 'label-inverse',
+    },
+    {
+        job_status_code: 6,
+        job_status_text: 'Verifying',
+        zjob_status_color: 'label-success',
+    },
+    {
+        job_status_code: 7,
+        job_status_text: 'Approved',
+        zjob_status_color: 'label-light-warning',
+    },
+    {
+        job_status_code: 9,
+        job_status_text: 'Cancelled',
+        zjob_status_color: 'label-info',
+    },
+    {
+        job_status_code: 98,
+        job_status_text: 'Terminated',
+        zjob_status_color: 'label-light-success',
+    },
+    {
+        job_status_code: 99,
+        job_status_text: 'Closed',
+        zjob_status_color: 'label-warning',
+    },
+]
 
 const { data: jobs, pending, refresh } = fetchJobs(undefined, true)
 

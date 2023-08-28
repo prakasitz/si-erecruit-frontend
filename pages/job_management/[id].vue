@@ -67,7 +67,7 @@
                         show-select
                     >
                         <template v-slot:item.profile_status="{ item }">
-                            <v-chip :color="profileStatusComputed(item.raw.profile_status)?.profile_status_color">
+                            <v-chip :class="profileStatusComputed(item.raw.profile_status)?.profile_status_color">
                                 {{ profileStatusComputed(item.raw.profile_status)?.profile_status_text }}
                             </v-chip>
                         </template>
@@ -153,57 +153,57 @@ const { data: profilesData, pending: profilePending } = getProfilesByJobId(jobId
 const useJobComponent = useJobComponentStore()
 const { buttonShow } = storeToRefs(useJobComponent)
 
-const profileStatus = [
+const profileStatusMaster = [
     {
         profile_status_code: 0,
         profile_status_text: 'Created',
-        profile_status_color: 'label label-info m-r-10',
+        profile_status_color: 'label-info',
     },
     {
         profile_status_code: 1,
         profile_status_text: 'Imported',
-        profile_status_color: 'label label-megna m-r-10',
+        profile_status_color: 'label-megna',
     },
     {
         profile_status_code: 2,
         profile_status_text: 'Publishable',
-        profile_status_color: 'label label-success m-r-10',
+        profile_status_color: 'label-success',
     },
     {
         profile_status_code: 3,
         profile_status_text: 'Suspended',
-        profile_status_color: 'label label-danger m-r-10',
+        profile_status_color: 'label-danger',
     },
     {
         profile_status_code: 4,
         profile_status_text: 'Submitted',
-        profile_status_color: 'label label-light-success m-r-10',
+        profile_status_color: 'label-light-success',
     },
     {
         profile_status_code: 5,
         profile_status_text: 'Verified',
-        profile_status_color: 'label label-light-megna m-r-10',
+        profile_status_color: 'label-light-megna',
     },
     {
         profile_status_code: 6,
         profile_status_text: 'Waived',
-        profile_status_color: 'label label-warning m-r-10',
+        profile_status_color: 'label-warning',
     },
     {
         profile_status_code: 9,
         profile_status_text: 'Cancelled',
-        profile_status_color: 'label label-red m-r-10',
+        profile_status_color: 'label-red',
     },
     {
         profile_status_code: 99,
         profile_status_text: 'Closed',
-        profile_status_color: 'label-light-inverse m-r-10',
+        profile_status_color: 'label-light-inverse',
     },
 ]
 
 const profileStatusComputed = computed(() => {
     return (status: any) => {
-        const obj = profileStatus.find((item) => item.profile_status_code == status)
+        const obj = profileStatusMaster.find((item) => item.profile_status_code == status)
         return obj
     }
 })
