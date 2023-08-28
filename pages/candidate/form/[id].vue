@@ -1,108 +1,7 @@
 <template>
     <div class="candidate-form" v-if="!pending">
         <v-row>
-            <v-col cols="12">
-                <v-card class="mx-auto" width="90%">
-                    <v-expansion-panels v-model="panelShow">
-                        <v-expansion-panel value="secret">
-                            <v-expansion-panel-title class="pl-0 py-0">
-                                <v-card-title>
-                                    <b>ข้อมูลส่วนตัว</b>
-                                </v-card-title>
-                                <v-card-subtitle>โปรดตรวจสอบเลขบัตรประชาชนและรหัสผ่านของท่าน</v-card-subtitle>
-                            </v-expansion-panel-title>
-                            <v-expansion-panel-text>
-                                <v-card-text>
-                                    <v-row>
-                                        <v-col cols="7">
-                                            <v-text-field
-                                                readonly
-                                                density="compact"
-                                                variant="outlined"
-                                                :value="pidFormat"
-                                                :type="eye1 ? 'text' : 'password'"
-                                                :append-icon="eye1 ? 'mdi-eye' : 'mdi-eye-off'"
-                                                @click:append="eye1 = !eye1"
-                                                hide-details
-                                                class="secret"
-                                            >
-                                                <template v-slot:prepend>
-                                                    <p :style="{ 'font-size': '1.12rem !important' }">
-                                                        <b>เลขบัตรประชาชน</b>
-                                                    </p>
-                                                </template>
-                                            </v-text-field>
-                                        </v-col>
-                                        <v-col cols="4">
-                                            <v-text-field
-                                                readonly
-                                                density="compact"
-                                                variant="outlined"
-                                                value="12345"
-                                                :append-icon="eye2 ? 'mdi-eye' : 'mdi-eye-off'"
-                                                :type="eye2 ? 'text' : 'password'"
-                                                @click:append="eye2 = !eye2"
-                                                hide-details
-                                                class="secret"
-                                            >
-                                                <template v-slot:prepend>
-                                                    <p :style="{ 'font-size': '1.12rem !important' }">
-                                                        <b>รหัสผ่าน</b>
-                                                    </p>
-                                                </template>
-                                            </v-text-field>
-                                        </v-col>
-                                        <v-spacer></v-spacer>
-                                    </v-row>
-                                    <v-row class="mt-5 mb-3 d-flex justify-center">
-                                        <v-divider :length="'90%'"></v-divider>
-                                    </v-row>
-                                    <v-row>
-                                        <v-col cols="6">
-                                            <v-alert height="100%" border="start" variant="tonal">
-                                                <div
-                                                    class="text-red-darken-1"
-                                                    :style="{
-                                                        'font-size': '0.9rem',
-                                                        lineHeight: '1.4rem !important',
-                                                    }"
-                                                >
-                                                    <v-row no-gutters>
-                                                        <v-col><b>เข้าสู่ระบบครั้งล่าสุด</b></v-col>
-                                                        <v-col cols="8">03/05/2566, 15:42</v-col>
-                                                    </v-row>
-                                                </div>
-                                            </v-alert>
-                                        </v-col>
-                                        <v-col cols="6">
-                                            <v-alert height="100%" border="start" variant="tonal">
-                                                <div
-                                                    class="text-blue-darken-1"
-                                                    :style="{
-                                                        'font-size': '0.9rem',
-                                                        lineHeight: '1.4rem !important',
-                                                    }"
-                                                >
-                                                    <v-row no-gutters class="d-flex align-center">
-                                                        <v-col cols="3"><b>บันทึกครั้งล่าสุด</b></v-col>
-                                                        <v-col cols="">
-                                                            <v-row no-gutters>
-                                                                <v-col cols="12">03/05/2566, 15:45</v-col>
-                                                                <v-col>ระบบจะทำการบันทึกให้อัตโนมัติทุก ๆ 3 นาที</v-col>
-                                                            </v-row>
-                                                        </v-col>
-                                                    </v-row>
-                                                </div>
-                                            </v-alert>
-                                        </v-col>
-                                    </v-row>
-                                </v-card-text>
-                            </v-expansion-panel-text>
-                        </v-expansion-panel>
-                    </v-expansion-panels>
-                </v-card>
-            </v-col>
-
+            <CandidateSecret />
             <v-col cols="12">
                 <v-sheet rounded elevation="1" class="mx-auto" width="90%">
                     <v-row justify="space-between" align="center">
@@ -112,23 +11,21 @@
                                 <v-row no-gutters>
                                     <v-item
                                         v-for="item in candidateFormState"
-                                        v-slot="{ isSelected, toggle }"
+                                        v-slot="{ isSelected, toggle, selectedClass }"
                                         :key="item.id"
                                         :value="item.id"
+                                        :selected-class="'main-color btn-candidate btn-candidate-outline'"
                                     >
                                         <v-col>
                                             <v-btn
                                                 block
                                                 class="px-lg-5 px-md-2 px-sm-1"
-                                                :class="isSelected ? 'btn-candidate font-weight-black ' : ''"
-                                                :selected-class="'main-color'"
+                                                :class="selectedClass"
                                                 :variant="isSelected ? 'text' : 'text'"
                                                 size="small"
                                                 @click="toggle"
-                                                ><span>
-                                                    {{ item.title }}
-                                                </span></v-btn
-                                            >
+                                                ><span> {{ item.title }}</span>
+                                            </v-btn>
                                         </v-col>
                                     </v-item>
                                 </v-row>
@@ -286,7 +183,7 @@
 import { storeToRefs } from 'pinia'
 import { usePersonalStore } from '~/stores/personal.store'
 import { useUserStore } from '~/stores/user.store'
-import { Profile } from '~/utils/types'
+import { CandidateForm, Profile } from '~/utils/types'
 
 definePageMeta({
     title: 'จัดการข้อมูลผู้สมัคร',
@@ -317,31 +214,6 @@ const { isCandidate } = storeToRefs(userStore)
 const { getProfileById } = useProfile()
 
 const { data: profileData, pending, error: profileError } = await getProfileById(route.params.id as string)
-
-const pidFormat = computed(() => {
-    // Convert the personalID to a string (in case it's a number)
-    if (profileData.value == null) return ''
-
-    const idString = profileData.value.id_card_number.toString() ?? ''
-
-    if (idString.length == 0) return ''
-    if (idString.length !== 13) return idString
-
-    // Split the ID into chunks of 1, 4, 5, 2, and 1 digits
-    const formattedID = `${idString.substring(0, 1)} ${idString.substring(1, 5)} ${idString.substring(
-        5,
-        10
-    )} ${idString.substring(10, 12)} ${idString.substring(12, 13)}`
-    return formattedID
-})
-
-const onboardingState = useOnboarding()
-const candidateFormState = useCandidateForms()
-
-const { prev, next } = useWindowsNav()
-const eye1 = ref(false)
-const eye2 = ref(false)
-const panelShow = ref('secret')
 
 const onSubmited = async () => {
     const { submit } = useProfile()
@@ -374,7 +246,8 @@ const onSubmited = async () => {
 
 const mappingProfileToStore = async () => {
     let profile = profileData.value as Profile
-    if (profile == null && profileError.value == null) {
+    console.log('profileprofileprofile', profile)
+    if (profileData.value == null && profileError.value == null) {
         const dialog = dialogError()
         showDialog(
             {
@@ -392,7 +265,7 @@ const mappingProfileToStore = async () => {
             },
             dialog
         )
-    } else {
+    } else if (profile != null) {
         personalStore.$patch({
             personal_info: {
                 title_name_th: profile.title_name_th,
@@ -657,14 +530,27 @@ const mappingProfileToStore = async () => {
     }
 }
 
+const candidateFormState: Ref<CandidateForm[]> = ref([])
+const onboardingState: Ref<number> = ref(0)
+
+const { prev, next } = useWindowsNav()
+
 watchEffect(async () => {
     if (!pending.value) {
         await mappingProfileToStore()
     }
 })
 
+watch(onboardingState, (value) => {
+    const router = useRouter();
+    const formSectionSelected = candidateFormState.value.find((item) => item.id == value)
+    router.push({hash: `/#${formSectionSelected?.hash}`})
+})
+
 onMounted(async () => {
     console.log('onMounted-[id]')
+    candidateFormState.value = useCandidateForms().value
+    onboardingState.value = useOnboarding().value
 })
 
 console.log(useRoute().name)
