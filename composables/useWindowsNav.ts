@@ -1,12 +1,12 @@
 import { storeToRefs } from 'pinia'
 import { useComponentStore } from '~/stores/component.store'
-import { CandidateForm } from '~/utils/types'
 
 export const useOnboarding = () => {
     const componentStore = useComponentStore()
-    const { onBoarding } = storeToRefs(componentStore)
+    const {  onBoarding } = storeToRefs(componentStore)
     return onBoarding
 }
+
 
 export const useCandidateForms = () => {
     const componentStore = useComponentStore()
