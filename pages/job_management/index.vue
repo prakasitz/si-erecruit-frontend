@@ -57,7 +57,7 @@
                             :size="'small'"
                             density="comfortable"
                             icon="mdi-pencil"
-                            :to="`/job_management/${item.raw.job_ID}`"
+                            :to="`/job_management/${item.raw.job_ID}/`"
                             title="แก้ไข"
                             color="indigo"
                         ></v-btn>

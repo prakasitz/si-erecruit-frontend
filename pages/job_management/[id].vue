@@ -72,7 +72,7 @@
                             </v-chip>
                         </template>
                         <template v-slot:item.action="{ item }">
-                            <NuxtLink :to="`/candidate/form/${item.raw.profile_ID}`">
+                            <NuxtLink :to="`/candidate/form/${item.raw.profile_ID}/`">
                                 <v-icon size="small" class="me-2"> mdi-eye </v-icon>
                             </NuxtLink>
                         </template>
