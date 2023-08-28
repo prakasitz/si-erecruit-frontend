@@ -170,18 +170,23 @@ definePageMeta({
     middleware: ['hr-candidate-only'],
 })
 
-const router = useRouter()
 const route = useRoute()
-const { dialogError, showDialog } = await useDialog()
 
 const personalStore = usePersonalStore()
 const userStore = useUserStore()
+const componentStore = useComponentStore()
 
 const { isCandidate } = storeToRefs(userStore)
+const { onBoarding, candidateForms } = storeToRefs(componentStore)
 
 const { getProfileById } = useProfile()
-
 const { data: profileData, pending, error: profileError } = await getProfileById(route.params.id as string)
+
+
+const { dialogError, showDialog } = await useDialog()
+
+useHandlerHashing()
+
 
 const onSubmited = async () => {
     const { submit } = useProfile()
@@ -498,50 +503,10 @@ const mappingProfileToStore = async () => {
     }
 }
 
-const componentStore = useComponentStore()
-const { onBoarding, candidateForms } = storeToRefs(componentStore)
-
-const initHash = (hash: string) => {
-    if (!hash) {
-        const formSectionSelected = findFormSectionByOnBording(onBoarding.value)
-        router.push({ hash: `/#${formSectionSelected?.hash}` })
-    } else {
-        //go to formsection by hash
-        const formSectionSelected = findFormSectionByHash(hash)
-        if (formSectionSelected) {
-            onBoarding.value = formSectionSelected.id
-        }
-    }
-}
-
-const findFormSectionByOnBording = (onBoarding: number) => {
-    const formSectionSelected = candidateForms.value.find((item: any) => item.id == onBoarding)
-    return formSectionSelected
-}
-
-const findFormSectionByHash = (hash: string) => {
-    let hashStr = hash.split('#')[1]
-    const formSectionSelected = candidateForms.value.find((item: any) => item.hash == hashStr)
-    return formSectionSelected
-}
-
 watchEffect(async () => {
     if (!pending.value) {
         await mappingProfileToStore()
     }
-})
-
-watch(onBoarding, (value) => {
-    const formSectionSelected = findFormSectionByOnBording(value)
-    router.push({ hash: `/#${formSectionSelected?.hash}` })
-})
-
-onUpdated(() => {
-    initHash(route.hash)
-})
-
-onMounted(() => {
-    initHash(route.hash)
 })
 
 console.log(useRoute().name)
