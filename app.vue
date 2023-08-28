@@ -68,9 +68,9 @@ const nuxtApp = useNuxtApp()
 
 nuxtApp.hook('page:start', () => {
     console.log('page:start')
-    if (loading.value == false) {
-        loading.value = true
-    }
+    // if (loading.value == false) {
+    //     loading.value = true
+    // }
 })
 
 nuxtApp.hook('app:mounted', () => {
