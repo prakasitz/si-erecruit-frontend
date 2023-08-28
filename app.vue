@@ -14,8 +14,6 @@
     </div>
 </template>
 <style>
-
-
 .fade-enter-active,
 .fade-leave-active {
     transition: opacity 0.5s;
@@ -24,8 +22,6 @@
 .fade-leave-to {
     opacity: 0;
 }
-
-
 
 /* ... */
 .rotate-enter-active {
@@ -69,11 +65,26 @@
 const { loading } = usePageLoading()
 
 const nuxtApp = useNuxtApp()
+
+nuxtApp.hook('page:start', () => {
+    console.log('page:start')
+})
+
+nuxtApp.hook('app:mounted', () => {
+    console.log('app:mounted')
+})
+
 nuxtApp.hook('page:finish', () => {
-    setTimeout(() => {
-        if (loading.value == true) {
-            loading.value = false
-        }
-    }, 500)
+    console.log('page:finish')
+    if (loading.value == true) {
+        loading.value = false
+    }
+})
+
+nuxtApp.hook('app:suspense:resolve', () => {
+    console.log('app:suspense:resolve')
+    if (loading.value == true) {
+        loading.value = false
+    }
 })
 </script>
