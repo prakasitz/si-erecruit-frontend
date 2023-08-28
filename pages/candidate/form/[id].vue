@@ -2,45 +2,11 @@
     <div class="candidate-form" v-if="!pending">
         <v-row>
             <CandidateSecret />
-            <v-col cols="12">
-                <v-sheet rounded elevation="1" class="mx-auto" width="90%">
-                    <v-row justify="space-between" align="center">
-                        <v-col cols="1"> <v-btn variant="plain" icon="mdi-chevron-left" @click="prev"></v-btn></v-col>
-                        <v-col>
-                            <v-item-group v-model="onboardingState" class="text-center" mandatory>
-                                <v-row no-gutters>
-                                    <v-item
-                                        v-for="item in candidateFormState"
-                                        v-slot="{ isSelected, toggle, selectedClass }"
-                                        :key="item.id"
-                                        :value="item.id"
-                                        :selected-class="'main-color btn-candidate btn-candidate-outline'"
-                                    >
-                                        <v-col>
-                                            <v-btn
-                                                block
-                                                class="px-lg-5 px-md-2 px-sm-1"
-                                                :class="selectedClass"
-                                                :variant="isSelected ? 'text' : 'text'"
-                                                size="small"
-                                                @click="toggle"
-                                                ><span> {{ item.title }}</span>
-                                            </v-btn>
-                                        </v-col>
-                                    </v-item>
-                                </v-row>
-                            </v-item-group>
-                        </v-col>
-                        <v-col cols="1">
-                            <v-btn variant="plain" icon="mdi-chevron-right" @click="next"></v-btn>
-                        </v-col>
-                    </v-row>
-                </v-sheet>
-            </v-col>
+            <LazyCandidateNavigator />
             <v-col cols="12">
                 <section id="test21">
-                    <v-window class="py-1" v-model="onboardingState">
-                        <v-window-item v-for="item in candidateFormState" :key="`card-${item.id}`" :value="item.id">
+                    <v-window class="py-1" v-model="onBoarding">
+                        <v-window-item v-for="item in candidateForms" :key="`card-${item.id}`" :value="item.id">
                             <v-card v-if="item.id == 1" class="mx-auto" width="90%">
                                 <v-container>
                                     <v-card-title class="pa-auto text-h5 text-red-darken-2"
@@ -181,9 +147,10 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
+import { useComponentStore } from '~/stores/component.store'
 import { usePersonalStore } from '~/stores/personal.store'
 import { useUserStore } from '~/stores/user.store'
-import { CandidateForm, Profile } from '~/utils/types'
+import { Profile } from '~/utils/types'
 
 definePageMeta({
     title: 'จัดการข้อมูลผู้สมัคร',
@@ -209,6 +176,7 @@ const { dialogError, showDialog } = await useDialog()
 
 const personalStore = usePersonalStore()
 const userStore = useUserStore()
+
 const { isCandidate } = storeToRefs(userStore)
 
 const { getProfileById } = useProfile()
@@ -530,10 +498,32 @@ const mappingProfileToStore = async () => {
     }
 }
 
-const candidateFormState: Ref<CandidateForm[]> = ref([])
-const onboardingState: Ref<number> = ref(0)
+const componentStore = useComponentStore()
+const { onBoarding, candidateForms } = storeToRefs(componentStore)
 
-const { prev, next } = useWindowsNav()
+const initHash = (hash: string) => {
+    if (!hash) {
+        const formSectionSelected = findFormSectionByOnBording(onBoarding.value)
+        router.push({ hash: `/#${formSectionSelected?.hash}` })
+    } else {
+        //go to formsection by hash
+        const formSectionSelected = findFormSectionByHash(hash)
+        if (formSectionSelected) {
+            onBoarding.value = formSectionSelected.id
+        }
+    }
+}
+
+const findFormSectionByOnBording = (onBoarding: number) => {
+    const formSectionSelected = candidateForms.value.find((item: any) => item.id == onBoarding)
+    return formSectionSelected
+}
+
+const findFormSectionByHash = (hash: string) => {
+    let hashStr = hash.split('#')[1]
+    const formSectionSelected = candidateForms.value.find((item: any) => item.hash == hashStr)
+    return formSectionSelected
+}
 
 watchEffect(async () => {
     if (!pending.value) {
@@ -541,16 +531,17 @@ watchEffect(async () => {
     }
 })
 
-watch(onboardingState, (value) => {
-    const router = useRouter();
-    const formSectionSelected = candidateFormState.value.find((item) => item.id == value)
-    router.push({hash: `/#${formSectionSelected?.hash}`})
+watch(onBoarding, (value) => {
+    const formSectionSelected = findFormSectionByOnBording(value)
+    router.push({ hash: `/#${formSectionSelected?.hash}` })
 })
 
-onMounted(async () => {
-    console.log('onMounted-[id]')
-    candidateFormState.value = useCandidateForms().value
-    onboardingState.value = useOnboarding().value
+onUpdated(() => {
+    initHash(route.hash)
+})
+
+onMounted(() => {
+    initHash(route.hash)
 })
 
 console.log(useRoute().name)

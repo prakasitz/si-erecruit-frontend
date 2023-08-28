@@ -126,3 +126,8 @@ input[aria-label='Datepicker input']::placeholder {
     color: #000000 !important;
     background-color: #ffffff !important;
 }
+
+.btn-candidate {
+    color: #fff !important;
+    background: #5c7b9c !important;
+}
