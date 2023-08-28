@@ -13,7 +13,7 @@
                             ></v-breadcrumbs>
                             <div v-if="isCandidateLayout && (isHR || isAdmin)" class="mx-auto pl-5">
                                 <p class="text-h6">
-                                    ข้อมูลผู้สมัคร: {{ profileOrNull?.nameTH }} {{ profileOrNull?.lastnameTH }} ({{
+                                    ข้อมูลผู้สมัคร: {{ personal_info?.first_name_th }} {{ personal_info?.last_name_th }} ({{
                                         route.params.id
                                     }})
                                 </p>
@@ -52,6 +52,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { useAuth } from '~/composables/auth/useAuth'
+import { usePersonalStore } from '~/stores/personal.store'
 import { useUserStore } from '~/stores/user.store'
 import { Profile } from '~/utils/types'
 
@@ -74,6 +75,8 @@ const route = useRoute()
 const isCandidateLayout = computed(() => route.name === 'candidate-form-id')
 
 const userStore = useUserStore()
+const personalStore = usePersonalStore()
+const { personal_info } = personalStore
 const { logout } = useAuth()
 const { user } = userStore
 const { isAdmin, isHR, isCandidate } = storeToRefs(userStore)
@@ -95,6 +98,4 @@ const menuItem: MenuItem[] = [
         },
     },
 ]
-
-const profileOrNull = useNuxtData<Profile>('getProfileById').data.value
 </script>
