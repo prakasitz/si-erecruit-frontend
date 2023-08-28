@@ -128,6 +128,7 @@ export type MasterTitleConferred = {
 export type CandidateForm = {
     id: number
     title: string
+    hash: string
     cardTitle: string
     isLoading: boolean
 }
