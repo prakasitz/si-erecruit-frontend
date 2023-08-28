@@ -50,7 +50,7 @@ const fetchJobs = (jobId?: any, isTransform: boolean = false) => {
         key: 'fetchJobs',
         transform(data: any) {
             let tempData: any = data
-            if (data.length == 0) throw new Error('Fetch Jobs: Data not found or cannot transform data.')
+            if (data == null || data.length == 0) return []
             if (jobId) tempData = data[0]
             if (!isTransform)
                 return {

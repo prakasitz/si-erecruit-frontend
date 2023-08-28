@@ -10,7 +10,6 @@
         </v-card>
         <v-card v-else class="mx-auto" width="90%">
             <v-card-item>
-                <v-card-title :style="{ 'font-size': '18px !important' }"> </v-card-title>
                 <v-data-table
                     :items-per-page="10"
                     :headers="(headers as any)"
