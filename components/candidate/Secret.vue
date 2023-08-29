@@ -37,7 +37,7 @@
                                         readonly
                                         density="compact"
                                         variant="outlined"
-                                        value="12345"
+                                        :value="secret"
                                         :append-icon="eye2 ? 'mdi-eye' : 'mdi-eye-off'"
                                         :type="eye2 ? 'text' : 'password'"
                                         @click:append="eye2 = !eye2"
@@ -123,7 +123,7 @@ function handleCopyEvent(event: ClipboardEvent) {
     event.clipboardData?.setData('text/plain', pidValue)
 }
 
-const { isHR } = storeToRefs(userStore)
+const { isHR, secret } = storeToRefs(userStore)
 const { personal_info } = personalStore
 
 const pidFormat = computed(() => {

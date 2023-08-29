@@ -1,7 +1,6 @@
 import { NuxtError } from 'nuxt/app'
 import { storeToRefs } from 'pinia'
 import { useAuth } from '~/composables/auth/useAuth'
-import { useComponentStore } from '~/stores/component.store'
 // import { useHR } from '~/composables/auth/useHR'
 import { useUserStore } from '~/stores/user.store'
 

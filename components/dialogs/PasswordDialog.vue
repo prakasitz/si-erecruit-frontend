@@ -38,7 +38,7 @@
                         </v-card-text>
                         <v-card-actions class="justify-end">
                             <!-- <dev-only> -->
-                            <v-btn v-if="$isDev" variant="text" @click="loginCandidate('1100201370643', '123456')"
+                            <v-btn v-if="$isDev" variant="text" @click="loginCandidate('1100201370643', '654831')"
                                 >Clike me</v-btn
                             >
                             <!-- </dev-only> -->

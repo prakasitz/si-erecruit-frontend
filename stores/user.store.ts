@@ -25,9 +25,32 @@ export const useUserStore = defineStore('userinfo', {
         isCandidate: ({ user }) => user.role?.includes('CANDIDATE'),
     },
     actions: {
-        async setUserInfo(data: any) {
+        async updateUserInfoHR(data: any) {
             this.user = {
                 displayname: data.display_name || data.displayname,
+                role: data.role,
+            }
+
+            // HR
+            this.sub = data.sub
+            this.employee_id = data.employee_id
+            this.department = data.department
+        },
+        async updateUserInfoCandidate(data: any) {
+            this.user = {
+                displayname: data.displayname,
+                role: data.role,
+            }
+
+            //Candidate
+            this.commonid = data.commonid
+            this.commonname = data.commonname
+            // this.secret = data.secret
+            this.exp = data.exp
+        },
+        async setUserInfo(data: any) {
+            this.user = {
+                displayname: data.display_name,
                 role: data.role,
             }
 

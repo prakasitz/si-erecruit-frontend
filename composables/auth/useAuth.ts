@@ -1,14 +1,39 @@
-import { DialogContext, Roles } from '~/utils/types'
+import { ContextUser, DialogContext, Roles, jwtAdfs, jwtCandidate } from '~/utils/types'
 import { FetchError } from 'ofetch'
 import { useUserStore } from '~/stores/user.store'
+import { storeToRefs } from 'pinia'
 
 export const useAuth = () => {
     const userStore = useUserStore()
     // Sets the user information in the userStore.
-    const setUser = (user: any) => {
-        const { setUserInfo } = userStore
-        console.log('setUser', user)
-        setUserInfo(user)
+    const setUser = (user: ContextUser<jwtCandidate & jwtAdfs>) => {
+        const { setUserInfo, updateUserInfoHR, updateUserInfoCandidate } = userStore
+        const { isCandidate } = storeToRefs(userStore)
+        if (process.server) {
+            if (user.secret) {
+                console.log('setUser:secret', user.secret)
+                const { createDecipheriv } = require('crypto')
+                try {
+                    const [encryptedIv, encryptedDataString] = user.secret.split(':')
+                    let iv = Buffer.from(encryptedIv, 'hex')
+                    let encryptedText = Buffer.from(encryptedDataString, 'hex')
+                    let decipher = createDecipheriv('aes-256-cbc', Buffer.from(process.env.ENCRYPT_KEY as string), iv)
+                    let decrypted = decipher.update(encryptedText)
+                    decrypted = Buffer.concat([decrypted, decipher.final()])
+
+                    user.secret = decrypted.toString()
+                } catch (err) {
+                    console.log(err)
+                }
+            }
+            setUserInfo(user)
+        } else {
+            if (isCandidate) {
+                updateUserInfoCandidate(user)
+            } else {
+                updateUserInfoHR(user)
+            }
+        }
     }
 
     // This function is currently commented out and not in use.
@@ -63,22 +88,21 @@ export const useAuth = () => {
 
     // Retrieves user information. Makes an API call to get user data.
     const me = async () => {
-        if (!userStore.value) {
-            try {
-                const { data, error } = await useApi('/auth/userinfo', {
-                    method: 'GET',
-                })
+        try {
+            const { data, error } = await useApi('/auth/userinfo', {
+                method: 'GET',
+                key: 'me',
+            })
 
-                if (error.value) throw error.value
+            if (error.value) throw error.value
 
-                setUser(data.value)
-            } catch (error: FetchError | any) {
-                console.log('error on me', error)
-                throw createError({
-                    statusCode: error.statusCode,
-                    message: error.data.message,
-                })
-            }
+            setUser(data.value)
+        } catch (error: FetchError | any) {
+            console.log('error on me', error)
+            throw createError({
+                statusCode: error.statusCode,
+                message: error.data.message,
+            })
         }
     }
 
