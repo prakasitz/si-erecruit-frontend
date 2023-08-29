@@ -5,13 +5,14 @@ const dotenv = require('dotenv')
 const envLocal = dotenv.config({ path: '.env.local' }).parsed
 
 // Read the content of .env.example
-const envExampleContent = fs.readFileSync('.env.example', 'utf8')
+const envExampleContent = fs.readFileSync('.env.local', 'utf8')
 
 // Replace the values in .env.example with empty strings
-const updatedEnvExampleContent = Object.entries(envLocal).reduce(
-    (content, [key]) => content.replace(new RegExp(`${key}=.*`), `${key}=`),
-    envExampleContent
-)
+const updatedEnvExampleContent = Object.entries(envLocal).reduce((content, [key]) => {
+    return content.replace(new RegExp(`${key}=.*`), `${key}=`)
+}, envExampleContent)
+
+console.log(updatedEnvExampleContent)
 
 // Write the updated content to .env.example
 fs.writeFileSync('.env.example', updatedEnvExampleContent)
