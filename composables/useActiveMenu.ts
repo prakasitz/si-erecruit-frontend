@@ -1,3 +1,5 @@
 export const useActiveMenu = (toUrl: any) => {
-    return toUrl == useRoute().path
+    const routeUrl = useRoute().path.replace(/\/$/, '')
+    const url = toUrl.replace(/\/$/, '')
+    return url == routeUrl
 }
