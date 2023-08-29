@@ -14,10 +14,7 @@ export const useHandlerHashing = () => {
     const route = useRoute()
 
     const initHash = (hash: string) => {
-        if (!hash) {
-            const formSectionSelected = findFormSectionByOnBording(onBoarding.value)
-            router.push({ hash: `/#${formSectionSelected?.hash}` })
-        } else {
+        if (hash) {
             //go to formsection by hash
             const formSectionSelected = findFormSectionByHash(hash)
             if (formSectionSelected) {
@@ -39,7 +36,7 @@ export const useHandlerHashing = () => {
 
     watch(onBoarding, (value) => {
         const formSectionSelected = findFormSectionByOnBording(value)
-        router.push({ hash: `/#${formSectionSelected?.hash}` })
+        router.push({ hash: `#${formSectionSelected?.hash}` })
     })
 
     onUpdated(() => {

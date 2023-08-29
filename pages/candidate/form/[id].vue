@@ -2,7 +2,7 @@
     <div class="candidate-form" v-if="!pending">
         <v-row>
             <CandidateSecret />
-            <LazyCandidateNavigator />
+            <CandidateNavigator />
             <v-col cols="12">
                 <section id="test21">
                     <v-window class="py-1" v-model="onBoarding">
@@ -182,11 +182,9 @@ const { onBoarding, candidateForms } = storeToRefs(componentStore)
 const { getProfileById } = useProfile()
 const { data: profileData, pending, error: profileError } = await getProfileById(route.params.id as string)
 
-
 const { dialogError, showDialog } = await useDialog()
 
 useHandlerHashing()
-
 
 const onSubmited = async () => {
     const { submit } = useProfile()

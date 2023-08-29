@@ -30,7 +30,7 @@
                         :color="'main-color'"
                         :key="item.title"
                         :value="item.value"
-                        :to="item.to"
+                        :to="toUrlComputed(item.to as string)"
                         :active="useActiveMenu(item.to)"
                     >
                         <v-list-item-title v-text="item.title"></v-list-item-title>
@@ -99,6 +99,17 @@ const group = ref(null)
 
 const { commonid } = useUserStore()
 
+const toUrlComputed = computed((): any => {
+    return (toUrl: string) => {
+        if (route.hash) {
+            console.log('route.hash', route.hash)
+            return toUrl + route.hash
+        } else {
+            return toUrl
+        }
+    }
+})
+
 const items4Candidate: any = [
     {
         title: 'หน้าหลัก',
@@ -121,10 +132,6 @@ const items4Candidate: any = [
 ]
 
 // define a function to scroll to the top of the page
-
-onUpdated(() => {
-    console.log('route on update: ', route.fullPath, route.path)
-})
 
 watch(group, () => {
     drawer.value = false
