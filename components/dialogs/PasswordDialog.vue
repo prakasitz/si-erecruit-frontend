@@ -38,7 +38,7 @@
                         </v-card-text>
                         <v-card-actions class="justify-end">
                             <!-- <dev-only> -->
-                            <v-btn v-if="$isDev" variant="text" @click="loginCandidate('1100201370643', '908183')"
+                            <v-btn v-if="$isDev" variant="text" @click="loginCandidate('1100201370643', '123456')"
                                 >Clike me</v-btn
                             >
                             <!-- </dev-only> -->
@@ -96,11 +96,24 @@ async function loginCandidate(pid?: string | undefined, password?: string | unde
             // await auth.signIn({ username: pid, password: password })
             await navigateTo({ path: redirectOrNull || '/candidate' })
         } catch (error: H3Error | any) {
-            if (error instanceof H3Error && error.statusCode == 401) {
-                invalidPassword.value = !invalidPassword.value
-            } else {
-                throw showError({ statusCode: 500, statusMessage: 'Internal Server Error', message: error.message })
+            console.log(error, 'PasswordDialog.vue')
+            if (error instanceof H3Error) {
+                if (error.statusCode == 401) {
+                    invalidPassword.value = !invalidPassword.value
+                } else if (error.statusCode == 403) {
+                    throw showError({
+                        statusCode: 403,
+                        statusMessage: 'Forbidden',
+                        message: error.message,
+                    })
+                }
             }
+
+            throw showError({
+                statusCode: 500,
+                statusMessage: 'Internal Server Error',
+                message: error.message ?? error.data.message,
+            })
         }
     }
 }

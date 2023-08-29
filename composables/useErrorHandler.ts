@@ -1,5 +1,6 @@
 import { NuxtError } from 'nuxt/app'
 import { FetchError } from 'ofetch'
+import { H3Error } from 'h3'
 
 export default function useErrorHandler() {
     return {
@@ -9,14 +10,14 @@ export default function useErrorHandler() {
     }
 }
 
-function middlewareError(error: NuxtError | any, { to, from }: any) {
-    console.log('error-middlewareError', error)
-    if (error.statusCode === 401) {
+function middlewareError(error: H3Error, { to, from }: any) {
+    console.log('error-middlewareError', { ...error })
+    if (isNuxtError(error) && error.statusCode === 401) {
         showTokenExpired(to)
     } else {
         throw createError({
             statusCode: error.statusCode,
-            message: error.data.message,
+            message: error.message ?? error.data.message,
             stack: undefined,
             fatal: true,
         })

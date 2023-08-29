@@ -14,6 +14,11 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
             throw createError({
                 statusCode: 403,
                 message: 'You are not authorized to access this page.',
+                data: { 
+                    message: 'You are not authorized to access this page.'
+                },
+                stack: undefined,
+                fatal: true
             })
         }
     } catch (error: NuxtError | any) {
