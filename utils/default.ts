@@ -12,6 +12,8 @@ export const default_job: job = {
     start_date: '',
 }
 
+export const pidDefualt = '0000000000000'
+
 export const defaultChildrenInfo = {
     num_of_chlid: '0',
     children_list: [],
