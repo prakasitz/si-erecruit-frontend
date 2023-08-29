@@ -27,7 +27,7 @@
                 <div v-for="item in items4Candidate">
                     <v-list-item
                         v-if="!item.subgroups"
-                        color="main-color"
+                        :color="'main-color'"
                         :key="item.title"
                         :value="item.value"
                         :to="item.to"
@@ -36,7 +36,7 @@
                         <v-list-item-title v-text="item.title"></v-list-item-title>
                     </v-list-item>
 
-                    <v-list-group @click="'asdasd'" fluid v-else>
+                    <v-list-group fluid v-else>
                         <template v-slot:activator="{ props }">
                             <v-list-item v-bind="props" :title="item.title"></v-list-item>
                         </template>
@@ -44,7 +44,7 @@
                         <v-list-item
                             class="ml-5"
                             v-for="subitem in item.subgroups"
-                            color="main-color"
+                            :color="'main-color'"
                             :key="subitem.value"
                             :title="subitem.title"
                             :prepend-icon="subitem.icon"
@@ -81,6 +81,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useUserStore } from '~/stores/user.store'
 
 const route = useRoute()
 
@@ -96,6 +97,8 @@ useHead({
 const drawer = ref(true)
 const group = ref(null)
 
+const { commonid } = useUserStore()
+
 const items4Candidate: any = [
     {
         title: 'หน้าหลัก',
@@ -105,8 +108,8 @@ const items4Candidate: any = [
     },
     {
         title: 'จัดการข้อมูลผู้สมัคร',
-        value: 'bar',
-        to: `/candidate/form/${route.params.id}/`,
+        value: 'foo2',
+        to: `/candidate/form/${commonid ?? route.params.id}`,
         nav: [
             {
                 title: 'หน้าหลัก',
