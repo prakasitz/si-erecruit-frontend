@@ -94,7 +94,8 @@ async function loginCandidate(pid?: string | undefined, password?: string | unde
             let redirectOrNull = route.query.redirect as string | null
             await useAuth().login(pid, password, RoleEnum.CANDIDATE)
             // await auth.signIn({ username: pid, password: password })
-            await navigateTo({ path: redirectOrNull || '/candidate' })
+            let url = redirectOrNull || '/candidate'
+            await navigateTo(url, { external: true })
         } catch (error: H3Error | any) {
             console.log(error, 'PasswordDialog.vue')
             if (error instanceof H3Error) {
