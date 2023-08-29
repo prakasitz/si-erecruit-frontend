@@ -3,9 +3,10 @@ import * as qs from 'qs'
 import { getItemStorage, setItemStorage } from './storage'
 import { verifyAccessToken, verifyOauth2Token } from './token'
 import { H3Event, H3Error } from 'h3'
-import { User } from '../../utils/types'
+
 import { JwtPayload } from 'jsonwebtoken'
 import { TokenNotFoundError } from '../../utils/default'
+import { ContextUser, jwtAdfs, jwtCandidate } from '../../utils/types'
 
 export async function getClientCredentials() {
     const { urlOauth2, clientId, clientSecret } = useRuntimeConfig()
@@ -104,6 +105,6 @@ export async function getUserFromAccessToken(event: H3Event): Promise<any> {
     }
 
     // // Otherwise get  and return
-    const user = tokenPayload as User
+    const user = tokenPayload as ContextUser<jwtAdfs & jwtCandidate>
     return user
 }
