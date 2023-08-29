@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
+import { UserStore } from '~/utils/types'
 
 export const useUserStore = defineStore('userinfo', {
-    state: (): any => {
+    state: (): UserStore => {
         return {
             user: {
                 displayname: null,

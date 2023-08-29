@@ -200,9 +200,9 @@ export interface jwtCandidate extends jwtToken {
 }
 
 // create interface for fn(user Context<jwtAdfs>) => user.role
-export type ContextUser<T = jwtAdfs | jwtCandidate> = T 
+export type ContextUser<T = jwtAdfs | jwtCandidate> = T
 
-export type Permission = 'can-access-admin' | 'can-access-hr' | 'can-access-candidate' | 'can-access-hr-candidate' 
+export type Permission = 'can-access-admin' | 'can-access-hr' | 'can-access-candidate' | 'can-access-hr-candidate'
 
 export type TokenSession = {
     access_token: string
@@ -658,4 +658,20 @@ export interface btnShowOnJob {
 export interface btnShowWstatus {
     status: number
     btn_show: btnShowOnJob
+}
+
+export type UserData = {
+    displayname: null | string
+    role: null | string
+}
+
+export type UserStore = {
+    user: UserData
+    sub: null | string
+    employee_id: null | string
+    department: null | string
+    commonid: null | string
+    commonname: null | string
+    secret: null | string
+    exp: null | string
 }
