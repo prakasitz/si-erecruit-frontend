@@ -21,6 +21,7 @@
                                         :type="eye1 ? 'text' : 'password'"
                                         :append-icon="eye1 ? 'mdi-eye' : 'mdi-eye-off'"
                                         @click:append="eye1 = !eye1"
+                                        @copy="handleCopyEvent"
                                         hide-details
                                         class="secret"
                                     >
@@ -115,15 +116,21 @@ const eye2 = ref(false)
 const userStore = useUserStore()
 const personalStore = usePersonalStore()
 
+function handleCopyEvent(event: ClipboardEvent) {
+    event.preventDefault()
+    let pidClipboardData = personalStore.personal_info?.id_card_number.toString() ?? '0000000000000'
+    let pidValue = pidClipboardData!.replace(/\s/g, '')
+    event.clipboardData?.setData('text/plain', pidValue)
+}
+
 const { isHR } = storeToRefs(userStore)
 const { personal_info } = personalStore
 
 const pidFormat = computed(() => {
     // Convert the personalID to a string (in case it's a number)
-    const idString = personal_info?.id_card_number.toString() ?? ''
-
-    if (idString.length == 0) return '<ไม่มีข้อมูล>'
-    if (idString.length !== 13) return idString
+    const idString = personal_info?.id_card_number.toString() ?? '0000000000000'
+    if (idString.length == 0) return '0000000000000'
+    if (idString.length !== 13) return '0000000000000'
 
     // Split the ID into chunks of 1, 4, 5, 2, and 1 digits
     const formattedID = `${idString.substring(0, 1)} ${idString.substring(1, 5)} ${idString.substring(
