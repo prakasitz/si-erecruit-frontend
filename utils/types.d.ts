@@ -199,6 +199,11 @@ export interface jwtCandidate extends jwtToken {
     secret: string
 }
 
+export type RequestDecryptSecret = {
+    key?: string
+    secret?: string
+}
+
 // create interface for fn(user Context<jwtAdfs>) => user.role
 export type ContextUser<T = jwtAdfs | jwtCandidate> = T
 

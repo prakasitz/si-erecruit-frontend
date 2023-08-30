@@ -1,7 +1,8 @@
 import { JwksClient } from 'jwks-rsa'
 import jwt, { JwtPayload, VerifyErrors } from 'jsonwebtoken'
 import { H3Event, H3Error } from 'h3'
-import { TokenNotFoundError, UnauthorizedError } from '../../utils/default'
+import { UnauthorizedError } from '../../utils/default'
+import { createDecipheriv } from 'crypto'
 
 export async function verifySignature(token: any, done: any) {
     const runtimeConfig = useRuntimeConfig()
@@ -121,5 +122,30 @@ export async function verifyAccessToken(token: string): Promise<H3Error | JwtPay
         })
     } finally {
         console.log('---------------- end verifyAccessToken --------------------------------')
+    }
+}
+
+export const decryptSecret = (secret?: string, key?: string) => {
+    const { encryptKey } = useRuntimeConfig()
+    console.log('encryptKey', encryptKey, key)
+    try {
+        if (key != encryptKey) throw new Error('key is invalid')
+        if (!secret) throw new Error('secret is invalid')
+        const [encryptedIv, encryptedDataString] = secret.split(':')
+        let iv = Buffer.from(encryptedIv, 'hex')
+        let encryptedText = Buffer.from(encryptedDataString, 'hex')
+        let decipher = createDecipheriv('aes-256-cbc', Buffer.from(encryptKey as string), iv)
+        let decrypted = decipher.update(encryptedText)
+        decrypted = Buffer.concat([decrypted, decipher.final()])
+
+        return decrypted.toString()
+    } catch (err: any) {
+        console.log(err)
+        return createError({
+            statusCode: 500,
+            statusMessage: 'Internal Server Error',
+            message: ':Error decryptSecret' + err.message,
+            stack: undefined,
+        })
     }
 }

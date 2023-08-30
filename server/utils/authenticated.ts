@@ -8,6 +8,8 @@ export function getAuthenticatedRoutes(): Array<string> {
         '/api/auth/logout',
         // '/api/auth/check-pid',
 
+        '/api/auth/decrypt-secret',
+
         //use header is access_token
         '/api/auth/userinfo',
 

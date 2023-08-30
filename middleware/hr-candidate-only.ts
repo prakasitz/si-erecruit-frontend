@@ -6,9 +6,15 @@ import { useUserStore } from '~/stores/user.store'
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
     const { middlewareError } = useErrorHandler()
+    const userStore = useUserStore()
+    const { setUserInfo } = userStore
+    const { isHR, isCandidate } = storeToRefs(userStore)
+    const { me, decryptSecret } = useAuth()
+
     try {
-        await useAuth().me()
-        const { isHR, isCandidate } = storeToRefs(useUserStore())
+        const userInfo = await me()
+        userInfo.secret = await decryptSecret(userInfo.secret)
+        await setUserInfo(userInfo, process.server)
         console.log('middleware:hr-candidate-only', isHR.value, isCandidate.value)
 
         if (!isHR.value && !isCandidate.value) {

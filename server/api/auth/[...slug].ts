@@ -2,8 +2,8 @@ import { createRouter, defineEventHandler, useBase, H3Error, isError } from 'h3'
 import { getClientCredentials, isAuthenticated } from '../../common/authentication'
 import { externalAPIService } from '../../common/externalAPI/ExternalAPIService'
 import { handleErrorRoute } from '../../common/error'
-import { JSONResponse, Roles } from '../../../utils/types'
-import { verifyAccessToken, setCookieLogin } from '../../common/token'
+import { JSONResponse, RequestDecryptSecret, Roles } from '../../../utils/types'
+import { verifyAccessToken, setCookieLogin, decryptSecret } from '../../common/token'
 import { isMatchRegex } from '../../../utils/string'
 import { checkIsAuthenticated, checkPID, getUserInfo } from './auth.service'
 import { userNotFoundError } from '../../../utils/default'
@@ -35,6 +35,20 @@ router.get(
     '/isauthenticated',
     defineEventHandler(async (event) => {
         return checkIsAuthenticated(event)
+    })
+)
+
+router.post(
+    '/decrypt-secret',
+    defineEventHandler(async (event) => {
+        const { secret, key } = await readBody<RequestDecryptSecret>(event)
+        const a = await readBody(event)
+        console.log('bodddyyyyyyyyyy', a)
+        const decryptedOrError = decryptSecret(secret, key)
+        if (decryptedOrError instanceof H3Error) throw decryptedOrError
+        return {
+            decrypted: decryptedOrError,
+        }
     })
 )
 

@@ -1,40 +1,9 @@
 import { ContextUser, DialogContext, Roles, jwtAdfs, jwtCandidate } from '~/utils/types'
 import { FetchError } from 'ofetch'
 import { useUserStore } from '~/stores/user.store'
-import { storeToRefs } from 'pinia'
 
 export const useAuth = () => {
     const userStore = useUserStore()
-    // Sets the user information in the userStore.
-    const setUser = (user: ContextUser<jwtCandidate & jwtAdfs>) => {
-        const { setUserInfo, updateUserInfoHR, updateUserInfoCandidate } = userStore
-        const { isCandidate } = storeToRefs(userStore)
-        if (process.server) {
-            if (user.secret) {
-                console.log('setUser:secret', user.secret)
-                const { createDecipheriv } = require('crypto')
-                try {
-                    const [encryptedIv, encryptedDataString] = user.secret.split(':')
-                    let iv = Buffer.from(encryptedIv, 'hex')
-                    let encryptedText = Buffer.from(encryptedDataString, 'hex')
-                    let decipher = createDecipheriv('aes-256-cbc', Buffer.from(process.env.ENCRYPT_KEY as string), iv)
-                    let decrypted = decipher.update(encryptedText)
-                    decrypted = Buffer.concat([decrypted, decipher.final()])
-
-                    user.secret = decrypted.toString()
-                } catch (err) {
-                    console.log(err)
-                }
-            }
-            setUserInfo(user)
-        } else {
-            if (isCandidate) {
-                updateUserInfoCandidate(user)
-            } else {
-                updateUserInfoHR(user)
-            }
-        }
-    }
 
     // This function is currently commented out and not in use.
     // const setCookie = (cookie: any) => {
@@ -87,7 +56,7 @@ export const useAuth = () => {
     }
 
     // Retrieves user information. Makes an API call to get user data.
-    const me = async () => {
+    const me = async (): Promise<ContextUser<jwtAdfs & jwtCandidate>> => {
         try {
             const { data, error } = await useApi('/auth/userinfo', {
                 method: 'GET',
@@ -96,7 +65,7 @@ export const useAuth = () => {
 
             if (error.value) throw error.value
 
-            setUser(data.value)
+            return data.value
         } catch (error: FetchError | any) {
             console.log('error on me', error)
             throw createError({
@@ -106,9 +75,24 @@ export const useAuth = () => {
         }
     }
 
+    const decryptSecret = async (secret: string) => {
+        if (process.client) return
+        const { data } = await useApi('/auth/decrypt-secret', {
+            method: 'POST',
+            key: 'decrypt-secret',
+            server: true,
+            body: {
+                key: process.server ? process.env.NUXT_ENCRYPT_KEY : '',
+                secret,
+            },
+        })
+        return data.value?.decrypted || secret
+    }
+
     return {
         login,
         logout,
         me,
+        decryptSecret,
     }
 }
