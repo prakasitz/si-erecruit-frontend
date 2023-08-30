@@ -6,9 +6,15 @@ import { useUserStore } from '~/stores/user.store'
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
     const { middlewareError } = useErrorHandler()
+    const userStore = useUserStore()
+    const { setUserInfo } = userStore
+    const { isCandidate } = storeToRefs(userStore)
+    const { me, decryptSecret } = useAuth()
     try {
-        await useAuth().me()
-        const { isCandidate } = storeToRefs(useUserStore())
+        const userInfo = await me()
+        userInfo.secret = await decryptSecret(userInfo.secret)
+        await setUserInfo(userInfo, process.server)
+
         console.log('middleware:candidate-only', isCandidate.value)
         if (!isCandidate.value) {
             // return navigateTo({ name: 'login-candidate' })

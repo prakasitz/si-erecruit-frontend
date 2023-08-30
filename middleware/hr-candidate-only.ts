@@ -15,6 +15,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         const userInfo = await me()
         userInfo.secret = await decryptSecret(userInfo.secret)
         await setUserInfo(userInfo, process.server)
+
         console.log('middleware:hr-candidate-only', isHR.value, isCandidate.value)
 
         if (!isHR.value && !isCandidate.value) {
