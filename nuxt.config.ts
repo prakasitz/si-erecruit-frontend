@@ -40,6 +40,7 @@ export default defineNuxtConfig({
         clientSecret: '',
         audience: '',
         jwks: '',
+        encryptKey: '',
         public: {
             baseApi: '/api',
         },
