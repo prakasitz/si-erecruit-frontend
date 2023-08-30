@@ -16,10 +16,16 @@ export default defineEventHandler(async (event) => {
     if (event.node.req.url) {
         if (checkURL(event.node.req.url, authRoutes)) {
             try {
-                console.log(`=============`, ' ', `middleware:authentication`, ' ', `==========================`)
+                console.log(
+                    `=============`,
+                    ' ',
+                    `middleware:authentication: ${event.node.req.url}`,
+                    ' ',
+                    `==========================`
+                )
 
                 const authenticatedOrError = await isAuthenticated(event)
-                
+
                 if (authenticatedOrError instanceof H3Error) throw authenticatedOrError
                 if (authenticatedOrError === false) throw UnauthorizedError('Token is invalid or expired.')
 
