@@ -30,7 +30,7 @@
                         :color="'main-color'"
                         :key="item.title"
                         :value="item.value"
-                        :to="toUrlComputed(item.to as string)"
+                        :to="item.isHash ? toUrlComputed(item) : item.to"
                         :active="useActiveMenu(item.to)"
                     >
                         <v-list-item-title v-text="item.title"></v-list-item-title>
@@ -99,28 +99,47 @@ const group = ref(null)
 
 const { commonid } = useUserStore()
 
+type CandidateNav = {
+    title: string
+    value: string
+    to: string
+    isHash: boolean
+    hash?: string
+    nav: any[]
+    subgroups?: any[]
+}
+
 const toUrlComputed = computed((): any => {
-    return (toUrl: string) => {
-        if (route.hash) {
-            console.log('route.hash', route.hash)
-            return toUrl + route.hash
-        } else {
-            return toUrl
+    return (item: CandidateNav) => {
+        let url = item.to
+
+        if (item.isHash) {
+            item.hash = item.hash || route.hash
+            url = item.to + item.hash
         }
+
+        return url
     }
 })
 
-const items4Candidate: any = [
+const profileIdToRoute = computed(() => {
+    return commonid ?? route.params.id
+})
+
+const items4Candidate: Ref<CandidateNav[]> = ref([
     {
         title: 'หน้าหลัก',
         value: 'foo',
         to: '/candidate/',
+        isHash: false,
         nav: ['หนัาหลัก'],
     },
     {
         title: 'จัดการข้อมูลผู้สมัคร',
         value: 'foo2',
-        to: `/candidate/form/${commonid ?? route.params.id}`,
+        to: `/candidate/form/${profileIdToRoute.value}`,
+        isHash: true,
+        hash: '',
         nav: [
             {
                 title: 'หน้าหลัก',
@@ -129,7 +148,7 @@ const items4Candidate: any = [
             'จัดการข้อมูลผู้สมัคร',
         ],
     },
-]
+])
 
 // define a function to scroll to the top of the page
 
