@@ -2,15 +2,15 @@
     <div>
         <v-card class="mx-auto" width="90%">
             <v-card-item>
-                <v-card-title :style="{ 'font-size': '18px !important' }"> </v-card-title>
+                <v-card-title :style="{ 'font-size': '18px !important' }"></v-card-title>
                 <v-data-table
                     :items-per-page="10"
                     :headers="(headers as any)"
-                    :items="desserts"
+                    :items="SRC_User"
                     item-value="name"
                     class="elevation-1"
-                    show-select
                     :search="search"
+                    hover
                 >
                     <template v-slot:top>
                         <v-row>
@@ -18,7 +18,7 @@
                                 <p class="text-h6 text-main-color font-weight-bold">รายชื่อผู้ใช้งาน</p>
                                 <p class="text-h7 font-weight-bold">
                                     ผู้ใช้งานทั้งหมด
-                                    <span style="color: red">{{ desserts.length }}</span>
+                                    <span style="color: red">{{ SRC_User.length }}</span>
                                     รายการ
                                 </p>
                             </v-col>
@@ -44,9 +44,22 @@
                             </v-col>
                         </v-row>
                     </template>
-                    <template v-slot:item.status="{ item }">
-                        <v-chip v-if="item.raw.status == 0" color="red">Imported</v-chip>
-                        <v-chip v-if="item.raw.status == 1" color="black">Closed</v-chip>
+                    <template v-slot:item.local_user="{ item }">
+                        <v-chip size="small" class="font-weight-bold" :color="item.raw.local_user ? 'main-color' : ''">
+                            {{ item.raw.local_user ? 'Local' : 'Non-Local' }}
+                        </v-chip>
+                    </template>
+                    <template v-slot:item.role_ID="{ item }">
+                        <v-chip size="small" class="font-weight-bold" v-bind="chipByRoleID(item.raw.role_ID)"> </v-chip>
+                    </template>
+                    <template v-slot:item.locked_user="{ item }">
+                        <v-chip
+                            size="small"
+                            class="font-weight-bold"
+                            :color="item.raw.locked_user ? 'error' : 'success'"
+                        >
+                            {{ item.raw.locked_user ? 'Locked' : 'Active' }}
+                        </v-chip>
                     </template>
                     <template v-slot:item.action="{ item }">
                         <v-icon size="small" class="me-2" @click="showForm(item.raw, 'edit')"> mdi-pencil </v-icon>
@@ -98,66 +111,82 @@ const showForm = (item: any, type: 'edit' | 'create') => {
 }
 
 const headers = [
-    { title: 'ชื่อ นามสกุล', align: 'start', key: 'name' },
-    { title: 'ประเภท User', align: 'start', key: 'type' },
-    { title: 'Role', align: 'start', key: 'role' },
+    { title: 'SAP ID', align: 'start', key: 'SAP_ID' },
+    { title: 'SAP name', align: 'start', key: 'SAP_name' },
+    { title: 'ประเภท', align: 'start', key: 'local_user' },
+    { title: 'Role', align: 'start', key: 'role_ID' },
+    { title: 'สถานะ', align: 'start', key: 'locked_user' },
     { title: 'Last login', align: 'start', key: 'last_login' },
-    { title: 'หมายเหตุ', align: 'start', key: 'remark' },
-    { title: 'แก้ไข/ลบ', align: 'start', key: 'action' },
+    { title: 'แก้ไข/ลบ', align: 'start', key: 'action', sortable: false },
 ]
 
 const search = ref()
 
-const desserts = [
+/*
+Super Admin
+General Admin
+HR Officer
+Department Officer
+*/
+const chipByRoleID = computed(() => {
+    return (roleID: number) => {
+        return roleChipList.value.find((item) => item.id === roleID)
+    }
+})
+
+const roleChipList = ref([
     {
-        name: 'Frozen Yogurt',
-        type: 'Admin',
-        role: 0,
-        last_login: 0,
-        remark: 0,
-        action: false,
+        id: 0,
+        text: 'Super Admin',
+        color: 'red',
     },
     {
-        name: 'Frozen Yogurt',
-        type: 'Super Admin',
-        role: 0,
-        last_login: 0,
-        remark: 0,
-        action: false,
+        id: 1,
+        text: 'General Admin',
+        color: 'blue',
     },
     {
-        name: 'Frozen Yogurt',
-        type: 'Super Admin',
-        role: 0,
-        last_login: 0,
-        remark: 0,
-        action: false,
+        id: 2,
+        text: 'HR Officer',
+        color: 'green',
     },
     {
-        name: 'Frozen Yogurt',
-        type: 'Admin',
-        role: 0,
-        last_login: 0,
-        remark: 0,
-        action: false,
+        id: 3,
+        text: 'Department Officer',
+        color: 'yellow',
+    },
+])
+
+const SRC_User = ref([
+    {
+        SAP_ID: 'A1234567',
+        role_ID: 1,
+        local_password: 'password123',
+        local_user: true,
+        locked_user: false,
+        last_login: '28 ส.ค. 2566, 13:24',
+        note: 'First user',
+        created_at: '2023-08-01T10:00:00',
+        created_by: 'A9876543',
+        SAP_name: 'John Doe',
+        name: 'John',
+        lastname: 'Doe',
     },
     {
-        name: 'Frozen Yogurt',
-        type: 'Admin',
-        role: 0,
-        last_login: 0,
-        remark: 0,
-        action: false,
+        SAP_ID: 'A1234568',
+        role_ID: 2,
+        local_password: 'password456',
+        local_user: false,
+        locked_user: true,
+        last_login: '28 ส.ค. 2566, 13:24',
+        note: 'Second user',
+        created_at: '2023-07-28T09:00:00',
+        created_by: 'A9876542',
+        SAP_name: 'Jane Smith',
+        name: 'Jane',
+        lastname: 'Smith',
     },
-    {
-        name: 'Frozen Yogurt',
-        type: 'User',
-        role: 0,
-        last_login: 0,
-        remark: 0,
-        action: false,
-    },
-]
+])
 
 console.log(route.meta.title) // My home page
 </script>
