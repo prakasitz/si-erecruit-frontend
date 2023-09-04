@@ -64,14 +64,14 @@
                     <template v-slot:item.action="{ item }">
                         <v-icon size="small" class="me-2" @click="showForm(item.raw, 'edit')"> mdi-pencil </v-icon>
                         <v-icon size="small" @click="deleteItem(item.raw)" color="red"> mdi-delete </v-icon>
-                        <dialogs-backend-user-form
-                            :form-type="form"
-                            :dialog="dialog"
-                            @update:dialog="updateDialog"
-                            :user="item.raw"
-                        />
                     </template>
                 </v-data-table>
+                <dialogs-backend-user-form
+                    :form-type="form"
+                    :dialog="dialog"
+                    @update:dialog="updateDialog"
+                    :user="userProps"
+                />
             </v-card-item>
         </v-card>
         <br />
@@ -79,6 +79,8 @@
 </template>
 
 <script setup lang="ts">
+import { SRC_User } from '~/utils/types'
+
 definePageMeta({
     title: 'จัดการผู้ใช้งาน',
     pageTransition: {
@@ -99,8 +101,10 @@ const route = useRoute()
 
 const dialog = ref(false)
 const form: Ref<'' | 'edit' | 'create'> = ref('')
-const showForm = (item: any, type: 'edit' | 'create') => {
+const userProps: Ref<SRC_User | undefined> = ref()
+const showForm = (item: SRC_User | undefined, type: 'edit' | 'create') => {
     dialog.value = true
+    userProps.value = item
     form.value = type
 }
 
@@ -109,8 +113,6 @@ const updateDialog = (updateValue: boolean) => {
     dialog.value = updateValue
     form.value = ''
 }
-
-
 
 const headers = [
     { title: 'SAP ID', align: 'start', key: 'SAP_ID' },
