@@ -99,16 +99,18 @@ const route = useRoute()
 
 const dialog = ref(false)
 const form: Ref<'' | 'edit' | 'create'> = ref('')
+const showForm = (item: any, type: 'edit' | 'create') => {
+    dialog.value = true
+    form.value = type
+}
+
 const updateDialog = (updateValue: boolean) => {
     console.log('updateDialog', updateValue)
     dialog.value = updateValue
     form.value = ''
 }
 
-const showForm = (item: any, type: 'edit' | 'create') => {
-    dialog.value = true
-    form.value = type
-}
+
 
 const headers = [
     { title: 'SAP ID', align: 'start', key: 'SAP_ID' },
