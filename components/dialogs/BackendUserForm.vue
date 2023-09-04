@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :model-value="props.dialog" width="auto" persistent>
+    <v-dialog v-model="props.dialog" width="auto" persistent>
         <v-form validate-on="submit lazy" @submit.prevent="submit" ref="userForm">
             <v-card class="mb-5" width="800">
                 <v-toolbar density="compact" :color="bgColor">
@@ -186,10 +186,27 @@
 </style>
 
 <script lang="ts" setup>
-import { ReactiveEffect } from 'nuxt/dist/app/compat/capi'
 import { SubmitEventPromise } from 'vuetify/lib/framework.mjs'
 import { SRC_User } from '~/utils/types'
 
+const emit = defineEmits(['update:dialog'])
+
+const props = defineProps({
+    dialog: {
+        type: Boolean,
+        required: true,
+    },
+    user: {
+        type: Object as PropType<SRC_User>,
+        required: false,
+    },
+    formType: {
+        type: String as PropType<'create' | 'edit' | ''>,
+        required: true,
+    },
+})
+
+const { fieldRules } = useFillRules()
 const { fetchSRCUserById, createSRCUserById, updateSRCUserById } = useUserManagement()
 
 const userModel: Ref<SRC_User> = ref({
@@ -199,20 +216,7 @@ const userModel: Ref<SRC_User> = ref({
     locked_user: false,
     local_user: false,
 })
-/*
-	   [SAP_ID] -- INPUT
-      ,[SAP_name] -- INPUT
-      ,[role_ID] -- INPUT
-      ,[locked_user] -- INPUT CREATE is 0
-      ,[last_login]
-      ,[note] -- INPUT
-	   ,[local_password] -- INPUT
-      ,[local_user] -- INPUT
-      ,[created_at]
-      ,[created_by]
-      ,[name]
-      ,[lastname]
-      */
+
 const loading = ref(false)
 const submit = async (event: SubmitEventPromise) => {
     loading.value = true
@@ -227,12 +231,10 @@ const submit = async (event: SubmitEventPromise) => {
 }
 
 const currentBgColor = ref('')
-const currentContext = ref(
-    reactive({
-        title: '',
-        btnSubmit: '',
-    })
-)
+const currentContext = ref({
+    title: '',
+    btnSubmit: '',
+})
 
 const context = computed(() => {
     switch (props.formType) {
@@ -268,12 +270,8 @@ const bgColor = computed(() => {
     return currentBgColor.value
 })
 
-const { fieldRules } = useFillRules()
-
 const check_accept = ref(false)
-const userLock = ref(false)
-const userLocal = ref(false)
-const rulesConfig = reactive({})
+
 const roleItems = ref([
     {
         text: 'Super Admin',
@@ -293,20 +291,27 @@ const roleItems = ref([
     },
 ])
 
-const emit = defineEmits(['update:dialog'])
+watchEffect(() => {
+    if (props.user && props.formType === 'edit' && props.dialog) {
+        userModel.value = props.user
+    }
+})
 
-const props = defineProps({
-    dialog: {
-        type: Boolean,
-        required: true,
-    },
-    user: {
-        type: Object as PropType<SRC_User>,
-        required: false,
-    },
-    formType: {
-        type: String as PropType<'create' | 'edit' | ''>,
-        required: true,
-    },
+watchPostEffect(() => {
+    if (!props.dialog) {
+        check_accept.value = false
+        currentBgColor.value = ''
+        currentContext.value = {
+            title: '',
+            btnSubmit: '',
+        }
+        userModel.value = {
+            SAP_ID: '',
+            SAP_name: '',
+            role_ID: '',
+            locked_user: false,
+            local_user: false,
+        }
+    }
 })
 </script>
