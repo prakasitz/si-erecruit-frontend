@@ -72,9 +72,10 @@
                             </v-chip>
                         </template>
                         <template v-slot:item.action="{ item }">
-                            <NuxtLink :to="`/candidate/form/${item.raw.profile_ID}/`">
+                            <QuickAction :job="jobData" :profile="item.raw" />
+                            <!-- <NuxtLink :to="`/candidate/form/${item.raw.profile_ID}/`">
                                 <v-icon size="small" class="me-2"> mdi-eye </v-icon>
-                            </NuxtLink>
+                            </NuxtLink> -->
                         </template>
                     </v-data-table>
                 </v-card-text>
@@ -119,6 +120,7 @@
 </template>
 
 <script setup lang="ts">
+import { DeepReadonly } from 'nuxt/dist/app/compat/capi'
 import { storeToRefs } from 'pinia'
 import { useJobComponentStore } from '~/stores/job-component.store'
 
@@ -208,13 +210,15 @@ const profileStatusComputed = computed(() => {
     }
 })
 
-const headers = [
+import { VDataTable } from 'vuetify/lib/labs/VDataTable/index.mjs'
+
+const headers: VDataTable['$headers'] = [
     // { title: 'No.', align: 'start', key: 'no' },
     { title: 'ชื่อ นามสกุล', align: 'start', key: 'fullname', width: 200 },
     { title: 'สถานะ', align: 'center', key: 'profile_status' },
     { title: 'เลขบัตรประชาชน', align: 'start', key: 'pid' },
     { title: 'เบอร์โทรศัพท์', align: 'start', key: 'phone' },
-    { title: 'จัดการ', align: 'center', key: 'action' },
+    { title: 'จัดการ', align: 'center', key: 'action', sortable: false },
 ]
 const profilesSelected = ref([])
 console.log(route.meta.title) // My home page

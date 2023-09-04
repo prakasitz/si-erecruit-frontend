@@ -1,4 +1,3 @@
-
 export default function useButtonAction() {
     return {
         deleteJob,
@@ -8,7 +7,8 @@ export default function useButtonAction() {
         republishJob,
         suspendJob,
         terminateJob,
-        verifiedJob
+        verifiedJob,
+        cancelProfile,
     }
 }
 
@@ -20,7 +20,7 @@ const approveJob = async (event: any, item_id: number) => {
             },
             method: 'PATCH',
             server: false,
-        });
+        })
 
         if (resp?.data?.value.rowAffects) {
             return {
@@ -56,7 +56,7 @@ const deleteJob = async (event: any, item_id: number) => {
             },
             method: 'DELETE',
             server: false,
-        });
+        })
         if (resp?.data?.value.rowAffects) {
             return {
                 status: true,
@@ -91,7 +91,7 @@ const cancelJob = async (event: any, item_id: number) => {
             },
             method: 'PATCH',
             server: false,
-        });
+        })
 
         if (resp?.data?.value.rowAffects) {
             return {
@@ -120,17 +120,17 @@ const cancelJob = async (event: any, item_id: number) => {
 }
 const publishJob = async (event: any, item_id: number) => {
     try {
-        console.log(item_id);
+        console.log(item_id)
         const resp = await useFetch(`/api/external/jobs/publish`, {
             headers: {
                 Accept: 'application/json',
             },
             body: {
-                "job_ID": item_id
+                job_ID: item_id,
             },
             method: 'PUT',
             server: false,
-        });
+        })
 
         if (resp?.data?.value) {
             return {
@@ -140,7 +140,6 @@ const publishJob = async (event: any, item_id: number) => {
                     {
                         text: 'close',
                         href: `/job_management/${item_id}`,
-
                     },
                 ],
             }
@@ -148,8 +147,7 @@ const publishJob = async (event: any, item_id: number) => {
             console.log(resp)
             return {
                 status: false,
-                message: resp?.error?.value?.data.message
-
+                message: resp?.error?.value?.data.message,
             }
         }
     } catch (e) {
@@ -169,7 +167,7 @@ const suspendJob = async (event: any, item_id: number) => {
             },
             method: 'PATCH',
             server: false,
-        });
+        })
 
         if (resp?.data?.value.rowAffects) {
             return {
@@ -205,7 +203,7 @@ const republishJob = async (event: any, item_id: number) => {
             },
             method: 'PATCH',
             server: false,
-        });
+        })
 
         if (resp?.data?.value.rowAffects) {
             return {
@@ -241,7 +239,7 @@ const terminateJob = async (event: any, item_id: number) => {
             },
             method: 'PATCH',
             server: false,
-        });
+        })
 
         if (resp?.data?.value.rowAffects) {
             return {
@@ -277,7 +275,7 @@ const verifiedJob = async (event: any, item_id: number) => {
             },
             method: 'PATCH',
             server: false,
-        });
+        })
 
         if (resp?.data?.value.rowAffects) {
             return {
@@ -303,4 +301,8 @@ const verifiedJob = async (event: any, item_id: number) => {
             message: `Sorry, something went wrong.`,
         }
     }
+}
+
+const cancelProfile = async (event: any, item_id: number) => {
+    return 'cancelProfile: ' + item_id
 }

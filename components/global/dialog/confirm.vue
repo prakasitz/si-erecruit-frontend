@@ -75,17 +75,14 @@ const simpleActionHandler = async (event: unknown, buttonAction: any) => {
     loading.value = true
     //delay 1 sec
     if (typeof buttonAction.cb == 'function') {
-        console.log(context.value)
-        let itemId = context.value.item.id
+        console.log('simpleActionHandler', context.value)
+        let itemId = context.value.item!.id
         const { status, message, callbackActionBtn }: BtnActionCallBack = await buttonAction.cb(event, itemId)
         loading.value = false
-        if (status) {
-            success.value = true
-            error.value = false
-        } else {
-            error.value = true
-            success.value = false
-        }
+
+        success.value = status
+        error.value = !status
+
         context.value.callbackMessage = message
         if (callbackActionBtn) {
             context.value.callbackActionBtn = callbackActionBtn
