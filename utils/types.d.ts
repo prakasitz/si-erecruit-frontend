@@ -680,3 +680,18 @@ export type UserStore = {
     secret: null | string
     exp: null | string
 }
+
+
+export type SRC_User = {
+      SAP_ID: string //pk
+      SAP_name?: string
+      role_ID: string
+      local_user: boolean
+      local_password?: string
+      locked_user: boolean
+      note?: string
+      name?: string
+      lastname?: string
+      last_login?: Date
+      created_by?: string
+}
