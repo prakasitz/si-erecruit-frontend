@@ -5,7 +5,7 @@
                 <v-card-title :style="{ 'font-size': '18px !important' }"> </v-card-title>
                 <v-data-table
                     :items-per-page="10"
-                    :headers="headers"
+                    :headers="(headers as any)"
                     :items="desserts"
                     item-value="name"
                     class="elevation-1"
@@ -31,7 +31,16 @@
                                     variant="outlined"
                                     label="ค้นหา"
                                     append-inner-icon="mdi-magnify"
-                                ></v-text-field>
+                                >
+                                    <template #prepend>
+                                        <v-btn
+                                            :color="'main-color'"
+                                            prepend-icon="mdi-plus"
+                                            @click="showForm(undefined, 'create')"
+                                            >สร้าง
+                                        </v-btn>
+                                    </template>
+                                </v-text-field>
                             </v-col>
                         </v-row>
                     </template>
@@ -40,8 +49,14 @@
                         <v-chip v-if="item.raw.status == 1" color="black">Closed</v-chip>
                     </template>
                     <template v-slot:item.action="{ item }">
-                        <v-icon size="small" class="me-2" @click="editItem(item.raw)"> mdi-pencil </v-icon>
+                        <v-icon size="small" class="me-2" @click="showForm(item.raw, 'edit')"> mdi-pencil </v-icon>
                         <v-icon size="small" @click="deleteItem(item.raw)" color="red"> mdi-delete </v-icon>
+                        <dialogs-backend-user-form
+                            :form-type="form"
+                            :dialog="dialog"
+                            @update:dialog="updateDialog"
+                            :user="item.raw"
+                        />
                     </template>
                 </v-data-table>
             </v-card-item>
@@ -68,6 +83,19 @@ definePageMeta({
 })
 
 const route = useRoute()
+
+const dialog = ref(false)
+const form: Ref<'' | 'edit' | 'create'> = ref('')
+const updateDialog = (updateValue: boolean) => {
+    console.log('updateDialog', updateValue)
+    dialog.value = updateValue
+    form.value = ''
+}
+
+const showForm = (item: any, type: 'edit' | 'create') => {
+    dialog.value = true
+    form.value = type
+}
 
 const headers = [
     { title: 'ชื่อ นามสกุล', align: 'start', key: 'name' },
