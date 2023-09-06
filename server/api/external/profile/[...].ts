@@ -4,7 +4,6 @@ import { formidable, Options, errors } from 'formidable'
 import { BadRequestError, TokenNotFoundError, UnauthorizedError } from '../../../../utils/default'
 
 import { H3Error } from 'h3'
-import { IPersonalStore } from '../../../../utils/interface/personal_information.interface'
 import { generateProfileJSON } from '../../../utils/profile'
 
 const router = createRouter()

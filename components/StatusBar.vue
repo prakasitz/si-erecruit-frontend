@@ -10,9 +10,9 @@
 </template>
 
 <script setup lang="ts">
-import { JobStatusType } from '~/utils/types';
+import { JobStatusType } from '~/utils/types'
 
-export interface Props {
+interface PropsStatusBar {
     status?: JobStatusType
 }
 
@@ -22,31 +22,31 @@ type NodeList = {
     class: string
 }
 
-const props = defineProps<Props>()
+const props = defineProps<PropsStatusBar>()
 const nodeList: NodeList[] = [
     {
         index: 0,
-        text: JobStatus.IMPORTED,
+        text: JobStatusEnum.IMPORTED,
         class: 'inactive',
     },
     {
         index: 1,
-        text: JobStatus.PUBLISHED,
+        text: JobStatusEnum.PUBLISHED,
         class: 'inactive',
     },
     {
         index: 2,
-        text: JobStatus.VERIFYING,
+        text: JobStatusEnum.VERIFYING,
         class: 'inactive',
     },
     {
         index: 3,
-        text: JobStatus.APPROVED,
+        text: JobStatusEnum.APPROVED,
         class: 'inactive',
     },
     {
         index: 4,
-        text: JobStatus.CLOSED,
+        text: JobStatusEnum.CLOSED,
         class: 'inactive',
     },
 ]

@@ -58,6 +58,7 @@
 </template>
 
 <script setup lang="ts">
+
 interface BtnActionCallBack {
     status: boolean
     message: unknown

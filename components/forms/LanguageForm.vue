@@ -33,7 +33,7 @@
 </style>
 
 <script setup lang="ts">
-import { language } from '~/utils/interface/personal_information.interface'
+import { language } from  '~/utils/types'
 import { LanguageLevelOption, Skill } from '~/utils/types'
 
 export interface Props {

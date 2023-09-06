@@ -1,5 +1,3 @@
-import { JSONResponse } from '~/utils/types'
-
 import { MasterState, useMasterDataStore } from '~/stores/master.store'
 import { StateTree, Store, StoreDefinition, StoreGeneric } from 'pinia'
 
@@ -16,7 +14,6 @@ export default function useMaster() {
         fetchPosition,
         fetchCountryRace,
         fetchReligion,
-        fetchMilitary,
         fetchTitle,
         fetchTitleEN,
         fetchTitleTH,
@@ -26,8 +23,6 @@ export default function useMaster() {
         fetchTitleConferred,
     }
 }
-
-type MasterStore = Store<'master-data', MasterState, any, any>
 
 async function fetchProvince() {
     const cache = useNuxtData('master/province')
@@ -281,17 +276,6 @@ async function fetchTitleMilitary() {
         refObj.pending = pending
     }
     return refObj
-}
-
-async function fetchMilitary(mStore: MasterStore) {
-    const response = await useApi('/master-data/military', {
-        method: 'GET',
-        callback: (responseStatus: boolean) => {
-            mStore.$state.isLoaded.military = responseStatus
-        },
-    })
-    mStore.setMilitary(response.data.value)
-    return response
 }
 
 async function fetchLevel() {

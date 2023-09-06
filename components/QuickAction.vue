@@ -41,17 +41,23 @@
 
 <script setup lang="ts">
 import { DialogContext, Job, Profile } from '~/utils/types'
+import { VBtn } from 'vuetify/lib/components/index.mjs'
+import { QuickActionEnum } from '~/utils/enum'
 
-/*
+type QuickActionName = QuickActionEnum
 
-fullname: "รัชชานนท์ กุลชนะนิมิต"
-job_ID: 2
-phone: "0807199103"
-pid: "1100702746247"
-profile_ID: 35
-profile_status: 3
-
-*/
+type VBtnProps = VBtn['$props'] & ExtraProps
+type ExtraProps = {
+    id: string
+    show?: boolean
+    toggle?: {
+        condition: (status: string) => boolean
+        to: string
+    }
+    actionName?: QuickActionName
+    dialogContext?: DialogContext
+    // action?: (event: Event, ...arg: any) => void | Promise<void>
+}
 
 type PropsProfile = {
     fullname: string
@@ -101,32 +107,6 @@ const confirmForDoAction = (event: Event, item: Profile, action: unknown) => {
         },
         dialog
     )
-}
-
-type QuickActionName = QuickActionEnum
-enum QuickActionEnum {
-    CANCLE_OR_WAIVE = 'CANCLE_OR_WAIVE',
-    ACTIVE = 'ACTIVE',
-    PUBLISHABLE = 'PUBLISHABLE',
-    SUSPEND = 'SUSPEND',
-    VERIFY = 'VERIFY',
-    VERIFYED = 'VERIFYED',
-    DELETE = 'DELETE',
-}
-
-import { VBtn } from 'vuetify/lib/components/index.mjs'
-
-type VBtnProps = VBtn['$props'] & ExtraProps
-type ExtraProps = {
-    id: string
-    show?: boolean
-    toggle?: {
-        condition: (status: string) => boolean
-        to: string
-    }
-    actionName?: QuickActionName
-    dialogContext?: DialogContext
-    // action?: (event: Event, ...arg: any) => void | Promise<void>
 }
 
 const quickActionHandler = (event: Event, { actionName, dialogContext }: any) => {

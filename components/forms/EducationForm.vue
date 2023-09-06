@@ -154,7 +154,7 @@
 <script setup lang="ts">
 import { useMasterDataStore } from '~/stores/master.store'
 import { usePersonalStore } from '../../stores/personal.store'
-import { IEducation, education } from '~/utils/interface/personal_information.interface'
+import { IEducation, education } from '~/utils/types'
 
 export interface Props {
     index: number

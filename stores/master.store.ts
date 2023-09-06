@@ -1,50 +1,8 @@
-import { MasterProvince, MasterTitleConferred } from '~/utils/types'
+import { MasterProvince, MasterStore, MasterTitleConferred } from '~/utils/types'
 import { defineStore } from 'pinia'
 
-export type MasterState = {
-    provinces: MasterProvince[]
-    marital_status: any[]
-    military: any[]
-    blood: any[]
-    title: any[]
-    titleTH: any[]
-    titleEN: any[]
-    title_specials: any[]
-    title_academics: any[]
-    title_military: any[]
-    title_conferreds: MasterTitleConferred[]
-    religions: any[]
-    levels: any[]
-    certificates: any[]
-    majors: any[]
-    institutes: any[]
-    races: any[]
-    positions: any[]
-
-    isLoaded: {
-        provinces: boolean
-        marital_status: boolean
-        military: boolean
-        blood: boolean
-        title: boolean
-        titleTH: boolean
-        titleEN: boolean
-        title_specials: boolean
-        title_academics: boolean
-        title_military: boolean
-        title_conferreds: boolean
-        religions: boolean
-        levels: boolean
-        certificates: boolean
-        majors: boolean
-        institutes: boolean
-        races: boolean
-        positions: boolean
-    }
-}
-
 export const useMasterDataStore = defineStore('master_data', {
-    state: (): MasterState => {
+    state: (): MasterStore => {
         return {
             provinces: [] as MasterProvince[],
             marital_status: [] as any[],

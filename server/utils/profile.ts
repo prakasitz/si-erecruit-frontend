@@ -1,5 +1,4 @@
-import { IPersonalStore, children_info, education, job } from '../../utils/interface/personal_information.interface'
-import { Profile } from '../../utils/types'
+import { Profile, IPersonalStore, children_info, education, job } from '../../utils/types'
 
 type ChildProfileData = {
     [key: string]: any // You can add specific types for known properties if needed

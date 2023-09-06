@@ -6,6 +6,11 @@ export default function useDialog() {
     }
 }
 
+type DialogContext = {
+    title: string
+    value: string
+}
+
 function showDialogInfo({ title, value }: DialogContext) {
     const dialogContext = useState<DialogContext>('dialogContext')
     const dialogInfo = useState('dialogSettings')
@@ -27,9 +32,4 @@ function dialogContext() {
 
 function dialogSettings() {
     return useState('dialogSettings', () => false)
-}
-
-type DialogContext = {
-    title: string
-    value: string
 }

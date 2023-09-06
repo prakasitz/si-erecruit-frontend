@@ -30,11 +30,11 @@
 </template>
 
 <script setup lang="ts">
-export interface Props {
+interface PropsBtnScrollToTop {
     position4show?: number
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<PropsBtnScrollToTop>(), {
     position4show: 50,
 })
 

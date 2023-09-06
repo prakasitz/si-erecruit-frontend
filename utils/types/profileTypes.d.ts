@@ -1,3 +1,9 @@
+import { ProfileStatusColorEnum, ProfileStatusEnum } from '../enum'
+import { Job } from './jobTypes'
+
+export type ProfileStatus = `${ProfileStatusEnum}`
+export type ProfileStatusColor = `${ProfileStatusColorEnum}`
+
 export type ProfileStatusCode = {
     profile_status_code: number
     profile_status_text: `${ProfileStatus}`

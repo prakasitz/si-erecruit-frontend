@@ -1,4 +1,4 @@
-export enum ProfileStatus {
+export enum ProfileStatusEnum {
     CREATED = 'Created',
     IMPORTED = 'Imported',
     PUBLISHABLE = 'Publishable',
@@ -10,7 +10,7 @@ export enum ProfileStatus {
     CLOSED = 'Closed',
 }
 
-export enum CandidateStatus {
+export enum CandidateStatusEnum {
     CREATED = 'Created',
     ACTIVE = 'Active',
     SUSPENDED = 'Suspended',
@@ -19,7 +19,7 @@ export enum CandidateStatus {
     CLOSED = 'Closed',
 }
 
-export enum JobStatus {
+export enum JobStatusEnum {
     CREATED = 'Created',
     IMPORTING = 'Importing',
     FAIL_IMPORTED = 'Fail Imported',
@@ -40,7 +40,7 @@ export enum RoleEnum {
     CANDIDATE = 'CANDIDATE',
 }
 
-export enum JobStatusColor {
+export enum JobStatusColorEnum {
     CREATED = 'label-light-info',
     IMPORTING = 'label-light-megna',
     FAIL_IMPORTED = 'label-red',
@@ -54,7 +54,7 @@ export enum JobStatusColor {
     CLOSED = 'label-inverse',
 }
 
-export enum ProfileStatusColor {
+export enum ProfileStatusColorEnum {
     CREATED = 'label-info',
     IMPORTED = 'label-megna',
     PUBLISHABLE = 'label-success',
@@ -64,4 +64,26 @@ export enum ProfileStatusColor {
     WAIVED = 'label-warning',
     CANCELLED = 'label-red',
     CLOSED = 'label-light-inverse',
+}
+
+export enum DateFormatEnum {
+    DATE_TIME_BUDDHIST_1 = 'DD MMM BBBB, HH:mm',
+    DATE_TIME_GENERAL = 'DD/MMM/YYYY HH:mm',
+    DATE_ONLY = 'DD/MM/YYYY',
+    DATE_ONLY_BUDDHIST = 'DD/MM/BBBB',
+    TIME_ONLY_12_HOUR = 'h:mm A',
+    TIME_ONLY_24_HOUR = 'HH:mm',
+    MONTH_YEAR = 'MMMM YYYY',
+    MONTH_DAY_YEAR = 'MMMM DD, YYYY',
+    DAY_MONTH_YEAR = 'DD MMMM YYYY',
+}
+
+export enum QuickActionEnum {
+    CANCLE_OR_WAIVE = 'CANCLE_OR_WAIVE',
+    ACTIVE = 'ACTIVE',
+    PUBLISHABLE = 'PUBLISHABLE',
+    SUSPEND = 'SUSPEND',
+    VERIFY = 'VERIFY',
+    VERIFYED = 'VERIFYED',
+    DELETE = 'DELETE',
 }

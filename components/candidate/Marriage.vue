@@ -260,9 +260,7 @@
 <script setup lang="ts">
 import { usePersonalStore } from '../../stores/personal.store'
 
-import { address, children_info } from '~/utils/interface/personal_information.interface'
-
-import { CandidateForm } from '~/utils/types'
+import { CandidateForm, address, children_info } from '~/utils/types'
 
 const props = defineProps<{
     candidateForm: CandidateForm

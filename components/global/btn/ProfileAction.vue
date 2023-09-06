@@ -5,13 +5,13 @@
 <script setup lang="ts">
 const { dialogConfirm, showDialog, dialogWarning } = useDialog()
 
-export interface Props {
+interface PropsBtnProfileAction {
     text: string
     color: string
     data: { profile_IDs: number[]; job_ID: number[] }
     cb?: any
 }
-const props = defineProps<Props>()
+const props = defineProps<PropsBtnProfileAction>()
 
 const confirmActionItem = (event: Event, item: any) => {
     const dialog = dialogConfirm()

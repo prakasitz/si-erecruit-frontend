@@ -161,7 +161,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import { mate_info } from '~/utils/interface/personal_information.interface'
+import { mate_info } from '~/utils/types'
 
 export interface Props {
     MateFormModel: mate_info

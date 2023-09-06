@@ -134,7 +134,7 @@
     </v-card>
 </template>
 <script setup lang="ts">
-import { parent_info } from '~/utils/interface/personal_information.interface'
+import { parent_info } from  '~/utils/types'
 
 export interface Props {
     parentFormModel: parent_info

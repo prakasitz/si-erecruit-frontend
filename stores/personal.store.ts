@@ -1,9 +1,5 @@
-import { IPersonalStore, children_info, education, job } from '../utils/interface/personal_information.interface'
-
-import { Profile } from '~/utils/types'
-
+import { Profile, IPersonalStore, children_info, education, job } from '../utils/types'
 import { checkObjectPropertiesNull, deepCopy } from '../utils/object'
-
 import { defineStore } from 'pinia'
 
 export const usePersonalStore = defineStore('personal', {

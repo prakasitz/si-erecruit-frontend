@@ -13,9 +13,8 @@
                             ></v-breadcrumbs>
                             <div v-if="isCandidateLayout && (isHR || isAdmin)" class="mx-auto pl-5">
                                 <p class="text-h6">
-                                    ข้อมูลผู้สมัคร: {{ personal_info?.first_name_th }} {{ personal_info?.last_name_th }} ({{
-                                        route.params.id
-                                    }})
+                                    ข้อมูลผู้สมัคร: {{ personal_info?.first_name_th }}
+                                    {{ personal_info?.last_name_th }} ({{ route.params.id }})
                                 </p>
                             </div>
                         </v-col>
@@ -62,11 +61,11 @@ type MenuItem = {
     onClick?: (event: Event) => Promise<any>
 }
 
-export interface Props {
+interface PropsTopicBar {
     labels: any[]
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<PropsTopicBar>(), {
     labels: () => [{ title: 'หนัาหลัก', href: '/' }],
 })
 

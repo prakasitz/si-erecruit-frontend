@@ -63,14 +63,14 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 
-export interface Props {
+interface PropsDropZone {
     width: string
     height: string
 }
 
 const fileInput = ref<HTMLInputElement | null>(null)
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<PropsDropZone>(), {
     width: '80%',
     height: '100px',
 })

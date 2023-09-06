@@ -6,7 +6,7 @@
 import { H3Error } from 'h3'
 import { getUserFromAccessToken, isAuthenticated } from '../../common/authentication'
 import { checkURL } from '../../../utils/string'
-import { UnauthorizedError, forbiddenError } from '../../../utils/default'
+import { UnauthorizedError } from '../../../utils/default'
 // import { isAuthenticated } from '../../../common/authentication'
 
 export default defineEventHandler(async (event) => {

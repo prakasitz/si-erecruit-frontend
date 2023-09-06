@@ -1,3 +1,7 @@
+import { JobStatusColorEnum, JobStatusEnum } from '../enum'
+
+export type JobStatus = `${JobStatusEnum}`
+export type JobStatusColor = `${JobStatusColorEnum}`
 
 export type jobStatusCode = {
     job_status_code: number
@@ -17,4 +21,3 @@ export interface Job {
     job_status: number
     job_status_code?: jobStatusCode
 }
-

@@ -2,7 +2,7 @@
     <div>
         <v-card class="mx-auto" width="90%">
             <v-card-title :style="{ 'font-size': '16px !important' }">
-                <b>ยินดีต้อนรับคุณ {{ displayname }}</b></v-card-title
+                <b>ยินดีต้อนรับคุณ {{ user.displayname }}</b></v-card-title
             >
             <v-card-text>
                 Lorem ipsum dolor sit amet consectetur, adipisicing elit. Necessitatibus, explicabo voluptas. Mollitia
@@ -19,7 +19,7 @@ import { useUserStore } from '~/stores/user.store'
 
 // This will work in both `<script setup>` and `<script>`
 const userStore = useUserStore()
-const { displayname } = userStore
+const { user } = userStore
 
 definePageMeta({
     title: 'หน้าหลัก',

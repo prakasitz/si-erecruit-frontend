@@ -1,4 +1,3 @@
-import { type } from 'os'
 import { VuetifyForm } from '~/utils/types'
 
 export const useFillRules = () => {

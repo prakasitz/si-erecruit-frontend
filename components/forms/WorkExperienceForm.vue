@@ -91,9 +91,8 @@
 </template>
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
 import { usePersonalStore } from '../../stores/personal.store'
-import { IJob, job, job_mahidol } from '~/utils/interface/personal_information.interface'
+import { job } from '~/utils/types'
 
 export interface Props {
     index: number

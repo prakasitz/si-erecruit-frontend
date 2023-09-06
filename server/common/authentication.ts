@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios'
+import axios from 'axios'
 import * as qs from 'qs'
 import { getItemStorage, setItemStorage } from './storage'
 import { verifyAccessToken, verifyOauth2Token } from './token'

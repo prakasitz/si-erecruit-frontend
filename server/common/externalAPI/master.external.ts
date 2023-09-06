@@ -7,6 +7,43 @@ class MasterExternal extends ExternalAPIService {
     constructor() {
         super()
     }
+
+    public async getJobStatus(event: H3Event) {
+        try {
+            await this.initializeToken()
+            const resp = await this.baseAPI.get(`/${this.masterSlug}/profile-status`, {
+                headers: {
+                    Authorization: 'Bearer ' + this.token,
+                },
+            })
+
+            if (!resp.data) throw new Error(`getJobStatus: Data not found`)
+
+            let result: any = resp.data
+            return result
+        } catch (error: AxiosError | any) {
+            return this.handleError(error)
+        }
+    }
+
+    public async getProfileStatus(event: H3Event) {
+        try {
+            await this.initializeToken()
+            const resp = await this.baseAPI.get(`/${this.masterSlug}/job-status`, {
+                headers: {
+                    Authorization: 'Bearer ' + this.token,
+                },
+            })
+
+            if (!resp.data) throw new Error(`getProfileStatus: Data not found`)
+
+            let result: any = resp.data
+            return result
+        } catch (error: AxiosError | any) {
+            return this.handleError(error)
+        }
+    }
+
     public async getProvince(event: H3Event) {
         try {
             await this.initializeToken()

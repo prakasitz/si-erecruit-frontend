@@ -128,7 +128,7 @@
 </template>
 
 <script setup lang="ts">
-import { address } from '~/utils/interface/personal_information.interface'
+import { address } from  '~/utils/types'
 
 export interface Props {
     isDisabled: boolean

@@ -4,8 +4,6 @@ import { H3Event } from 'h3'
 import * as fs from 'fs'
 import FormData from 'form-data'
 import { FileUpload, Profile } from '../../../utils/types'
-import { UnauthorizedError } from '../../../utils/default'
-import { IPersonalStore } from '../../../utils/interface/personal_information.interface'
 
 class ProfileExternal extends ExternalAPIService {
     private slug: string = 'profile'

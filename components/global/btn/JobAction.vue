@@ -5,7 +5,7 @@
 <script setup lang="ts">
 import { JobWithProfile } from '~/utils/types'
 
-export interface Props {
+interface PropsBtnJobAction {
     text: string
     color: string
     jobId: number
@@ -13,7 +13,7 @@ export interface Props {
 }
 const { dialogWarning, dialogConfirm, showDialog } = useDialog()
 const { suspendedProfile, publishableProfile } = useProfile()
-const props = defineProps<Props>()
+const props = defineProps<PropsBtnJobAction>()
 
 const confirmActionItem = async (event: Event, item: any) => {
     let isValidate = false
