@@ -66,9 +66,9 @@
                         class="elevation-0"
                         show-select
                     >
-                        <template v-slot:item.profile_status="{ item }">
-                            <v-chip :class="profileStatusComputed(item.raw.profile_status)?.profile_status_color">
-                                {{ profileStatusComputed(item.raw.profile_status)?.profile_status_text }}
+                        <template v-slot:item.profile_status_code="{ item  }">
+                            <v-chip :class="item.raw.profile_status_code.zprofile_status_color">
+                                {{ item.raw.profile_status_code.profile_status_text }}
                             </v-chip>
                         </template>
                         <template v-slot:item.action="{ item }">
@@ -120,9 +120,10 @@
 </template>
 
 <script setup lang="ts">
-import { DeepReadonly } from 'nuxt/dist/app/compat/capi'
 import { storeToRefs } from 'pinia'
 import { useJobComponentStore } from '~/stores/job-component.store'
+
+import { VDataTable } from 'vuetify/lib/labs/VDataTable/index.mjs'
 
 definePageMeta({
     title: 'รายละเอียดงาน',
@@ -155,67 +156,10 @@ const { data: profilesData, pending: profilePending } = getProfilesByJobId(jobId
 const useJobComponent = useJobComponentStore()
 const { buttonShow } = storeToRefs(useJobComponent)
 
-const profileStatusMaster = [
-    {
-        profile_status_code: 0,
-        profile_status_text: 'Created',
-        profile_status_color: 'label-info',
-    },
-    {
-        profile_status_code: 1,
-        profile_status_text: 'Imported',
-        profile_status_color: 'label-megna',
-    },
-    {
-        profile_status_code: 2,
-        profile_status_text: 'Publishable',
-        profile_status_color: 'label-success',
-    },
-    {
-        profile_status_code: 3,
-        profile_status_text: 'Suspended',
-        profile_status_color: 'label-danger',
-    },
-    {
-        profile_status_code: 4,
-        profile_status_text: 'Submitted',
-        profile_status_color: 'label-light-success',
-    },
-    {
-        profile_status_code: 5,
-        profile_status_text: 'Verified',
-        profile_status_color: 'label-light-megna',
-    },
-    {
-        profile_status_code: 6,
-        profile_status_text: 'Waived',
-        profile_status_color: 'label-warning',
-    },
-    {
-        profile_status_code: 9,
-        profile_status_text: 'Cancelled',
-        profile_status_color: 'label-red',
-    },
-    {
-        profile_status_code: 99,
-        profile_status_text: 'Closed',
-        profile_status_color: 'label-light-inverse',
-    },
-]
-
-const profileStatusComputed = computed(() => {
-    return (status: any) => {
-        const obj = profileStatusMaster.find((item) => item.profile_status_code == status)
-        return obj
-    }
-})
-
-import { VDataTable } from 'vuetify/lib/labs/VDataTable/index.mjs'
-
 const headers: VDataTable['$headers'] = [
     // { title: 'No.', align: 'start', key: 'no' },
     { title: 'ชื่อ นามสกุล', align: 'start', key: 'fullname', width: 200 },
-    { title: 'สถานะ', align: 'center', key: 'profile_status' },
+    { title: 'สถานะ', align: 'center', key: 'profile_status_code' },
     { title: 'เลขบัตรประชาชน', align: 'start', key: 'pid' },
     { title: 'เบอร์โทรศัพท์', align: 'start', key: 'phone' },
     { title: 'จัดการ', align: 'center', key: 'action', sortable: false },
