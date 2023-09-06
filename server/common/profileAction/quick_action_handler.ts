@@ -1,20 +1,27 @@
+import { profile } from 'console'
 import {
     ActionConstructor,
     Job,
     JobStatus,
+    JobStatusCode,
+    JobWithProfile,
+    JobWithProfileAndQuickAction,
+    JobWithProfilez,
     Profile,
-    ProfileStatus,
     ProfileStatusCode,
+    ProfileWithQuickAction,
     Profilez,
+    QuickActionName,
     QuickActionsTableType,
-    jobStatusCode,
 } from '../../../utils/types'
+import { masterService } from '../externalAPI/master.external'
 import {
     CancelBtn,
     DeleteBtn,
     PublishableBtn,
     QuickAction,
     SuspendedBtn,
+    VerifedBtn,
     VerifyBtn,
     ViewBtn,
     WavieBtn,
@@ -27,116 +34,11 @@ const actionClassMapping: { [key: string]: ActionConstructor } = {
     W: WavieBtn,
     P: PublishableBtn,
     S: SuspendedBtn,
-    Ve: VerifyBtn,
+    V: VerifyBtn,
+    Ve: VerifedBtn,
     D: DeleteBtn,
     // ... add other mappings as needed
 }
-
-const profileStatusConfig: ProfileStatusCode[] = [
-    {
-        profile_status_code: 0,
-        profile_status_text: 'Created',
-        zprofile_status_color: 'label-info',
-    },
-    {
-        profile_status_code: 1,
-        profile_status_text: 'Imported',
-        zprofile_status_color: 'label-megna',
-    },
-    {
-        profile_status_code: 2,
-        profile_status_text: 'Publishable',
-        zprofile_status_color: 'label-success',
-    },
-    {
-        profile_status_code: 3,
-        profile_status_text: 'Suspended',
-        zprofile_status_color: 'label-danger',
-    },
-    {
-        profile_status_code: 4,
-        profile_status_text: 'Submitted',
-        zprofile_status_color: 'label-light-success',
-    },
-    {
-        profile_status_code: 5,
-        profile_status_text: 'Verified',
-        zprofile_status_color: 'label-light-megna',
-    },
-    {
-        profile_status_code: 6,
-        profile_status_text: 'Waived',
-        zprofile_status_color: 'label-warning',
-    },
-    {
-        profile_status_code: 9,
-        profile_status_text: 'Cancelled',
-        zprofile_status_color: 'label-red',
-    },
-    {
-        profile_status_code: 99,
-        profile_status_text: 'Closed',
-        zprofile_status_color: 'label-light-inverse',
-    },
-]
-
-const jobStatusConfig: jobStatusCode[] = [
-    {
-        job_status_code: 0,
-        job_status_text: 'Created',
-        zjob_status_color: 'label-light-info',
-    },
-    {
-        job_status_code: 1,
-        job_status_text: 'Importing',
-        zjob_status_color: 'label-light-megna',
-    },
-    {
-        job_status_code: 2,
-        job_status_text: 'Fail Imported',
-        zjob_status_color: 'label-megna',
-    },
-    {
-        job_status_code: 3,
-        job_status_text: 'Imported',
-        zjob_status_color: 'label-primary',
-    },
-    {
-        job_status_code: 4,
-        job_status_text: 'Published',
-        zjob_status_color: 'label-danger',
-    },
-    {
-        job_status_code: 5,
-        job_status_text: 'Suspended',
-        zjob_status_color: 'label-inverse',
-    },
-    {
-        job_status_code: 6,
-        job_status_text: 'Verifying',
-        zjob_status_color: 'label-success',
-    },
-    {
-        job_status_code: 7,
-        job_status_text: 'Approved',
-        zjob_status_color: 'label-light-warning',
-    },
-    {
-        job_status_code: 9,
-        job_status_text: 'Cancelled',
-        zjob_status_color: 'label-danger',
-    },
-    {
-        job_status_code: 98,
-        job_status_text: 'Terminated',
-        zjob_status_color: 'label-danger',
-    },
-    {
-        job_status_code: 99,
-        job_status_text: 'Closed',
-        zjob_status_color: 'label-warning',
-    },
-]
 
 const quickActionsTable: QuickActionsTableType = {
     Imported: {
@@ -205,39 +107,111 @@ const quickActionsTable: QuickActionsTableType = {
 }
 
 class QuickActionHandler {
-    profile: Profilez | undefined = undefined
-    job: Job | undefined = undefined
+    //use map for key - value
+    jobStatusCodeMap: Map<number, JobStatusCode> = new Map()
+    profileStatusCodeMap: Map<number, ProfileStatusCode> = new Map()
 
-    constructor() {}
-
-    get jobStatusText(): `${JobStatus}` | '' {
-        let jobStatusId = this.job!.job_status
-        return jobStatusConfig.find((status) => status.job_status_code === jobStatusId)?.job_status_text || ''
+    constructor() {
+        this.initStatusCodeList()
     }
-    get profileStatusText(): `${ProfileStatus | ''}` {
-        let profileStatusId = this.profile!.profile_status
-        return (
-            profileStatusConfig.find((status) => status.profile_status_code === profileStatusId)?.profile_status_text ||
-            ''
-        )
+
+    private async initStatusCodeList() {
+        console.log('initStatusCodeList : QuickActionHandler')
+        try {
+            let resJobStatusOrError = await masterService.getJobStatus()
+            if (resJobStatusOrError instanceof Error) throw resJobStatusOrError
+
+            let resProfileStatusOrError = await masterService.getProfileStatus()
+            if (resProfileStatusOrError instanceof Error) throw resProfileStatusOrError
+
+            //
+            this.jobStatusCodeMap = new Map(
+                resJobStatusOrError.map((statusObj) => [statusObj.job_status_code, statusObj])
+            )
+
+            this.profileStatusCodeMap = new Map(
+                resProfileStatusOrError.map((statusObj) => [statusObj.profile_status_code, statusObj])
+            )
+        } catch (error) {
+            console.log('catch on initStatusCodeList : QuickActionHandler', error)
+            throw error
+        }
+    }
+
+    private getJobStatus(statusId: number): JobStatusCode | undefined {
+        return this.jobStatusCodeMap.get(statusId)
+    }
+
+    private getProfileStatus(statusId: number): ProfileStatusCode | undefined {
+        return this.profileStatusCodeMap.get(statusId)
     }
 
     transformActionsToInstances(profile_id: number, job_id: number, actions: string[]): QuickAction[] {
-        return actions.map((action) => {
+        // * enable all for test all
+        // actions = ['Vi', 'C', 'W', 'P', 'S', 'V', 'Ve', 'D']
+
+        // !bussiness for merge btn
+        // ! - C/W in actions
+
+        let mergeBtn: QuickAction | undefined
+        if (actions.includes('C') && actions.includes('W')) {
+            mergeBtn = QuickAction.mergeTwoBtnToOneBtn(
+                new CancelBtn({ profile_id, job_id }),
+                new WavieBtn({ profile_id, job_id })
+            )
+            //remove C/W from actions
+            actions = actions.filter((action) => action !== 'C' && action !== 'W')
+        }
+
+        const quickActions = actions.map((action) => {
             const ActionClass = actionClassMapping[action]
             return new ActionClass({ profile_id, job_id })
         })
+
+        return [...quickActions, ...(mergeBtn ? [mergeBtn] : [])]
     }
 
-    getAvailableActions(profile: Profilez, job: Job): QuickAction[] {
-        this.profile = profile
-        this.job = job
-
-        if (!quickActionsTable[this.jobStatusText] || !quickActionsTable[this.jobStatusText][this.profileStatusText]) {
-            return [] // Return an empty array if the combination is not found in the table
+    getAvailableActions(data: JobWithProfile): JobWithProfileAndQuickAction {
+        const job: Job = {
+            ...data,
+            job_status_code: this.getJobStatus(data.job_status),
         }
-        const actionsStrings = quickActionsTable[this.jobStatusText][this.profileStatusText]
-        return this.transformActionsToInstances(this.profile.profile_ID, this.job.job_ID, actionsStrings)
+
+        if (!job.job_status_code) throw new Error('job_status_code is undefined')
+
+        const mappedProfile = this.mapProfileStatusToProfile(data.profile)
+
+        const profileWithQuickActionList = this.mapProfilezQuickAction(
+            job.job_status_code!.job_status_text,
+            mappedProfile
+        )
+
+        return {
+            ...job,
+            profile: profileWithQuickActionList,
+        }
+    }
+
+    mapProfilezQuickAction(jobStatus: JobStatus, profilezList: Profilez[]): ProfileWithQuickAction[] {
+        return profilezList.map((profilez) => {
+            if (profilez.profile_status_code == null) throw new Error('profile_status_code is undefined')
+            const { profile_status_text } = profilez.profile_status_code
+            const actions = quickActionsTable[jobStatus][profile_status_text]
+            const quickActions = this.transformActionsToInstances(profilez.profile_ID, profilez.job_ID, actions)
+            return {
+                ...profilez,
+                quickActions,
+            }
+        })
+    }
+
+    mapProfileStatusToProfile(profiles: Profile[]): Profilez[] {
+        return profiles.map((profile) => {
+            return {
+                ...profile,
+                profile_status_code: this.getProfileStatus(profile.profile_status),
+            }
+        })
     }
 }
 
