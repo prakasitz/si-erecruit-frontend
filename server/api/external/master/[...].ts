@@ -2,16 +2,16 @@ import { useRoute } from 'nuxt/app'
 import { masterService } from '../../../common/externalAPI/master.external'
 import { BadRequestError } from '../../../../utils/default'
 import { quickActionHandler } from '../../../common/profileAction/quick_action_handler'
-import { Job, Profilez } from '../../../../utils/types'
+import { Job, Profilez, Profile, JobWithProfile } from '../../../../utils/types'
 
 const router = createRouter()
 
 router.get(
-    '/quick-action',
+    '/test/quick-action',
     defineEventHandler(async (event) => {
         const { j, p } = getQuery(event)
 
-        const profile: Profilez = {
+        const profile: Profile = {
             profile_ID: 28,
             job_ID: 2,
             profile_status: parseInt(p as string) as number,
@@ -411,7 +411,9 @@ router.get(
             create_date: new Date(),
         }
 
-        const data = await quickActionHandler.getAvailableActions(profile, job)
+        const a: JobWithProfile = { ...job, profile: [profile] }
+
+        const data = await quickActionHandler.getAvailableActions(a)
         return data
     })
 )

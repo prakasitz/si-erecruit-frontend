@@ -1,6 +1,8 @@
 import { AxiosError, AxiosRequestConfig } from 'axios'
 import { H3Event, H3Error } from 'h3'
 import { ExternalAPIService } from './ExternalAPIService'
+import { JobWithProfile, JobWithProfileAndQuickAction } from '../../../utils/types'
+import { quickActionHandler } from '../profileAction/quick_action_handler'
 
 class JobsExternal extends ExternalAPIService {
     private slug: string = 'jobs'
@@ -35,11 +37,11 @@ class JobsExternal extends ExternalAPIService {
         }
     }
 
-    public async getProfilesByJobId(event: H3Event, jobId?: string) {
+    public async getProfilesByJobId(event: H3Event, jobId?: string): Promise<JobWithProfileAndQuickAction | Error> {
         try {
             console.log('============= jobs: method => getProfilesByJobId =======================')
             const accessToken = this.getAccessToken(event)
-            const resp = await this.baseAPI.post(
+            const resp = await this.baseAPI.post<JobWithProfile>(
                 `/${this.slug}/getProfileOnJob/${jobId}`,
                 {},
                 {
@@ -48,7 +50,7 @@ class JobsExternal extends ExternalAPIService {
                     },
                 }
             )
-            return resp.data
+            return quickActionHandler.getAvailableActions(resp.data)
         } catch (error: AxiosError | any) {
             return this.handleError(error)
         } finally {
@@ -77,15 +79,16 @@ class JobsExternal extends ExternalAPIService {
         try {
             const accessToken = this.getAccessToken(event)
 
-            const resp = await this.baseAPI.patch(`/${this.slug}/approved`,
+            const resp = await this.baseAPI.patch(
+                `/${this.slug}/approved`,
                 {
                     job_ID: jobId,
                 },
                 {
                     headers: {
                         Authorization: 'Bearer ' + accessToken,
-                    }
-                },
+                    },
+                }
             )
 
             return resp.data
@@ -98,15 +101,16 @@ class JobsExternal extends ExternalAPIService {
         try {
             const accessToken = this.getAccessToken(event)
 
-            const resp = await this.baseAPI.patch(`/${this.slug}/cancel`,
+            const resp = await this.baseAPI.patch(
+                `/${this.slug}/cancel`,
                 {
                     job_ID: jobId,
                 },
                 {
                     headers: {
                         Authorization: 'Bearer ' + accessToken,
-                    }
-                },
+                    },
+                }
             )
 
             return resp.data
@@ -119,15 +123,16 @@ class JobsExternal extends ExternalAPIService {
         try {
             const accessToken = this.getAccessToken(event)
 
-            const resp = await this.baseAPI.patch(`/${this.slug}/republish`,
+            const resp = await this.baseAPI.patch(
+                `/${this.slug}/republish`,
                 {
                     job_ID: jobId,
                 },
                 {
                     headers: {
                         Authorization: 'Bearer ' + accessToken,
-                    }
-                },
+                    },
+                }
             )
 
             return resp.data
@@ -140,15 +145,16 @@ class JobsExternal extends ExternalAPIService {
         try {
             const accessToken = this.getAccessToken(event)
 
-            const resp = await this.baseAPI.put(`/${this.slug}/publish`,
+            const resp = await this.baseAPI.put(
+                `/${this.slug}/publish`,
                 {
                     job_ID: jobId,
                 },
                 {
                     headers: {
                         Authorization: 'Bearer ' + accessToken,
-                    }
-                },
+                    },
+                }
             )
 
             return resp.data
@@ -169,15 +175,16 @@ class JobsExternal extends ExternalAPIService {
         try {
             const accessToken = this.getAccessToken(event)
 
-            const resp = await this.baseAPI.patch(`/${this.slug}/suspended`,
+            const resp = await this.baseAPI.patch(
+                `/${this.slug}/suspended`,
                 {
                     job_ID: jobId,
                 },
                 {
                     headers: {
                         Authorization: 'Bearer ' + accessToken,
-                    }
-                },
+                    },
+                }
             )
 
             return resp.data
@@ -190,15 +197,16 @@ class JobsExternal extends ExternalAPIService {
         try {
             const accessToken = this.getAccessToken(event)
 
-            const resp = await this.baseAPI.patch(`/${this.slug}/terminate`,
+            const resp = await this.baseAPI.patch(
+                `/${this.slug}/terminate`,
                 {
                     job_ID: jobId,
                 },
                 {
                     headers: {
                         Authorization: 'Bearer ' + accessToken,
-                    }
-                },
+                    },
+                }
             )
 
             return resp.data
@@ -211,15 +219,16 @@ class JobsExternal extends ExternalAPIService {
         try {
             const accessToken = this.getAccessToken(event)
 
-            const resp = await this.baseAPI.patch(`/${this.slug}/verified`,
+            const resp = await this.baseAPI.patch(
+                `/${this.slug}/verified`,
                 {
                     job_ID: jobId,
                 },
                 {
                     headers: {
                         Authorization: 'Bearer ' + accessToken,
-                    }
-                },
+                    },
+                }
             )
 
             return resp.data
