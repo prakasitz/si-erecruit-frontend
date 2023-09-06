@@ -82,6 +82,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useUserStore } from '~/stores/user.store'
+import { CandidateNav } from '~/utils/types';
 
 const route = useRoute()
 
@@ -99,15 +100,6 @@ const group = ref(null)
 
 const { commonid } = useUserStore()
 
-type CandidateNav = {
-    title: string
-    value: string
-    to: string
-    isHash: boolean
-    hash?: string
-    nav: any[]
-    subgroups?: any[]
-}
 
 const toUrlComputed = computed((): any => {
     return (item: CandidateNav) => {

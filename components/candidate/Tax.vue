@@ -250,9 +250,9 @@
 </template>
 
 <script setup lang="ts">
+import { CandidateForm } from '~/utils/types/uiTypes';
 import { usePersonalStore } from '../../stores/personal.store'
 
-import { CandidateForm } from '~/utils/types'
 const props = defineProps<{
     candidateForm: CandidateForm
 }>()

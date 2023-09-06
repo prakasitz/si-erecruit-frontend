@@ -7,6 +7,7 @@ export enum ProfileStatus {
     VERIFIED = 'Verified',
     WAIVED = 'Waived',
     CANCELLED = 'Cancelled',
+    CLOSED = 'Closed',
 }
 
 export enum CandidateStatus {
@@ -51,4 +52,16 @@ export enum JobStatusColor {
     CANCELLED = 'label-light-danger',
     TERMINATED = 'label-danger',
     CLOSED = 'label-inverse',
+}
+
+export enum ProfileStatusColor {
+    CREATED = 'label-info',
+    IMPORTED = 'label-megna',
+    PUBLISHABLE = 'label-success',
+    SUSPENDED = 'label-danger',
+    SUBMITTED = 'label-light-success',
+    VERIFIED = 'label-light-megna',
+    WAIVED = 'label-warning',
+    CANCELLED = 'label-red',
+    CLOSED = 'label-light-inverse',
 }
