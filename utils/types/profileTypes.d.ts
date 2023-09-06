@@ -1,5 +1,6 @@
 import { ProfileStatusColorEnum, ProfileStatusEnum } from '../enum'
 import { Job } from './jobTypes'
+import { ProfileWithQuickAction } from './quickActionTypes'
 
 export type ProfileStatus = `${ProfileStatusEnum}`
 export type ProfileStatusColor = `${ProfileStatusColorEnum}`
@@ -7,12 +8,9 @@ export type ProfileStatusColor = `${ProfileStatusColorEnum}`
 export type ProfileStatusCode = {
     profile_status_code: number
     profile_status_text: `${ProfileStatus}`
-    zprofile_status_color: `${ProfileStatusCode}`
+    zprofile_status_color: `${ProfileStatusColor}`
 }
 
-export interface JobWithProfile extends Job {
-    profile: Profile[]
-}
 
 export interface Profilez extends Profile {
     profile_status_code?: ProfileStatusCode

@@ -79,11 +79,13 @@ export enum DateFormatEnum {
 }
 
 export enum QuickActionEnum {
-    CANCLE_OR_WAIVE = 'CANCLE_OR_WAIVE',
-    ACTIVE = 'ACTIVE',
-    PUBLISHABLE = 'PUBLISHABLE',
-    SUSPEND = 'SUSPEND',
-    VERIFY = 'VERIFY',
-    VERIFYED = 'VERIFYED',
-    DELETE = 'DELETE',
+    VIEW = 'View',
+    CANCEL = 'Cancel',
+    WAIVE = 'Waive',
+    PUBLISHABLE = 'Publishable',
+    SUSPEND = 'Suspend',
+    VERIFY = 'Verify',
+    VERIFYED = 'Verifed',
+    DELETE = 'Delete',
+    S_CANCEL_OR_WAIVE = 'Cancel Or Wavie',
 }
