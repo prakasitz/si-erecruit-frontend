@@ -1,8 +1,13 @@
 import dayjs from 'dayjs'
 import 'dayjs/locale/th' // load on demand
 import buddhistEra from 'dayjs/plugin/buddhistEra'
-import { Job, JobWithProfile, Profile } from '~/utils/types'
+import {
+    Job,
+    JobWithProfileAndQuickAction,
+} from '~/utils/types'
 import { useJobComponentStore } from '~/stores/job-component.store'
+import { AsyncData } from 'nuxt/app'
+import { FetchError } from 'ofetch'
 
 dayjs.extend(buddhistEra)
 dayjs.locale('th')
@@ -14,7 +19,7 @@ export default function useJobManagement() {
         deleteJob,
         approveJob,
         rePublishJob,
-        publishJob
+        publishJob,
     }
 }
 
@@ -24,8 +29,9 @@ export default function useJobManagement() {
 */
 const createDescription = (mu_job_ID: string, mu_job_name: string, create_date: string) => {
     let formatedCreateDate = dateToString(create_date, DateFormatEnum.DATE_TIME_BUDDHIST_1)
-    return `${mu_job_ID ?? '??'} - ${mu_job_name ?? '???'} | ${formatedCreateDate == 'Invalid Date' ? '???' : formatedCreateDate
-        }`
+    return `${mu_job_ID ?? '??'} - ${mu_job_name ?? '???'} | ${
+        formatedCreateDate == 'Invalid Date' ? '???' : formatedCreateDate
+    }`
 }
 
 // canDelete if jobStatus is 'importing', 'imported', 'created'
@@ -85,15 +91,15 @@ const fetchJobs = (jobId?: any, isTransform: boolean = false) => {
     })
 }
 
-const getProfilesByJobId = (jobId: string) => {
-    return useFetch(`/api/external/jobs/getProfileOnJob/${jobId}`, {
+const getProfilesByJobId = (jobId: string): AsyncData<JobWithProfileAndQuickAction, FetchError<any> | null> => {
+    return useFetch<JobWithProfileAndQuickAction | undefined>(`/api/external/jobs/getProfileOnJob/${jobId}`, {
         headers: {
             Accept: 'application/json',
         },
         method: 'POST',
         key: 'getProfilesByJobId',
-        transform(data) {
-            const _data = data as JobWithProfile
+        transform(data: JobWithProfileAndQuickAction) {
+            const _data = data
             const job: Job = {
                 job_ID: _data['job_ID'],
                 job_name: _data['job_name'],
@@ -104,7 +110,7 @@ const getProfilesByJobId = (jobId: string) => {
                 mu_job_name: _data['mu_job_name'],
                 job_status_code: _data['job_status_code'],
             }
-            const profile = _data['profile'].map((item: Profile) => {
+            const profile = _data['profile'].map((item) => {
                 return {
                     job_ID: item.job_ID,
                     fullname: item.nameTH + ' ' + item.lastnameTH,
@@ -112,11 +118,13 @@ const getProfilesByJobId = (jobId: string) => {
                     pid: item.id_card_number,
                     phone: item.cur_mobile ?? item.cur_telephone ?? 'ไม่มีข้อมูล',
                     profile_ID: item.profile_ID,
+                    profile_status_code: item.profile_status_code,
+                    quickActions: item.quickActions,
                 }
             })
-            //* set component 
+            //* set component
             const { setButtonShow } = useJobComponentStore()
-            setButtonShow(job.job_status);
+            setButtonShow(job.job_status)
             return { job, profile }
         },
         server: false,
@@ -157,7 +165,7 @@ const publishJob = (jobId: string) => {
             Accept: 'application/json',
         },
         body: {
-            "job_ID": jobId
+            job_ID: jobId,
         },
         method: 'PUT',
         server: false,

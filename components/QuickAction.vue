@@ -10,26 +10,16 @@
         + profile: Profile
     -->
 
-    <!-- <v-row no-gutters class="d-flex justify-center align-center">
-        <v-col class="mx-1" v-for="btn in btnList">
-            <v-tooltip :text="btn.text" >
-                <template v-slot:activator="{ props }">
-                    <v-btn block density="compact" size="small" v-bind="{ ...props, ...btn }"></v-btn>
-                </template>
-            </v-tooltip>
-        </v-col>
-    </v-row> -->
-
     <div class="d-flex justify-center flex-wrap">
-        <div v-for="btn in btnList">
+        <div v-for="action in profile.quickActions" :key="`btn${action.name}-${profile.profile_ID}`">
             <div class="mx-1">
-                <v-tooltip :text="btn.text">
+                <v-tooltip :text="action.name">
                     <template v-slot:activator="{ props }">
                         <v-btn
                             variant="text"
                             density="compact"
-                            v-bind="{ ...props, ...btn }"
-                            @click="quickActionHandler($event, btn)"
+                            v-bind="{ ...props, ...action }"
+                            @click="handleAction($event, action)"
                         >
                         </v-btn>
                     </template>
@@ -40,11 +30,9 @@
 </template>
 
 <script setup lang="ts">
-import { DialogContext, Job, Profile } from '~/utils/types'
+import { DialogContext, Job, Profile, IQuickAction, QuickActionName } from '~/utils/types'
 import { VBtn } from 'vuetify/lib/components/index.mjs'
 import { QuickActionEnum } from '~/utils/enum'
-
-type QuickActionName = QuickActionEnum
 
 type VBtnProps = VBtn['$props'] & ExtraProps
 type ExtraProps = {
@@ -66,6 +54,8 @@ type PropsProfile = {
     pid: string
     profile_ID: number
     profile_status: number
+    profile_status_code: string
+    quickActions: IQuickAction[]
 }
 
 const props = defineProps({
@@ -81,59 +71,7 @@ const props = defineProps({
 
 const { dialogConfirm, showDialog } = useDialog()
 
-const confirmForDoAction = (event: Event, item: Profile, action: unknown) => {
-    const dialog = dialogConfirm()
-    showDialog(
-        {
-            title: 'Confirm to do something',
-            dialogColor: 'amber',
-            message: `Are you sure do something ${item.profile_ID}?`,
-            item: {
-                id: item.profile_ID,
-            },
-            actionButtons: [
-                {
-                    text: 'ACTION',
-                    variant: 'elevated',
-                    color: 'red',
-                    cb: action,
-                },
-                {
-                    text: 'Cancel',
-                    color: 'gray',
-                },
-            ],
-            persistent: true,
-        },
-        dialog
-    )
-}
-
-const quickActionHandler = (event: Event, { actionName, dialogContext }: any) => {
-    console.log('actionHandler', actionName, dialogContext)
-
-    const dialog = dialogConfirm()
-    showDialog(dialogContext, dialog)
-
-    // switch (actionName) {
-    //     case QuickActionEnum.CANCLE_OR_WAIVE:
-    //         break
-    //     case QuickActionEnum.ACTIVE:
-    //         break
-    //     case QuickActionEnum.PUBLISHABLE:
-    //         break
-    //     case QuickActionEnum.SUSPEND:
-    //         break
-    //     case QuickActionEnum.VERIFY:
-    //         break
-    //     case QuickActionEnum.VERIFYED:
-    //         break
-    //     case QuickActionEnum.DELETE:
-    //         break
-    //     default:
-    //         break
-    // }
-}
+const dialog = dialogConfirm()
 
 const fullNameWithId = (profile: PropsProfile) => {
     return `${profile.fullname} (${profile.profile_ID})`
@@ -148,227 +86,160 @@ const getProfileID = (profile: PropsProfile) => {
 }
 
 const { cancelProfile } = useButtonAction()
-const btnList = ref<VBtnProps[]>([
-    {
-        id: `btnViewOrEdit-${props.profile.profile_ID}`,
-        show: true,
-        text: 'View/Edit',
-        color: 'primary',
-        icon: 'mdi-eye',
-        to: `/candidate/form/${props.profile.profile_ID}`,
-    },
-    {
-        id: `btnCancelOrWaive-${props.profile.profile_ID}`,
-        text: 'Cancel Or Waive',
-        color: 'blue-grey',
-        icon: 'mdi-account-off',
-        actionName: QuickActionEnum.CANCLE_OR_WAIVE,
-        dialogContext: {
-            title: 'Choose Cancel or Waive',
-            dialogColor: 'blue-grey',
-            message: `Please, choose <b>CANCEL or WAIVE</b> for <br> 
-                        "${fullNameWithId(props.profile)}" ?`,
-            item: {
-                id: props.profile.profile_ID,
-            },
-            actionButtons: [
-                {
-                    text: 'Cancel',
-                    variant: 'elevated',
-                    color: 'blue-grey',
-                    cb: cancelProfile,
-                },
-                {
-                    text: 'Waive',
-                    variant: 'elevated',
-                    color: 'blue-grey',
-                    cb: cancelProfile,
-                },
-                {
-                    text: 'Cancel',
-                    color: 'gray',
-                },
-            ],
-            persistent: true,
-        },
-    },
-    {
-        id: `btnActive-${props.profile.profile_ID}`,
-        text: 'Active',
-        color: 'green',
-        icon: 'mdi-account-reactivate',
-        actionName: QuickActionEnum.ACTIVE,
-        dialogContext: {
-            title: 'Confirm to Active this profile',
-            dialogColor: 'green',
-            message: `Are you sure to <b>ACTIVE</b> this profile <br> 
-                        "${fullNameWithId(props.profile)}" ?`,
-            item: {
-                id: props.profile.profile_ID,
-            },
-            actionButtons: [
-                {
-                    text: 'Active',
-                    variant: 'elevated',
-                    color: 'green',
-                    cb: cancelProfile,
-                },
-                {
-                    text: 'Cancel',
-                    color: 'gray',
-                },
-            ],
-            persistent: true,
-        },
-    },
-    {
-        id: `btnPublishable-${props.profile.profile_ID}`,
-        text: 'Publishable',
-        color: 'blue',
-        icon: 'mdi-account-network-outline',
-        actionName: QuickActionEnum.PUBLISHABLE,
-        dialogContext: {
-            title: 'Confirm to Publishable this profile',
-            dialogColor: 'blue',
-            message: `Are you sure to <b>PUBLISHABLE</b> this profile <br> 
-                        "${fullNameWithId(props.profile)}" ?`,
-            item: {
-                id: props.profile.profile_ID,
-            },
-            actionButtons: [
-                {
-                    text: 'Publishable',
-                    variant: 'elevated',
-                    color: 'blue',
-                    cb: cancelProfile,
-                },
-                {
-                    text: 'Cancel',
-                    color: 'gray',
-                },
-            ],
-            persistent: true,
-        },
-    },
-    {
-        id: `btnSuspend-${props.profile.profile_ID}`,
-        text: 'Suspend',
-        color: 'error',
-        icon: 'mdi-account-lock',
-        actionName: QuickActionEnum.SUSPEND,
-        dialogContext: {
-            title: 'Confirm to Suspend this profile',
-            dialogColor: 'error',
-            message: `Are you sure to <b>SUSPEND</b> this profile <br> 
-                        "${fullNameWithId(props.profile)}" ?`,
-            item: {
-                id: props.profile.profile_ID,
-            },
-            actionButtons: [
-                {
-                    text: 'Suspend',
-                    variant: 'elevated',
-                    color: 'error',
-                    cb: cancelProfile,
-                },
-                {
-                    text: 'Cancel',
-                    color: 'gray',
-                },
-            ],
-            persistent: true,
-        },
-    },
-    {
-        id: `btnVerify-${props.profile.profile_ID}`,
-        text: 'Verify',
-        color: 'orange-darken-1',
-        icon: 'mdi-account-details',
-        actionName: QuickActionEnum.VERIFY,
-        dialogContext: {
-            title: 'Confirm to Verify this profile',
-            dialogColor: 'green',
-            message: `Are you sure to <b>VERIFY</b> this profile <br> 
-                        "${fullNameWithId(props.profile)}" ?`,
-            item: {
-                id: props.profile.profile_ID,
-            },
-            actionButtons: [
-                {
-                    text: 'Verify',
-                    variant: 'elevated',
-                    color: 'green',
-                    cb: cancelProfile,
-                },
-                {
-                    text: 'Cancel',
-                    color: 'gray',
-                },
-            ],
-            persistent: true,
-        },
-    },
-    {
-        id: `btnVerifyed-${props.profile.profile_ID}`,
-        text: 'Verifyed',
-        color: 'success',
-        icon: 'mdi-account-check',
-        actionName: QuickActionEnum.VERIFYED,
-        dialogContext: {
-            title: 'Confirm to revoke Verify this profile',
-            dialogColor: 'orange-darken-1',
-            message: `Are you sure to <b>REVOKE VERIFY</b> this profile <br> 
-                        "${fullNameWithId(props.profile)}" ?`,
-            item: {
-                id: props.profile.profile_ID,
-            },
-            actionButtons: [
-                {
-                    text: 'Revoke Verify',
-                    variant: 'elevated',
-                    color: 'orange-darken-1',
-                    cb: cancelProfile,
-                },
-                {
-                    text: 'Cancel',
-                    color: 'gray',
-                },
-            ],
-            persistent: true,
-        },
-    },
-    {
-        id: `btnDelete-${props.profile.profile_ID}`,
-        text: 'Delete',
-        color: 'error',
-        icon: 'mdi-delete',
-        actionName: QuickActionEnum.DELETE,
-        dialogContext: {
-            title: 'Confirm to Delete this profile',
-            dialogColor: 'error',
-            message: `Are you sure to <b>DELETE</b> this profile<br>        
-                        "${fullNameWithId(props.profile)}" ? <br>
-                        System will Permanently <b>DELETE</b> this profile.`,
 
-            item: {
-                id: props.profile.profile_ID,
-            },
-            actionButtons: [
-                {
-                    text: 'Delete',
-                    variant: 'elevated',
-                    color: 'error',
-                    cb: cancelProfile,
-                },
-                {
-                    text: 'Cancel',
-                    color: 'gray',
-                },
-            ],
-            persistent: true,
+const handleAction = (event: Event, action: IQuickAction) => {
+    let p = props.profile
+    let commonButtons = [
+        {
+            text: 'Close',
+            color: 'gray',
         },
-    },
-])
+    ]
+    let dialogContext: DialogContext | undefined = {
+        title: `${action.name} this profile`,
+        dialogColor: action.color,
+        message: `Are you sure to <b>${action.name}</b> this profile <br>
+                    "${fullNameWithId(p)}" ?`,
+        item: {
+            id: getProfileID(p),
+        },
+        actionButtons: commonButtons,
+        persistent: true,
+    }
+
+    switch (action.name) {
+        case QuickActionEnum.CANCEL:
+            dialogContext = {
+                ...dialogContext,
+                actionButtons: [
+                    {
+                        text: 'Cancel',
+                        variant: 'elevated',
+                        color: action.color,
+                        cb: cancelProfile,
+                    },
+                    ...commonButtons,
+                ],
+            }
+            break
+        case QuickActionEnum.WAIVE:
+            dialogContext = {
+                ...dialogContext,
+                actionButtons: [
+                    {
+                        text: 'Waive',
+                        variant: 'elevated',
+                        color: action.color,
+                        cb: cancelProfile,
+                    },
+                    ...commonButtons,
+                ],
+            }
+        case QuickActionEnum.PUBLISHABLE:
+            dialogContext = {
+                ...dialogContext,
+                actionButtons: [
+                    {
+                        text: 'Publishable',
+                        variant: 'elevated',
+                        color: action.color,
+                        cb: cancelProfile,
+                    },
+                    ...commonButtons,
+                ],
+            }
+            break
+        case QuickActionEnum.SUSPEND:
+            dialogContext = {
+                ...dialogContext,
+                actionButtons: [
+                    {
+                        text: 'Suspend',
+                        variant: 'elevated',
+                        color: action.color,
+                        cb: cancelProfile,
+                    },
+                    ...commonButtons,
+                ],
+            }
+            break
+        case QuickActionEnum.VERIFY:
+            dialogContext = {
+                ...dialogContext,
+                actionButtons: [
+                    {
+                        text: 'Verify',
+                        variant: 'elevated',
+                        color: action.color,
+                        cb: cancelProfile,
+                    },
+                    ...commonButtons,
+                ],
+            }
+            break
+        case QuickActionEnum.VERIFYED:
+            dialogContext = {
+                ...dialogContext,
+                actionButtons: [
+                    {
+                        text: 'Revoke Verify',
+                        variant: 'elevated',
+                        color: action.color,
+                        cb: cancelProfile,
+                    },
+                    ...commonButtons,
+                ],
+            }
+            break
+        case QuickActionEnum.DELETE:
+            dialogContext = {
+                ...dialogContext,
+                message: `Are you sure to <b>${action.name}</b> this profile<br>
+                            "${fullNameWithId(p)}" ? <br>
+                            System will Permanently <b>${action.name}</b> this profile.`,
+                actionButtons: [
+                    {
+                        text: 'Delete',
+                        variant: 'elevated',
+                        color: action.color,
+                        cb: cancelProfile,
+                    },
+                    ...commonButtons,
+                ],
+            }
+            break
+        //special case
+        case QuickActionEnum.S_CANCEL_OR_WAIVE:
+            dialogContext = {
+                ...dialogContext,
+                message: `Please, choose <b>${action.name}</b> for <br>
+                        "${fullNameWithId(p)}" ?`,
+                actionsMeta: action.actions,
+                actionButtons: [
+                    {
+                        text: 'Cancel',
+                        variant: 'elevated',
+                        color: action.color,
+                        cb: cancelProfile,
+                    },
+                    {
+                        text: 'Waive',
+                        variant: 'elevated',
+                        color: action.color,
+                        cb: cancelProfile,
+                    },
+                    ...commonButtons,
+                ],
+            }
+            break
+        case QuickActionEnum.VIEW:
+        default:
+            dialogContext = undefined
+            break
+    }
+
+    if (dialogContext) showDialog(dialogContext, dialog)
+}
 
 onMounted(() => {
     // console.log('job', props.job.job_ID)
