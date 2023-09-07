@@ -56,17 +56,15 @@
                     :loading="profilePending"
                     class="elevation-0"
                     show-select
+                    hover
                 >
-                    <template v-slot:item.profile_status_code="{ item }">
+                    <template v-slot:item.profile_status_code.profile_status_text="{ item }">
                         <v-chip :class="item.raw.profile_status_code.zprofile_status_color">
                             {{ item.raw.profile_status_code.profile_status_text }}
                         </v-chip>
                     </template>
                     <template v-slot:item.action="{ item }">
                         <QuickAction :job="jobData" :profile="item.raw" />
-                        <!-- <NuxtLink :to="`/candidate/form/${item.raw.profile_ID}/`">
-                                <v-icon size="small" class="me-2"> mdi-eye </v-icon>
-                            </NuxtLink> -->
                     </template>
                 </v-data-table>
             </v-card-text>
@@ -84,7 +82,7 @@
             <BtnProfileAction
                 v-if="buttonShow.BtnPublishable"
                 class="mx-1"
-                text="Publishable ยังไม่ทำ"
+                text="Publishable"
                 color="blue"
                 :data="{ profile_IDs: profilesSelected, job_ID: jobData.job_ID }"
                 :cb="publishableProfile"
@@ -132,7 +130,9 @@ definePageMeta({
 })
 const route = useRoute()
 const pageLoad = ref(true)
+
 let jobId = route.params.id as string
+
 const { getProfilesByJobId } = useJobManagement()
 const { suspendedProfile, publishableProfile } = useProfile()
 const { data: profilesData, pending: profilePending } = getProfilesByJobId(jobId)
@@ -155,10 +155,14 @@ const profileCount = computed(() => profilesDataTest.value?.length || 0)
 const useJobComponent = useJobComponentStore()
 const { buttonShow } = storeToRefs(useJobComponent)
 
-const headers: VDataTable['$headers'] = [
+const headers: VDataTable['$headers'][] = [
     // { title: 'No.', align: 'start', key: 'no' },
     { title: 'ชื่อ นามสกุล', align: 'start', key: 'fullname', width: 200 },
-    { title: 'สถานะ', align: 'center', key: 'profile_status_code' },
+    {
+        title: 'สถานะ',
+        align: 'center',
+        key: 'profile_status_code.profile_status_text',
+    },
     { title: 'เลขบัตรประชาชน', align: 'start', key: 'pid' },
     { title: 'เบอร์โทรศัพท์', align: 'start', key: 'phone' },
     { title: 'จัดการ', align: 'center', key: 'action', sortable: false },
@@ -171,6 +175,7 @@ watch(
         pageLoad.value = false
         jobData.value = profilesData.value.job
         profilesDataTest.value = profilesData.value.profile
+        profilesSelected.value = []
     }
 )
 
