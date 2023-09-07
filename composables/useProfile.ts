@@ -79,11 +79,40 @@ async function importProfile(files: File[]) {
     return { data: data.value, pending: pending.value, error: error.value }
 }
 
-async function suspendedProfile(
-    event: H3Event,
-    data: { profile_IDs: number[]; job_ID: number }
-): Promise<DialogContext.BtnActionCallBack> {
-    const resp = await useApi(`/api/external/profile/suspended`, {
+const response = async (resp: any, data: DialogContext.ItemID): Promise<DialogContext.BtnActionCallBack> => {
+    if (resp?.data?.value?.data) {
+        return {
+            status: true,
+            message: `บันทึกสำเร็จ`,
+            callbackActionBtn: [
+                {
+                    text: 'close',
+                    //href: `/job_management/${data.job_ID}`,
+                },
+            ],
+        }
+    } else if (resp?.error?.value?.data) {
+        console.log({ a: resp.error.value })
+        const route = useRoute()
+        const { showTokenExpired } = useErrorHandler()
+
+        let statusCode = resp.error.value.statusCode
+        if (statusCode === 401) showTokenExpired(route)
+
+        return {
+            status: false,
+            message: resp?.error?.value?.data.message as string,
+        }
+    } else {
+        return {
+            status: false,
+            message: `Sorry, something went wrong.`,
+        }
+    }
+}
+
+async function wavieProfile(event: H3Event, data: DialogContext.ItemID): Promise<DialogContext.BtnActionCallBack> {
+    const resp = await useApi(`/api/external/profile/wavie`, {
         headers: {
             Accept: 'application/json',
         },
@@ -99,7 +128,7 @@ async function suspendedProfile(
             callbackActionBtn: [
                 {
                     text: 'close',
-                    href: `/job_management/${data.job_ID}`,
+                    // href: `/job_management/${data.job_ID}`,
                 },
             ],
         }
@@ -116,7 +145,23 @@ async function suspendedProfile(
     }
 }
 
-async function publishableProfile(event: H3Event, data: { profile_IDs: number[]; job_ID: number }) {
+async function suspendedProfile(event: H3Event, data: DialogContext.ItemID): Promise<DialogContext.BtnActionCallBack> {
+    const resp = await useApi(`/api/external/profile/suspended`, {
+        headers: {
+            Accept: 'application/json',
+        },
+        method: 'PATCH',
+        server: false,
+        body: data.profile_IDs,
+    })
+
+    return response(resp, data)
+}
+
+async function publishableProfile(
+    event: H3Event,
+    data: DialogContext.ItemID
+): Promise<DialogContext.BtnActionCallBack> {
     const resp = await useApi(`/api/external/profile/publishable`, {
         headers: {
             Accept: 'application/json',
@@ -126,26 +171,5 @@ async function publishableProfile(event: H3Event, data: { profile_IDs: number[];
         body: data.profile_IDs,
     })
 
-    if (resp?.data?.value?.data) {
-        return {
-            status: true,
-            message: `บันทึกสำเร็จ`,
-            callbackActionBtn: [
-                {
-                    text: 'close',
-                    href: `/job_management/${data.job_ID}`,
-                },
-            ],
-        }
-    } else if (resp?.error?.value?.data) {
-        return {
-            status: false,
-            message: resp?.error?.value?.data.message as string,
-        }
-    } else {
-        return {
-            status: false,
-            message: `Sorry, something went wrong.`,
-        }
-    }
+    return response(resp, data)
 }
