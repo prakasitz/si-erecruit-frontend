@@ -1,4 +1,4 @@
-import { Profile } from '~/utils/types'
+import { DialogContext, Profile } from '~/utils/types'
 import { H3Event, H3Error } from 'h3'
 import { usePersonalStore } from '~/stores/personal.store'
 
@@ -79,7 +79,10 @@ async function importProfile(files: File[]) {
     return { data: data.value, pending: pending.value, error: error.value }
 }
 
-async function suspendedProfile(event: H3Event, data: { profile_IDs: number[]; job_ID: number }) {
+async function suspendedProfile(
+    event: H3Event,
+    data: { profile_IDs: number[]; job_ID: number }
+): Promise<DialogContext.BtnActionCallBack> {
     const resp = await useApi(`/api/external/profile/suspended`, {
         headers: {
             Accept: 'application/json',
@@ -103,7 +106,7 @@ async function suspendedProfile(event: H3Event, data: { profile_IDs: number[]; j
     } else if (resp?.error?.value?.data) {
         return {
             status: false,
-            message: resp?.error?.value?.data.message,
+            message: resp?.error?.value?.data.message as string,
         }
     } else {
         return {
@@ -137,7 +140,7 @@ async function publishableProfile(event: H3Event, data: { profile_IDs: number[];
     } else if (resp?.error?.value?.data) {
         return {
             status: false,
-            message: resp?.error?.value?.data.message,
+            message: resp?.error?.value?.data.message as string,
         }
     } else {
         return {

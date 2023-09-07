@@ -3,13 +3,13 @@
 </template>
 
 <script setup lang="ts">
-import { JobWithProfile } from '~/utils/types'
+import { JobWithProfile, DialogContext } from '~/utils/types'
 
 interface PropsBtnJobAction {
     text: string
     color: string
     jobId: number
-    cb?: any
+    cb?: DialogContext.FnActionCallback
 }
 const { dialogWarning, dialogConfirm, showDialog } = useDialog()
 const { suspendedProfile, publishableProfile } = useProfile()
@@ -32,6 +32,7 @@ const confirmActionItem = async (event: Event, item: any) => {
         showConfirmComponent()
     }
 }
+
 const approveValidate = async () => {
     await refreshNuxtData('getProfilesByJobId')
     const profile = useNuxtData<JobWithProfile>('getProfilesByJobId').data.value
@@ -87,6 +88,7 @@ const approveValidate = async () => {
     }
     return false
 }
+
 const publishValidate = async () => {
     await refreshNuxtData('getProfilesByJobId')
     const profile = useNuxtData<JobWithProfile>('getProfilesByJobId').data.value
@@ -136,6 +138,7 @@ const publishValidate = async () => {
         return true
     }
 }
+
 const verifyValidate = async () => {
     await refreshNuxtData('getProfilesByJobId')
     const profile = useNuxtData<JobWithProfile>('getProfilesByJobId').data.value

@@ -3,13 +3,15 @@
 </template>
 
 <script setup lang="ts">
+import { DialogContext } from '~/utils/types'
+
 const { dialogConfirm, showDialog, dialogWarning } = useDialog()
 
 interface PropsBtnProfileAction {
     text: string
     color: string
-    data: { profile_IDs: number[]; job_ID: number[] }
-    cb?: any
+    data: { profile_IDs: number[]; job_ID: number }
+    cb?: DialogContext.FnActionCallback
 }
 const props = defineProps<PropsBtnProfileAction>()
 

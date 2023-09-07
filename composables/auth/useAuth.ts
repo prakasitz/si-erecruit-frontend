@@ -1,4 +1,4 @@
-import { ContextUser, DialogContext, Roles, jwtAdfs, jwtCandidate } from '~/utils/types'
+import { ContextUser, Roles, jwtAdfs, jwtCandidate } from '~/utils/types'
 import { FetchError } from 'ofetch'
 import { useUserStore } from '~/stores/user.store'
 

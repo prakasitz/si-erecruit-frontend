@@ -40,18 +40,6 @@ export type CandidateForm = {
     isLoading: boolean
 }
 
-export type DialogContext = {
-    title: string
-    message: string
-    actionButtons: any[]
-    persistent: boolean
-    item?: {
-        id: number | any
-        name?: string
-    }
-    [key: string]: any
-}
-
 export interface btnShowOnJob {
     BtnHeaderJob: boolean
     BtnDeleteJob: boolean
@@ -73,4 +61,36 @@ export interface btnShowOnJob {
 export interface btnShowWstatus {
     status: number
     btn_show: btnShowOnJob
+}
+
+export namespace DialogContext {
+    export type FnActionCallback = (event: any, ...args: any) => Promise<BtnActionCallBack>
+
+    export type ItemID = number | { profile_IDs: number[]; job_ID: number }
+
+    export type ActionButton = {
+        text: string
+        variant?: 'elevated' | 'outlined' | 'text'
+        color?: string
+        href?: string
+        cb?: FnActionCallback
+    }
+
+    export interface BtnActionCallBack {
+        status: boolean
+        message: unknown
+        callbackActionBtn?: ActionButton[]
+    }
+
+    export type Context = {
+        title: string
+        message: string
+        actionButtons: ActionButton[]
+        persistent: boolean
+        item?: {
+            id: ItemID
+            name?: string
+        }
+        [key: string]: any
+    }
 }

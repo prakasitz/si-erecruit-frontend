@@ -11,14 +11,14 @@ export default function useDialog() {
     }
 }
 
-function showDialog({ title, message, ...args }: DialogContext, dialog: any) {
-    const dialogContext = useState<DialogContext>('dialogContext')
+function showDialog({ title, message, ...args }: DialogContext.Context, dialog: any) {
+    const dialogContext = useState<DialogContext.Context>('dialogContext')
     dialogContext.value = { title, message, ...args }
     dialog.value = true
 }
 
 function dialogContext() {
-    return useState<DialogContext>('dialogContext', () => {
+    return useState<DialogContext.Context>('dialogContext', () => {
         return defaultDialogContext
     })
 }

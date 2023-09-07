@@ -34,8 +34,9 @@
             </v-card-text>
             <v-card-actions v-if="context.actionButtons && context.actionButtons.length > 0">
                 <v-spacer></v-spacer>
-                <!-- Redirect or Upload again -->
-                <template v-for="button in context.actionButtons" v-if="!success && !error">
+                <!-- if beforeExecute -->
+                <!-- for generate actionBtn -->
+                <template v-if="beforeExecute" v-for="button in context.actionButtons">
                     <v-btn
                         :variant="'outlined'"
                         v-bind="button"
@@ -43,7 +44,9 @@
                         :disabled="loading"
                     />
                 </template>
-                <template v-else>
+                <!-- if afterExecute -->
+                <!-- for generate actionBtn -->
+                <template v-else-if="afterExecute">
                     <v-btn
                         v-if="context.callbackActionBtn && context.callbackActionBtn.length > 0"
                         v-for="button in context.callbackActionBtn"
@@ -58,12 +61,7 @@
 </template>
 
 <script setup lang="ts">
-
-interface BtnActionCallBack {
-    status: boolean
-    message: unknown
-    callbackActionBtn: any[]
-}
+import { DialogContext } from '~/utils/types'
 
 const { dialogConfirm, dialogContext } = await useDialog()
 const dialog = dialogConfirm()
@@ -71,14 +69,16 @@ const context = dialogContext()
 const success = ref(false)
 const error = ref(false)
 const loading = ref(false)
+const beforeExecute = computed(() => !success.value && !error.value)
+const afterExecute = computed(() => success.value || error.value)
 
-const simpleActionHandler = async (event: unknown, buttonAction: any) => {
+const simpleActionHandler = async (event: Event, buttonAction: DialogContext.ActionButton) => {
     loading.value = true
     //delay 1 sec
     if (typeof buttonAction.cb == 'function') {
         console.log('simpleActionHandler', context.value)
-        let itemId = context.value.item!.id
-        const { status, message, callbackActionBtn }: BtnActionCallBack = await buttonAction.cb(event, itemId)
+        let itemData = context.value.item!.id 
+        const { status, message, callbackActionBtn } = await buttonAction.cb(event, itemData)
         loading.value = false
 
         success.value = status

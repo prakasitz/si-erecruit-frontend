@@ -43,7 +43,7 @@ type ExtraProps = {
         to: string
     }
     actionName?: QuickActionName
-    dialogContext?: DialogContext
+    dialogContext?: DialogContext.Context
     // action?: (event: Event, ...arg: any) => void | Promise<void>
 }
 
@@ -70,6 +70,7 @@ const props = defineProps({
 })
 
 const { dialogConfirm, showDialog } = useDialog()
+const { publishableProfile, suspendedProfile } = useProfile()
 
 const dialog = dialogConfirm()
 
@@ -95,13 +96,16 @@ const handleAction = (event: Event, action: IQuickAction) => {
             color: 'gray',
         },
     ]
-    let dialogContext: DialogContext | undefined = {
+    let dialogContext: DialogContext.Context | undefined = {
         title: `${action.name} this profile`,
         dialogColor: action.color,
         message: `Are you sure to <b>${action.name}</b> this profile <br>
                     "${fullNameWithId(p)}" ?`,
         item: {
-            id: getProfileID(p),
+            id: {
+                job_ID: p.job_ID,
+                profile_IDs: [p.profile_ID],
+            },
         },
         actionButtons: commonButtons,
         persistent: true,
@@ -116,7 +120,6 @@ const handleAction = (event: Event, action: IQuickAction) => {
                         text: 'Cancel',
                         variant: 'elevated',
                         color: action.color,
-                        cb: cancelProfile,
                     },
                     ...commonButtons,
                 ],
@@ -130,7 +133,6 @@ const handleAction = (event: Event, action: IQuickAction) => {
                         text: 'Waive',
                         variant: 'elevated',
                         color: action.color,
-                        cb: cancelProfile,
                     },
                     ...commonButtons,
                 ],
@@ -143,7 +145,7 @@ const handleAction = (event: Event, action: IQuickAction) => {
                         text: 'Publishable',
                         variant: 'elevated',
                         color: action.color,
-                        cb: cancelProfile,
+                        cb: publishableProfile,
                     },
                     ...commonButtons,
                 ],
@@ -157,7 +159,7 @@ const handleAction = (event: Event, action: IQuickAction) => {
                         text: 'Suspend',
                         variant: 'elevated',
                         color: action.color,
-                        cb: cancelProfile,
+                        cb: suspendedProfile,
                     },
                     ...commonButtons,
                 ],
@@ -171,7 +173,6 @@ const handleAction = (event: Event, action: IQuickAction) => {
                         text: 'Verify',
                         variant: 'elevated',
                         color: action.color,
-                        cb: cancelProfile,
                     },
                     ...commonButtons,
                 ],
@@ -185,7 +186,6 @@ const handleAction = (event: Event, action: IQuickAction) => {
                         text: 'Revoke Verify',
                         variant: 'elevated',
                         color: action.color,
-                        cb: cancelProfile,
                     },
                     ...commonButtons,
                 ],
@@ -202,7 +202,6 @@ const handleAction = (event: Event, action: IQuickAction) => {
                         text: 'Delete',
                         variant: 'elevated',
                         color: action.color,
-                        cb: cancelProfile,
                     },
                     ...commonButtons,
                 ],
@@ -220,13 +219,11 @@ const handleAction = (event: Event, action: IQuickAction) => {
                         text: 'Cancel',
                         variant: 'elevated',
                         color: action.color,
-                        cb: cancelProfile,
                     },
                     {
                         text: 'Waive',
                         variant: 'elevated',
                         color: action.color,
-                        cb: cancelProfile,
                     },
                     ...commonButtons,
                 ],

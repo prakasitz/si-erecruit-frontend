@@ -1,3 +1,5 @@
+import { DialogContext } from '~/utils/types'
+
 export default function useButtonAction() {
     return {
         deleteJob,
@@ -12,7 +14,7 @@ export default function useButtonAction() {
     }
 }
 
-const approveJob = async (event: any, item_id: number) => {
+const approveJob = async (event: any, item_id: number): Promise<DialogContext.BtnActionCallBack> => {
     try {
         const resp = await useApi(`/api/external/jobs/approved/${item_id}`, {
             headers: {
@@ -143,11 +145,10 @@ const publishJob = async (event: any, item_id: number) => {
                     },
                 ],
             }
-        } else if (resp?.error?.value) {
-            console.log(resp)
+        } else {
             return {
                 status: false,
-                message: resp?.error?.value?.data.message,
+                message: `Sorry, something went wrong.`,
             }
         }
     } catch (e) {
@@ -267,7 +268,7 @@ const terminateJob = async (event: any, item_id: number) => {
     }
 }
 
-const verifiedJob = async (event: any, item_id: number) => {
+const verifiedJob: DialogContext.FnActionCallback = async (event: any, item_id: number) => {
     try {
         const resp = await useFetch(`/api/external/jobs/verified/${item_id}`, {
             headers: {
