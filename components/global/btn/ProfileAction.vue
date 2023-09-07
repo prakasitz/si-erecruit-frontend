@@ -26,7 +26,7 @@ const confirmActionItem = (event: Event, item: any) => {
                 dialogColor: 'amber',
                 message: `Are you sure to ${props.text} these profiles?`,
                 item: {
-                    id: { profile_IDs: props.data.profile_IDs, job_ID: props.data.job_ID },
+                    id: props.data,
                 },
                 actionButtons: [
                     {

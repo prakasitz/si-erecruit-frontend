@@ -1,6 +1,5 @@
 import { ProfileStatusColorEnum, ProfileStatusEnum } from '../enum'
 import { Job } from './jobTypes'
-import { ProfileWithQuickAction } from './quickActionTypes'
 
 export type ProfileStatus = `${ProfileStatusEnum}`
 export type ProfileStatusColor = `${ProfileStatusColorEnum}`

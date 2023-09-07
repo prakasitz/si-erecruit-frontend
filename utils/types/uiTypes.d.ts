@@ -66,7 +66,7 @@ export interface btnShowWstatus {
 export namespace DialogContext {
     export type FnActionCallback = (event: any, ...args: any) => Promise<BtnActionCallBack>
 
-    export type ItemID = number | { profile_IDs: number[]; job_ID: number }
+    export type ItemID = { profile_IDs: number[]; job_ID: number }
 
     export type ActionButton = {
         text: string
@@ -88,7 +88,7 @@ export namespace DialogContext {
         actionButtons: ActionButton[]
         persistent: boolean
         item?: {
-            id: ItemID
+            id: ItemID | number
             name?: string
         }
         [key: string]: any
