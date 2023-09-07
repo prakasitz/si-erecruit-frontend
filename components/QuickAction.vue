@@ -70,6 +70,7 @@ const props = defineProps({
 })
 
 const { dialogConfirm, showDialog } = useDialog()
+
 const { publishableProfile, suspendedProfile } = useProfile()
 
 const dialog = dialogConfirm()
@@ -86,8 +87,7 @@ const getProfileID = (profile: PropsProfile) => {
     return profile.profile_ID
 }
 
-const handleAction = async(event: Event, action: IQuickAction) => {
-    await refreshNuxtData('getProfilesByJobId')
+const handleAction = async (event: Event, action: IQuickAction) => {
     let p = props.profile
     let commonButtons = [
         {

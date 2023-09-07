@@ -2,6 +2,8 @@ import { DialogContext, Profile } from '~/utils/types'
 import { H3Event, H3Error } from 'h3'
 import { usePersonalStore } from '~/stores/personal.store'
 
+//emit?: (event: 'refreshProfile', onRefresh?: () => Promise<void>) => void
+
 export default function useProfile() {
     return {
         submit,
@@ -81,6 +83,7 @@ async function importProfile(files: File[]) {
 
 const response = async (resp: any, data: DialogContext.ItemID): Promise<DialogContext.BtnActionCallBack> => {
     if (resp?.data?.value?.data) {
+        await refreshNuxtData('getProfilesByJobId')
         return {
             status: true,
             message: `บันทึกสำเร็จ`,
@@ -98,6 +101,7 @@ const response = async (resp: any, data: DialogContext.ItemID): Promise<DialogCo
 
         let statusCode = resp.error.value.statusCode
         if (statusCode === 401) showTokenExpired(route)
+        await refreshNuxtData('getProfilesByJobId')
 
         return {
             status: false,
