@@ -86,9 +86,8 @@ const getProfileID = (profile: PropsProfile) => {
     return profile.profile_ID
 }
 
-const { cancelProfile } = useButtonAction()
-
-const handleAction = (event: Event, action: IQuickAction) => {
+const handleAction = async(event: Event, action: IQuickAction) => {
+    await refreshNuxtData('getProfilesByJobId')
     let p = props.profile
     let commonButtons = [
         {
