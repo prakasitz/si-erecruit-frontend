@@ -133,7 +133,7 @@ definePageMeta({
 const route = useRoute()
 const pageLoad = ref(true)
 let jobId = route.params.id as string
-const { getProfilesByJobId, fetchJobs } = useJobManagement()
+const { getProfilesByJobId } = useJobManagement()
 const { suspendedProfile, publishableProfile } = useProfile()
 const { data: profilesData, pending: profilePending } = getProfilesByJobId(jobId)
 
