@@ -3,5 +3,6 @@
     "compilerOptions": {
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true
-    }
+    },
+    "exclude": ["../predev1.js"]
 }
