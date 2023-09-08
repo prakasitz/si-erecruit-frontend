@@ -1,7 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
 import { createResolver } from '@nuxt/kit'
-import vuetify from 'vite-plugin-vuetify'
 
 const { resolve } = createResolver(import.meta.url)
 
