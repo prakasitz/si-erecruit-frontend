@@ -87,5 +87,6 @@ export enum QuickActionEnum {
     VERIFY = 'Verify',
     VERIFYED = 'Verifed',
     DELETE = 'Delete',
-    S_CANCEL_OR_WAIVE = 'Cancel Or Wavie',
+    S_CANCEL_OR_WAIVE = 'Cancel Or Waive',
+    S_PUBLISHABLE_OR_SUSPEND = 'Publishable Or Suspend',
 }

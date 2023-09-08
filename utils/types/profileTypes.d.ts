@@ -10,6 +10,18 @@ export type ProfileStatusCode = {
     zprofile_status_color: `${ProfileStatusColor}`
 }
 
+export interface ProfileStatusAndID {
+    profile_ID: number
+    profile_status: number
+}
+
+// To represent the array:
+
+export type ProfileActionMethod = 'publishable' | 'suspend' | 'cancel' | 'waive' | 'verify' | 'verified' | 'delete'
+
+export type ActionStatusIdMappingType = {
+    [key: string]: number[]
+}
 
 export interface Profilez extends Profile {
     profile_status_code?: ProfileStatusCode
