@@ -51,13 +51,12 @@ export class ViewBtn extends QuickAction {
     }
 }
 
-export class WavieBtn extends QuickAction {
-    static url = 'wavie/profile'
+export class WaiveBtn extends QuickAction {
     profile_id: number
     job_id: number
 
     constructor(params: ActionParams) {
-        super('Wavie', `${WavieBtn.url}?id=${params.profile_id}`)
+        super('Waive')
         this.profile_id = params.profile_id
         this.job_id = params.job_id!
 
@@ -68,12 +67,11 @@ export class WavieBtn extends QuickAction {
 }
 
 export class CancelBtn extends QuickAction {
-    static url = 'cancel/profile'
     profile_id: number
     job_id: number
 
     constructor(params: ActionParams) {
-        super('Cancel', `${CancelBtn.url}?pId=${params.profile_id}&jId=${params.job_id}`)
+        super('Cancel')
         this.profile_id = params.profile_id
         this.job_id = params.job_id!
 
@@ -84,12 +82,11 @@ export class CancelBtn extends QuickAction {
 }
 
 export class PublishableBtn extends QuickAction {
-    static url = 'publishable/profile'
     profile_id: number
     job_id: number
 
     constructor(params: ActionParams) {
-        super('Publishable', `${PublishableBtn.url}?pId=${params.profile_id}&jId=${params.job_id}`)
+        super('Publishable')
         this.profile_id = params.profile_id
         this.job_id = params.job_id!
 
@@ -100,12 +97,11 @@ export class PublishableBtn extends QuickAction {
 }
 
 export class SuspendedBtn extends QuickAction {
-    static url = 'suspended/profile'
     profile_id: number
     job_id: number
 
     constructor(params: ActionParams) {
-        super('Suspend', `${SuspendedBtn.url}?pId=${params.profile_id}&jId=${params.job_id}`)
+        super('Suspend')
         this.profile_id = params.profile_id
         this.job_id = params.job_id!
 
@@ -116,12 +112,11 @@ export class SuspendedBtn extends QuickAction {
 }
 
 export class VerifyBtn extends QuickAction {
-    static url = 'verify/profile'
     profile_id: number
     job_id: number
 
     constructor(params: ActionParams) {
-        super('Verify', `${VerifyBtn.url}?pId=${params.profile_id}&jId=${params.job_id}`)
+        super('Verify')
         this.profile_id = params.profile_id
         this.job_id = params.job_id!
 
@@ -132,12 +127,11 @@ export class VerifyBtn extends QuickAction {
 }
 
 export class VerifedBtn extends QuickAction {
-    static url = 'verifed/profile'
     profile_id: number
     job_id: number
 
     constructor(params: ActionParams) {
-        super('Verifed', `${VerifedBtn.url}?pId=${params.profile_id}&jId=${params.job_id}`)
+        super('Verifed')
         this.profile_id = params.profile_id
         this.job_id = params.job_id!
 
@@ -148,12 +142,11 @@ export class VerifedBtn extends QuickAction {
 }
 
 export class DeleteBtn extends QuickAction {
-    static url = 'cancel/profile'
     profile_id: number
     job_id: number
 
     constructor(params: ActionParams) {
-        super('Delete', `${DeleteBtn.url}?pId=${params.profile_id}&jId=${params.job_id}`)
+        super('Delete')
         this.profile_id = params.profile_id
         this.job_id = params.job_id!
 

@@ -3,10 +3,14 @@ import { ExternalAPIService } from './ExternalAPIService'
 import { H3Event } from 'h3'
 import * as fs from 'fs'
 import FormData from 'form-data'
-import { FileUpload, Profile } from '../../../utils/types'
+import { FileUpload, Profile, ProfileActionMethod, ProfileStatus, ProfileStatusAndID } from '../../../utils/types'
+import { BadRequestError, TokenNotFoundError } from '../../../utils/default'
+import { actionStatusIdMapping } from '../profileAction/constant'
 
 class ProfileExternal extends ExternalAPIService {
     private slug: string = 'profile'
+    private canBeChangeStatus = []
+
     constructor() {
         super()
     }
@@ -68,7 +72,15 @@ class ProfileExternal extends ExternalAPIService {
         }
     }
 
-    public async checkStatus(profile_IDs: number[], event: H3Event) {
+    public async checkStatus(
+        profile_IDs: number[],
+        event: H3Event
+    ): Promise<
+        | {
+              data: ProfileStatusAndID[]
+          }
+        | Error
+    > {
         if (!profile_IDs) throw new Error('profile_ID is required')
         try {
             this.checkPermission(event, 'can-access-hr')
@@ -87,7 +99,7 @@ class ProfileExternal extends ExternalAPIService {
             return this.handleError(error)
         }
     }
-    //working only non-proxy
+
     public async import(event: H3Event, { file }: { file: FileUpload[] }) {
         try {
             console.log('============= profiles: method => import =======================')
@@ -129,19 +141,40 @@ class ProfileExternal extends ExternalAPIService {
         })
     }
 
-    public async suspenedProfiles(profiles: number[], event: H3Event) {
+    // Method to validate profile statuses for a given action
+    private validateProfileStatusesForAction(action: ProfileActionMethod, profileStatuses: ProfileStatusAndID[]): void {
+        const validStatuses = actionStatusIdMapping[action]
+        const invalidProfiles = profileStatuses.filter((profile) => !validStatuses.includes(profile.profile_status))
+
+        // If there are any invalid profiles, return an error
+        if (invalidProfiles.length > 0) {
+            throw new Error(
+                `Profiles with IDs ${invalidProfiles
+                    .map((p) => p.profile_ID)
+                    .join(', ')} have invalid statuses for ${action}.`
+            )
+        }
+    }
+
+    public async updateProfileStatus(action: ProfileActionMethod, profiles: number[], event: H3Event) {
+        this.checkPermission(event, 'can-access-hr')
+
+        const profileStatusDataOrError = await this.checkStatus(profiles, event)
+        if (profileStatusDataOrError instanceof Error) return profileStatusDataOrError
+        const list_status = profileStatusDataOrError.data
+        // Validate profiles for the given action
+        this.validateProfileStatusesForAction(action, list_status)
+
+        return this.performAction(action, profiles, event)
+    }
+
+    private async performAction(action: string, profiles: number[], event: H3Event) {
         try {
             const accessToken = this.getAccessToken(event)
             const resp = await this.baseAPI.patch(
-                `/${this.slug}/suspended`,
-                {
-                    profile_IDs: profiles,
-                },
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + accessToken,
-                    },
-                }
+                `/${this.slug}/${action}`,
+                { profile_IDs: profiles },
+                { headers: { Authorization: 'Bearer ' + accessToken } }
             )
             return resp.data
         } catch (error: AxiosError | any) {
@@ -149,20 +182,28 @@ class ProfileExternal extends ExternalAPIService {
         }
     }
 
-    public async publishProfiles(profiles: number[], event: H3Event) {
+    public async delete(profiles: number[], event: H3Event) {
         try {
+            this.checkPermission(event, 'can-access-hr')
+
+            if (profiles.length == 0) throw BadRequestError('profile_IDs is required')
+            if (profiles.length > 1) throw new Error('Only one profile can be deleted at a time')
+
+            const profileStatusDataOrError = await this.checkStatus(profiles, event)
+            if (profileStatusDataOrError instanceof Error) return profileStatusDataOrError
+            const list_status = profileStatusDataOrError.data
+
+            this.validateProfileStatusesForAction('delete', list_status)
+
             const accessToken = this.getAccessToken(event)
-            const resp = await this.baseAPI.patch(
-                `/${this.slug}/publishable`,
-                {
+            const resp = await this.baseAPI.delete(`/${this.slug}/delete`, {
+                data: {
                     profile_IDs: profiles,
                 },
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + accessToken,
-                    },
-                }
-            )
+                headers: {
+                    Authorization: 'Bearer ' + accessToken,
+                },
+            })
             return resp.data
         } catch (error: AxiosError | any) {
             return this.handleError(error)

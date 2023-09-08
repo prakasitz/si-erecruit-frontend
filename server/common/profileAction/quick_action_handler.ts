@@ -1,3 +1,4 @@
+import { deepCopy } from '../../../utils/object'
 import {
     ActionConstructor,
     Job,
@@ -14,6 +15,7 @@ import {
     QuickActionsTableType,
 } from '../../../utils/types'
 import { masterService } from '../externalAPI/master.external'
+import { actionClassMapping, quickActionsTable } from './constant'
 import {
     CancelBtn,
     DeleteBtn,
@@ -23,87 +25,8 @@ import {
     VerifedBtn,
     VerifyBtn,
     ViewBtn,
-    WavieBtn,
+    WaiveBtn,
 } from './quick_action'
-
-// Mapping from action strings to their respective classes
-const actionClassMapping: { [key: string]: ActionConstructor } = {
-    Vi: ViewBtn,
-    C: CancelBtn,
-    W: WavieBtn,
-    P: PublishableBtn,
-    S: SuspendedBtn,
-    V: VerifyBtn,
-    Ve: VerifedBtn,
-    D: DeleteBtn,
-    // ... add other mappings as needed
-}
-
-const quickActionsTable: QuickActionsTableType = {
-    Imported: {
-        Imported: ['Vi', 'C', 'W', 'P', 'S', 'D'],
-        Publishable: ['Vi', 'S'],
-        Submitted: [],
-        Verified: [],
-        Suspended: ['Vi', 'P'],
-        Cancelled: ['Vi', 'P'],
-        Waived: ['Vi', 'P'],
-    },
-    Published: {
-        Imported: ['Vi', 'S', 'C', 'W'],
-        Publishable: ['Vi', 'S', 'C', 'W'],
-        Submitted: ['Vi'],
-        Verified: [],
-        Suspended: ['Vi', 'P'],
-        Cancelled: ['Vi', 'P'],
-        Waived: ['Vi', 'P'],
-    },
-    Verifying: {
-        Imported: ['Vi', 'S', 'C'],
-        Publishable: ['Vi', 'V'],
-        Submitted: ['Vi', 'Ve'],
-        Verified: ['Vi', 'P'],
-        Suspended: ['Vi', 'P'],
-        Cancelled: ['Vi', 'P'],
-        Waived: ['Vi', 'P'],
-    },
-    Approved: {
-        Imported: ['Vi'],
-        Publishable: ['Vi'],
-        Submitted: ['Vi'],
-        Verified: ['Vi'],
-        Suspended: ['Vi'],
-        Cancelled: ['Vi'],
-        Waived: ['Vi'],
-    },
-    Closed: {
-        Imported: ['Vi'],
-        Publishable: ['Vi'],
-        Submitted: ['Vi'],
-        Verified: ['Vi'],
-        Suspended: ['Vi'],
-        Cancelled: ['Vi'],
-        Waived: ['Vi'],
-    },
-    Cancelled: {
-        Imported: ['Vi'],
-        Publishable: ['Vi'],
-        Submitted: ['Vi'],
-        Verified: ['Vi'],
-        Suspended: ['Vi'],
-        Cancelled: ['Vi'],
-        Waived: ['Vi'],
-    },
-    Suspended: {
-        Imported: ['Vi'],
-        Publishable: ['Vi', 'S', 'C', 'W'],
-        Submitted: ['Vi'],
-        Verified: ['Vi'],
-        Suspended: ['Vi', 'P'],
-        Cancelled: ['Vi', 'P'],
-        Waived: ['Vi', 'P'],
-    },
-}
 
 class QuickActionHandler {
     //use map for key - value
@@ -146,28 +69,40 @@ class QuickActionHandler {
     }
 
     transformActionsToInstances(profile_id: number, job_id: number, actions: string[]): QuickAction[] {
-        // * enable all for test all
-        // actions = ['Vi', 'C', 'W', 'P', 'S', 'V', 'Ve', 'D']
-
-        // !bussiness for merge btn
+        // ! BUSSINESS FOR MERGE BTN
         // ! - C/W in actions
-
-        let mergeBtn: QuickAction | undefined
-        if (actions.includes('C') && actions.includes('W')) {
-            mergeBtn = QuickAction.mergeTwoBtnToOneBtn(
-                new CancelBtn({ profile_id, job_id }),
-                new WavieBtn({ profile_id, job_id })
+        let mergeBtn1: QuickAction | undefined
+        if (actions.includes('P') && actions.includes('S')) {
+            mergeBtn1 = QuickAction.mergeTwoBtnToOneBtn(
+                new PublishableBtn({ profile_id, job_id }),
+                new SuspendedBtn({ profile_id, job_id })
             )
-            //remove C/W from actions
+            //remove P, S from actions
+            actions = actions.filter((action) => action !== 'P' && action !== 'S')
+        }
+
+        // ! - P/S in actions
+        let mergeBtn2: QuickAction | undefined
+        if (actions.includes('C') && actions.includes('W')) {
+            mergeBtn2 = QuickAction.mergeTwoBtnToOneBtn(
+                new CancelBtn({ profile_id, job_id }),
+                new WaiveBtn({ profile_id, job_id })
+            )
+            //remove C, W from actions
             actions = actions.filter((action) => action !== 'C' && action !== 'W')
         }
 
+        // * enable all for test all
+        actions = ['Vi', 'C', 'W', 'P', 'S', 'V', 'Ve', 'D']
+
         const quickActions = actions.map((action) => {
+            if (action === 'P/S') return mergeBtn1 as QuickAction
+            if (action === 'C/W') return mergeBtn2 as QuickAction
             const ActionClass = actionClassMapping[action]
             return new ActionClass({ profile_id, job_id })
         })
 
-        return [...quickActions, ...(mergeBtn ? [mergeBtn] : [])]
+        return quickActions
     }
 
     getAvailableActions(data: JobWithProfile): JobWithProfileAndQuickAction {
@@ -195,7 +130,7 @@ class QuickActionHandler {
         return profilezList.map((profilez) => {
             if (profilez.profile_status_code == null) throw new Error('profile_status_code is undefined')
             const { profile_status_text } = profilez.profile_status_code
-            const actions = quickActionsTable[jobStatus][profile_status_text]
+            const actions = deepCopy(quickActionsTable[jobStatus][profile_status_text])
             const quickActions = this.transformActionsToInstances(profilez.profile_ID, profilez.job_ID, actions)
             return {
                 ...profilez,
