@@ -15,6 +15,11 @@ export default function useProfile() {
         getProfileById,
         suspendedProfile,
         publishableProfile,
+        cancelProfile,
+        waiveProfile,
+        verifyProfile,
+        verifiedProfile,
+        deleteProfile,
     }
 }
 
@@ -115,8 +120,8 @@ const response = async (resp: any, data: DialogContext.ItemID): Promise<DialogCo
     }
 }
 
-async function wavieProfile(event: H3Event, data: DialogContext.ItemID): Promise<DialogContext.BtnActionCallBack> {
-    const resp = await useApi(`/api/external/profile/wavie`, {
+async function waiveProfile(event: H3Event, data: DialogContext.ItemID): Promise<DialogContext.BtnActionCallBack> {
+    const resp = await useApi(`/api/external/profile/waive`, {
         headers: {
             Accept: 'application/json',
         },
@@ -125,32 +130,59 @@ async function wavieProfile(event: H3Event, data: DialogContext.ItemID): Promise
         body: data.profile_IDs,
     })
 
-    if (resp?.data?.value?.data) {
-        return {
-            status: true,
-            message: `บันทึกสำเร็จ`,
-            callbackActionBtn: [
-                {
-                    text: 'close',
-                    // href: `/job_management/${data.job_ID}`,
-                },
-            ],
-        }
-    } else if (resp?.error?.value?.data) {
-        return {
-            status: false,
-            message: resp?.error?.value?.data.message as string,
-        }
-    } else {
-        return {
-            status: false,
-            message: `Sorry, something went wrong.`,
-        }
-    }
+    return response(resp, data)
+}
+
+async function cancelProfile(event: H3Event, data: DialogContext.ItemID): Promise<DialogContext.BtnActionCallBack> {
+    const resp = await useApi(`/api/external/profile/cancel`, {
+        headers: {
+            Accept: 'application/json',
+        },
+        method: 'PATCH',
+        server: false,
+        body: data.profile_IDs,
+    })
+    return response(resp, data)
+}
+
+async function verifyProfile(event: H3Event, data: DialogContext.ItemID): Promise<DialogContext.BtnActionCallBack> {
+    const resp = await useApi(`/api/external/profile/verify`, {
+        headers: {
+            Accept: 'application/json',
+        },
+        method: 'PATCH',
+        server: false,
+        body: data.profile_IDs,
+    })
+    return response(resp, data)
+}
+
+async function verifiedProfile(event: H3Event, data: DialogContext.ItemID): Promise<DialogContext.BtnActionCallBack> {
+    const resp = await useApi(`/api/external/profile/verified`, {
+        headers: {
+            Accept: 'application/json',
+        },
+        method: 'PATCH',
+        server: false,
+        body: data.profile_IDs,
+    })
+    return response(resp, data)
+}
+
+async function deleteProfile(event: H3Event, data: DialogContext.ItemID): Promise<DialogContext.BtnActionCallBack> {
+    const resp = await useApi(`/api/external/profile/delete`, {
+        headers: {
+            Accept: 'application/json',
+        },
+        method: 'DELETE',
+        server: false,
+        body: data.profile_IDs,
+    })
+    return response(resp, data)
 }
 
 async function suspendedProfile(event: H3Event, data: DialogContext.ItemID): Promise<DialogContext.BtnActionCallBack> {
-    const resp = await useApi(`/api/external/profile/suspended`, {
+    const resp = await useApi(`/api/external/profile/suspend`, {
         headers: {
             Accept: 'application/json',
         },

@@ -10,7 +10,7 @@
         + profile: Profile
     -->
 
-    <div class="d-flex justify-center flex-wrap">
+    <div class="d-flex justify-start flex-wrap">
         <div v-for="action in profile.quickActions" :key="`btn${action.name}-${profile.profile_ID}`">
             <div class="mx-1">
                 <v-tooltip :text="action.name">
@@ -69,10 +69,17 @@ const props = defineProps({
     },
 })
 
+const {
+    publishableProfile,
+    suspendedProfile,
+    cancelProfile,
+    waiveProfile,
+    verifyProfile,
+    verifiedProfile,
+    deleteProfile,
+} = useProfile()
+
 const { dialogConfirm, showDialog } = useDialog()
-
-const { publishableProfile, suspendedProfile } = useProfile()
-
 const dialog = dialogConfirm()
 
 const fullNameWithId = (profile: PropsProfile) => {
@@ -111,31 +118,6 @@ const handleAction = async (event: Event, action: IQuickAction) => {
     }
 
     switch (action.name) {
-        case QuickActionEnum.CANCEL:
-            dialogContext = {
-                ...dialogContext,
-                actionButtons: [
-                    {
-                        text: 'Cancel',
-                        variant: 'elevated',
-                        color: action.color,
-                    },
-                    ...commonButtons,
-                ],
-            }
-            break
-        case QuickActionEnum.WAIVE:
-            dialogContext = {
-                ...dialogContext,
-                actionButtons: [
-                    {
-                        text: 'Waive',
-                        variant: 'elevated',
-                        color: action.color,
-                    },
-                    ...commonButtons,
-                ],
-            }
         case QuickActionEnum.PUBLISHABLE:
             dialogContext = {
                 ...dialogContext,
@@ -164,6 +146,34 @@ const handleAction = async (event: Event, action: IQuickAction) => {
                 ],
             }
             break
+
+        case QuickActionEnum.CANCEL:
+            dialogContext = {
+                ...dialogContext,
+                actionButtons: [
+                    {
+                        text: 'Cancel',
+                        variant: 'elevated',
+                        color: action.color,
+                        cb: cancelProfile,
+                    },
+                    ...commonButtons,
+                ],
+            }
+            break
+        case QuickActionEnum.WAIVE:
+            dialogContext = {
+                ...dialogContext,
+                actionButtons: [
+                    {
+                        text: 'Waive',
+                        variant: 'elevated',
+                        color: action.color,
+                        cb: waiveProfile,
+                    },
+                    ...commonButtons,
+                ],
+            }
         case QuickActionEnum.VERIFY:
             dialogContext = {
                 ...dialogContext,
@@ -172,6 +182,7 @@ const handleAction = async (event: Event, action: IQuickAction) => {
                         text: 'Verify',
                         variant: 'elevated',
                         color: action.color,
+                        cb: verifyProfile,
                     },
                     ...commonButtons,
                 ],
@@ -185,6 +196,7 @@ const handleAction = async (event: Event, action: IQuickAction) => {
                         text: 'Revoke Verify',
                         variant: 'elevated',
                         color: action.color,
+                        cb: verifiedProfile,
                     },
                     ...commonButtons,
                 ],
@@ -201,12 +213,36 @@ const handleAction = async (event: Event, action: IQuickAction) => {
                         text: 'Delete',
                         variant: 'elevated',
                         color: action.color,
+                        cb: deleteProfile,
                     },
                     ...commonButtons,
                 ],
             }
             break
-        //special case
+        //! special case
+        case QuickActionEnum.S_PUBLISHABLE_OR_SUSPEND:
+            dialogContext = {
+                ...dialogContext,
+                message: `Please, choose <b>${action.name}</b> for <br>
+                        "${fullNameWithId(p)}" ?`,
+                actionsMeta: action.actions,
+                actionButtons: [
+                    {
+                        text: 'Publishable',
+                        variant: 'elevated',
+                        color: action.color,
+                        cb: publishableProfile,
+                    },
+                    {
+                        text: 'Suspend',
+                        variant: 'elevated',
+                        color: action.color,
+                        cb: suspendedProfile,
+                    },
+                    ...commonButtons,
+                ],
+            }
+            break
         case QuickActionEnum.S_CANCEL_OR_WAIVE:
             dialogContext = {
                 ...dialogContext,
@@ -218,11 +254,13 @@ const handleAction = async (event: Event, action: IQuickAction) => {
                         text: 'Cancel',
                         variant: 'elevated',
                         color: action.color,
+                        cb: cancelProfile,
                     },
                     {
                         text: 'Waive',
                         variant: 'elevated',
                         color: action.color,
+                        cb: waiveProfile,
                     },
                     ...commonButtons,
                 ],

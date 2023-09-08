@@ -171,7 +171,7 @@ const profilesSelected = ref([])
 
 watch(
     () => profilePending.value,
-    (value) => {
+    () => {
         pageLoad.value = false
         jobData.value = profilesData.value.job
         profilesDataTest.value = profilesData.value.profile
