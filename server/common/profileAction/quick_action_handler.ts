@@ -93,7 +93,7 @@ class QuickActionHandler {
         }
 
         // * enable all for test all
-        actions = ['Vi', 'C', 'W', 'P', 'S', 'V', 'Ve', 'D']
+        // actions = ['Vi', 'C', 'W', 'P', 'S', 'V', 'Ve', 'D']
 
         const quickActions = actions.map((action) => {
             if (action === 'P/S') return mergeBtn1 as QuickAction
