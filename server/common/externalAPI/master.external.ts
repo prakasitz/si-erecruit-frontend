@@ -11,76 +11,75 @@ class MasterExternal extends ExternalAPIService {
 
     public async getJobStatus(event?: H3Event) {
         try {
-            // await this.initializeToken()
-            // const resp = await this.baseAPI.get(`/${this.masterSlug}/profile-status`, {
-            //     headers: {
-            //         Authorization: 'Bearer ' + this.token,
+            await this.initializeToken()
+            const resp = await this.baseAPI.get(`/${this.masterSlug}/job-status`, {
+                headers: {
+                    Authorization: 'Bearer ' + this.token,
+                },
+            })
+
+            if (!resp.data) throw new Error(`getJobStatus: Data not found`)
+
+            let result: JobStatusCode[] = resp.data
+            return result
+
+            // const jobStatusConfig: JobStatusCode[] = [
+            //     {
+            //         job_status_code: 0,
+            //         job_status_text: 'Created',
+            //         zjob_status_color: 'label-light-info',
             //     },
-            // })
-
-            // if (!resp.data) throw new Error(`getJobStatus: Data not found`)
-
-            // let result: any = resp.data
-
-            const jobStatusConfig: JobStatusCode[] = [
-                {
-                    job_status_code: 0,
-                    job_status_text: 'Created',
-                    zjob_status_color: 'label-light-info',
-                },
-                {
-                    job_status_code: 1,
-                    job_status_text: 'Importing',
-                    zjob_status_color: 'label-light-megna',
-                },
-                {
-                    job_status_code: 2,
-                    job_status_text: 'Fail Imported',
-                    zjob_status_color: 'label-megna',
-                },
-                {
-                    job_status_code: 3,
-                    job_status_text: 'Imported',
-                    zjob_status_color: 'label-primary',
-                },
-                {
-                    job_status_code: 4,
-                    job_status_text: 'Published',
-                    zjob_status_color: 'label-danger',
-                },
-                {
-                    job_status_code: 5,
-                    job_status_text: 'Suspended',
-                    zjob_status_color: 'label-inverse',
-                },
-                {
-                    job_status_code: 6,
-                    job_status_text: 'Verifying',
-                    zjob_status_color: 'label-success',
-                },
-                {
-                    job_status_code: 7,
-                    job_status_text: 'Approved',
-                    zjob_status_color: 'label-light-warning',
-                },
-                {
-                    job_status_code: 9,
-                    job_status_text: 'Cancelled',
-                    zjob_status_color: 'label-danger',
-                },
-                {
-                    job_status_code: 98,
-                    job_status_text: 'Terminated',
-                    zjob_status_color: 'label-danger',
-                },
-                {
-                    job_status_code: 99,
-                    job_status_text: 'Closed',
-                    zjob_status_color: 'label-warning',
-                },
-            ]
-
-            return jobStatusConfig
+            //     {
+            //         job_status_code: 1,
+            //         job_status_text: 'Importing',
+            //         zjob_status_color: 'label-light-megna',
+            //     },
+            //     {
+            //         job_status_code: 2,
+            //         job_status_text: 'Fail Imported',
+            //         zjob_status_color: 'label-megna',
+            //     },
+            //     {
+            //         job_status_code: 3,
+            //         job_status_text: 'Imported',
+            //         zjob_status_color: 'label-primary',
+            //     },
+            //     {
+            //         job_status_code: 4,
+            //         job_status_text: 'Published',
+            //         zjob_status_color: 'label-danger',
+            //     },
+            //     {
+            //         job_status_code: 5,
+            //         job_status_text: 'Suspended',
+            //         zjob_status_color: 'label-inverse',
+            //     },
+            //     {
+            //         job_status_code: 6,
+            //         job_status_text: 'Verifying',
+            //         zjob_status_color: 'label-success',
+            //     },
+            //     {
+            //         job_status_code: 7,
+            //         job_status_text: 'Approved',
+            //         zjob_status_color: 'label-light-warning',
+            //     },
+            //     {
+            //         job_status_code: 9,
+            //         job_status_text: 'Cancelled',
+            //         zjob_status_color: 'label-danger',
+            //     },
+            //     {
+            //         job_status_code: 98,
+            //         job_status_text: 'Terminated',
+            //         zjob_status_color: 'label-danger',
+            //     },
+            //     {
+            //         job_status_code: 99,
+            //         job_status_text: 'Closed',
+            //         zjob_status_color: 'label-warning',
+            //     },
+            // ]
         } catch (error: AxiosError | any) {
             return this.handleError(error)
         }
@@ -88,67 +87,67 @@ class MasterExternal extends ExternalAPIService {
 
     public async getProfileStatus(event?: H3Event) {
         try {
-            // await this.initializeToken()
-            // const resp = await this.baseAPI.get(`/${this.masterSlug}/job-status`, {
-            //     headers: {
-            //         Authorization: 'Bearer ' + this.token,
+            await this.initializeToken()
+            const resp = await this.baseAPI.get(`/${this.masterSlug}/profile-status`, {
+                headers: {
+                    Authorization: 'Bearer ' + this.token,
+                },
+            })
+
+            if (!resp.data) throw new Error(`getProfileStatus: Data not found`)
+
+            let result: ProfileStatusCode[] = resp.data
+            return result
+
+            // const profileStatusConfig: ProfileStatusCode[] = [
+            //     {
+            //         profile_status_code: 0,
+            //         profile_status_text: 'Created',
+            //         zprofile_status_color: 'label-info',
             //     },
-            // })
+            //     {
+            //         profile_status_code: 1,
+            //         profile_status_text: 'Imported',
+            //         zprofile_status_color: 'label-megna',
+            //     },
+            //     {
+            //         profile_status_code: 2,
+            //         profile_status_text: 'Publishable',
+            //         zprofile_status_color: 'label-success',
+            //     },
+            //     {
+            //         profile_status_code: 3,
+            //         profile_status_text: 'Suspended',
+            //         zprofile_status_color: 'label-danger',
+            //     },
+            //     {
+            //         profile_status_code: 4,
+            //         profile_status_text: 'Submitted',
+            //         zprofile_status_color: 'label-light-success',
+            //     },
+            //     {
+            //         profile_status_code: 5,
+            //         profile_status_text: 'Verified',
+            //         zprofile_status_color: 'label-light-megna',
+            //     },
+            //     {
+            //         profile_status_code: 6,
+            //         profile_status_text: 'Waived',
+            //         zprofile_status_color: 'label-warning',
+            //     },
+            //     {
+            //         profile_status_code: 9,
+            //         profile_status_text: 'Cancelled',
+            //         zprofile_status_color: 'label-red',
+            //     },
+            //     {
+            //         profile_status_code: 99,
+            //         profile_status_text: 'Closed',
+            //         zprofile_status_color: 'label-light-inverse',
+            //     },
+            // ]
 
-            // if (!resp.data) throw new Error(`getProfileStatus: Data not found`)
-
-            // let result: any = resp.data
-            // return result
-
-            const profileStatusConfig: ProfileStatusCode[] = [
-                {
-                    profile_status_code: 0,
-                    profile_status_text: 'Created',
-                    zprofile_status_color: 'label-info',
-                },
-                {
-                    profile_status_code: 1,
-                    profile_status_text: 'Imported',
-                    zprofile_status_color: 'label-megna',
-                },
-                {
-                    profile_status_code: 2,
-                    profile_status_text: 'Publishable',
-                    zprofile_status_color: 'label-success',
-                },
-                {
-                    profile_status_code: 3,
-                    profile_status_text: 'Suspended',
-                    zprofile_status_color: 'label-danger',
-                },
-                {
-                    profile_status_code: 4,
-                    profile_status_text: 'Submitted',
-                    zprofile_status_color: 'label-light-success',
-                },
-                {
-                    profile_status_code: 5,
-                    profile_status_text: 'Verified',
-                    zprofile_status_color: 'label-light-megna',
-                },
-                {
-                    profile_status_code: 6,
-                    profile_status_text: 'Waived',
-                    zprofile_status_color: 'label-warning',
-                },
-                {
-                    profile_status_code: 9,
-                    profile_status_text: 'Cancelled',
-                    zprofile_status_color: 'label-red',
-                },
-                {
-                    profile_status_code: 99,
-                    profile_status_text: 'Closed',
-                    zprofile_status_color: 'label-light-inverse',
-                },
-            ]
-
-            return profileStatusConfig
+            // return profileStatusConfig
         } catch (error: AxiosError | any) {
             return this.handleError(error)
         }

@@ -419,6 +419,22 @@ router.get(
 )
 
 router.get(
+    '/job-status',
+    defineEventHandler(async (event) => {
+        const data = await masterService.getJobStatus(event)
+        return data
+    })
+)
+
+router.get(
+    '/profile-status',
+    defineEventHandler(async (event) => {
+        const data = await masterService.getProfileStatus(event)
+        return data
+    })
+)
+
+router.get(
     '/title',
     defineEventHandler(async (event) => {
         const data = await masterService.getTitle(event)
