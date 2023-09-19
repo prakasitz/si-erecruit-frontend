@@ -22,6 +22,7 @@ export default defineNuxtConfig({
         '@vuepic/vue-datepicker/dist/main.css',
         '@/assets/_fonts.css',
         '@/assets/main.css',
+        '@/assets/css/status-color.css',
         'vuetify/styles',
     ],
 

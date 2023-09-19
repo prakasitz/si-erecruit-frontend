@@ -21,6 +21,12 @@ export const isMatchRegex = (str: string, regex: RegExp): boolean => {
     return !!match
 }
 
+export const toLowerCase = (str: string) => {
+    if (str) {
+        return str.toLowerCase()
+    } else return ''
+}
+
 export const checkURL = (url: string, urls: Array<string>) => {
     for (const string of urls) {
         if (string.endsWith('**')) {

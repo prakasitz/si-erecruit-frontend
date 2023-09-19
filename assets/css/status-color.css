@@ -1,0 +1,67 @@
+.status-job-imported {
+    color: white !important;
+    background-color: #1e88e5 !important;
+}
+
+.status-job-published {
+    color: white !important;
+    background-color: #2c2983 !important;
+}
+.status-job-suspended {
+    color: white !important;
+    background-color: #c12f24 !important;
+}
+.status-job-verifying {
+    color: white !important;
+    background-color: #c8a402 !important;
+}
+.status-job-approved {
+    color: white !important;
+    background-color: #009812 !important;
+}
+.status-job-terminated {
+    color: white !important;
+    background-color: #7a7573 !important;
+}
+.status-job-closed {
+    color: white !important;
+    background-color: #7a7573 !important;
+}
+
+.status-profile-imported {
+    color: white !important;
+    background-color: #5e4c45 !important;
+}
+
+.status-profile-publishable {
+    color: white !important;
+    background-color: #2c2983 !important;
+}
+
+.status-profile-suspended {
+    color: white !important;
+    background-color: #c12f24 !important;
+}
+
+.status-profile-submitted {
+    color: white !important;
+    background-color: #bd4c00 !important;
+}
+
+.status-profile-verified {
+    color: white !important;
+    background-color: #009812 !important;
+}
+
+.status-profile-waived {
+    color: white !important;
+    background-color: #525670 !important;
+}
+.status-profile-cancelled {
+    color: white !important;
+    background-color: #7a7573 !important;
+}
+.status-profile-closed {
+    color: white !important;
+    background-color: #7a7573 !important;
+}

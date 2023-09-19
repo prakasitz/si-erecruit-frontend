@@ -59,7 +59,9 @@
                     hover
                 >
                     <template v-slot:item.profile_status_code.profile_status_text="{ item }">
-                        <v-chip :class="item.raw.profile_status_code.zprofile_status_color">
+                        <v-chip
+                            :class="`status-profile-${toLowerCase(item.raw.profile_status_code.profile_status_text)}`"
+                        >
                             {{ item.raw.profile_status_code.profile_status_text }}
                         </v-chip>
                     </template>
