@@ -51,7 +51,7 @@ class UserExternal extends ExternalAPIService {
             if (body.user == null) throw new H3Error('User is null')
             const resp = await this.baseAPI.post(
                 `/${this.slug}/create`,
-                { ...body.user },
+                { user: body.user },
                 {
                     headers: {
                         Authorization: 'Bearer ' + this.token,
@@ -75,7 +75,7 @@ class UserExternal extends ExternalAPIService {
             if (body.user == null) throw new H3Error('User is null')
             const resp = await this.baseAPI.put(
                 `/${this.slug}/update`,
-                { ...body.user },
+                { user: body.user },
                 {
                     headers: {
                         Authorization: 'Bearer ' + this.token,
