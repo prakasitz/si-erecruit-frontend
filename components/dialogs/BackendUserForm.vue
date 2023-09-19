@@ -54,9 +54,9 @@
                             <v-select
                                 v-model="userModel.role_ID"
                                 :rules="fieldRules({})"
-                                :items="roleItems"
-                                item-title="text"
-                                item-value="value"
+                                :items="role"
+                                item-title="role_name"
+                                item-value="role_ID"
                                 label="Role"
                                 variant="outlined"
                                 density="compact"
@@ -208,6 +208,7 @@ const props = defineProps({
 
 const { fieldRules } = useFillRules()
 const { fetchSRCUserById, createSRCUserById, updateSRCUserById } = useUserManagement()
+const { fetchRoles } = useMaster()
 
 const userModel: Ref<SRC_User> = ref({
     SAP_ID: '',
@@ -271,6 +272,8 @@ const bgColor = computed(() => {
 })
 
 const check_accept = ref(false)
+
+const { data: role } = await fetchRoles()
 
 const roleItems = ref([
     {

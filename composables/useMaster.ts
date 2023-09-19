@@ -24,10 +24,32 @@ export default function useMaster() {
         fetchTitleSpecial,
         fetchTitleAcademic,
         fetchTitleConferred,
+        fetchRoles,
     }
 }
 
 type MasterStore = Store<'master-data', MasterState, any, any>
+
+async function fetchRoles() {
+    const cache = useNuxtData('master/roles')
+    const refObj = {
+        data: ref() as Ref<any>,
+        pending: ref(false),
+        error: ref() as Ref<any>,
+    }
+    if (cache.data.value) {
+        refObj.data = cache.data
+    } else {
+        const { data, pending, error } = useFetch('/api/external/master/roles', {
+            method: 'GET',
+            key: 'master/roles',
+        })
+        refObj.data = data
+        refObj.pending = pending
+        refObj.error = error
+    }
+    return refObj
+}
 
 async function fetchProvince() {
     const cache = useNuxtData('master/province')
