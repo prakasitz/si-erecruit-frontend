@@ -36,7 +36,7 @@ export const actionStatusIdMapping: ActionStatusIdMappingType = {
 export const quickActionsTable: QuickActionsTableType = {
     Imported: {
         Imported: ['Vi', 'P/S', 'C/W', 'C', 'W', 'P', 'S', 'D'],
-        Publishable: ['Vi', 'S'],
+        Publishable: ['Vi', 'S', 'C/W', 'C', 'W'],
         Submitted: [],
         Verified: [],
         Suspended: ['Vi', 'P'],
