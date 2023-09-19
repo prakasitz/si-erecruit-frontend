@@ -1,12 +1,6 @@
 <template>
     <v-dialog v-model="dialog" width="auto" :persistent="context.persistent">
-        <template v-slot:activator="{ props }">
-            <dev-only>
-                <v-row justify="center" class="ma-2">
-                    <v-btn :color="context.dialogColor" v-bind="props"> Open Dialog Confirm </v-btn>
-                </v-row>
-            </dev-only>
-        </template>
+        <template v-slot:activator="{ props }"> </template>
         <v-card class="mb-5">
             <v-toolbar density="compact" :color="context.dialogColor">
                 <v-icon class="ml-2" :icon="'mdi-information-outline'"></v-icon>
