@@ -89,7 +89,7 @@
                             <v-select
                                 v-model="userModel.role_ID"
                                 :rules="fieldRules({})"
-                                :items="role"
+                                :items="rolesData"
                                 item-title="role_name"
                                 item-value="role_ID"
                                 label="Role"
@@ -246,13 +246,7 @@ const { fieldRules } = useFillRules()
 const { fetchSRCUserById, createSRCUserById, updateSRCUserById } = useUserManagement()
 const { fetchRoles } = useMaster()
 
-const userModel: Ref<SRC_User> = ref({
-    SAP_ID: '',
-    SAP_name: '',
-    role_ID: '',
-    locked_user: false,
-    local_user: false,
-})
+const userModel: Ref<SRC_User> = ref(deepCopy(defaultSRCUserForm))
 
 const loading = ref(false)
 const submit = async (event: SubmitEventPromise) => {
@@ -309,26 +303,7 @@ const bgColor = computed(() => {
 
 const check_accept = ref(false)
 
-const { data: role } = await fetchRoles()
-
-const roleItems = ref([
-    {
-        text: 'Super Admin',
-        value: 0,
-    },
-    {
-        text: 'General Admin',
-        value: 1,
-    },
-    {
-        text: 'HR Officer',
-        value: 2,
-    },
-    {
-        text: 'Department Officer',
-        value: 3,
-    },
-])
+const { data: rolesData } = await fetchRoles()
 
 watchEffect(() => {
     if (props.user && props.formType === 'edit' && props.dialog) {
@@ -344,13 +319,7 @@ watchPostEffect(() => {
             title: '',
             btnSubmit: '',
         }
-        userModel.value = {
-            SAP_ID: '',
-            SAP_name: '',
-            role_ID: '',
-            locked_user: false,
-            local_user: false,
-        }
+        userModel.value = deepCopy(defaultSRCUserForm)
     }
 })
 </script>

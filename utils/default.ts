@@ -232,3 +232,11 @@ export const buttonShow: btnShowWstatus[] = [
         },
     },
 ]
+
+export const defaultSRCUserForm: SRC_User = {
+    SAP_ID: '',
+    SAP_name: '',
+    role_ID: 1,
+    locked_user: false,
+    local_user: false,
+}

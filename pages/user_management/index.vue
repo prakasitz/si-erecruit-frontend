@@ -1,12 +1,20 @@
 <template>
     <div>
-        <v-card class="mx-auto" width="90%">
+        <v-card v-if="usersPending" class="mx-auto" width="90%">
+            <v-card-item>
+                <v-skeleton-loader
+                    :loading="usersPending"
+                    type="heading, subtitle, table-tbody, table-tfoot"
+                ></v-skeleton-loader>
+            </v-card-item>
+        </v-card>
+        <v-card v-else class="mx-auto" width="90%">
             <v-card-item>
                 <v-card-title :style="{ 'font-size': '18px !important' }"></v-card-title>
                 <v-data-table
                     :items-per-page="10"
                     :headers="(headers as any)"
-                    :items="SRC_User"
+                    :items="(usersData as SRC_User[])"
                     item-value="name"
                     class="elevation-1"
                     :search="search"
@@ -18,7 +26,7 @@
                                 <p class="text-h6 text-main-color font-weight-bold">รายชื่อผู้ใช้งาน</p>
                                 <p class="text-h7 font-weight-bold">
                                     ผู้ใช้งานทั้งหมด
-                                    <span style="color: red">{{ SRC_User.length }}</span>
+                                    <span style="color: red">{{ usersData?.length }}</span>
                                     รายการ
                                 </p>
                             </v-col>
@@ -100,6 +108,10 @@ definePageMeta({
 
 const route = useRoute()
 
+const { fetchSRCUsers } = useUserManagement()
+
+const { data: usersData, pending: usersPending } = fetchSRCUsers()
+
 const dialog = ref(false)
 const form: Ref<'' | 'edit' | 'create'> = ref('')
 const userProps: Ref<SRC_User | undefined> = ref()
@@ -159,37 +171,6 @@ const roleChipList = ref([
         id: 3,
         text: 'Department Officer',
         color: 'yellow',
-    },
-])
-
-const SRC_User = ref([
-    {
-        SAP_ID: 'A1234567',
-        role_ID: 1,
-        local_password: 'password123',
-        local_user: true,
-        locked_user: false,
-        last_login: '28 ส.ค. 2566, 13:24',
-        note: 'First user',
-        created_at: '2023-08-01T10:00:00',
-        created_by: 'A9876543',
-        SAP_name: 'John Doe',
-        name: 'John',
-        lastname: 'Doe',
-    },
-    {
-        SAP_ID: 'A1234568',
-        role_ID: 2,
-        local_password: 'password456',
-        local_user: false,
-        locked_user: true,
-        last_login: '28 ส.ค. 2566, 13:24',
-        note: 'Second user',
-        created_at: '2023-07-28T09:00:00',
-        created_by: 'A9876542',
-        SAP_name: 'Jane Smith',
-        name: 'Jane',
-        lastname: 'Smith',
     },
 ])
 
