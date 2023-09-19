@@ -495,6 +495,24 @@ class MasterExternal extends ExternalAPIService {
         }
     }
 
+    public async getRoles(event: H3Event) {
+        try {
+            await this.initializeToken()
+            const resp = await this.baseAPI.get(`/${this.masterSlug}/role`, {
+                headers: {
+                    Authorization: 'Bearer ' + this.token,
+                },
+            })
+
+            if (!resp.data) throw new Error(`getRoles: Data not found`)
+
+            let result: any = resp.data
+            return result
+        } catch (error: AxiosError | any) {
+            return this.handleError(error)
+        }
+    }
+
     public async getBySetting(setting_keys: { setting_keys: string[] }, event: H3Event) {
         try {
             await this.initializeToken()

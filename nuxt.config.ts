@@ -110,6 +110,11 @@ export default defineNuxtConfig({
                 to: '/api/external/profile/**',
             },
         },
+        '/api/users/**': {
+            proxy: {
+                to: '/api/external/users/**',
+            },
+        },
     },
 
     // routeRules: {

@@ -593,6 +593,13 @@ router.get(
 )
 
 router.get(
+    '/roles',
+    defineEventHandler(async (event) => {
+        return masterService.getRoles(event)
+    })
+)
+
+router.get(
     '/settings',
     defineEventHandler(async (event) => {
         return masterService.getSettings(event)

@@ -10,8 +10,6 @@
                     <v-img class="ml-1" :width="120" src="/images/logo_text.png"></v-img>
                 </div>
             </v-app-bar-title>
-
-
         </v-app-bar>
         <v-navigation-drawer v-model="drawer" location="left" permanent>
             <v-list class="text-xl">
@@ -115,7 +113,7 @@ const items4Admin: any = [
         value: 'Admin',
         subgroups: [
             {
-                title: 'Management',
+                title: 'User Management',
                 icon: 'mdi-account-multiple-outline',
                 value: 'Management',
                 to: '/user_management/',

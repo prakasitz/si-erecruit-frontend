@@ -1,4 +1,4 @@
-import { MasterState, useMasterDataStore } from '~/stores/master.store'
+import { useMasterDataStore } from '~/stores/master.store'
 import { StateTree, Store, StoreDefinition, StoreGeneric } from 'pinia'
 
 export default function useMaster() {
@@ -21,7 +21,29 @@ export default function useMaster() {
         fetchTitleSpecial,
         fetchTitleAcademic,
         fetchTitleConferred,
+        fetchRoles,
     }
+}
+
+async function fetchRoles() {
+    const cache = useNuxtData('master/roles')
+    const refObj = {
+        data: ref() as Ref<any>,
+        pending: ref(false),
+        error: ref() as Ref<any>,
+    }
+    if (cache.data.value) {
+        refObj.data = cache.data
+    } else {
+        const { data, pending, error } = useFetch('/api/external/master/roles', {
+            method: 'GET',
+            key: 'master/roles',
+        })
+        refObj.data = data
+        refObj.pending = pending
+        refObj.error = error
+    }
+    return refObj
 }
 
 async function fetchProvince() {
