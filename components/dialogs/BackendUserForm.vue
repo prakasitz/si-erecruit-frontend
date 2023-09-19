@@ -305,13 +305,15 @@ const check_accept = ref(false)
 
 const { data: rolesData } = await fetchRoles()
 
-watchEffect(() => {
-    if (props.user && props.formType === 'edit' && props.dialog) {
-        userModel.value = props.user
+// Initialize user model for editing
+const initializeUserForEdit = () => {
+    if (props.user && props.formType === 'edit') {
+        userModel.value = deepCopy(props.user)
     }
-})
+}
 
-watchPostEffect(() => {
+// Reset the state when the dialog is closed
+const resetStateAfterDialogClose = () => {
     if (!props.dialog) {
         setTimeout(() => {
             check_accept.value = false
@@ -323,5 +325,18 @@ watchPostEffect(() => {
             userModel.value = deepCopy(defaultSRCUserForm)
         }, 200)
     }
-})
+}
+
+watch(
+    () => props.dialog,
+    (newDialog, oldDialog) => {
+        if (newDialog) {
+            // Dialog just opened
+            initializeUserForEdit()
+        } else if (!newDialog) {
+            // Dialog just closed
+            resetStateAfterDialogClose()
+        }
+    }
+)
 </script>
