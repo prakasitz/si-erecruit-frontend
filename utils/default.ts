@@ -1,6 +1,6 @@
 import { address, job } from '~/utils/interface/personal_information.interface'
 import { VueDatePickerProps } from '@vuepic/vue-datepicker'
-import { btnShowWstatus } from './types'
+import { SRC_User, btnShowWstatus } from './types'
 
 export const default_job: job = {
     company_name: '',
