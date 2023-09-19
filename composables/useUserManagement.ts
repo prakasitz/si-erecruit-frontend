@@ -12,7 +12,7 @@ export default function useUserManagement() {
 const fetchSRCUsers = () => {
     /*
      */
-    return useFetch('/api/external/master/users', {
+    return useFetch('/api/external/users', {
         headers: {
             Accept: 'application/json',
         },
@@ -36,7 +36,7 @@ const fetchSRCUsers = () => {
 const fetchSRCUserById = (sap_id: any) => {
     /*
      */
-    return useFetch(`/api/external/master/users/${sap_id}`, {
+    return useFetch(`/api/external/users/${sap_id}`, {
         headers: {
             Accept: 'application/json',
         },
@@ -51,7 +51,7 @@ const fetchSRCUserById = (sap_id: any) => {
 const createSRCUserById = (srcUser: SRC_User) => {
     /*
      */
-    return useFetch(`/api/external/master/users`, {
+    return useFetch(`/api/external/users/create`, {
         headers: {
             Accept: 'application/json',
         },
@@ -64,14 +64,13 @@ const createSRCUserById = (srcUser: SRC_User) => {
 const updateSRCUserById = (srcUser: SRC_User) => {
     /*
      */
-    return useFetch(`/api/external/master/users/${srcUser.SAP_ID}`, {
+    return useFetch(`/api/external/users/update`, {
         headers: {
             Accept: 'application/json',
         },
         method: 'PUT',
         body: {
             ...srcUser,
-            SAP_ID: undefined,
         },
         transform(data: any) {
             return data
@@ -83,7 +82,7 @@ const updateSRCUserById = (srcUser: SRC_User) => {
 const deleteSRCUserById = (srcUser: SRC_User) => {
     /*
      */
-    return useFetch(`/api/external/master/users/${srcUser.SAP_ID}`, {
+    return useFetch(`/api/external/users/${srcUser.SAP_ID}`, {
         headers: {
             Accept: 'application/json',
         },

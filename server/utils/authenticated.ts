@@ -18,6 +18,8 @@ export function getAuthenticatedRoutes(): Array<string> {
         //hr routes
         '/api/external/jobs/**',
 
+        '/api/external/users/**',
+
         //candidate routes
         '/api/external/profile/**',
     ]

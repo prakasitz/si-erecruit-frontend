@@ -18,6 +18,7 @@ export class ExternalAPIService {
         this.baseAPI = axios.create({
             baseURL: this.config.baseApi,
             timeout: 2000,
+            proxy: false,
         })
     }
 
