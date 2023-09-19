@@ -95,6 +95,7 @@ definePageMeta({
             title: 'จัดการผู้ใช้',
         },
     ],
+    middleware: 'hr-only',
 })
 
 const route = useRoute()
