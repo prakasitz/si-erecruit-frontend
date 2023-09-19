@@ -313,13 +313,15 @@ watchEffect(() => {
 
 watchPostEffect(() => {
     if (!props.dialog) {
-        check_accept.value = false
-        currentBgColor.value = ''
-        currentContext.value = {
-            title: '',
-            btnSubmit: '',
-        }
-        userModel.value = deepCopy(defaultSRCUserForm)
+        setTimeout(() => {
+            check_accept.value = false
+            currentBgColor.value = ''
+            currentContext.value = {
+                title: '',
+                btnSubmit: '',
+            }
+            userModel.value = deepCopy(defaultSRCUserForm)
+        }, 200)
     }
 })
 </script>
