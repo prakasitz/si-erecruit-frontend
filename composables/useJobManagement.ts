@@ -1,11 +1,5 @@
-import dayjs from 'dayjs'
-import 'dayjs/locale/th' // load on demand
-import buddhistEra from 'dayjs/plugin/buddhistEra'
 import { Job, JobWithProfile, Profile } from '~/utils/types'
 import { useJobComponentStore } from '~/stores/job-component.store'
-
-dayjs.extend(buddhistEra)
-dayjs.locale('th')
 
 export default function useJobManagement() {
     return {

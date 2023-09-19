@@ -14,7 +14,7 @@
                 <v-data-table
                     :items-per-page="10"
                     :headers="(headers as any)"
-                    :items="(usersData as SRC_User[])"
+                    :items="usersData || []"
                     item-value="name"
                     class="elevation-1"
                     :search="search"
@@ -133,7 +133,7 @@ const headers = [
     { title: 'ประเภท', align: 'start', key: 'local_user' },
     { title: 'Role', align: 'start', key: 'role_ID' },
     { title: 'สถานะ', align: 'start', key: 'locked_user' },
-    { title: 'Last login', align: 'start', key: 'last_login' },
+    { title: 'Last login', align: 'start', key: 'last_login_str' },
     { title: 'แก้ไข/ลบ', align: 'start', key: 'action', sortable: false },
 ]
 

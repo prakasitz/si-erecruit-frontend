@@ -18,7 +18,7 @@ const fetchSRCUsers = () => {
         },
         method: 'GET',
         transform(data: SRC_User[]) {
-            return data.map((item: any): SRC_User => {
+            return data.map((item: any) => {
                 return {
                     SAP_ID: item.SAP_ID,
                     SAP_name: item.SAP_name,
@@ -28,7 +28,7 @@ const fetchSRCUsers = () => {
                     role_ID: item.role_ID,
                     local_user: item.local_user,
                     locked_user: item.locked_user,
-                    last_login: item.last_login,
+                    last_login_str: dateToString(item.last_login, DateFormatEnum.DATE_TIME_BUDDHIST_1),
                 }
             })
         },

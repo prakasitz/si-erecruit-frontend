@@ -1,9 +1,9 @@
 import dayjs from 'dayjs'
-import 'dayjs/locale/es' // load on demand
 import buddhistEra from 'dayjs/plugin/buddhistEra'
+import 'dayjs/locale/th' // load on demand
 
 dayjs.extend(buddhistEra)
-// dayjs.locale('th')
+dayjs.locale('th')
 
 export enum DateFormatEnum {
     DATE_TIME_BUDDHIST_1 = 'DD MMM BBBB, HH:mm',
