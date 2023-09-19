@@ -21,7 +21,7 @@
                                         type: 'string',
                                     })
                                 "
-                                hint="ใช้ a-z, A-Z, 0-9 เท่านั้น"
+                                hint="ใช้ 0-9 เท่านั้น"
                                 label="SAP ID"
                                 variant="outlined"
                                 counter="8"
@@ -30,9 +30,6 @@
                             ></v-text-field>
                         </v-col>
                         <v-spacer></v-spacer>
-                    </v-row>
-
-                    <v-row>
                         <v-col cols="5">
                             <v-text-field
                                 v-model="userModel.SAP_name"
@@ -42,11 +39,49 @@
                                         type: 'string',
                                     })
                                 "
+                                hint="ใช้ a-z, A-Z, 0-9 เท่านั้น"
                                 counter="50"
                                 label="SAP Name"
                                 variant="outlined"
-                                density="compact"
+                                class="sap-id"
                             ></v-text-field>
+                        </v-col>
+                    </v-row>
+
+                    <v-row>
+                        <v-col cols="5">
+                            <v-row no-gutters>
+                                <v-col cols="12">
+                                    <v-text-field
+                                        v-model="userModel.name"
+                                        :rules="
+                                            fieldRules({
+                                                length: 50,
+                                                type: 'string',
+                                            })
+                                        "
+                                        counter="50"
+                                        label="สกุล (ไม่บังคับ)"
+                                        variant="outlined"
+                                        density="compact"
+                                    ></v-text-field>
+                                </v-col>
+                                <v-col cols="12">
+                                    <v-text-field
+                                        v-model="userModel.lastname"
+                                        :rules="
+                                            fieldRules({
+                                                length: 50,
+                                                type: 'string',
+                                            })
+                                        "
+                                        counter="50"
+                                        label="ชื่อ (ไม่บังคับ)"
+                                        variant="outlined"
+                                        density="compact"
+                                    ></v-text-field>
+                                </v-col>
+                            </v-row>
                         </v-col>
                         <v-spacer></v-spacer>
                         <v-divider vertical></v-divider>
@@ -121,9 +156,10 @@
                                                         })
                                                     "
                                                     v-model="userModel.local_password"
+                                                    autocomplete="false"
                                                     type="password"
                                                     counter="12"
-                                                    label="Local-Password"
+                                                    label="New Local-Password"
                                                     variant="outlined"
                                                     density="compact"
                                                 ></v-text-field>
