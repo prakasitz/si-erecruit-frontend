@@ -11,7 +11,7 @@ import { userService } from '../../../common/externalAPI/user.external'
 const router = createRouter()
 
 router.get(
-    'd',
+    '/get',
     defineEventHandler(async (event) => {
         const resp = await userService.getUsers(event)
         return resp
@@ -19,13 +19,14 @@ router.get(
 )
 
 router.get(
-    '/:id',
+    '/get/:id',
     defineEventHandler(async (event) => {
         const id = getRouterParam(event, 'id')
         if (!id) throw BadRequestError('id is required')
 
         const resp = await userService.getUserById(event, id)
-        return resp
+
+        return resp[0]
     })
 )
 
@@ -46,7 +47,7 @@ router.put(
 )
 
 router.delete(
-    '/:id',
+    '/delete/:id',
     defineEventHandler(async (event) => {
         const id = getRouterParam(event, 'id')
         if (!id) throw BadRequestError('id is required')
