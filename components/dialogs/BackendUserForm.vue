@@ -14,14 +14,6 @@
                         <v-col cols="5">
                             <v-text-field
                                 v-model="userModel.SAP_ID"
-                                :rules="
-                                    fieldRules({
-                                        length: 8,
-                                        //regex for number only
-                                        formatRequired: /^[0-9]*$/,
-                                        type: 'string',
-                                    })
-                                "
                                 hint="ใช้ 0-9 เท่านั้น"
                                 label="SAP ID"
                                 counter="8"
@@ -30,6 +22,16 @@
                                 :readonly="props.formType == 'edit'"
                                 :hide-details="props.formType == 'edit'"
                                 :variant="props.formType == 'edit' ? 'solo-filled' : 'outlined'"
+                                :error="isSAPIDUnique === false"
+                                :error-messages="isSAPIDUnique === false ? ['SAP ID นี้ถูกใช้แล้ว'] : []"
+                                :rules="
+                                    fieldRules({
+                                        length: 8,
+                                        //regex for number only
+                                        formatRequired: /^[0-9]*$/,
+                                        type: 'string',
+                                    })
+                                "
                                 class="sap-id"
                             >
                                 <template #append-inner>
@@ -277,7 +279,7 @@ const { fetchSRCUserById, createSRCUser, updateSRCUserById } = useUserManagement
 const { fetchRoles } = useMaster()
 
 const userModel: Ref<SRC_User> = ref(deepCopy(defaultSRCUserForm))
-const debouncedSAP_ID = useDebouncedRef('')
+const debouncedSAP_ID = useDebouncedRef('', 500)
 const sap_id_input = ref<VTextField>()
 
 /**
@@ -293,6 +295,7 @@ watch(
     () => userModel.value.SAP_ID,
     (newValue) => {
         if (props.formType == 'create') {
+            sap_id_input_loading.value = true
             debouncedSAP_ID.value = newValue
         }
     }
@@ -300,14 +303,15 @@ watch(
 watch(debouncedSAP_ID, (newVal: string) => {
     //trim and check null or empty
     let hasString = newVal && newVal.trim() !== ''
-    sap_id_input_loading.value = true
     sap_id_input.value
         ?.validate()
         .then(async (v) => {
             if (checkObjectPropertiesNull(v) && hasString) {
                 isSAPIDUnique.value = await checkSAPID(newVal)
-                if (!isSAPIDUnique) {
-                    
+                if (isSAPIDUnique.value == false) {
+                    // sap_id_fieldRules.value.push(
+                    //     (v: string) => `SAP ID ${newVal} ถูกใช้แล้ว กรุณาใช้ SAP ID อื่น` as any
+                    // )
                 }
             } else {
                 isSAPIDUnique.value = null
