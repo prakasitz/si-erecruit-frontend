@@ -22,11 +22,11 @@ router.get(
     '/get/:id',
     defineEventHandler(async (event) => {
         const id = getRouterParam(event, 'id')
+        const q = getQuery(event)
+        let type = q?.type as string | undefined
         if (!id) throw BadRequestError('id is required')
-
-        const resp = await userService.getUserById(event, id)
-
-        return resp[0]
+        const resp = await userService.getUserById(event, id, type)
+        return resp
     })
 )
 

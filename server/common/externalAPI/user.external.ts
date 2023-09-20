@@ -1,6 +1,7 @@
 import { ExternalAPIService } from './ExternalAPIService'
 import { AxiosError } from 'axios'
 import { H3Event, H3Error } from 'h3'
+import { userNotFoundError } from '../../../utils/default'
 
 class UserExternal extends ExternalAPIService {
     private slug: string = 'user'
@@ -26,7 +27,7 @@ class UserExternal extends ExternalAPIService {
         }
     }
 
-    public async getUserById(event: H3Event, id: string) {
+    public async getUserById(event: H3Event, id: string, type?: string) {
         try {
             await this.initializeToken()
             const resp = await this.baseAPI.get(`/${this.slug}/get/${id}`, {
@@ -35,10 +36,23 @@ class UserExternal extends ExternalAPIService {
                 },
             })
 
-            if (!resp.data) throw new Error(`getUserById: Data not found`)
-
-            let result: any = resp.data
-            return result
+            if (type && type == 'chk_unique') {
+                if (!resp.data) throw new Error(`getUserById: Data not found`)
+                if (Array.isArray(resp.data) && resp.data.length > 0)
+                    throw createError({
+                        statusCode: 400,
+                        message: 'User already exists',
+                    })
+                return null
+            } else {
+                if (!resp.data) throw new Error(`getUserById: Data not found`)
+                if (Array.isArray(resp.data) && resp.data.length == 0)
+                    throw createError({
+                        statusCode: 404,
+                    })
+                let result: any = resp.data[0]
+                return result
+            }
         } catch (error: AxiosError | any) {
             return this.handleError(error)
         }
