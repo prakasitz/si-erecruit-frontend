@@ -4,7 +4,7 @@ export default function useUserManagement() {
     return {
         fetchSRCUsers,
         fetchSRCUserById,
-        createSRCUserById,
+        createSRCUser,
         updateSRCUserById,
         deleteSRCUserById,
     }
@@ -36,7 +36,7 @@ const fetchSRCUsers = () => {
     })
 }
 
-const fetchSRCUserById = (sap_id: any) => {
+const fetchSRCUserById = (sap_id: any, type?: string) => {
     /*
      */
     return useFetch(`/api/external/users/get/${sap_id}`, {
@@ -44,6 +44,9 @@ const fetchSRCUserById = (sap_id: any) => {
             Accept: 'application/json',
         },
         method: 'GET',
+        query: {
+            type: type,
+        },
         transform(data: SRC_User) {
             return data
         },
@@ -51,7 +54,7 @@ const fetchSRCUserById = (sap_id: any) => {
     })
 }
 
-const createSRCUserById = (srcUser: SRC_User) => {
+const createSRCUser = (srcUser: SRC_User) => {
     /*
      */
     return useFetch(`/api/external/users/create`, {
