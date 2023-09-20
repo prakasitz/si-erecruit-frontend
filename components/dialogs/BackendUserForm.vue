@@ -1,6 +1,7 @@
 <template>
     <v-dialog v-model="props.dialog" width="auto" persistent>
-        <v-form validate-on="submit lazy" @submit.prevent="submit" ref="userForm">
+        <!-- <v-form validate-on="submit lazy" @submit.prevent="submit" ref="userForm"> -->
+        <v-form @submit.prevent="submit" ref="userForm">
             <v-card class="mb-5" width="800">
                 <v-toolbar density="compact" :color="bgColor">
                     <v-icon class="ml-2" :icon="'mdi-information-outline'"></v-icon>
@@ -16,18 +17,42 @@
                                 :rules="
                                     fieldRules({
                                         length: 8,
-                                        //regex for english and number only
-                                        formatRequired: /^[a-zA-Z0-9]*$/,
+                                        //regex for number only
+                                        formatRequired: /^[0-9]*$/,
                                         type: 'string',
                                     })
                                 "
                                 hint="ใช้ 0-9 เท่านั้น"
                                 label="SAP ID"
-                                variant="outlined"
                                 counter="8"
+                                ref="sap_id_input"
+                                @keydown.space.prevent
                                 :readonly="props.formType == 'edit'"
+                                :hide-details="props.formType == 'edit'"
+                                :variant="props.formType == 'edit' ? 'solo-filled' : 'outlined'"
                                 class="sap-id"
-                            ></v-text-field>
+                            >
+                                <template #append-inner>
+                                    <v-progress-circular
+                                        v-if="sap_id_input_loading"
+                                        indeterminate
+                                        color="grey"
+                                        size="small"
+                                    ></v-progress-circular>
+                                    <div v-else>
+                                        <v-tooltip size="small" text="ใช้ SAP ID นี้ได้" v-if="isSAPIDUnique == true">
+                                            <template v-slot:activator="{ props }">
+                                                <v-icon v-bind="props" class="text-success mx-1">mdi-check</v-icon>
+                                            </template>
+                                        </v-tooltip>
+                                        <v-tooltip text="SAP ID ถูกใช้แล้ว" v-if="isSAPIDUnique == false">
+                                            <template v-slot:activator="{ props }">
+                                                <v-icon v-bind="props" class="text-error mx-1">mdi-close</v-icon>
+                                            </template>
+                                        </v-tooltip>
+                                    </div>
+                                </template>
+                            </v-text-field>
                         </v-col>
                         <v-spacer></v-spacer>
                         <v-col cols="5">
@@ -61,8 +86,9 @@
                                             })
                                         "
                                         counter="50"
-                                        label="สกุล (ไม่บังคับ)"
+                                        label="ชื่อ (ไม่บังคับ)"
                                         variant="outlined"
+                                        validate-on="submit lazy"
                                         density="compact"
                                     ></v-text-field>
                                 </v-col>
@@ -75,8 +101,9 @@
                                                 type: 'string',
                                             })
                                         "
+                                        validate-on="submit lazy"
                                         counter="50"
-                                        label="ชื่อ (ไม่บังคับ)"
+                                        label="สกุล (ไม่บังคับ)"
                                         variant="outlined"
                                         density="compact"
                                     ></v-text-field>
@@ -181,6 +208,7 @@
                                     })
                                 "
                                 label="Note"
+                                validate-on="submit lazy"
                                 counter="255"
                                 variant="outlined"
                                 density="compact"
@@ -223,6 +251,8 @@
 
 <script lang="ts" setup>
 import { SubmitEventPromise } from 'vuetify/lib/framework.mjs'
+import { VTextField } from 'vuetify/lib/components/VTextField/index.mjs'
+
 import { SRC_User } from '~/utils/types'
 
 const emit = defineEmits(['update:dialog'])
@@ -243,12 +273,61 @@ const props = defineProps({
 })
 
 const { fieldRules } = useFillRules()
-const { fetchSRCUserById, createSRCUserById, updateSRCUserById } = useUserManagement()
+const { fetchSRCUserById, createSRCUser, updateSRCUserById } = useUserManagement()
 const { fetchRoles } = useMaster()
 
 const userModel: Ref<SRC_User> = ref(deepCopy(defaultSRCUserForm))
+const debouncedSAP_ID = useDebouncedRef('')
+const sap_id_input = ref<VTextField>()
 
+/**
+- null = not check
+- true = unique
+- false = not unique
+**/
+const isSAPIDUnique = ref<boolean | null>(null)
 const loading = ref(false)
+const sap_id_input_loading = ref(false)
+
+watch(
+    () => userModel.value.SAP_ID,
+    (newValue) => {
+        if (props.formType == 'create') {
+            debouncedSAP_ID.value = newValue
+        }
+    }
+)
+watch(debouncedSAP_ID, (newVal: string) => {
+    //trim and check null or empty
+    let hasString = newVal && newVal.trim() !== ''
+    sap_id_input_loading.value = true
+    sap_id_input.value
+        ?.validate()
+        .then(async (v) => {
+            if (checkObjectPropertiesNull(v) && hasString) {
+                isSAPIDUnique.value = await checkSAPID(newVal)
+                if (!isSAPIDUnique) {
+                    
+                }
+            } else {
+                isSAPIDUnique.value = null
+                console.log('field is invalid')
+            }
+        })
+        .finally(() => {
+            sap_id_input_loading.value = false
+        })
+})
+
+const checkSAPID = async (sap_id: string) => {
+    const { error: userError } = await fetchSRCUserById(sap_id, 'chk_unique')
+    if (userError.value === null) {
+        return true
+    } else {
+        return false
+    }
+}
+
 const submit = async (event: SubmitEventPromise) => {
     loading.value = true
 
@@ -339,4 +418,8 @@ watch(
         }
     }
 )
+
+onBeforeUnmount(() => {
+    sap_id_input.value = undefined
+})
 </script>
