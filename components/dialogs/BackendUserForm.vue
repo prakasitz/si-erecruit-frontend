@@ -400,6 +400,8 @@ const resetStateAfterDialogClose = () => {
     if (!props.dialog) {
         setTimeout(() => {
             check_accept.value = false
+            isSAPIDUnique.value = null
+            sap_id_input_loading.value = false
             currentBgColor.value = ''
             currentContext.value = {
                 title: '',
