@@ -1,4 +1,4 @@
-import { DialogContext } from "~/utils/types"
+import { DialogContext } from '~/utils/types'
 
 export default function useDialog() {
     return {
@@ -11,7 +11,7 @@ export default function useDialog() {
     }
 }
 
-function showDialog({ title, message, ...args }: DialogContext, dialog: any) {
+function showDialog({ title, message, ...args }: DialogContext, dialog: Ref<boolean>) {
     const dialogContext = useState<DialogContext>('dialogContext')
     dialogContext.value = { title, message, ...args }
     dialog.value = true
