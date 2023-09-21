@@ -42,14 +42,9 @@
                                         size="small"
                                     ></v-progress-circular>
                                     <div v-else>
-                                        <v-tooltip size="small" text="ใช้ SAP ID นี้ได้" v-if="isSAPIDUnique == true">
+                                        <v-tooltip size="small" :text="statusComputed?.tooltip">
                                             <template v-slot:activator="{ props }">
-                                                <v-icon v-bind="props" class="text-success mx-1">mdi-check</v-icon>
-                                            </template>
-                                        </v-tooltip>
-                                        <v-tooltip text="SAP ID ถูกใช้แล้ว" v-if="isSAPIDUnique == false">
-                                            <template v-slot:activator="{ props }">
-                                                <v-icon v-bind="props" class="text-error mx-1">mdi-close</v-icon>
+                                                <v-icon v-bind="{ props, ...statusComputed }" class="mx-1" />
                                             </template>
                                         </v-tooltip>
                                     </div>
@@ -81,28 +76,15 @@
                                 <v-col cols="12">
                                     <v-text-field
                                         v-model="userModel.name"
-                                        :rules="
-                                            fieldRules({
-                                                length: 50,
-                                                type: 'string',
-                                            })
-                                        "
                                         counter="50"
                                         label="ชื่อ (ไม่บังคับ)"
                                         variant="outlined"
-                                        validate-on="submit lazy"
                                         density="compact"
                                     ></v-text-field>
                                 </v-col>
                                 <v-col cols="12">
                                     <v-text-field
                                         v-model="userModel.lastname"
-                                        :rules="
-                                            fieldRules({
-                                                length: 50,
-                                                type: 'string',
-                                            })
-                                        "
                                         validate-on="submit lazy"
                                         counter="50"
                                         label="สกุล (ไม่บังคับ)"
@@ -117,7 +99,6 @@
                         <v-col offset="1" cols="5">
                             <v-select
                                 v-model="userModel.role_ID"
-                                :rules="fieldRules({})"
                                 :items="rolesData"
                                 item-title="role_name"
                                 item-value="role_ID"
@@ -256,6 +237,7 @@ import { SubmitEventPromise } from 'vuetify/lib/framework.mjs'
 import { VTextField } from 'vuetify/lib/components/VTextField/index.mjs'
 
 import { SRC_User } from '~/utils/types'
+import { NuxtError } from 'nuxt/app'
 
 const emit = defineEmits(['update:dialog'])
 
@@ -278,71 +260,9 @@ const { fieldRules } = useFillRules()
 const { fetchSRCUserById, createSRCUser, updateSRCUserById } = useUserManagement()
 const { fetchRoles } = useMaster()
 
+const route = useRoute()
+
 const userModel: Ref<SRC_User> = ref(deepCopy(defaultSRCUserForm))
-const debouncedSAP_ID = useDebouncedRef('', 500)
-const sap_id_input = ref<VTextField>()
-
-/**
-- null = not check
-- true = unique
-- false = not unique
-**/
-const isSAPIDUnique = ref<boolean | null>(null)
-const loading = ref(false)
-const sap_id_input_loading = ref(false)
-
-watch(
-    () => userModel.value.SAP_ID,
-    (newValue) => {
-        if (props.formType == 'create') {
-            sap_id_input_loading.value = true
-            debouncedSAP_ID.value = newValue
-        }
-    }
-)
-watch(debouncedSAP_ID, (newVal: string) => {
-    //trim and check null or empty
-    let hasString = newVal && newVal.trim() !== ''
-    sap_id_input.value
-        ?.validate()
-        .then(async (v) => {
-            if (checkObjectPropertiesNull(v) && hasString) {
-                isSAPIDUnique.value = await checkSAPID(newVal)
-                if (isSAPIDUnique.value == false) {
-                    // sap_id_fieldRules.value.push(
-                    //     (v: string) => `SAP ID ${newVal} ถูกใช้แล้ว กรุณาใช้ SAP ID อื่น` as any
-                    // )
-                }
-            } else {
-                isSAPIDUnique.value = null
-                console.log('field is invalid')
-            }
-        })
-        .finally(() => {
-            sap_id_input_loading.value = false
-        })
-})
-
-const checkSAPID = async (sap_id: string) => {
-    const { error: userError } = await fetchSRCUserById(sap_id, 'chk_unique')
-    if (userError.value === null) {
-        return true
-    } else {
-        return false
-    }
-}
-
-const submit = async (event: SubmitEventPromise) => {
-    loading.value = true
-
-    const results = await event
-
-    loading.value = false
-
-    alert(JSON.stringify(results, null, 2))
-
-    if (results.valid) emit('update:dialog', false)
-}
 
 const currentBgColor = ref('')
 const currentContext = ref({
@@ -386,6 +306,166 @@ const bgColor = computed(() => {
 
 const check_accept = ref(false)
 
+/**
+- null = not check
+- true = unique
+- false = not unique
+**/
+const isSAPIDUnique = ref<boolean | null>(null)
+const statusSAPID = reactive({
+    success: {
+        icon: 'mdi-check',
+        color: 'success',
+        tooltip: 'ใช้ SAP ID นี้ได้',
+    },
+    error: {
+        icon: 'mdi-close',
+        color: 'error',
+        tooltip: 'SAP ID ถูกใช้แล้ว',
+    },
+})
+const statusComputed = computed(() => {
+    if (isSAPIDUnique.value === null) {
+        return null
+    } else if (isSAPIDUnique.value === true) {
+        return statusSAPID.success
+    } else if (isSAPIDUnique.value === false) {
+        return statusSAPID.error
+    }
+})
+const loading = ref(false)
+const sap_id_input_loading = ref(false)
+
+const debouncedSAP_ID = useDebouncedRef('', 500)
+const sap_id_input = ref<VTextField>()
+/*
+    Watchers for SAP ID Field
+    1. on create mode
+    2. trigger loading icon
+    3. model value change debounceSAP_ID
+*/
+watch(
+    () => userModel.value.SAP_ID,
+    (newValue) => {
+        if (props.formType == 'create') {
+            sap_id_input_loading.value = true
+            debouncedSAP_ID.value = newValue
+        }
+    }
+)
+/*
+    Watchers for debouncedSAP_ID
+    1. on create mode
+    2. check the value has String
+    3. foroce validate the field
+    4. if valid, check the SAP ID is unique
+        -  SAP_ID unique, set isSAPIDUnique to true (change icon to success)
+        -  SAP_ID not unique, set isSAPIDUnique to false (change icon to error)
+        -  SAP_ID null or empty, set isSAPIDUnique to null (change icon to null)
+    5. after valid set loading icon to false (hide loading icon)
+*/
+watch(debouncedSAP_ID, (newVal: string) => {
+    //trim and check null or empty
+    let hasString = newVal && newVal.trim() !== ''
+    sap_id_input.value
+        ?.validate()
+        .then(async (v) => {
+            if (checkObjectPropertiesNull(v) && hasString) {
+                isSAPIDUnique.value = await checkSAPID(newVal)
+                if (isSAPIDUnique.value == false) {
+                    // sap_id_fieldRules.value.push(
+                    //     (v: string) => `SAP ID ${newVal} ถูกใช้แล้ว กรุณาใช้ SAP ID อื่น` as any
+                    // )
+                }
+            } else {
+                isSAPIDUnique.value = null
+            }
+        })
+        .finally(() => {
+            sap_id_input_loading.value = false
+        })
+})
+
+const checkSAPID = async (sap_id: string) => {
+    const { error: userError } = await fetchSRCUserById(sap_id, 'chk_unique')
+    if (userError.value === null) {
+        return true
+    } else {
+        const { showTokenExpired } = useErrorHandler()
+        const { statusCode } = userError.value
+
+        if (statusCode === 401) {
+            showTokenExpired(route.fullPath)
+        } else if (statusCode === 400) {
+        }
+        return false
+    }
+}
+
+const { showDialog, dialogContext, dialogInfo, dialogError } = useDialog()
+
+const submit = async (event: SubmitEventPromise) => {
+    loading.value = true
+    const results = await event
+    loading.value = false
+
+    if (results.valid) {
+        const context = dialogContext()
+        let dialog: Ref<boolean> | undefined
+        try {
+            if (props.formType == 'create') {
+                const { data: respData, error } = await createSRCUser(userModel.value)
+                if (error.value) throw error.value
+                dialog = dialogInfo()
+                context.value = {
+                    title: 'สร้างข้อมูลผู้ใช้',
+                    message: `สร้างข้อมูลผู้ใช้ ${userModel.value.SAP_ID} สำเร็จ`,
+                    actionButtons: [
+                        {
+                            text: 'Close',
+                        },
+                    ],
+                    persistent: true,
+                }
+            } else if (props.formType == 'edit') {
+                const { data: respData, error } = await updateSRCUserById(userModel.value)
+                if (error.value) throw error.value
+                dialog = dialogInfo()
+                context.value = {
+                    title: 'แก้ไขข้อมูลผู้ใช้',
+                    message: `แก้ไขข้อมูลผู้ใช้ ${userModel.value.SAP_ID} สำเร็จ`,
+                    actionButtons: [
+                        {
+                            text: 'Close',
+                        },
+                    ],
+                    persistent: true,
+                }
+            }
+
+            if (dialog) showDialog(context.value, dialog)
+        } catch (error: any) {
+            let statusCode = isNuxtError(error) ? error.statusCode : 500
+            dialog = dialogError()
+            context.value = {
+                title: 'เกิดข้อผิดพลาด',
+                message: `เกิดข้อผิดพลาด (${statusCode}) <br> ${error.data?.message || error.message || error}`,
+                actionButtons: [
+                    {
+                        text: 'Close',
+                    },
+                ],
+                persistent: true,
+            }
+            showDialog(context.value, dialog)
+        } finally {
+            emit('update:dialog', false)
+        }
+    } else {
+        check_accept.value = false
+    }
+}
+
 const { data: rolesData } = await fetchRoles()
 
 // Initialize user model for editing
@@ -412,6 +492,11 @@ const resetStateAfterDialogClose = () => {
     }
 }
 
+/**
+ * Watchers for dialog
+ * 1. Dialog just opened -> initializeUserForEdit()
+ * 2. Dialog just closed -> resetStateAfterDialogClose()
+ */
 watch(
     () => props.dialog,
     (newDialog, oldDialog) => {
