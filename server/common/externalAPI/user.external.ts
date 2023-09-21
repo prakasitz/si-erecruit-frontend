@@ -62,7 +62,6 @@ class UserExternal extends ExternalAPIService {
         try {
             const token = await this.getAccessToken(event)
             const user = event.context.user
-            console.log('user', user)
             const body = await readBody(event)
             const resp = await this.baseAPI.post(
                 `/${this.slug}/create`,
@@ -87,9 +86,10 @@ class UserExternal extends ExternalAPIService {
         try {
             const token = await this.getAccessToken(event)
             const body = await readBody(event)
+            const user = event.context.user
             const resp = await this.baseAPI.put(
                 `/${this.slug}/update`,
-                { ...body },
+                { ...body, created_by: user?.sub },
                 {
                     headers: {
                         Authorization: 'Bearer ' + token,
