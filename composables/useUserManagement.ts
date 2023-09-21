@@ -32,6 +32,7 @@ const fetchSRCUsers = () => {
                 }
             })
         },
+        key: 'fetchSRCUsers',
         server: false,
     })
 }
@@ -50,6 +51,7 @@ const fetchSRCUserById = (sap_id: any, type?: string) => {
         transform(data: SRC_User) {
             return data
         },
+        key: `fetchSRCUserById-${sap_id}`,
         server: false,
     })
 }
@@ -57,12 +59,32 @@ const fetchSRCUserById = (sap_id: any, type?: string) => {
 const createSRCUser = (srcUser: SRC_User) => {
     /*
      */
-    return useFetch(`/api/external/users/create`, {
+    type ResponseCreateSRCUser = {
+        rowAffects: SRC_User
+    }
+
+    // {
+    //     SAP_ID: '2'
+    //     role_ID: 1
+    //     local_password: null
+    //     local_user: false
+    //     locked_user: false
+    //     last_login: null
+    //     note: '1231231231'
+    //     created_at: '2023-09-21T15:31:04.220Z'
+    //     created_by: null
+    //     name: 'avss'
+    //     lastname: 'dsdsd'
+    //     SAP_name: null
+    // }
+
+    return useFetch<ResponseCreateSRCUser>(`/api/external/users/create`, {
         headers: {
             Accept: 'application/json',
         },
         method: 'POST',
         body: srcUser,
+        key: 'createSRCUser',
         server: false,
     })
 }
@@ -75,9 +97,7 @@ const updateSRCUserById = (srcUser: SRC_User) => {
             Accept: 'application/json',
         },
         method: 'PUT',
-        body: {
-            ...srcUser,
-        },
+        body: srcUser,
         transform(data: any) {
             return data
         },
