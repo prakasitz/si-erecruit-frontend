@@ -64,7 +64,7 @@
                     </template>
                     <template v-slot:item.action="{ item }">
                         <v-icon size="small" class="me-2" @click="showForm(item.raw, 'edit')"> mdi-pencil </v-icon>
-                        <v-icon size="small" @click="deleteItem(item.raw)" color="red"> mdi-delete </v-icon>
+                        <v-icon size="small" @click="confirmToDeleteUser(item.raw)" color="red"> mdi-delete </v-icon>
                     </template>
                 </v-data-table>
                 <dialogs-backend-user-form
@@ -101,11 +101,73 @@ definePageMeta({
 
 const route = useRoute()
 
-const { fetchSRCUsers } = useUserManagement()
+const { dialogConfirm, showDialog } = useDialog()
+const dialog = ref(false)
+const dialogConf = dialogConfirm()
+
+const { fetchSRCUsers, deleteSRCUserById } = useUserManagement()
 
 const { data: usersData, pending: usersPending } = fetchSRCUsers()
 
-const dialog = ref(false)
+const delItem = async (even: any, item: SRC_User) => {
+    const resp = await deleteSRCUserById(item)
+    if (resp.data.value) {
+        return {
+            status: true,
+
+            message: `ลบผู้ใช้งาน: <b>${item.SAP_ID}</b> สำเร็จ`,
+
+            callbackActionBtn: [
+                {
+                    text: 'Close',
+                    //href: `/job_management/${data.job_ID}`,
+                },
+            ],
+        }
+    } else if (resp?.error?.value?.data) {
+        const { showTokenExpired } = useErrorHandler()
+        let statusCode = resp?.error.value.statusCode
+        if (statusCode === 401) showTokenExpired(route)
+        return {
+            status: false,
+            message: `ลบผู้ใช้งาน: <b>${item.SAP_ID}</b> ไม่สำเร็จ <br>Error: ${resp?.error?.value?.data?.message}`,
+        }
+    } else {
+        return {
+            status: false,
+
+            message: `Sorry, something went wrong.`,
+        }
+    }
+}
+
+const confirmToDeleteUser = async (srcUser: SRC_User) => {
+    let dialogContext: any = {
+        title: `ลบผู้ใช้งาน`,
+        dialogColor: 'error',
+        message: `คุณต้องการลบผู้ใช้งาน: <br> <b>${srcUser.SAP_ID}</b> ?`,
+        item: {
+            id: {
+                ...srcUser,
+            },
+        },
+        actionButtons: [
+            {
+                text: 'Delete',
+                variant: 'elevated',
+                color: 'error',
+                cb: delItem,
+            },
+            {
+                text: 'Cancel',
+            },
+        ],
+
+        persistent: true,
+    }
+    showDialog(dialogContext, dialogConf)
+}
+
 const form: Ref<'' | 'edit' | 'create'> = ref('')
 const userProps: Ref<SRC_User | undefined> = ref()
 const showForm = (item: SRC_User | undefined, type: 'edit' | 'create') => {
@@ -167,15 +229,12 @@ const roleChipList = ref([
     },
 ])
 
-watch(
-    () => dialog.value,
-    (val) => {
-        if (!val) {
-            userProps.value = undefined
-            refreshNuxtData('fetchSRCUsers')
-        }
+watch([() => dialog.value, () => dialogConf.value], ([val1, val2]) => {
+    if (!val1 && !val2) {
+        userProps.value = undefined
+        refreshNuxtData('fetchSRCUsers')
     }
-)
+})
 
 console.log(route.meta.title) // My home page
 </script>

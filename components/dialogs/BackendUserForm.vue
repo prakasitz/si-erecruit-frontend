@@ -395,7 +395,7 @@ const checkSAPID = async (sap_id: string) => {
         const { statusCode } = userError.value
 
         if (statusCode === 401) {
-            showTokenExpired(route.fullPath)
+            showTokenExpired(route)
         } else if (statusCode === 400) {
         }
         return false

@@ -107,12 +107,14 @@ const updateSRCUserById = (srcUser: SRC_User) => {
 }
 
 const deleteSRCUserById = (srcUser: SRC_User) => {
+    console.log(srcUser, 'srcUser')
     /*
      */
     return useFetch(`/api/external/users/delete/${srcUser.SAP_ID}`, {
         headers: {
             Accept: 'application/json',
         },
+        key: `deleteSRCUserById-${srcUser.SAP_ID}`,
         method: 'DELETE',
         server: false,
     })
