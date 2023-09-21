@@ -1,23 +1,16 @@
 <template>
     <div>
-        <v-card v-if="usersPending" class="mx-auto" width="90%">
-            <v-card-item>
-                <v-skeleton-loader
-                    :loading="usersPending"
-                    type="heading, subtitle, table-tbody, table-tfoot"
-                ></v-skeleton-loader>
-            </v-card-item>
-        </v-card>
-        <v-card v-else class="mx-auto" width="90%">
+        <v-card class="mx-auto" width="90%">
             <v-card-item>
                 <v-card-title :style="{ 'font-size': '18px !important' }"></v-card-title>
                 <v-data-table
-                    :items-per-page="10"
+                    :items-per-page="20"
                     :headers="(headers as any)"
                     :items="usersData || []"
                     item-value="name"
                     class="elevation-1"
                     :search="search"
+                    :loading="usersPending"
                     hover
                 >
                     <template v-slot:top>
@@ -170,9 +163,19 @@ const roleChipList = ref([
     {
         id: 3,
         text: 'Department Officer',
-        color: 'yellow',
+        color: '#FFA726',
     },
 ])
+
+watch(
+    () => dialog.value,
+    (val) => {
+        if (!val) {
+            userProps.value = undefined
+            refreshNuxtData('fetchSRCUsers')
+        }
+    }
+)
 
 console.log(route.meta.title) // My home page
 </script>
