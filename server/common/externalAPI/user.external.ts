@@ -29,10 +29,10 @@ class UserExternal extends ExternalAPIService {
 
     public async getUserById(event: H3Event, id: string, type?: string) {
         try {
-            await this.initializeToken()
+            const token = await this.getAccessToken(event)
             const resp = await this.baseAPI.get(`/${this.slug}/get/${id}`, {
                 headers: {
-                    Authorization: 'Bearer ' + this.token,
+                    Authorization: 'Bearer ' + token,
                 },
             })
 
@@ -60,15 +60,16 @@ class UserExternal extends ExternalAPIService {
 
     public async createUser(event: H3Event) {
         try {
-            await this.initializeToken()
+            const token = await this.getAccessToken(event)
+            const user = event.context.user
+            console.log('user', user)
             const body = await readBody(event)
-            if (body.user == null) throw new H3Error('User is null')
             const resp = await this.baseAPI.post(
                 `/${this.slug}/create`,
-                { user: body.user },
+                { ...body, created_by: user?.sub },
                 {
                     headers: {
-                        Authorization: 'Bearer ' + this.token,
+                        Authorization: 'Bearer ' + token,
                     },
                 }
             )
@@ -84,15 +85,14 @@ class UserExternal extends ExternalAPIService {
 
     public async updateUser(event: H3Event) {
         try {
-            await this.initializeToken()
+            const token = await this.getAccessToken(event)
             const body = await readBody(event)
-            if (body.user == null) throw new H3Error('User is null')
             const resp = await this.baseAPI.put(
                 `/${this.slug}/update`,
-                { user: body.user },
+                { ...body },
                 {
                     headers: {
-                        Authorization: 'Bearer ' + this.token,
+                        Authorization: 'Bearer ' + token,
                     },
                 }
             )
@@ -108,10 +108,10 @@ class UserExternal extends ExternalAPIService {
 
     public async lockUserById(event: H3Event, id: string) {
         try {
-            await this.initializeToken()
+            const token = await this.getAccessToken(event)
             const resp = await this.baseAPI.patch(`/${this.slug}/lock/${id}`, {
                 headers: {
-                    Authorization: 'Bearer ' + this.token,
+                    Authorization: 'Bearer ' + token,
                 },
             })
 
@@ -126,10 +126,10 @@ class UserExternal extends ExternalAPIService {
 
     public async deleteUserById(event: H3Event, id: string) {
         try {
-            await this.initializeToken()
+            const token = await this.getAccessToken(event)
             const resp = await this.baseAPI.delete(`/${this.slug}/delete/${id}`, {
                 headers: {
-                    Authorization: 'Bearer ' + this.token,
+                    Authorization: 'Bearer ' + token,
                 },
             })
 
