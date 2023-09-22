@@ -7,7 +7,7 @@ export default function useUserManagement() {
         createSRCUser,
         updateSRCUserById,
         deleteSRCUserById,
-        updatePsswordSRCUserById
+        updatePsswordSRCUserById,
     }
 }
 const fetchSRCUsers = () => {
@@ -97,7 +97,8 @@ const updatePsswordSRCUserById = (srcUser: SRC_User) => {
             Accept: 'application/json',
         },
         method: 'PATCH',
-        cache: 'no-cache',
+        key: `updatePsswordSRCUserById-${srcUser.SAP_ID}`,
+        cache: 'no-store',
         body: srcUser,
         server: false,
     })

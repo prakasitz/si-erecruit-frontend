@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="props.dialog" width="auto" persistent>
         <!-- <v-form validate-on="submit lazy" @submit.prevent="submit" ref="userForm"> -->
-        <v-form @submit.prevent="submit" ref="userForm" autocomplete="off" >
+        <v-form @submit.prevent="submit" ref="userForm" autocomplete="off">
             <v-card class="mb-5" width="800">
                 <v-toolbar density="compact" :color="bgColor">
                     <v-icon class="ml-2" :icon="'mdi-information-outline'"></v-icon>
@@ -160,13 +160,15 @@
                                                 <v-text-field
                                                     v-if="userModel.local_user"
                                                     :rules="
-                                                        fieldRules({
-                                                            length: 100,
-                                                            type: 'string',
-                                                        })
+                                                        (isChangeUserType || props.formType == 'create')
+                                                            ? fieldRules({
+                                                                  length: 12,
+                                                                  type: 'string',
+                                                              })
+                                                            : []
                                                     "
                                                     v-model="userModel.local_password"
-                                                    autocomplete="off"
+                                                    autocomplete="new-password"
                                                     type="password"
                                                     counter="12"
                                                     label="New Local-Password"
@@ -403,16 +405,31 @@ const checkSAPID = async (sap_id: string) => {
 }
 
 const { showDialog, dialogContext, dialogInfo, dialogError } = useDialog()
-const isChangeUserTypeOrPassword = computed(() => {
+const isChangeUserType = computed(() => {
     if (props.formType == 'edit') {
-        if (
-            userModel.value.local_user != props.user?.local_user ||
-            userModel.value.local_password != props.user?.local_password
-        ) {
+        if (userModel.value.local_user != props.user?.local_user) {
             return true
         } else {
             return false
         }
+    } else {
+        return false
+    }
+})
+const isChangePassword = computed(() => {
+    if (props.formType == 'edit') {
+        if (userModel.value.local_password != props.user?.local_password) {
+            return true
+        } else {
+            return false
+        }
+    } else {
+        return false
+    }
+})
+const isChangeUserTypeOrPassword = computed(() => {
+    if (props.formType == 'edit') {
+        return isChangeUserType.value || isChangePassword.value
     } else {
         return false
     }
@@ -442,14 +459,30 @@ const submit = async (event: SubmitEventPromise) => {
                     persistent: true,
                 }
             } else if (props.formType == 'edit') {
-                const { data: respData, error } = await updateSRCUserById(userModel.value)
-                if (isChangeUserTypeOrPassword.value) {
-                    const { data: respDataPassword, error } = await updatePsswordSRCUserById(userModel.value)
-                    if (error.value) throw error.value
-                } else if (error.value) throw error.value
+                const { error } = await useAsyncData('updateForm', async () => {
+                    try {
+                        const resp1 = await updateSRCUserById(userModel.value)
+                        if (resp1.error.value) throw resp1.error.value
+
+                        if (isChangeUserTypeOrPassword.value) {
+                            const resp2 = await updatePsswordSRCUserById(userModel.value)
+                            if (resp2.error.value) throw resp2.error.value
+                        }
+
+                        return {
+                            data: 'success',
+                            error: null,
+                        }
+                    } catch (error) {
+                        throw error
+                    }
+                })
+
+                if (error.value) throw error.value
+
                 dialog = dialogInfo()
                 context.value = {
-                    title: 'แก้ไขข้อมูลผู้ใช้',
+                    title: `แก้ไขข้อมูลผู้ใช้ ${userModel.value.SAP_ID}`,
                     message: `แก้ไขข้อมูลผู้ใช้ ${userModel.value.SAP_ID} สำเร็จ`,
                     actionButtons: [
                         {
@@ -461,11 +494,11 @@ const submit = async (event: SubmitEventPromise) => {
             }
 
             if (dialog) showDialog(context.value, dialog)
-        } catch (error: any) {
+        } catch (error: NuxtError | any) {
             let statusCode = isNuxtError(error) ? error.statusCode : 500
             dialog = dialogError()
             context.value = {
-                title: 'เกิดข้อผิดพลาด',
+                title: `เกิดข้อผิดพลาด ${error.data?.url ?? ''}`,
                 message: `เกิดข้อผิดพลาด (${statusCode}) <br> ${error.data?.message || error.message || error}`,
                 actionButtons: [
                     {
