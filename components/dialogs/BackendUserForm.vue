@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="props.dialog" width="auto" persistent>
         <!-- <v-form validate-on="submit lazy" @submit.prevent="submit" ref="userForm"> -->
-        <v-form @submit.prevent="submit" ref="userForm">
+        <v-form @submit.prevent="submit" ref="userForm" autocomplete="off" >
             <v-card class="mb-5" width="800">
                 <v-toolbar density="compact" :color="bgColor">
                     <v-icon class="ml-2" :icon="'mdi-information-outline'"></v-icon>
@@ -166,7 +166,7 @@
                                                         })
                                                     "
                                                     v-model="userModel.local_password"
-                                                    autocomplete="false"
+                                                    autocomplete="off"
                                                     type="password"
                                                     counter="12"
                                                     label="New Local-Password"
@@ -257,7 +257,7 @@ const props = defineProps({
 })
 
 const { fieldRules } = useFillRules()
-const { fetchSRCUserById, createSRCUser, updateSRCUserById } = useUserManagement()
+const { fetchSRCUserById, createSRCUser, updateSRCUserById, updatePsswordSRCUserById } = useUserManagement()
 const { fetchRoles } = useMaster()
 
 const route = useRoute()
@@ -403,7 +403,21 @@ const checkSAPID = async (sap_id: string) => {
 }
 
 const { showDialog, dialogContext, dialogInfo, dialogError } = useDialog()
-
+const isChangeUserTypeOrPassword = computed(() => {
+    if (props.formType == 'edit') {
+        if (
+            userModel.value.local_user != props.user?.local_user ||
+            userModel.value.local_password != props.user?.local_password
+        ) {
+            return true
+        } else {
+            return false
+        }
+    } else {
+        return false
+    }
+})
+// const isChangeUserTypeOrPassword = ref(false)
 const submit = async (event: SubmitEventPromise) => {
     loading.value = true
     const results = await event
@@ -429,7 +443,10 @@ const submit = async (event: SubmitEventPromise) => {
                 }
             } else if (props.formType == 'edit') {
                 const { data: respData, error } = await updateSRCUserById(userModel.value)
-                if (error.value) throw error.value
+                if (isChangeUserTypeOrPassword.value) {
+                    const { data: respDataPassword, error } = await updatePsswordSRCUserById(userModel.value)
+                    if (error.value) throw error.value
+                } else if (error.value) throw error.value
                 dialog = dialogInfo()
                 context.value = {
                     title: 'แก้ไขข้อมูลผู้ใช้',
