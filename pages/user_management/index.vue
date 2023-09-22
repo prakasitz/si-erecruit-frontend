@@ -114,7 +114,6 @@ const delItem = async (even: any, item: SRC_User) => {
     if (resp.data.value) {
         return {
             status: true,
-
             message: `ลบผู้ใช้งาน: <b>${item.SAP_ID}</b> สำเร็จ`,
 
             callbackActionBtn: [
@@ -130,7 +129,7 @@ const delItem = async (even: any, item: SRC_User) => {
         if (statusCode === 401) showTokenExpired(route)
         return {
             status: false,
-            message: `ลบผู้ใช้งาน: <b>${item.SAP_ID}</b> ไม่สำเร็จ <br>Error: ${resp?.error?.value?.data?.message}`,
+            message: `การลบผู้ใช้งาน: <b>${item.SAP_ID}</b> ไม่สำเร็จ Error: ${resp?.error?.value?.data?.message}`,
         }
     } else {
         return {
