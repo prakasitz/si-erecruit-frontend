@@ -7,6 +7,7 @@ export default function useUserManagement() {
         createSRCUser,
         updateSRCUserById,
         deleteSRCUserById,
+        updatePsswordSRCUserById
     }
 }
 const fetchSRCUsers = () => {
@@ -28,7 +29,6 @@ const fetchSRCUsers = () => {
                     role_ID: item.role_ID,
                     local_user: item.local_user,
                     locked_user: item.locked_user,
-                    local_password: item.local_password,
                     last_login_str: dateToString(item.last_login, DateFormatEnum.DATE_TIME_BUDDHIST_1),
                 }
             })
@@ -64,21 +64,6 @@ const createSRCUser = (srcUser: SRC_User) => {
         rowAffects: SRC_User
     }
 
-    // {
-    //     SAP_ID: '2'
-    //     role_ID: 1
-    //     local_password: null
-    //     local_user: false
-    //     locked_user: false
-    //     last_login: null
-    //     note: '1231231231'
-    //     created_at: '2023-09-21T15:31:04.220Z'
-    //     created_by: null
-    //     name: 'avss'
-    //     lastname: 'dsdsd'
-    //     SAP_name: null
-    // }
-
     return useFetch<ResponseCreateSRCUser>(`/api/external/users/create`, {
         headers: {
             Accept: 'application/json',
@@ -98,18 +83,27 @@ const updateSRCUserById = (srcUser: SRC_User) => {
             Accept: 'application/json',
         },
         method: 'PUT',
+        key: `updateSRCUserById-${srcUser.SAP_ID}`,
         body: srcUser,
-        transform(data: any) {
-            return data
+        server: false,
+    })
+}
+
+const updatePsswordSRCUserById = (srcUser: SRC_User) => {
+    /*
+     */
+    return useFetch(`/api/external/users/updatePassword`, {
+        headers: {
+            Accept: 'application/json',
         },
+        method: 'PATCH',
+        cache: 'no-cache',
+        body: srcUser,
         server: false,
     })
 }
 
 const deleteSRCUserById = (srcUser: SRC_User) => {
-    console.log(srcUser, 'srcUser')
-    /*
-     */
     return useFetch(`/api/external/users/delete/${srcUser.SAP_ID}`, {
         headers: {
             Accept: 'application/json',
