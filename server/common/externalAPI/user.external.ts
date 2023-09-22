@@ -106,6 +106,30 @@ class UserExternal extends ExternalAPIService {
         }
     }
 
+    public async updatePassword(event: H3Event) {
+        try {
+            const token = await this.getAccessToken(event)
+            const body = await readBody(event)
+            const user = event.context.user
+            const resp = await this.baseAPI.patch(
+                `/${this.slug}/updatePassword`,
+                { ...body, created_by: user?.sub },
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + token,
+                    },
+                }
+            )
+
+            if (!resp.data) throw new Error(`updateUser: Data not found`)
+
+            let result: any = resp.data
+            return result
+        } catch (error: AxiosError | any) {
+            return this.handleError(error)
+        }
+    }
+
     public async lockUserById(event: H3Event, id: string) {
         try {
             const token = await this.getAccessToken(event)

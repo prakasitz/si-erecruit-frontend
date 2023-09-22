@@ -46,6 +46,14 @@ router.put(
     })
 )
 
+router.patch(
+    '/updatePassword',
+    defineEventHandler(async (event) => {
+        const resp = await userService.updatePassword(event)
+        return resp
+    })
+)
+
 router.delete(
     '/delete/:id',
     defineEventHandler(async (event) => {

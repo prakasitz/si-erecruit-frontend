@@ -687,6 +687,7 @@ export type SRC_User = {
     role_ID: number
     local_user: boolean
     local_password?: string
+    new_local_password?: string
     locked_user: boolean
     note?: string
     name?: string
