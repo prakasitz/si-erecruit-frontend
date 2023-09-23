@@ -1,6 +1,7 @@
 <template>
     <v-dialog v-model="props.dialog" width="auto" persistent>
-        <v-form validate-on="submit lazy" @submit.prevent="submit" ref="userForm">
+        <!-- <v-form validate-on="submit lazy" @submit.prevent="submit" ref="userForm"> -->
+        <v-form @submit.prevent="submit" ref="userForm" autocomplete="off">
             <v-card class="mb-5" width="800">
                 <v-toolbar density="compact" :color="bgColor">
                     <v-icon class="ml-2" :icon="'mdi-information-outline'"></v-icon>
@@ -13,26 +14,44 @@
                         <v-col cols="5">
                             <v-text-field
                                 v-model="userModel.SAP_ID"
+                                hint="ใช้ 0-9 เท่านั้น"
+                                label="SAP ID"
+                                counter="8"
+                                ref="sap_id_input"
+                                @keydown.space.prevent
+                                :readonly="props.formType == 'edit'"
+                                :hide-details="props.formType == 'edit'"
+                                :variant="props.formType == 'edit' ? 'solo-filled' : 'outlined'"
+                                :error="isSAPIDUnique === false"
+                                :error-messages="isSAPIDUnique === false ? ['SAP ID นี้ถูกใช้แล้ว'] : []"
                                 :rules="
                                     fieldRules({
                                         length: 8,
-                                        //regex for english and number only
-                                        formatRequired: /^[a-zA-Z0-9]*$/,
+                                        //regex for number only
+                                        formatRequired: /^[0-9]*$/,
                                         type: 'string',
                                     })
                                 "
-                                hint="ใช้ a-z, A-Z, 0-9 เท่านั้น"
-                                label="SAP ID"
-                                variant="outlined"
-                                counter="8"
-                                :readonly="props.formType == 'edit'"
                                 class="sap-id"
-                            ></v-text-field>
+                            >
+                                <template #append-inner>
+                                    <v-progress-circular
+                                        v-if="sap_id_input_loading"
+                                        indeterminate
+                                        color="grey"
+                                        size="small"
+                                    ></v-progress-circular>
+                                    <div v-else>
+                                        <v-tooltip size="small" :text="statusComputed?.tooltip">
+                                            <template v-slot:activator="{ props }">
+                                                <v-icon v-bind="{ props, ...statusComputed }" class="mx-1" />
+                                            </template>
+                                        </v-tooltip>
+                                    </div>
+                                </template>
+                            </v-text-field>
                         </v-col>
                         <v-spacer></v-spacer>
-                    </v-row>
-
-                    <v-row>
                         <v-col cols="5">
                             <v-text-field
                                 v-model="userModel.SAP_name"
@@ -42,19 +61,45 @@
                                         type: 'string',
                                     })
                                 "
+                                hint="ใช้ a-z, A-Z, 0-9 เท่านั้น"
                                 counter="50"
                                 label="SAP Name"
                                 variant="outlined"
-                                density="compact"
+                                class="sap-id"
                             ></v-text-field>
+                        </v-col>
+                    </v-row>
+
+                    <v-row>
+                        <v-col cols="5">
+                            <v-row no-gutters>
+                                <v-col cols="12">
+                                    <v-text-field
+                                        v-model="userModel.name"
+                                        counter="50"
+                                        label="ชื่อ (ไม่บังคับ)"
+                                        variant="outlined"
+                                        density="compact"
+                                    ></v-text-field>
+                                </v-col>
+                                <v-col cols="12">
+                                    <v-text-field
+                                        v-model="userModel.lastname"
+                                        validate-on="submit lazy"
+                                        counter="50"
+                                        label="สกุล (ไม่บังคับ)"
+                                        variant="outlined"
+                                        density="compact"
+                                    ></v-text-field>
+                                </v-col>
+                            </v-row>
                         </v-col>
                         <v-spacer></v-spacer>
                         <v-divider vertical></v-divider>
                         <v-col offset="1" cols="5">
                             <v-select
                                 v-model="userModel.role_ID"
-                                :rules="fieldRules({})"
-                                :items="role"
+                                :items="rolesData"
                                 item-title="role_name"
                                 item-value="role_ID"
                                 label="Role"
@@ -115,15 +160,18 @@
                                                 <v-text-field
                                                     v-if="userModel.local_user"
                                                     :rules="
-                                                        fieldRules({
-                                                            length: 100,
-                                                            type: 'string',
-                                                        })
+                                                        (isChangeUserType || props.formType == 'create')
+                                                            ? fieldRules({
+                                                                  length: 12,
+                                                                  type: 'string',
+                                                              })
+                                                            : []
                                                     "
                                                     v-model="userModel.local_password"
+                                                    autocomplete="new-password"
                                                     type="password"
                                                     counter="12"
-                                                    label="Local-Password"
+                                                    label="New Local-Password"
                                                     variant="outlined"
                                                     density="compact"
                                                 ></v-text-field>
@@ -145,6 +193,7 @@
                                     })
                                 "
                                 label="Note"
+                                validate-on="submit lazy"
                                 counter="255"
                                 variant="outlined"
                                 density="compact"
@@ -187,7 +236,10 @@
 
 <script lang="ts" setup>
 import { SubmitEventPromise } from 'vuetify/lib/framework.mjs'
+import { VTextField } from 'vuetify/lib/components/VTextField/index.mjs'
+
 import { SRC_User } from '~/utils/types'
+import { NuxtError } from 'nuxt/app'
 
 const emit = defineEmits(['update:dialog'])
 
@@ -207,29 +259,12 @@ const props = defineProps({
 })
 
 const { fieldRules } = useFillRules()
-const { fetchSRCUserById, createSRCUserById, updateSRCUserById } = useUserManagement()
+const { fetchSRCUserById, createSRCUser, updateSRCUserById, updatePsswordSRCUserById } = useUserManagement()
 const { fetchRoles } = useMaster()
 
-const userModel: Ref<SRC_User> = ref({
-    SAP_ID: '',
-    SAP_name: '',
-    role_ID: '',
-    locked_user: false,
-    local_user: false,
-})
+const route = useRoute()
 
-const loading = ref(false)
-const submit = async (event: SubmitEventPromise) => {
-    loading.value = true
-
-    const results = await event
-
-    loading.value = false
-
-    alert(JSON.stringify(results, null, 2))
-
-    if (results.valid) emit('update:dialog', false)
-}
+const userModel: Ref<SRC_User> = ref(deepCopy(defaultSRCUserForm))
 
 const currentBgColor = ref('')
 const currentContext = ref({
@@ -273,48 +308,259 @@ const bgColor = computed(() => {
 
 const check_accept = ref(false)
 
-const { data: role } = await fetchRoles()
-
-const roleItems = ref([
-    {
-        text: 'Super Admin',
-        value: 0,
+/**
+- null = not check
+- true = unique
+- false = not unique
+**/
+const isSAPIDUnique = ref<boolean | null>(null)
+const statusSAPID = reactive({
+    success: {
+        icon: 'mdi-check',
+        color: 'success',
+        tooltip: 'ใช้ SAP ID นี้ได้',
     },
-    {
-        text: 'General Admin',
-        value: 1,
+    error: {
+        icon: 'mdi-close',
+        color: 'error',
+        tooltip: 'SAP ID ถูกใช้แล้ว',
     },
-    {
-        text: 'HR Officer',
-        value: 2,
-    },
-    {
-        text: 'Department Officer',
-        value: 3,
-    },
-])
-
-watchEffect(() => {
-    if (props.user && props.formType === 'edit' && props.dialog) {
-        userModel.value = props.user
+})
+const statusComputed = computed(() => {
+    if (isSAPIDUnique.value === null) {
+        return null
+    } else if (isSAPIDUnique.value === true) {
+        return statusSAPID.success
+    } else if (isSAPIDUnique.value === false) {
+        return statusSAPID.error
     }
 })
+const loading = ref(false)
+const sap_id_input_loading = ref(false)
 
-watchPostEffect(() => {
-    if (!props.dialog) {
-        check_accept.value = false
-        currentBgColor.value = ''
-        currentContext.value = {
-            title: '',
-            btnSubmit: '',
-        }
-        userModel.value = {
-            SAP_ID: '',
-            SAP_name: '',
-            role_ID: '',
-            locked_user: false,
-            local_user: false,
+const debouncedSAP_ID = useDebouncedRef('', 500)
+const sap_id_input = ref<VTextField>()
+/*
+    Watchers for SAP ID Field
+    1. on create mode
+    2. trigger loading icon
+    3. model value change debounceSAP_ID
+*/
+watch(
+    () => userModel.value.SAP_ID,
+    (newValue) => {
+        if (props.formType == 'create') {
+            sap_id_input_loading.value = true
+            debouncedSAP_ID.value = newValue
         }
     }
+)
+/*
+    Watchers for debouncedSAP_ID
+    1. on create mode
+    2. check the value has String
+    3. foroce validate the field
+    4. if valid, check the SAP ID is unique
+        -  SAP_ID unique, set isSAPIDUnique to true (change icon to success)
+        -  SAP_ID not unique, set isSAPIDUnique to false (change icon to error)
+        -  SAP_ID null or empty, set isSAPIDUnique to null (change icon to null)
+    5. after valid set loading icon to false (hide loading icon)
+*/
+watch(debouncedSAP_ID, (newVal: string) => {
+    //trim and check null or empty
+    let hasString = newVal && newVal.trim() !== ''
+    sap_id_input.value
+        ?.validate()
+        .then(async (v) => {
+            if (checkObjectPropertiesNull(v) && hasString) {
+                isSAPIDUnique.value = await checkSAPID(newVal)
+                if (isSAPIDUnique.value == false) {
+                    // sap_id_fieldRules.value.push(
+                    //     (v: string) => `SAP ID ${newVal} ถูกใช้แล้ว กรุณาใช้ SAP ID อื่น` as any
+                    // )
+                }
+            } else {
+                isSAPIDUnique.value = null
+            }
+        })
+        .finally(() => {
+            sap_id_input_loading.value = false
+        })
+})
+
+const checkSAPID = async (sap_id: string) => {
+    const { error: userError } = await fetchSRCUserById(sap_id, 'chk_unique')
+    if (userError.value === null) {
+        return true
+    } else {
+        const { showTokenExpired } = useErrorHandler()
+        const { statusCode } = userError.value
+
+        if (statusCode === 401) {
+            showTokenExpired(route)
+        } else if (statusCode === 400) {
+        }
+        return false
+    }
+}
+
+const { showDialog, dialogContext, dialogInfo, dialogError } = useDialog()
+const isChangeUserType = computed(() => {
+    if (props.formType == 'edit') {
+        if (userModel.value.local_user != props.user?.local_user) {
+            return true
+        } else {
+            return false
+        }
+    } else {
+        return false
+    }
+})
+const isChangePassword = computed(() => {
+    if (props.formType == 'edit') {
+        if (userModel.value.local_password != props.user?.local_password) {
+            return true
+        } else {
+            return false
+        }
+    } else {
+        return false
+    }
+})
+const isChangeUserTypeOrPassword = computed(() => {
+    if (props.formType == 'edit') {
+        return isChangeUserType.value || isChangePassword.value
+    } else {
+        return false
+    }
+})
+// const isChangeUserTypeOrPassword = ref(false)
+const submit = async (event: SubmitEventPromise) => {
+    loading.value = true
+    const results = await event
+    loading.value = false
+
+    if (results.valid) {
+        const context = dialogContext()
+        let dialog: Ref<boolean> | undefined
+        try {
+            if (props.formType == 'create') {
+                const { data: respData, error } = await createSRCUser(userModel.value)
+                if (error.value) throw error.value
+                dialog = dialogInfo()
+                context.value = {
+                    title: 'สร้างข้อมูลผู้ใช้',
+                    message: `สร้างข้อมูลผู้ใช้ ${userModel.value.SAP_ID} สำเร็จ`,
+                    actionButtons: [
+                        {
+                            text: 'Close',
+                        },
+                    ],
+                    persistent: true,
+                }
+            } else if (props.formType == 'edit') {
+                const { error } = await useAsyncData('updateForm', async () => {
+                    try {
+                        const resp1 = await updateSRCUserById(userModel.value)
+                        if (resp1.error.value) throw resp1.error.value
+
+                        if (isChangeUserTypeOrPassword.value) {
+                            const resp2 = await updatePsswordSRCUserById(userModel.value)
+                            if (resp2.error.value) throw resp2.error.value
+                        }
+
+                        return {
+                            data: 'success',
+                            error: null,
+                        }
+                    } catch (error) {
+                        throw error
+                    }
+                })
+
+                if (error.value) throw error.value
+
+                dialog = dialogInfo()
+                context.value = {
+                    title: `แก้ไขข้อมูลผู้ใช้ ${userModel.value.SAP_ID}`,
+                    message: `แก้ไขข้อมูลผู้ใช้ ${userModel.value.SAP_ID} สำเร็จ`,
+                    actionButtons: [
+                        {
+                            text: 'Close',
+                        },
+                    ],
+                    persistent: true,
+                }
+            }
+
+            if (dialog) showDialog(context.value, dialog)
+        } catch (error: NuxtError | any) {
+            let statusCode = isNuxtError(error) ? error.statusCode : 500
+            dialog = dialogError()
+            context.value = {
+                title: `เกิดข้อผิดพลาด ${error.data?.url ?? ''}`,
+                message: `เกิดข้อผิดพลาด (${statusCode}) <br> ${error.data?.message || error.message || error}`,
+                actionButtons: [
+                    {
+                        text: 'Close',
+                    },
+                ],
+                persistent: true,
+            }
+            showDialog(context.value, dialog)
+        } finally {
+            emit('update:dialog', false)
+        }
+    } else {
+        check_accept.value = false
+    }
+}
+
+const { data: rolesData } = await fetchRoles()
+
+// Initialize user model for editing
+const initializeUserForEdit = () => {
+    if (props.user && props.formType === 'edit') {
+        userModel.value = deepCopy(props.user)
+    }
+}
+
+// Reset the state when the dialog is closed
+const resetStateAfterDialogClose = () => {
+    if (!props.dialog) {
+        setTimeout(() => {
+            check_accept.value = false
+            isSAPIDUnique.value = null
+            sap_id_input_loading.value = false
+            currentBgColor.value = ''
+            currentContext.value = {
+                title: '',
+                btnSubmit: '',
+            }
+            userModel.value = deepCopy(defaultSRCUserForm)
+        }, 200)
+    }
+}
+
+/**
+ * Watchers for dialog
+ * 1. Dialog just opened -> initializeUserForEdit()
+ * 2. Dialog just closed -> resetStateAfterDialogClose()
+ */
+watch(
+    () => props.dialog,
+    (newDialog, oldDialog) => {
+        if (newDialog) {
+            // Dialog just opened
+            initializeUserForEdit()
+        } else if (!newDialog) {
+            // Dialog just closed
+            resetStateAfterDialogClose()
+        }
+    }
+)
+
+onBeforeUnmount(() => {
+    sap_id_input.value = undefined
 })
 </script>

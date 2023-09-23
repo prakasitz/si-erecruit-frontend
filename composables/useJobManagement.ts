@@ -1,13 +1,7 @@
-import dayjs from 'dayjs'
-import 'dayjs/locale/th' // load on demand
-import buddhistEra from 'dayjs/plugin/buddhistEra'
 import { Job, JobWithProfileAndQuickAction, ProfileWithQuickAction } from '~/utils/types'
 import { useJobComponentStore } from '~/stores/job-component.store'
 import { AsyncData } from 'nuxt/app'
 import { FetchError } from 'ofetch'
-
-dayjs.extend(buddhistEra)
-dayjs.locale('th')
 
 export default function useJobManagement() {
     return {

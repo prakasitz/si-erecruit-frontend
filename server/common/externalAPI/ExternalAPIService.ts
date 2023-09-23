@@ -142,6 +142,7 @@ export class ExternalAPIService {
     protected handleError(error: Error | AxiosError | H3Error) {
         if (axios.isAxiosError(error)) {
             console.log('=====================ExternalAPI:isAxiosError=====================')
+            console.log({ response: error.response })
             // axios timeout
             if (error.code === 'ECONNABORTED') {
                 console.log('=================================================================')
@@ -153,12 +154,16 @@ export class ExternalAPIService {
             } else {
                 console.log('ExternalAPI:Axios:HTTPError:', ' ', {
                     statusCode: error.response?.status,
-                    message: error.response?.statusText,
+                    statusMessage: error.response?.statusText,
+                    message: error.response?.data?.message || error.message,
+                    data: error.response?.data,
                 })
                 console.log('=================================================================')
                 return createError({
                     statusCode: error.response?.status,
                     statusMessage: error.response?.statusText,
+                    message: error.response?.data?.message || error.message,
+                    data: error.response?.data,
                     stack: undefined,
                 })
             }

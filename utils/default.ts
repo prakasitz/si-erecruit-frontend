@@ -1,4 +1,4 @@
-import { address, job, btnShowWstatus } from '~/utils/types'
+import { address, job, btnShowWstatus, SRC_User } from '~/utils/types'
 import { VueDatePickerProps } from '@vuepic/vue-datepicker'
 
 export const default_job: job = {
@@ -231,3 +231,11 @@ export const buttonShow: btnShowWstatus[] = [
         },
     },
 ]
+
+export const defaultSRCUserForm: SRC_User = {
+    SAP_ID: '',
+    SAP_name: '',
+    role_ID: 1,
+    locked_user: false,
+    local_user: false,
+}

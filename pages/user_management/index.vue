@@ -4,12 +4,13 @@
             <v-card-item>
                 <v-card-title :style="{ 'font-size': '18px !important' }"></v-card-title>
                 <v-data-table
-                    :items-per-page="10"
+                    :items-per-page="20"
                     :headers="(headers as any)"
-                    :items="SRC_User"
+                    :items="usersData || []"
                     item-value="name"
                     class="elevation-1"
                     :search="search"
+                    :loading="usersPending"
                     hover
                 >
                     <template v-slot:top>
@@ -18,7 +19,7 @@
                                 <p class="text-h6 text-main-color font-weight-bold">รายชื่อผู้ใช้งาน</p>
                                 <p class="text-h7 font-weight-bold">
                                     ผู้ใช้งานทั้งหมด
-                                    <span style="color: red">{{ SRC_User.length }}</span>
+                                    <span style="color: red">{{ usersData?.length }}</span>
                                     รายการ
                                 </p>
                             </v-col>
@@ -63,7 +64,7 @@
                     </template>
                     <template v-slot:item.action="{ item }">
                         <v-icon size="small" class="me-2" @click="showForm(item.raw, 'edit')"> mdi-pencil </v-icon>
-                        <v-icon size="small" @click="deleteItem(item.raw)" color="red"> mdi-delete </v-icon>
+                        <v-icon size="small" @click="confirmToDeleteUser(item.raw)" color="red"> mdi-delete </v-icon>
                     </template>
                 </v-data-table>
                 <dialogs-backend-user-form
@@ -100,7 +101,72 @@ definePageMeta({
 
 const route = useRoute()
 
+const { dialogConfirm, showDialog } = useDialog()
 const dialog = ref(false)
+const dialogConf = dialogConfirm()
+
+const { fetchSRCUsers, deleteSRCUserById } = useUserManagement()
+
+const { data: usersData, pending: usersPending } = fetchSRCUsers()
+
+const delItem = async (even: any, item: SRC_User) => {
+    const resp = await deleteSRCUserById(item)
+    if (resp.data.value) {
+        return {
+            status: true,
+            message: `ลบผู้ใช้งาน: <b>${item.SAP_ID}</b> สำเร็จ`,
+
+            callbackActionBtn: [
+                {
+                    text: 'Close',
+                    //href: `/job_management/${data.job_ID}`,
+                },
+            ],
+        }
+    } else if (resp?.error?.value?.data) {
+        const { showTokenExpired } = useErrorHandler()
+        let statusCode = resp?.error.value.statusCode
+        if (statusCode === 401) showTokenExpired(route)
+        return {
+            status: false,
+            message: `การลบผู้ใช้งาน: <b>${item.SAP_ID}</b> ไม่สำเร็จ Error: ${resp?.error?.value?.data?.message}`,
+        }
+    } else {
+        return {
+            status: false,
+
+            message: `Sorry, something went wrong.`,
+        }
+    }
+}
+
+const confirmToDeleteUser = async (srcUser: SRC_User) => {
+    let dialogContext: any = {
+        title: `ลบผู้ใช้งาน`,
+        dialogColor: 'error',
+        message: `คุณต้องการลบผู้ใช้งาน: <br> <b>${srcUser.SAP_ID}</b> ?`,
+        item: {
+            id: {
+                ...srcUser,
+            },
+        },
+        actionButtons: [
+            {
+                text: 'Delete',
+                variant: 'elevated',
+                color: 'error',
+                cb: delItem,
+            },
+            {
+                text: 'Cancel',
+            },
+        ],
+
+        persistent: true,
+    }
+    showDialog(dialogContext, dialogConf)
+}
+
 const form: Ref<'' | 'edit' | 'create'> = ref('')
 const userProps: Ref<SRC_User | undefined> = ref()
 const showForm = (item: SRC_User | undefined, type: 'edit' | 'create') => {
@@ -121,7 +187,7 @@ const headers = [
     { title: 'ประเภท', align: 'start', key: 'local_user' },
     { title: 'Role', align: 'start', key: 'role_ID' },
     { title: 'สถานะ', align: 'start', key: 'locked_user' },
-    { title: 'Last login', align: 'start', key: 'last_login' },
+    { title: 'Last login', align: 'start', key: 'last_login_str' },
     { title: 'แก้ไข/ลบ', align: 'start', key: 'action', sortable: false },
 ]
 
@@ -158,40 +224,16 @@ const roleChipList = ref([
     {
         id: 3,
         text: 'Department Officer',
-        color: 'yellow',
+        color: '#FFA726',
     },
 ])
 
-const SRC_User = ref([
-    {
-        SAP_ID: 'A1234567',
-        role_ID: 1,
-        local_password: 'password123',
-        local_user: true,
-        locked_user: false,
-        last_login: '28 ส.ค. 2566, 13:24',
-        note: 'First user',
-        created_at: '2023-08-01T10:00:00',
-        created_by: 'A9876543',
-        SAP_name: 'John Doe',
-        name: 'John',
-        lastname: 'Doe',
-    },
-    {
-        SAP_ID: 'A1234568',
-        role_ID: 2,
-        local_password: 'password456',
-        local_user: false,
-        locked_user: true,
-        last_login: '28 ส.ค. 2566, 13:24',
-        note: 'Second user',
-        created_at: '2023-07-28T09:00:00',
-        created_by: 'A9876542',
-        SAP_name: 'Jane Smith',
-        name: 'Jane',
-        lastname: 'Smith',
-    },
-])
+watch([() => dialog.value, () => dialogConf.value], ([val1, val2]) => {
+    if (!val1 && !val2) {
+        userProps.value = undefined
+        refreshNuxtData('fetchSRCUsers')
+    }
+})
 
 console.log(route.meta.title) // My home page
 </script>

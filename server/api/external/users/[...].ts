@@ -11,7 +11,7 @@ import { userService } from '../../../common/externalAPI/user.external'
 const router = createRouter()
 
 router.get(
-    'd',
+    '/get',
     defineEventHandler(async (event) => {
         const resp = await userService.getUsers(event)
         return resp
@@ -19,12 +19,13 @@ router.get(
 )
 
 router.get(
-    '/:id',
+    '/get/:id',
     defineEventHandler(async (event) => {
         const id = getRouterParam(event, 'id')
+        const q = getQuery(event)
+        let type = q?.type as string | undefined
         if (!id) throw BadRequestError('id is required')
-
-        const resp = await userService.getUserById(event, id)
+        const resp = await userService.getUserById(event, id, type)
         return resp
     })
 )
@@ -45,8 +46,16 @@ router.put(
     })
 )
 
+router.patch(
+    '/updatePassword',
+    defineEventHandler(async (event) => {
+        const resp = await userService.updatePassword(event)
+        return resp
+    })
+)
+
 router.delete(
-    '/:id',
+    '/delete/:id',
     defineEventHandler(async (event) => {
         const id = getRouterParam(event, 'id')
         if (!id) throw BadRequestError('id is required')

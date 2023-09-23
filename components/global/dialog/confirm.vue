@@ -24,7 +24,7 @@
                         <v-icon :icon="'mdi-alert-circle-outline'" color="red" size="20vh"></v-icon>
                     </template>
                 </v-sheet>
-                <h3 class="d-flex justify-center" v-html="context.callbackMessage"></h3>
+                <h3 class="text-center" v-html="context.callbackMessage"></h3>
             </v-card-text>
             <v-card-actions v-if="context.actionButtons && context.actionButtons.length > 0">
                 <v-spacer></v-spacer>
