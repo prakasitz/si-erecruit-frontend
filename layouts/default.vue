@@ -138,6 +138,19 @@ const items4Admin: any = [
                     'Settings',
                 ],
             },
+            {
+                title: 'Logs',
+                icon: 'mdi-math-log',
+                value: 'Logs',
+                to: '/logs',
+                nav: [
+                    {
+                        title: 'หนัาหลัก',
+                        href: '/',
+                    },
+                    'Logs',
+                ],
+            },
         ],
     },
 ]
