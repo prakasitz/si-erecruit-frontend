@@ -28,7 +28,7 @@ const LogTableHandler = () => {
     const serverItems = ref<LogData[]>([])
     const loading = ref(true)
     const totalItems = ref(0)
-    const itemsPerPage = ref(10)
+    const itemsPerPage = ref(25)
 
     const loadItems = async ({ page, itemsPerPage, sortBy, ...args }: any) => {
         console.log(args)

@@ -8,19 +8,19 @@
                 ></v-skeleton-loader>
             </v-card-item>
         </v-card> -->
-        <v-card class="mx-auto" width="90%">
+        <v-card class="mx-auto mb-3" width="90%">
             <v-card-item>
                 <v-card-title :style="{ 'font-size': '18px !important' }"> </v-card-title>
                 <v-data-table-server
+                    :density="'compact'"
                     v-model:items-per-page="itemsPerPage"
                     :items-per-page-options="itemsPerPageOptions"
                     :headers="(headers as any)"
                     :items-length="totalItems"
                     :items="serverItems"
-                    :search="search"
                     :loading="loading"
                     hover
-                    class="elevation-1"
+                    class="elevation-1 text-body-2"
                     @update:options="loadItems"
                 >
                     <template v-slot:top>
@@ -29,18 +29,10 @@
                                 <p class="text-h4 text-main-color font-weight-bold">Logs</p>
                                 <p class="text-h7 font-weight-bold">ข้อมูล Logs</p>
                             </v-col>
-                            <v-col cols="5">
-                                <v-text-field
-                                    v-model="search"
-                                    density="compact"
-                                    class="pa-4"
-                                    small
-                                    variant="outlined"
-                                    label="ค้นหา"
-                                    append-inner-icon="mdi-magnify"
-                                ></v-text-field>
-                            </v-col>
                         </v-row>
+                    </template>
+                    <template v-slot:item.msg="{ item }">
+                        <code>{{ item.raw.msg }}</code>
                     </template>
                 </v-data-table-server>
             </v-card-item>
@@ -73,15 +65,14 @@ const { serverItems, totalItems, loading, loadItems, itemsPerPage } = LogTableHa
 const search = ref()
 
 const headers = [
-    { sortable: false, title: 'ID', align: 'start', key: 'log_ID' },
-    { sortable: false, title: 'Type', align: 'start', key: 'log_type' },
-    { sortable: false, title: 'Requester', align: 'start', key: 'requester' },
-    { sortable: false, title: 'Timestamp', align: 'start', key: 'timestamp_str' },
-    { sortable: false, title: 'Message', align: 'start', key: 'msg' },
+    { width: '', sortable: false, title: 'ID', align: 'start', key: 'log_ID' },
+    { width: '10%', class: 'text-truncate', sortable: false, title: 'Type', align: 'start', key: 'log_type' },
+    { width: '', sortable: false, title: 'Requester', align: 'start', key: 'requester' },
+    { width: '20%', sortable: false, title: 'Timestamp', align: 'start', key: 'timestamp_str' },
+    { width: '10%', class: 'text-truncate', sortable: false, title: 'Message', align: 'start', key: 'msg' },
 ]
 
 const itemsPerPageOptions = [
-    { value: 10, title: '10' },
     { value: 25, title: '25' },
     { value: 50, title: '50' },
     { value: 100, title: '100' },
