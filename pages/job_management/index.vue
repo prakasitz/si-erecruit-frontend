@@ -117,7 +117,7 @@ const headers = [
 
 const search = ref()
 
-const { data: jobs, pending, refresh } = fetchJobs(undefined, true)
+const { data: jobs, pending, refresh } = fetchJobs(0, true)
 
 const onRowClick = (event: Event, item: any) => {
     const router = useRouter()

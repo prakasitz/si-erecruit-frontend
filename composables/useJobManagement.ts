@@ -33,7 +33,7 @@ const canDelete = (jobStatus: string) => {
 
 const fetchJobs = (jobId?: any, isTransform: boolean = false) => {
     let body: any = {}
-    if (jobId) {
+    if (jobId != undefined) {
         body = {
             job_ID: parseInt(jobId),
         }
