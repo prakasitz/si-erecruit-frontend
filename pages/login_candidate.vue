@@ -84,7 +84,6 @@ definePageMeta({
     },
     layout: 'logincandidate',
     name: 'login-candidate',
-    // middleware: 'is-auth',
 })
 
 async function onClick_CheckingPID(_id: string) {

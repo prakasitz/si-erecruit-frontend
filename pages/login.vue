@@ -85,7 +85,6 @@ definePageMeta({
         name: 'rotate',
     },
     layout: 'custom',
-    middleware: ['guest-only'],
 })
 
 async function signIn() {
