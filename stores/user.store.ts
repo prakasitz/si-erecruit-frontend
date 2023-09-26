@@ -23,6 +23,12 @@ export const useUserStore = defineStore('userinfo', {
         isAdmin: ({ user }) => user.role?.includes('ADMIN'),
         isHR: ({ user }) => user.role?.includes('HR'),
         isCandidate: ({ user }) => user.role?.includes('CANDIDATE'),
+        pageLayout: ({ user }) => {
+            if (user.role?.includes('CANDIDATE')) return 'defaultcandidate'
+            if (user.role?.includes('HR')) return 'default'
+            if (user.role?.includes('ADMIN')) return 'default'
+            return ''
+        },
     },
     actions: {
         async updateUserInfoHR(data: any) {

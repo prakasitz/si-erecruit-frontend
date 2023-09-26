@@ -12,15 +12,16 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         userInfo.secret = await decryptSecret(userInfo.secret)
         await setUserInfo(userInfo, process.server)
 
-        if (!isHR.value) {
+
+        if (!isAdmin.value) {
             throw createError({
                 statusCode: 403,
-                message: 'You are not authorized to access this page. #T-04',
+                message: 'You are not authorized to access this page. #T-00',
                 stack: undefined,
             })
         }
     } catch (error: NuxtError | any) {
-        console.error(error, 'authentication error on hr-only middleware')
+        console.error(error, 'authentication error on admin-only middleware')
         throw error
     }
 })
