@@ -11,6 +11,6 @@ definePageMeta({
         name: 'rotate',
     },
     layout: 'custom',
-    middleware: ['admin-only'],
+    middleware: ['auth'],
 })
 </script>

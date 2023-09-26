@@ -167,7 +167,7 @@ definePageMeta({
             title: 'จัดการข้อมูลผู้สมัคร',
         },
     ],
-    middleware: ['hr-candidate-only'],
+    middleware: ['admin-hr-candidate-only'],
 })
 
 const route = useRoute()
