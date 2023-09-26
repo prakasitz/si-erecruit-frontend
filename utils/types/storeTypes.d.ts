@@ -1,6 +1,6 @@
 export type UserData = {
     displayname: null | string
-    role: null | string
+    role: string[] | null
 }
 
 export type UserStore = {

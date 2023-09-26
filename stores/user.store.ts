@@ -30,8 +30,7 @@ export const useUserStore = defineStore('userinfo', {
                 displayname: data.display_name || data.displayname,
                 role: data.role,
             }
-
-            // HR
+            // HR && ADMIN
             this.sub = data.sub
             this.employee_id = data.employee_id
             this.department = data.department
@@ -45,7 +44,6 @@ export const useUserStore = defineStore('userinfo', {
             //Candidate
             this.commonid = data.commonid
             this.commonname = data.commonname
-            // this.secret = data.secret
             this.exp = data.exp
         },
         async setUserInfo(data: any, isServer: boolean) {
@@ -55,7 +53,7 @@ export const useUserStore = defineStore('userinfo', {
             }
 
             if (!this.isCandidate) {
-                // HR
+                // HR && ADMIN
                 this.sub = data.sub
                 this.employee_id = data.employee_id
                 this.department = data.department
@@ -67,7 +65,6 @@ export const useUserStore = defineStore('userinfo', {
                 this.exp = data.exp
 
                 if (isServer) {
-                    console.log('isServer')
                     this.secret = data.secret
                 }
                 // else this.secret = this.secret
