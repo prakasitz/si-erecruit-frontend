@@ -6,10 +6,11 @@
 // This will work in both `<script setup>` and `<script>`
 definePageMeta({
     name: 'about',
+    title: 'About',
     pageTransition: {
         name: 'rotate',
     },
     layout: 'custom',
-    // middleware: ['hr-only']
+    middleware: ['admin-only'],
 })
 </script>
