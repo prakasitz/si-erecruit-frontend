@@ -5,6 +5,7 @@ import { useUserStore } from '~/stores/user.store'
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
     const { setUserInfo } = useUserStore()
+    const { middlewareError } = useErrorHandler()
     const { isHR, isAdmin, pageLayout } = storeToRefs(useUserStore())
     const { me, decryptSecret } = useAuth()
     try {
@@ -23,6 +24,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         }
     } catch (error: NuxtError | any) {
         console.error(error, 'authentication error on admin-hr-only middleware')
-        throw error
+        middlewareError(error, { to, from })
     }
 })

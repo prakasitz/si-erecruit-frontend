@@ -11,7 +11,6 @@ export default function useErrorHandler() {
 }
 
 function middlewareError(error: H3Error, { to, from }: any) {
-    console.log('error-middlewareError', { ...error })
     if (isNuxtError(error) && error.statusCode === 401) {
         showTokenExpired(to)
     } else {

@@ -5,6 +5,7 @@ import { useUserStore } from '~/stores/user.store'
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
     const { setUserInfo } = useUserStore()
+    const { middlewareError } = useErrorHandler()
     const { pageLayout } = storeToRefs(useUserStore())
     const { me, decryptSecret } = useAuth()
     try {
@@ -14,6 +15,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         usePageLayout(pageLayout.value)
     } catch (error: NuxtError | any) {
         console.error(error, 'authentication error on auth middleware')
-        throw error
+        middlewareError(error, { to, from })
     }
 })
