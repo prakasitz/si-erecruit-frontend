@@ -36,9 +36,10 @@
                                 class="mx-3 text-red"
                             ></v-label>
                         </v-card-text>
+
                         <v-card-actions class="justify-end">
                             <!-- <dev-only> -->
-                            <v-btn v-if="$isDev" variant="text" @click="loginCandidate('1100201370643', '654831')"
+                            <v-btn v-if="$isDev" variant="text" @click="loginCandidate('1100201370643', '645631')"
                                 >Clike me</v-btn
                             >
                             <!-- </dev-only> -->
@@ -108,13 +109,13 @@ async function loginCandidate(pid?: string | undefined, password?: string | unde
                         message: error.message,
                     })
                 }
+            } else {
+                throw showError({
+                    statusCode: 500,
+                    statusMessage: 'Internal Server Error',
+                    message: error.message ?? error.data.message,
+                })
             }
-
-            throw showError({
-                statusCode: 500,
-                statusMessage: 'Internal Server Error',
-                message: error.message ?? error.data.message,
-            })
         }
     }
 }
