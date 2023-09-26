@@ -75,7 +75,8 @@ export const useAuth = () => {
         }
     }
 
-    const decryptSecret = async (secret: string) => {
+    const decryptSecret = async (secret: string | undefined) => {
+        if (!secret) return
         if (process.client) return
         const { data } = await useApi('/auth/decrypt-secret', {
             method: 'POST',
