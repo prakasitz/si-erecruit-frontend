@@ -23,7 +23,7 @@ definePageMeta({
             title: 'หน้าหลัก',
         },
     ],
-    middleware: ['hr-only'],
+    middleware: ['admin-hr-only'],
 })
 
 const userStore = useUserStore()

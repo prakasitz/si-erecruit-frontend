@@ -128,7 +128,7 @@ definePageMeta({
             title: 'รายละเอียดงาน',
         },
     ],
-    middleware: ['hr-only'],
+    middleware: ['admin-hr-only'],
 })
 const route = useRoute()
 const pageLoad = ref(true)

@@ -99,7 +99,7 @@ definePageMeta({
             title: 'จัดการงาน',
         },
     ],
-    middleware: ['hr-only'],
+    middleware: ['admin-hr-only'],
 })
 
 const { fetchJobs, deleteJob } = useJobManagement()

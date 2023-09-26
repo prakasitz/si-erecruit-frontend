@@ -56,7 +56,7 @@ definePageMeta({
             title: 'logs',
         },
     ],
-    middleware: ['hr-only'],
+    middleware: ['admin-hr-only'],
 })
 
 const { LogTableHandler } = useLogViewer()

@@ -104,7 +104,7 @@ definePageMeta({
             title: 'นำเข้าไฟล์',
         },
     ],
-    middleware: ['hr-only'],
+    middleware: ['admin-hr-only'],
 })
 
 const cntFiles = computed(() => {
