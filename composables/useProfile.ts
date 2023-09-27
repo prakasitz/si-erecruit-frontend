@@ -20,6 +20,7 @@ export default function useProfile() {
         verifyProfile,
         verifiedProfile,
         deleteProfile,
+        exportProfilesByJob,
     }
 }
 
@@ -118,6 +119,15 @@ const response = async (resp: any, data: DialogContext.ItemID): Promise<DialogCo
             message: `Sorry, something went wrong.`,
         }
     }
+}
+
+async function exportProfilesByJob(
+    event: Event | any,
+    data: DialogContext.ItemID,
+    type: 'csv' | 'excel' | 'json' | string
+): Promise<any> {
+    const { job_ID } = data
+    window.open(`/api/external/profile/export/${job_ID}/${type}`, '_blank')
 }
 
 async function waiveProfile(event: H3Event, data: DialogContext.ItemID): Promise<DialogContext.BtnActionCallBack> {
