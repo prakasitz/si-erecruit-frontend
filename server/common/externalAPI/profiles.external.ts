@@ -72,6 +72,48 @@ class ProfileExternal extends ExternalAPIService {
         }
     }
 
+    public async exportProfilesByJob(event: H3Event, { job_ID, type }: { job_ID: string; type: string }) {
+        if (!job_ID) throw new Error('job_ID is required')
+        try {
+            this.checkPermission(event, 'can-access-hr')
+            const token = this.getAccessToken(event)
+
+            const resp = await this.baseAPI.get(`/${this.slug}/export/${job_ID}/${type}`, {
+                headers: {
+                    Authorization: 'Bearer ' + token,
+                },
+                responseType: 'stream', // telling Axios to treat the response as a stream of data,
+            })
+
+            let attachmentExt = ''
+
+            switch (type) {
+                case 'excel':
+                    attachmentExt = '.xlsx'
+                    break
+                case 'csv':
+                    attachmentExt = '.csv'
+                    break
+                case 'json':
+                    attachmentExt = '.json'
+                    break
+                default:
+                    break
+            }
+
+            const headers = {
+                'Content-Type': resp.headers['content-type'],
+                'Content-Disposition': 'attachment; filename=export' + attachmentExt,
+            }
+
+            setResponseHeaders(event, headers)
+
+            return resp.data
+        } catch (error: AxiosError | any) {
+            return this.handleError(error)
+        }
+    }
+
     public async checkStatus(
         profile_IDs: number[],
         event: H3Event

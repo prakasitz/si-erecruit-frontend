@@ -8,6 +8,19 @@ import { generateProfileJSON } from '../../../utils/profile'
 
 const router = createRouter()
 
+router.get(
+    '/export/:id/:type',
+    defineEventHandler(async (event) => {
+        const id = getRouterParam(event, 'id')
+        const type: string | undefined = getRouterParam(event, 'type')
+        if (!id) throw BadRequestError('id is required')
+        if (!type) throw BadRequestError('type is required')
+
+        const resp = await profileService.exportProfilesByJob(event, { job_ID: id, type })
+        return resp
+    })
+)
+
 router.post(
     '/get/:id',
     defineEventHandler(async (event) => {
