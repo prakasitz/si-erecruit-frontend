@@ -66,7 +66,7 @@ export interface btnShowWstatus {
 export namespace DialogContext {
     export type FnActionCallback = (event: any, ...args: any) => Promise<BtnActionCallBack>
 
-    export type ItemID = { profile_IDs: number[]; job_ID: number }
+    export type ItemID = { profile_IDs: number[]; job_ID: number; [key: string]: any }
 
     export type ActionButton = {
         text: string

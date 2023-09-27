@@ -19,6 +19,12 @@ export enum CandidateStatusEnum {
     CLOSED = 'Closed',
 }
 
+export enum EXPORT_TYPE {
+    JSON = 'json',
+    EXCEL = 'excel',
+    CSV = 'csv',
+}
+
 export enum JobStatusEnum {
     CREATED = 'Created',
     IMPORTING = 'Importing',
@@ -38,6 +44,24 @@ export enum RoleEnum {
     ADMIN = 'ADMIN',
     HR = 'HR',
     CANDIDATE = 'CANDIDATE',
+}
+
+export enum BtnNameOnJobEnum {
+    HEADER_JOB = 'header',
+    DELETE_JOB = 'delete',
+    PUBLISH_JOB = 'publish',
+    REPUBLISH_JOB = 'republish',
+    CANCELL_JOB = 'ยกเลิกงาน',
+    SUSPEND_JOB = 'suspend',
+    VERIFY_JOB = 'verify',
+    APPROVE_JOB = 'approve',
+    TERMINAT_JOB = 'terminate',
+    DMS_JOB = 'dms (ยังไม่ทำ)',
+
+    EXPORT_PROFILE = 'export',
+    SUSPEND_PROFILE = 'suspend',
+    PUBLISHABLE_PROFILE = 'publishable',
+    SEND_SAP_PROFILE = 'send sap (ยังไม่ทำ)',
 }
 
 export enum JobStatusColorEnum {
