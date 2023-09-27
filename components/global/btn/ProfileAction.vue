@@ -10,7 +10,7 @@ const { dialogConfirm, showDialog, dialogWarning } = useDialog()
 interface PropsBtnProfileAction {
     text: string
     color: string
-    data: { profile_IDs: number[]; job_ID: number }
+    data: DialogContext.ItemID
     cb?: DialogContext.FnActionCallback
 }
 const props = defineProps<PropsBtnProfileAction>()

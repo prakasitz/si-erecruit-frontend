@@ -70,7 +70,7 @@ const simpleActionHandler = async (event: Event, buttonAction: DialogContext.Act
     loading.value = true
     //delay 1 sec
     if (typeof buttonAction.cb == 'function') {
-        console.log('simpleActionHandler', context.value)
+        console.log('simpleActionHandler', context.value, event)
         let itemData = context.value.item!.id
         const { status, message, callbackActionBtn } = await buttonAction.cb(event, itemData)
         loading.value = false
