@@ -63,7 +63,7 @@
             <BtnJobAction
                 v-if="buttonShow.BtnDeleteJob"
                 class="mx-1"
-                text="Delete"
+                :text="BtnNameOnJobEnum.DELETE_JOB"
                 color="red"
                 :jobId="job.job_ID"
                 :cb="deleteJob"
@@ -71,7 +71,7 @@
             <BtnJobAction
                 v-if="buttonShow.BtnSuspendJob"
                 class="mx-1"
-                text="Suspend"
+                :text="BtnNameOnJobEnum.SUSPEND_JOB"
                 color="orange"
                 :jobId="job.job_ID"
                 :cb="suspendJob"
@@ -79,7 +79,7 @@
             <BtnJobAction
                 v-if="buttonShow.BtnCancelledJob"
                 class="mx-1"
-                text="ยกเลิกงาน"
+                :text="BtnNameOnJobEnum.CANCELL_JOB"
                 color="grey"
                 :jobId="job.job_ID"
                 :cb="cancelJob"
@@ -87,7 +87,7 @@
             <BtnJobAction
                 v-if="buttonShow.BtnTerminated"
                 class="mx-1"
-                text="Terminate"
+                :text="BtnNameOnJobEnum.TERMINAT_JOB"
                 color="grey"
                 :jobId="job.job_ID"
                 :cb="terminateJob"
@@ -95,7 +95,7 @@
             <BtnJobAction
                 v-if="buttonShow.BtnApproveJob"
                 class="mx-1"
-                text="approve"
+                :text="BtnNameOnJobEnum.APPROVE_JOB"
                 color="green"
                 :jobId="job.job_ID"
                 :cb="approveJob"
@@ -103,7 +103,7 @@
             <BtnJobAction
                 v-if="buttonShow.BtnPublishedJob"
                 class="mx-1"
-                text="publish"
+                :text="BtnNameOnJobEnum.PUBLISH_JOB"
                 color="blue"
                 :jobId="job.job_ID"
                 :cb="publishJob"
@@ -111,7 +111,7 @@
             <BtnJobAction
                 v-if="buttonShow.BtnRepublished"
                 class="mx-1"
-                text="Republish"
+                :text="BtnNameOnJobEnum.REPUBLISH_JOB"
                 color="indigo"
                 :jobId="job.job_ID"
                 :cb="republishJob"
@@ -120,7 +120,7 @@
             <BtnJobAction
                 v-if="buttonShow.BtnDMS"
                 class="mx-1"
-                text="DMS ยังไม่ทำ"
+                :text="BtnNameOnJobEnum.DMS_JOB"
                 color="purple"
                 :jobId="job.job_ID"
                 :cb="verifiedJob"
@@ -128,7 +128,7 @@
             <BtnJobAction
                 v-if="buttonShow.BtnVerifyJob"
                 class="mx-1"
-                text="verify"
+                :text="BtnNameOnJobEnum.VERIFY_JOB"
                 color="main-color "
                 :jobId="job.job_ID"
                 :cb="verifiedJob"
