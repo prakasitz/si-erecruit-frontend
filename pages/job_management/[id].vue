@@ -73,10 +73,44 @@
         </v-card>
 
         <div class="mx-auto" :style="{ width: '90%' }">
+            <v-btn-group class="mx-1" density="compact">
+                <v-btn
+                    v-if="buttonShow.BtnExport"
+                    :text="BtnNameOnJobEnum.EXPORT_PROFILE"
+                    color="deep-purple-darken-3"
+                    @click="exportProfilesByJob($event, { profile_IDs: [], job_ID: jobData.job_ID }, 'csv')"
+                ></v-btn>
+                <v-menu>
+                    <template v-slot:activator="{ props: menu }">
+                        <v-tooltip location="top">
+                            <template v-slot:activator="{ props: tooltip }">
+                                <v-btn
+                                    color="deep-purple"
+                                    icon="mdi-dots-vertical"
+                                    v-bind="mergeProps(menu, tooltip)"
+                                    size=""
+                                    value="left"
+                                >
+                                </v-btn>
+                            </template>
+                            <span>เพิ่มเติม</span>
+                        </v-tooltip>
+                    </template>
+                    <v-list>
+                        <v-list-item
+                            v-for="(item, index) in btnExportTypes"
+                            :key="index"
+                            @click="exportProfilesByJob($event, { profile_IDs: [], job_ID: jobData.job_ID }, item.type)"
+                        >
+                            <v-list-item-title>{{ item.title }}</v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
+            </v-btn-group>
             <BtnProfileAction
                 v-if="buttonShow.BtnSuspend"
                 class="mx-1"
-                text="suspend"
+                :text="BtnNameOnJobEnum.SUSPEND_PROFILE"
                 color="warning"
                 :data="{ profile_IDs: profilesSelected, job_ID: jobData.job_ID }"
                 :cb="suspendedProfile"
@@ -84,7 +118,7 @@
             <BtnProfileAction
                 v-if="buttonShow.BtnPublishable"
                 class="mx-1"
-                text="Publishable"
+                :text="BtnNameOnJobEnum.PUBLISHABLE_PROFILE"
                 color="blue"
                 :data="{ profile_IDs: profilesSelected, job_ID: jobData.job_ID }"
                 :cb="publishableProfile"
@@ -92,7 +126,7 @@
             <BtnProfileAction
                 v-if="buttonShow.BtnSendSAP"
                 class="mx-1"
-                text="SAP ยังไม่ทำ"
+                :text="BtnNameOnJobEnum.SEND_SAP_PROFILE"
                 color="purple"
                 :data="{ profile_IDs: profilesSelected, job_ID: jobData.job_ID }"
                 :cb="suspendedProfile"
@@ -105,6 +139,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { useJobComponentStore } from '~/stores/job-component.store'
+import { mergeProps } from 'vue'
 
 import { VDataTable } from 'vuetify/lib/labs/VDataTable/index.mjs'
 import { Job, ProfileWithQuickAction } from '~/utils/types'
@@ -136,7 +171,7 @@ const pageLoad = ref(true)
 let jobId = route.params.id as string
 
 const { getProfilesByJobId } = useJobManagement()
-const { suspendedProfile, publishableProfile } = useProfile()
+const { suspendedProfile, publishableProfile, exportProfilesByJob } = useProfile()
 const { data: profilesData, pending: profilePending } = getProfilesByJobId(jobId)
 
 const profilesDataTest = ref<ProfileWithQuickAction[] | null>([])
@@ -170,6 +205,21 @@ const headers: VDataTable['$headers'][] = [
     { title: 'จัดการ', align: 'center', key: 'action', sortable: false },
 ]
 const profilesSelected = ref([])
+
+const btnExportTypes = ref([
+    {
+        title: 'CSV (.csv)',
+        type: 'csv',
+    },
+    {
+        title: 'Excel (.xlsx)',
+        type: 'excel',
+    },
+    {
+        title: 'JSON (.json)',
+        type: 'json',
+    },
+])
 
 watch(
     () => profilePending.value,
