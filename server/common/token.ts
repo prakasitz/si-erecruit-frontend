@@ -71,7 +71,6 @@ export async function verifyAccessToken(token: string): Promise<H3Error | JwtPay
                 console.log(`----| start: modify HR Payload |----`)
                 const modifiedPayload = {
                     ...decoded,
-                    role: ['HR'],
                 }
                 console.log(`----| end: modify HR Payload |----`)
                 if (isValid) return modifiedPayload
