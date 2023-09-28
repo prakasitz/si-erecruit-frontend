@@ -1,6 +1,8 @@
+import { Roles } from "./authTypes"
+
 export type UserData = {
     displayname: null | string
-    role: string[] | null
+    role: Roles[] | null
 }
 
 export type UserStore = {

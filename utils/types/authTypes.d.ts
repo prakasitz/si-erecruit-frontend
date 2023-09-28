@@ -1,5 +1,7 @@
 export type Roles = 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'CANDIDATE'
 
+export type UserType = 'BACKEND' | 'CANDIDATE'
+
 export interface jwtToken {
     aud: string
     iss?: string

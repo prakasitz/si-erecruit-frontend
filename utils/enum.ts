@@ -39,10 +39,11 @@ export enum JobStatusEnum {
     CLOSED = 'Closed',
 }
 
-export enum RoleEnum {
+export enum SRC_RoleEnum {
     SUPER_ADMIN = 'SUPER_ADMIN',
-    ADMIN = 'ADMIN',
-    HR = 'HR',
+    GENERAL_ADMIN = 'ADMIN',
+    HR_OFFICER = 'HR',
+    DEPARTMENT_OFFICER = 'DP',
     CANDIDATE = 'CANDIDATE',
 }
 
