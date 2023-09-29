@@ -80,7 +80,7 @@ export class ExternalAPIService {
         }
     }
 
-    public async HRLogin(username: string, password: string) {
+    public async BackendLogin(username: string, password: string) {
         try {
             await this.initializeToken()
 
@@ -102,20 +102,20 @@ export class ExternalAPIService {
         }
     }
 
-    public async HRUserInfo(hr_token: string) {
+    public async BackendUserInfo(token: string) {
         try {
             const resp = await this.baseAPI.post(
                 `/${this.hrSlug}/auth/userInfo`,
                 {},
                 {
                     headers: {
-                        Authorization: hr_token,
+                        Authorization: token,
                     },
                 }
             )
-            // modify resp.data on role[] add `HR`
-            if (!resp.data.role) resp.data.role = []
-            resp.data.role.push('HR')
+            if (!resp.data.role || resp.data.role.length == 0)
+                throw new Error('BackendUserInfo: role is undefined or []')
+
             return resp.data
         } catch (error: AxiosError | any) {
             return this.handleError(error)

@@ -7,21 +7,17 @@ import { BadRequestError } from '../../../utils/default'
 
 export async function getUserInfo(event: H3Event) {
     try {
-        let userContext = event.context.user
-        if (!userContext.role) throw BadRequestError('userContext.role is undefined')
+        let user = event.context.user
+        const { audience } = useRuntimeConfig()
 
         console.log('-=--=--=--=--=--=- start userInfo -=--=--=--=--=--=--=--=-')
 
         const token = getCookie(event, 'access_token') as string
-        let role = userContext.role as string[]
-        console.log('role', role)
-        if (role.includes('HR')) {
-            return externalAPIService.HRUserInfo(token)
-        } else if (role.includes('CANDIDATE')) {
+        if (user.aud === audience) {
+            return externalAPIService.BackendUserInfo(token)
+        } else {
             return externalAPIService.CandidateUserInfo(token)
         }
-
-        throw BadRequestError('userContext.role is invalid')
     } catch (error: H3Error | any) {
         return handleErrorRoute(error)
     } finally {

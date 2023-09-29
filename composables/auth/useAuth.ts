@@ -1,4 +1,4 @@
-import { ContextUser, Roles, jwtAdfs, jwtCandidate } from '~/utils/types'
+import { ContextUser, UserType, jwtAdfs, jwtCandidate } from '~/utils/types'
 import { FetchError } from 'ofetch'
 import { useUserStore } from '~/stores/user.store'
 
@@ -11,13 +11,13 @@ export const useAuth = () => {
     // }
 
     // Handles user login. Makes an API call to authenticate the user.
-    const login = async (username: any, password: any, role: Roles) => {
+    const login = async (username: any, password: any, type: UserType) => {
         try {
-            const pidOrUserName = role === 'CANDIDATE' ? 'pid' : 'username'
+            const pidOrUserName = type === 'CANDIDATE' ? 'pid' : 'username'
             const { data, error } = await useApi('/auth/login', {
                 method: 'POST',
                 headers: {
-                    'X-Role': role,
+                    'X-Type': type,
                 },
                 body: {
                     [pidOrUserName]: username,

@@ -20,7 +20,8 @@ export const useUserStore = defineStore('userinfo', {
         }
     },
     getters: {
-        isAdmin: ({ user }) => user.role?.includes('ADMIN'),
+        isSuperAdmin: ({ user }) => user.role?.includes('SUPER_ADMIN'),
+        isAdmin: ({ user }) => user.role?.includes('ADMIN') || user.role?.includes('SUPER_ADMIN'),
         isHR: ({ user }) => user.role?.includes('HR'),
         isCandidate: ({ user }) => user.role?.includes('CANDIDATE'),
         pageLayout: ({ user }) => {

@@ -68,7 +68,6 @@
 </template>
 
 <script setup lang="ts">
-import { UserAuth } from '~/auth/user.auth'
 import { H3Error } from 'h3'
 import { useAuth } from '~/composables/auth/useAuth'
 
@@ -91,7 +90,7 @@ async function signIn() {
     try {
         overlay.value = true
         let redirectOrNull = route.query.redirect as string | null
-        await login(username.value, password.value, RoleEnum.HR)
+        await login(username.value, password.value, 'BACKEND')
         await navigateTo({ path: redirectOrNull || '/' })
     } catch (error: H3Error | any) {
         throw error

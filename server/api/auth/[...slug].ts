@@ -2,7 +2,7 @@ import { createRouter, defineEventHandler, useBase, H3Error, isError } from 'h3'
 import { getClientCredentials, isAuthenticated } from '../../common/authentication'
 import { externalAPIService } from '../../common/externalAPI/ExternalAPIService'
 import { handleErrorRoute } from '../../common/error'
-import { JSONResponse, RequestDecryptSecret, Roles } from '../../../utils/types'
+import { JSONResponse, RequestDecryptSecret, Roles, UserType } from '../../../utils/types'
 import { verifyAccessToken, setCookieLogin, decryptSecret } from '../../common/token'
 import { isMatchRegex } from '../../../utils/string'
 import { checkIsAuthenticated, checkPID, getUserInfo } from './auth.service'
@@ -43,7 +43,6 @@ router.post(
     defineEventHandler(async (event) => {
         const { secret, key } = await readBody<RequestDecryptSecret>(event)
         const a = await readBody(event)
-        console.log('bodddyyyyyyyyyy', a)
         const decryptedOrError = decryptSecret(secret, key)
         if (decryptedOrError instanceof H3Error) throw decryptedOrError
         return {
@@ -71,13 +70,11 @@ router.post(
 router.post(
     '/logout',
     defineEventHandler(async (event) => {
-        const { role } = event.context.user
-        console.log('/logout')
-        console.log('user', event.context.user)
-        console.log('role', event.context.user.role)
-        console.log('role', role)
-        let redirectUrl = role.includes('HR') ? '/login' : '/login_candidate'
+        const userType = getCookie(event, 'type') as UserType | undefined
+
+        let redirectUrl = userType == 'BACKEND' ? '/login' : '/login_candidate'
         deleteCookie(event, 'access_token')
+
         return {
             status: 'success',
             message: 'Logout success',
@@ -93,7 +90,7 @@ router.post(
 router.post(
     '/login',
     defineEventHandler(async (event) => {
-        let role = getRequestHeader(event, 'x-role') as Roles | undefined
+        let userType = getRequestHeader(event, 'x-type') as UserType | undefined
         let referer = getRequestHeader(event, 'referer') as string | undefined
 
         //remove query string
@@ -101,10 +98,10 @@ router.post(
 
         console.log('Route /login:referer', referer)
         try {
-            if (!role || !referer)
+            if (!userType || !referer)
                 throw createError({
                     statusCode: 400,
-                    message: `Route /login: Header referer, x-role is required`,
+                    message: `Route /login: Header referer, x-type is required`,
                     stack: undefined,
                 })
 
@@ -114,12 +111,12 @@ router.post(
             let dataOrError: any = undefined
             let isMatchReferer = null
 
-            switch (role) {
-                case 'HR':
+            switch (userType) {
+                case 'BACKEND':
                     isMatchReferer = isMatchRegex(referer, /\/login$/)
                     if (!isMatchReferer) throw new Error(`Route /login: Referer not match., referer=${referer}`)
                     if (!username || !password) throw new Error(`Route /login: username and password is required`)
-                    dataOrError = await externalAPIService.HRLogin(username, password)
+                    dataOrError = await externalAPIService.BackendLogin(username, password)
                     break
                 case 'CANDIDATE':
                     isMatchReferer = isMatchRegex(referer, /\/login_candidate$/)
@@ -134,7 +131,7 @@ router.post(
                     dataOrError = await externalAPIService.CandidateLogin(pid, password)
                     break
                 default:
-                    throw new Error(`Route /login: x-role not match., x-role=${role.toString()}`)
+                    throw new Error(`Route /login: x-type not match., x-type=${userType}`)
             }
 
             if (dataOrError instanceof H3Error) throw dataOrError
@@ -143,13 +140,13 @@ router.post(
             const devResult = {
                 dataOrError,
                 _h: {
-                    role: role,
+                    role: userType,
                     referer: referer,
                 },
             }
 
             setCookieLogin(event, { token: dataOrError.access_token })
-            setCookie(event, 'role', role, {
+            setCookie(event, 'type', userType, {
                 httpOnly: false,
                 sameSite: 'strict',
                 maxAge: 60 * 60 * 24, // 1 day

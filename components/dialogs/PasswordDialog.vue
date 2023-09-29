@@ -93,7 +93,7 @@ async function loginCandidate(pid?: string | undefined, password?: string | unde
         try {
             invalidPassword.value = false
             let redirectOrNull = route.query.redirect as string | null
-            await useAuth().login(pid, password, RoleEnum.CANDIDATE)
+            await useAuth().login(pid, password, 'CANDIDATE')
             // await auth.signIn({ username: pid, password: password })
             let url = redirectOrNull || '/candidate'
             await navigateTo(url, { external: true })

@@ -14,7 +14,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         await setUserInfo(userInfo, process.server)
 
         usePageLayout(pageLayout.value)
-
+        console.log(isHR.value, isAdmin.value)
         if (!isHR.value && !isAdmin.value) {
             throw createError({
                 statusCode: 403,

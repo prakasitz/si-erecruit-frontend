@@ -50,8 +50,9 @@ function showErrorOnDialog({ title, detail, error }: { title?: string; detail?: 
 }
 
 function showTokenExpired(to: any) {
-    let role = useCookie('role').value
-    let loginPath = role === 'HR' ? '/login' : '/login_candidate'
+    const userType = useCookie('type').value
+
+    let loginPath = userType === 'BACKEND' ? '/login' : '/login_candidate'
     let query = '?redirect=' + to.fullPath
     let fullPath = loginPath + query
 
