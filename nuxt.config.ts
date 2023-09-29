@@ -96,6 +96,16 @@ export default defineNuxtConfig({
     },
 
     routeRules: {
+        '/login': {
+            headers: {
+                'X-Type': 'BACKEND',
+            },
+        },
+        '/login_candidate': {
+            headers: {
+                'X-Type': 'CANDIDATE',
+            },
+        },
         '/api/master/**': {
             proxy: {
                 to: '/api/external/master/**',
