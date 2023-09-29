@@ -27,8 +27,7 @@ export const useUserStore = defineStore('userinfo', {
         pageLayout: ({ user }) => {
             if (user.role?.includes('CANDIDATE')) return 'defaultcandidate'
             if (user.role?.includes('HR')) return 'default'
-            if (user.role?.includes('ADMIN')) return 'default'
-            return ''
+            return 'default'
         },
     },
     actions: {

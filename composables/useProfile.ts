@@ -8,9 +8,6 @@ export default function useProfile() {
     return {
         submit,
         draft,
-        loginCandidate,
-        getUserInfo,
-        getStatus,
         importProfile,
         getProfileById,
         suspendedProfile,
@@ -23,12 +20,6 @@ export default function useProfile() {
         exportProfilesByJob,
     }
 }
-
-async function loginCandidate() {}
-
-async function getUserInfo() {}
-
-async function getStatus() {}
 
 async function submit(id: string) {
     const personalStore = usePersonalStore()

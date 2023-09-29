@@ -181,7 +181,6 @@ const { onBoarding, candidateForms } = storeToRefs(componentStore)
 
 const { getProfileById } = useProfile()
 const { data: profileData, pending, error: profileError } = await getProfileById(route.params.id as string)
-
 const { dialogError, showDialog } = await useDialog()
 
 useHandlerHashing()

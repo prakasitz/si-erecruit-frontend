@@ -53,7 +53,6 @@ import { storeToRefs } from 'pinia'
 import { useAuth } from '~/composables/auth/useAuth'
 import { usePersonalStore } from '~/stores/personal.store'
 import { useUserStore } from '~/stores/user.store'
-import { Profile } from '~/utils/types'
 
 type MenuItem = {
     title: string
