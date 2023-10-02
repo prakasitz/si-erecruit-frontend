@@ -86,7 +86,7 @@ export const userNotFoundError = (msg: string = 'Unauthorized') =>
 export const forbiddenError = (msg: string = 'Forbidden') =>
     createError({
         statusCode: 403,
-        statusMessage: 'Error: Forbidden',
+        statusMessage: 'Error: ' + (msg || 'Forbidden'),
     })
 
 export const BadRequestError = (msg: string = 'Bad Request') =>
