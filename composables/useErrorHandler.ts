@@ -23,24 +23,46 @@ function middlewareError(error: H3Error, { to, from }: any) {
     }
 }
 
-function showErrorOnDialog({ title, detail, error }: { title?: string; detail?: string; error: FetchError<any> }) {
+function showErrorOnDialog({ error }: { error: FetchError<any> }) {
     const { dialogError, showDialog } = useDialog()
     const dialog = dialogError()
     const { statusCode, data, message } = error
     const { showTokenExpired } = useErrorHandler()
+    const router = useRouter()
     const route = useRoute()
-    let titleStr = title || `เกิดข้อผิดพลาด: (${statusCode})`
-    let messageStr = detail || '<br> กรุณาติดต่อผู้ดูแลระบบ หรือลองใหม่อีกครั้ง ⚠'
+    let titleStr = `เกิดข้อผิดพลาด: (${statusCode})`
+    let messageStr =  message || data?.message || 'กรุณาติดต่อผู้ดูแลระบบ หรือลองใหม่อีกครั้ง ⚠'
     switch (statusCode) {
         case 401:
             showTokenExpired(route.fullPath)
+            break
+        case 403:
+            titleStr = 'Permission Denied (403)'
+            showDialog(
+                {
+                    title: titleStr,
+                    message: messageStr,
+                    actionButtons: [
+                        {
+                            text: 'close',
+                            goBack: router.back
+                        },
+                    ],
+                    persistent: true,
+                },
+                dialog
+            )
             break
         default:
             showDialog(
                 {
                     title: titleStr,
-                    message: (data.message || message) + messageStr,
-                    actionButtons: [],
+                    message: 'กรุณาติดต่อผู้ดูแลระบบ หรือลองใหม่อีกครั้ง ⚠ <br>' + messageStr,
+                    actionButtons: [
+                        {
+                            text: 'close',
+                        },
+                    ],
                     persistent: false,
                 },
                 dialog
