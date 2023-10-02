@@ -74,6 +74,7 @@ export namespace DialogContext {
         color?: string
         href?: string
         cb?: FnActionCallback
+        goBack?: VoidFunction
     }
 
     export interface BtnActionCallBack {

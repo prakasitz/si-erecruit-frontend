@@ -14,7 +14,7 @@
                 <v-spacer></v-spacer>
                 <!-- Redirect or Upload again -->
                 <template v-for="button in context.actionButtons">
-                    <v-btn :variant="'outlined'" v-bind="button" @click="dialog = !dialog" />
+                    <v-btn :variant="'outlined'" v-bind="button" @click="simpleHandler($event, button)" />
                 </template>
             </v-card-actions>
         </v-card>
@@ -22,11 +22,23 @@
 </template>
 
 <script setup lang="ts">
+import { DialogContext } from '~/utils/types/uiTypes';
+
 const bgColor = 'red-darken-3'
 
 const { dialogError, dialogContext } = await useDialog()
 const dialog = dialogError()
 const context = dialogContext()
+
+
+const simpleHandler = (event:Event , buttonAction: DialogContext.ActionButton) => {
+    dialog.value = !dialog.value
+    if (typeof buttonAction.goBack === 'function') {
+        console.log('goBack', buttonAction.goBack)
+        buttonAction.goBack()
+    }
+}
+
 
 watch(dialog, (value) => {
     if (value == false) {
