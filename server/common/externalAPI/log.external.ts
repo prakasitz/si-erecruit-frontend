@@ -10,6 +10,8 @@ class LogExternal extends ExternalAPIService {
 
     public async getPaging(event: H3Event) {
         try {
+            this.checkPermission(event, 'can-access-admin')
+
             await this.initializeToken()
             const body = await readBody(event)
             const resp = await this.baseAPI.post(`/${this.slug}/paging`, body, {

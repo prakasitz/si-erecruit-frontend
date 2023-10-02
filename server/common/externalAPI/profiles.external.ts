@@ -53,7 +53,7 @@ class ProfileExternal extends ExternalAPIService {
     public async get(event: H3Event, { profile_ID }: { profile_ID: string }) {
         if (!profile_ID) throw new Error('profile_ID is required')
         try {
-            this.checkPermission(event, 'can-access-hr-candidate')
+            this.checkPermission(event, 'can-access-admin-hr-candidate')
             // const accessToken = this.getAccessToken(event)
             await this.initializeToken()
 
@@ -75,7 +75,7 @@ class ProfileExternal extends ExternalAPIService {
     public async exportProfilesByJob(event: H3Event, { job_ID, type }: { job_ID: string; type: string }) {
         if (!job_ID) throw new Error('job_ID is required')
         try {
-            this.checkPermission(event, 'can-access-hr')
+            this.checkPermission(event, 'can-access-admin-hr')
             const token = this.getAccessToken(event)
 
             const resp = await this.baseAPI.get(`/${this.slug}/export/${job_ID}/${type}`, {
@@ -125,7 +125,7 @@ class ProfileExternal extends ExternalAPIService {
     > {
         if (!profile_IDs) throw new Error('profile_ID is required')
         try {
-            this.checkPermission(event, 'can-access-hr')
+            this.checkPermission(event, 'can-access-admin-hr')
             const accessToken = this.getAccessToken(event)
             const resp = await this.baseAPI.post(
                 `/${this.slug}/getStatus`,
@@ -199,7 +199,7 @@ class ProfileExternal extends ExternalAPIService {
     }
 
     public async updateProfileStatus(action: ProfileActionMethod, profiles: number[], event: H3Event) {
-        this.checkPermission(event, 'can-access-hr')
+        this.checkPermission(event, 'can-access-admin-hr')
 
         const profileStatusDataOrError = await this.checkStatus(profiles, event)
         if (profileStatusDataOrError instanceof Error) return profileStatusDataOrError
@@ -226,7 +226,7 @@ class ProfileExternal extends ExternalAPIService {
 
     public async delete(profiles: number[], event: H3Event) {
         try {
-            this.checkPermission(event, 'can-access-hr')
+            this.checkPermission(event, 'can-access-admin-hr')
 
             if (profiles.length == 0) throw BadRequestError('profile_IDs is required')
             if (profiles.length > 1) throw new Error('Only one profile can be deleted at a time')

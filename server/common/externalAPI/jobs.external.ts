@@ -11,6 +11,7 @@ class JobsExternal extends ExternalAPIService {
     }
     public async getJobs(event: H3Event, body?: any) {
         try {
+            this.checkPermission(event, 'can-access-admin-hr')
             const accessToken = this.getAccessToken(event)
             const resp = await this.baseAPI.post(
                 `/${this.slug}/get`,
@@ -40,6 +41,7 @@ class JobsExternal extends ExternalAPIService {
     public async getProfilesByJobId(event: H3Event, jobId?: string): Promise<JobWithProfileAndQuickAction | Error> {
         try {
             console.log('============= jobs: method => getProfilesByJobId =======================')
+            this.checkPermission(event, 'can-access-admin-hr')
             const accessToken = this.getAccessToken(event)
             const resp = await this.baseAPI.post<JobWithProfile>(
                 `/${this.slug}/getProfileOnJob/${jobId}`,
@@ -60,6 +62,8 @@ class JobsExternal extends ExternalAPIService {
 
     public async delJobById(jobId: number, event: H3Event) {
         try {
+            this.checkPermission(event, 'can-access-admin-hr')
+
             const accessToken = this.getAccessToken(event)
             const resp = await this.baseAPI.delete(`/${this.slug}/delete`, {
                 data: {
@@ -77,6 +81,8 @@ class JobsExternal extends ExternalAPIService {
 
     public async approveobById(jobId: number, event: H3Event) {
         try {
+            this.checkPermission(event, 'can-access-admin-hr')
+
             const accessToken = this.getAccessToken(event)
 
             const resp = await this.baseAPI.patch(
@@ -121,6 +127,8 @@ class JobsExternal extends ExternalAPIService {
 
     public async rePublishById(jobId: number, event: H3Event) {
         try {
+            this.checkPermission(event, 'can-access-admin-hr')
+
             const accessToken = this.getAccessToken(event)
 
             const resp = await this.baseAPI.patch(
@@ -143,6 +151,8 @@ class JobsExternal extends ExternalAPIService {
 
     public async publishById(jobId: number, event: H3Event) {
         try {
+            this.checkPermission(event, 'can-access-admin-hr')
+
             const accessToken = this.getAccessToken(event)
 
             const resp = await this.baseAPI.put(
@@ -173,6 +183,8 @@ class JobsExternal extends ExternalAPIService {
 
     public async suspendById(jobId: number, event: H3Event) {
         try {
+            this.checkPermission(event, 'can-access-admin-hr')
+
             const accessToken = this.getAccessToken(event)
 
             const resp = await this.baseAPI.patch(
@@ -195,6 +207,8 @@ class JobsExternal extends ExternalAPIService {
 
     public async terminateById(jobId: number, event: H3Event) {
         try {
+            this.checkPermission(event, 'can-access-admin-hr')
+
             const accessToken = this.getAccessToken(event)
 
             const resp = await this.baseAPI.patch(
@@ -217,6 +231,8 @@ class JobsExternal extends ExternalAPIService {
 
     public async verifiedById(jobId: number, event: H3Event) {
         try {
+            this.checkPermission(event, 'can-access-admin-hr')
+
             const accessToken = this.getAccessToken(event)
 
             const resp = await this.baseAPI.patch(

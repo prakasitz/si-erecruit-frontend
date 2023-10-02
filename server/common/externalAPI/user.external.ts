@@ -11,6 +11,8 @@ class UserExternal extends ExternalAPIService {
 
     public async getUsers(event: H3Event) {
         try {
+            this.checkPermission(event, 'can-access-hr')
+
             await this.initializeToken()
             const resp = await this.baseAPI.get(`/${this.slug}/get`, {
                 headers: {
@@ -29,6 +31,8 @@ class UserExternal extends ExternalAPIService {
 
     public async getUserById(event: H3Event, id: string, type?: string) {
         try {
+            this.checkPermission(event, 'can-access-admin')
+
             const token = await this.getAccessToken(event)
             const resp = await this.baseAPI.get(`/${this.slug}/get/${id}`, {
                 headers: {
@@ -60,6 +64,8 @@ class UserExternal extends ExternalAPIService {
 
     public async createUser(event: H3Event) {
         try {
+            this.checkPermission(event, 'can-access-admin')
+
             const token = await this.getAccessToken(event)
             const user = event.context.user
             const body = await readBody(event)
@@ -84,6 +90,8 @@ class UserExternal extends ExternalAPIService {
 
     public async updateUser(event: H3Event) {
         try {
+            this.checkPermission(event, 'can-access-admin')
+
             const token = await this.getAccessToken(event)
             const body = await readBody(event)
             const user = event.context.user
@@ -108,6 +116,8 @@ class UserExternal extends ExternalAPIService {
 
     public async updatePassword(event: H3Event) {
         try {
+            this.checkPermission(event, 'can-access-admin')
+
             const token = await this.getAccessToken(event)
             const body = await readBody(event)
             const user = event.context.user
@@ -132,6 +142,8 @@ class UserExternal extends ExternalAPIService {
 
     public async lockUserById(event: H3Event, id: string) {
         try {
+            this.checkPermission(event, 'can-access-admin')
+
             const token = await this.getAccessToken(event)
             const resp = await this.baseAPI.patch(`/${this.slug}/lock/${id}`, {
                 headers: {
@@ -150,6 +162,8 @@ class UserExternal extends ExternalAPIService {
 
     public async deleteUserById(event: H3Event, id: string) {
         try {
+            this.checkPermission(event, 'can-access-admin')
+
             const token = await this.getAccessToken(event)
             const resp = await this.baseAPI.delete(`/${this.slug}/delete/${id}`, {
                 headers: {
