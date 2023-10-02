@@ -7,6 +7,7 @@ import { H3Error } from 'h3'
 import { getUserFromAccessToken, isAuthenticated } from '../../common/authentication'
 import { checkURL } from '../../../utils/string'
 import { UnauthorizedError } from '../../../utils/default'
+import { getUserInfo } from '../../api/auth/auth.service'
 // import { isAuthenticated } from '../../../common/authentication'
 
 export default defineEventHandler(async (event) => {
@@ -34,11 +35,18 @@ export default defineEventHandler(async (event) => {
                     console.log('Unauthorized. Missing access token')
                     throw UnauthorizedError('Unauthorized. Missing access token')
                 }
-                console.log(`++++++++++userOrNul+++++++++++`)
-                console.log(userOrNull)
-                console.log(`++++++++++++++++++++++++++++++`)
+
                 // Add user to context
                 event.context.user = userOrNull
+
+                const userInfoOrError = await getUserInfo(event)
+                if (userInfoOrError instanceof H3Error) throw userInfoOrError
+                event.context.user.role = userInfoOrError.role
+
+                console.log(`++++++++++context.user+++++++++++`)
+                console.log(event.context.user)
+                console.log(`++++++++++++++++++++++++++++++`)
+
             } catch (error: H3Error | any) {
                 console.log(`Error: authentication middleware: ${error}`)
                 throw error
