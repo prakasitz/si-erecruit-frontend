@@ -1,4 +1,3 @@
-import { set } from 'nuxt/dist/app/compat/capi'
 import { LogData, LogPaging, LogResponse } from '~/utils/types/logTypes'
 
 export default function useLogViewer() {
@@ -6,7 +5,7 @@ export default function useLogViewer() {
 }
 
 const fetchLogPaging = (data: LogPaging) => {
-    return useFetch('/api/external/logs/paging', {
+    return useApi('/api/external/logs/paging', {
         headers: {
             Accept: 'application/json',
         },
