@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosInstance } from 'axios'
 import { H3Event, H3Error } from 'h3'
 import { getClientCredentials } from '../authentication'
-import { TokenNotFoundError, UnauthorizedError } from '../../../utils/default'
+import { TokenNotFoundError, UnauthorizedError, forbiddenError } from '../../../utils/default'
 import { ContextUser, Permission } from '../../../utils/types'
 import { hasPermission } from '../permission'
 
@@ -32,7 +32,7 @@ export class ExternalAPIService {
         const user = event.context?.user as ContextUser<any>
         if (!user) throw UnauthorizedError("User doesn't exist")
         if (!hasPermission(user, permission))
-            throw UnauthorizedError(`You don't have permission, Current permission: ${permission}`)
+            throw forbiddenError(`You don't have permission, Current permission: ${permission}`)
     }
 
     protected async initializeToken() {
