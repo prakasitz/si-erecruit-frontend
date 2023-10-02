@@ -36,7 +36,7 @@ export type RequestDecryptSecret = {
 // create interface for fn(user Context<jwtAdfs>) => user.role
 export type ContextUser<T = jwtAdfs | jwtCandidate> = T
 
-export type Permission = 'can-access-admin' | 'can-access-hr' | 'can-access-candidate' | 'can-access-hr-candidate'
+export type Permission = 'can-access-admin' | 'can-access-hr' | 'can-access-candidate' | 'can-access-hr-candidate' | 'can-access-admin-hr-candidate' | 'can-access-admin-hr'
 
 export type TokensSession = {
     accessToken: string
