@@ -1,6 +1,6 @@
-import { NuxtError } from 'nuxt/app'
 import { FetchError } from 'ofetch'
 import { H3Error } from 'h3'
+import { RouteLocationNormalizedLoaded } from '~/.nuxt/vue-router'
 
 export default function useErrorHandler() {
     return {
@@ -12,7 +12,8 @@ export default function useErrorHandler() {
 
 function middlewareError(error: H3Error, { to, from }: any) {
     if (isNuxtError(error) && error.statusCode === 401) {
-        showTokenExpired(to)
+        const route = useRoute()
+        showTokenExpired(route)
     } else {
         throw createError({
             statusCode: error.statusCode,
@@ -31,10 +32,10 @@ function showErrorOnDialog({ error }: { error: FetchError<any> }) {
     const router = useRouter()
     const route = useRoute()
     let titleStr = `เกิดข้อผิดพลาด: (${statusCode})`
-    let messageStr =  message || data?.message || 'กรุณาติดต่อผู้ดูแลระบบ หรือลองใหม่อีกครั้ง ⚠'
+    let messageStr = message || data?.message || 'กรุณาติดต่อผู้ดูแลระบบ หรือลองใหม่อีกครั้ง ⚠'
     switch (statusCode) {
         case 401:
-            showTokenExpired(route.fullPath)
+            showTokenExpired(route)
             break
         case 403:
             titleStr = 'Permission Denied (403)'
@@ -45,13 +46,15 @@ function showErrorOnDialog({ error }: { error: FetchError<any> }) {
                     actionButtons: [
                         {
                             text: 'close',
-                            goBack: router.back
+                            goBack: router.back,
                         },
                     ],
                     persistent: true,
                 },
                 dialog
             )
+            break
+        case 400:
             break
         default:
             showDialog(
@@ -71,11 +74,11 @@ function showErrorOnDialog({ error }: { error: FetchError<any> }) {
     }
 }
 
-function showTokenExpired(to: any) {
+function showTokenExpired(route: RouteLocationNormalizedLoaded) {
     const userType = useCookie('type').value
 
     let loginPath = userType === 'BACKEND' ? '/login' : '/login_candidate'
-    let query = '?redirect=' + to.fullPath
+    let query = '?redirect=' + route.fullPath
     let fullPath = loginPath + query
 
     const { dialogError, showDialog } = useDialog()

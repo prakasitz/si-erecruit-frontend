@@ -89,9 +89,7 @@ definePageMeta({
 async function signIn() {
     try {
         overlay.value = true
-        let redirectOrNull = route.query.redirect as string | null
         await login(username.value, password.value, 'BACKEND')
-        await navigateTo({ path: redirectOrNull || '/' })
     } catch (error: H3Error | any) {
         throw error
     } finally {

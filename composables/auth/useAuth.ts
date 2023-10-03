@@ -1,6 +1,7 @@
 import { ContextUser, UserType, jwtAdfs, jwtCandidate } from '~/utils/types'
 import { FetchError } from 'ofetch'
 import { useUserStore } from '~/stores/user.store'
+import { error } from 'console'
 
 export const useAuth = () => {
     const userStore = useUserStore()
@@ -24,8 +25,11 @@ export const useAuth = () => {
                     password,
                 },
             })
-
             if (error.value) throw error.value
+
+            const route = useRoute()
+            let redirectOrNull = route.query.redirect as string | null
+            await navigateTo({ path: redirectOrNull || '/' })
         } catch (error: FetchError | any) {
             throw createError({
                 statusCode: error.statusCode,
@@ -58,25 +62,25 @@ export const useAuth = () => {
     // Retrieves user information. Makes an API call to get user data.
     const me = async (): Promise<ContextUser<jwtAdfs & jwtCandidate>> => {
         try {
-            const { data, error } = await useApi('/auth/userinfo', {
+            const { data } = await useApi('/auth/userinfo', {
                 method: 'GET',
                 key: 'me',
             })
 
-            if (error.value) throw error.value
+            if (!data.value) throw createError({ statusCode: 401, message: 'Unauthorized' })
 
             return data.value
         } catch (error: FetchError | any) {
             console.log('error on me', error)
             throw createError({
                 statusCode: error.statusCode,
-                message: error.data.message,
+                message: error.message || error.data.message,
             })
         }
     }
 
-    const decryptSecret = async (secret: string | undefined) => {
-        if (!secret) return
+    const decryptSecret = async (userInfo: (jwtAdfs & jwtCandidate) | undefined) => {
+        if (!userInfo || !userInfo.secret) return
         if (process.client) return
         const { data } = await useApi('/auth/decrypt-secret', {
             method: 'POST',
@@ -84,10 +88,10 @@ export const useAuth = () => {
             server: true,
             body: {
                 key: process.server ? process.env.NUXT_ENCRYPT_KEY : '',
-                secret,
+                secret: userInfo.secret,
             },
         })
-        return data.value?.decrypted || secret
+        userInfo.secret = data.value || userInfo.secret
     }
 
     return {
