@@ -6,6 +6,7 @@ import FormData from 'form-data'
 import { FileUpload, Profile, ProfileActionMethod, ProfileStatus, ProfileStatusAndID } from '../../../utils/types'
 import { BadRequestError, TokenNotFoundError } from '../../../utils/default'
 import { actionStatusIdMapping } from '../profileAction/constant'
+import { canAccessHR } from '../permission'
 
 class ProfileExternal extends ExternalAPIService {
     private slug: string = 'profile'
@@ -38,8 +39,11 @@ class ProfileExternal extends ExternalAPIService {
         if (!profileObj.profile_ID) throw new Error('profile_ID is required')
         try {
             this.checkPermission(event, 'can-access-hr-candidate')
+
+            const { user } = event.context
+            let slug = canAccessHR(user) ? this.slug : 'candidate-info'
             const accessToken = this.getAccessToken(event)
-            const resp = await this.baseAPI.put(`/${this.slug}/draft`, profileObj, {
+            const resp = await this.baseAPI.put(`/${slug}/draft`, profileObj, {
                 headers: {
                     Authorization: 'Bearer ' + accessToken,
                 },
