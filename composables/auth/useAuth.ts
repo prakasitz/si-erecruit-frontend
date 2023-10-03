@@ -29,7 +29,13 @@ export const useAuth = () => {
 
             const route = useRoute()
             let redirectOrNull = route.query.redirect as string | null
-            await navigateTo({ path: redirectOrNull || '/' })
+            let urlIndex = type === 'CANDIDATE' ? '/candidate' : '/'
+            await navigateTo(
+                { path: redirectOrNull || urlIndex },
+                {
+                    external: true,
+                }
+            )
         } catch (error: FetchError | any) {
             throw createError({
                 statusCode: error.statusCode,
@@ -81,7 +87,9 @@ export const useAuth = () => {
 
     const decryptSecret = async (userInfo: (jwtAdfs & jwtCandidate) | undefined) => {
         if (!userInfo || !userInfo.secret) return
+
         if (process.client) return
+
         const { data } = await useApi('/auth/decrypt-secret', {
             method: 'POST',
             key: 'decrypt-secret',
@@ -91,7 +99,9 @@ export const useAuth = () => {
                 secret: userInfo.secret,
             },
         })
-        userInfo.secret = data.value || userInfo.secret
+        userInfo.secret = data.value.decrypted || userInfo.secret
+
+        console.log('userInfo', userInfo)
     }
 
     return {
