@@ -157,7 +157,7 @@ definePageMeta({
     pageTransition: {
         name: 'rotate',
     },
-    layout: false,
+    layout: 'defaultcandidate',
     breadcrumbs: [
         {
             title: 'หน้าหลัก',
