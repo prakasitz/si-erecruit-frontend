@@ -1,4 +1,5 @@
 # Si-erecruit-frontend
+> **Status: Developing**
 
 โปรเจคสำหรับฝั่ง HR นำข้อมูลผู้สมัครเข้าระบบ โดย 1 ครั้ง Import File เรัยกว่า Job และแต่ละ Job จะมีหลาย Profile แต่ 1 Profile มีได้แค่ 1 Candidate เท่านั้น \
 ซึ่งจะมี State มากมายที่ไว้ควบคุม Job, Profile, Candidate, จุดที่ท้าทายก็คือการจัดการ Event ของแต่ละ State ให้ดี รวมถึงการทำหน้า Form แบบขั้นบันได ให้ User กรอก \
@@ -9,7 +10,6 @@
 - HR -> นำเข้า Job และแก้ไข Profile ก่อนเปิดให้ Candidate เข้า
 - Candidate -> จะเข้ามาได้ก็ต่อเมื่ออยู่ในสถานะ Profile:Publishable และจะไม่สามารถเข้าได้ ถ้า Candidate:Inactive ซึ่งจะเข้ามากรอกข้อมูลสมัครงานหรือสละสิทธิ
 
-* Status: Developing *
 
 ## Tech Stack (Frontend Only):
 - Nuxt3 (Nodejs)
