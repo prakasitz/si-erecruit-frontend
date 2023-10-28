@@ -9,9 +9,7 @@
 - HR -> นำเข้า Job และแก้ไข Profile ก่อนเปิดให้ Candidate เข้า
 - Candidate -> จะเข้ามาได้ก็ต่อเมื่ออยู่ในสถานะ Profile:Publishable และจะไม่สามารถเข้าได้ ถ้า Candidate:Inactive ซึ่งจะเข้ามากรอกข้อมูลสมัครงานหรือสละสิทธิ
 
-
-
-## Status: Developing
+* Status: Developing *
 
 ## Tech Stack (Frontend Only):
 - Nuxt3 (Nodejs)
