@@ -4,16 +4,16 @@
 ซึ่งจะมี State มากมายที่ไว้ควบคุม Job, Profile, Candidate, จุดที่ท้าทายก็คือการจัดการ Event ของแต่ละ State ให้ดี รวมถึงการทำหน้า Form แบบขั้นบันได ให้ User กรอก \
 การเก็บข้อมูล Consent ของ User, การ Design หน้าจอ เป็นต้น
 
-User Role:
+## User Role:
 - ADMIN -> จัดการข้อมูล ตรวจดู Log และเพิ่ม User 
 - HR -> นำเข้า Job และแก้ไข Profile ก่อนเปิดให้ Candidate เข้า
 - Candidate -> จะเข้ามาได้ก็ต่อเมื่ออยู่ในสถานะ Profile:Publishable และจะไม่สามารถเข้าได้ ถ้า Candidate:Inactive ซึ่งจะเข้ามากรอกข้อมูลสมัครงานหรือสละสิทธิ
 
 
 
-Status: Developing
+## Status: Developing
 
-Tech Stack (Frontend Only):
+## Tech Stack (Frontend Only):
 - Nuxt3 (Nodejs)
 - Vuetify3
 - Pinia for Storing State data
