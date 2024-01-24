@@ -16,7 +16,9 @@ function middlewareError(error: H3Error, { to, from }: any) {
     } else {
         throw createError({
             statusCode: error.statusCode,
-            message: error.message ?? error.data.message,
+            statusMessage: error.statusMessage,
+            message: error.message ?? error.data.message ?? error,
+            data: error.data,
             stack: undefined,
             fatal: true,
         })
@@ -31,7 +33,7 @@ function showErrorOnDialog({ error }: { error: FetchError<any> }) {
     const router = useRouter()
     const route = useRoute()
     let titleStr = `เกิดข้อผิดพลาด: (${statusCode})`
-    let messageStr =  message || data?.message || 'กรุณาติดต่อผู้ดูแลระบบ หรือลองใหม่อีกครั้ง ⚠'
+    let messageStr = message || data?.message || 'กรุณาติดต่อผู้ดูแลระบบ หรือลองใหม่อีกครั้ง ⚠'
     switch (statusCode) {
         case 401:
             showTokenExpired(route.fullPath)
@@ -45,7 +47,7 @@ function showErrorOnDialog({ error }: { error: FetchError<any> }) {
                     actionButtons: [
                         {
                             text: 'close',
-                            goBack: router.back
+                            goBack: router.back,
                         },
                     ],
                     persistent: true,
