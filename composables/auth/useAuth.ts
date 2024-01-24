@@ -64,13 +64,11 @@ export const useAuth = () => {
             })
 
             if (error.value) throw error.value
-
             return data.value
         } catch (error: FetchError | any) {
-            console.log('error on me', error)
             throw createError({
                 statusCode: error.statusCode,
-                message: error.data.message,
+                message: error.data.message ?? error,
             })
         }
     }
