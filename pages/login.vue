@@ -71,6 +71,8 @@
 import { H3Error } from 'h3'
 import { useAuth } from '~/composables/auth/useAuth'
 
+useCookie('type').value = 'BACKEND'
+
 const username = ref('')
 const password = ref('')
 const overlay = ref(false)

@@ -5,7 +5,6 @@ export const useApi = async (url: any, params: any | UseFetchOptions<HeadersInit
     const cookie = useCookie('token')
 
     const config = useRuntimeConfig()
-
     const opts: UseFetchOptions<any> = {
         ...params,
         key: params?.key || url,
@@ -37,12 +36,13 @@ export const useApi = async (url: any, params: any | UseFetchOptions<HeadersInit
 
         async onResponseError({ response }: FetchContext<any>) {
             console.error('[nuxt] ==> useApi:onResponseError:', response?.status)
-            const { showErrorOnDialog } = useErrorHandler()
+            // const { showErrorOnDialog } = useErrorHandler()
 
             if (response?.status !== undefined) {
-                showErrorOnDialog({
-                    error: response._data,
-                })
+                //console.log('onResponseError', { response })
+                // showErrorOnDialog({
+                //     error: response._data,
+                // })
             }
             //if response.status == 403 throw showError
             // only api response
@@ -80,7 +80,6 @@ export const useApi = async (url: any, params: any | UseFetchOptions<HeadersInit
     }
 
     const { data, pending, error, refresh, execute } = await useFetch(url, opts)
-
     return {
         data: data,
         pending: pending,

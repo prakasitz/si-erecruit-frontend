@@ -57,6 +57,8 @@
 <script setup lang="ts">
 import useCandidate from '~/composables/auth/useCandidate'
 
+useCookie('type').value = 'CANDIDATE'
+
 const { checkPID } = useCandidate()
 
 const pid = ref('')
