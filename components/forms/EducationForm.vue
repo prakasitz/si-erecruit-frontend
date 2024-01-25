@@ -152,7 +152,6 @@
     </div>
 </template>
 <script setup lang="ts">
-import { useMasterDataStore } from '~/stores/master.store'
 import { usePersonalStore } from '../../stores/personal.store'
 import { IEducation, education } from '~/utils/types'
 
@@ -170,11 +169,8 @@ const { education } = personalStore
 const { rules_fieldEmpty } = useFillRules()
 
 const currentEduLevel = computed(() => {
-    console.log('hello')
     return props.educationFormModel.education_level
 })
-
-const masterDataStore = useMasterDataStore()
 
 const { data: levelData } = useNuxtData('master/level')
 
@@ -203,10 +199,6 @@ const { data: instituteData, pending: institutePending } = await useFetch('/api/
     watch: [currentEduLevel],
 })
 
-const pending = computed(() => {
-    return cerPending.value || majorPending.value || institutePending.value
-})
-
 watch(currentEduLevel, (old_edu, new_edu) => {
     console.log({
         old_edu,
@@ -224,21 +216,5 @@ watch(currentEduLevel, (old_edu, new_edu) => {
     }
 })
 
-// watch(
-//     education.education_list[props.index-1].education_level,
-//     (old_edu, new_edu) => {
-//         console.log('key='+(props.index-1), old_edu, new_edu)
-//         // if (newVal != null) {
-//         //     // let ind = props.index - 1
-//         //     // education.education_list[ind].degree = ''
-//         //     // education.education_list[ind].major = ''
-//         //     // education.education_list[ind].school = ''
-//         //     console.log('key', newVal)
-//         // }
-//     },
-//     { deep: true }
-// )
-
-console.log('isLoaded', masterDataStore.isLoaded)
 </script>
 

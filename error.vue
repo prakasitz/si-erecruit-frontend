@@ -8,19 +8,21 @@ definePageMeta({
     description: 'Error page',
 })
 
-const errorDataComputed = computed(() => {
-    if (!props.error) return null
-    const dataJson = JSON.parse(props.error.data)
-    return dataJson
-})
-
 const userTypeCookie = computed(() => {
-    return useCookie('type').value
+    return useCookie('type', {
+        path: useRuntimeConfig().app.baseURL,
+    }).value
 })
 
 const toHomeUrl = computed(() => {
     if (userTypeCookie.value === 'BACKEND') return '/'
     else if (userTypeCookie.value === 'CANDIDATE') return '/candidate'
+    else return '/candidate'
+})
+
+const toLoginUrl = computed(() => {
+    if (userTypeCookie.value === 'BACKEND') return '/login'
+    else if (userTypeCookie.value === 'CANDIDATE') return '/login_candidate'
     else return '/login_candidate'
 })
 
@@ -34,7 +36,6 @@ error follow by {
   description: string
   data: {
     type: string // 'HR' | 'CANDIDATE'
-    navToMain: string // follow by type (HR: '/', CANDIDATE: '/candidate')
   }
 }
 
@@ -76,6 +77,11 @@ error follow by {
                                         Please login first.
                                     </p>
                                 </div>
+                                <div v-else>
+                                    <p>
+                                        {{ error?.message }}
+                                    </p>
+                                </div>
                             </v-alert>
                         </v-card-text>
                         <v-card-actions>
@@ -92,7 +98,17 @@ error follow by {
                                             >
                                         </v-col>
                                         <v-col class="pa-1" cols="6" offset="3">
-                                            <v-btn block variant="flat" color="main-color" :to="toHomeUrl">Home</v-btn>
+                                            <v-btn
+                                                v-if="error!.statusCode === 401"
+                                                block
+                                                variant="flat"
+                                                color="main-color"
+                                                :to="toLoginUrl"
+                                                >LOGIN</v-btn
+                                            >
+                                            <v-btn v-else block variant="flat" color="main-color" :to="toHomeUrl"
+                                                >HOME</v-btn
+                                            >
                                         </v-col>
                                     </v-row>
                                 </v-col>

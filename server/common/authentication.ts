@@ -17,7 +17,7 @@ export async function getClientCredentials() {
     if (token) isValid = await verifyOauth2Token(token.toString())
 
     if (isValid) {
-        console.log('using Cache token')
+        console.log('🟢⌚ using Cache token')
         return token
     }
 
@@ -40,7 +40,7 @@ export async function getClientCredentials() {
 
         await setItemStorage({ key: 'client_credential_token', values: access_token.toString() })
         const token = await getItemStorage('client_credential_token')
-        console.log('using fresh token')
+        console.log('🟢✨ using fresh token')
         return token
     } catch (error: any) {
         throw new Error('error:' + error)
@@ -52,7 +52,7 @@ export async function isAuthenticated(event: H3Event): Promise<boolean | H3Error
     let accessToken = getCookie(event, 'access_token') as string
 
     if (!accessToken) {
-        console.log('isAuthenticated: No access token provided')
+        console.log('✅ isAuthenticated: No access token provided')
         return TokenNotFoundError()
     }
 
@@ -62,7 +62,7 @@ export async function isAuthenticated(event: H3Event): Promise<boolean | H3Error
     // // If other error, return error
     // If other error, return error
     if (errorOrUser instanceof H3Error) {
-        console.log('isAuthenticated: ', errorOrUser)
+        console.log('🔴 isAuthenticated:error', errorOrUser)
         return false
     } else {
         // Otherwise, we have the user so return true
@@ -76,11 +76,11 @@ export async function getUserFromAccessToken(event: H3Event): Promise<any> {
 
     accessToken = getCookie(event, 'access_token') as string
 
-    console.log('getUserFromAccessToken: Attempt to get user from access token')
+    console.log('🎄 getUserFromAccessToken: Attempt to get user from access token')
 
     // If no token, display error and return false
     if (!accessToken) {
-        console.log('getUserFromAccessToken: No access token provided. Cannot get user from access token')
+        console.log('🔴 getUserFromAccessToken: No access token provided. Cannot get user from access token')
         return null
     }
 
@@ -91,7 +91,7 @@ export async function getUserFromAccessToken(event: H3Event): Promise<any> {
     // If error, print to console and return false
     if (errorOrUser instanceof H3Error) {
         console.log(errorOrUser)
-        console.log('getUserFromAccessToken: Error verifying access token')
+        console.log('🔴 getUserFromAccessToken: Error verifying access token')
         return null
     }
 
@@ -100,7 +100,7 @@ export async function getUserFromAccessToken(event: H3Event): Promise<any> {
 
     // If no user, show error, return false
     if (tokenPayload === null) {
-        console.log('Failed to get user to check for isSuperAdmin')
+        console.log('🔴🔐 Failed to get user to check for isSuperAdmin')
         return null
     }
 

@@ -159,5 +159,4 @@ function formatSize(bytes: number) {
 }
 
 const route = useRoute()
-console.log(route.meta.title) // My home page
 </script>

@@ -3,15 +3,11 @@ import { handleErrorRoute } from '../../common/error'
 import { JSONResponse, Roles } from '../../../utils/types'
 import { externalAPIService } from '../../common/externalAPI/ExternalAPIService'
 import { isAuthenticated } from '../../common/authentication'
-import { BadRequestError } from '../../../utils/default'
 
 export async function getUserInfo(event: H3Event) {
     try {
         let user = event.context.user
         const { audience } = useRuntimeConfig()
-
-        console.log('-=--=--=--=--=--=- start userInfo -=--=--=--=--=--=--=--=-')
-
         const token = getCookie(event, 'access_token') as string
         if (user.aud === audience) {
             return externalAPIService.BackendUserInfo(token)
@@ -21,7 +17,6 @@ export async function getUserInfo(event: H3Event) {
     } catch (error: H3Error | any) {
         return handleErrorRoute(error)
     } finally {
-        console.log('-=--=--=--=--=--=- end userInfo -=--=--=--=--=--=--=--=-')
     }
 }
 

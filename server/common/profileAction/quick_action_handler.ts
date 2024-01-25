@@ -38,7 +38,7 @@ class QuickActionHandler {
     }
 
     private async initStatusCodeList() {
-        console.log('initStatusCodeList : QuickActionHandler')
+        console.log('🟢 initStatusCodeList : QuickActionHandler')
         try {
             let resJobStatusOrError = await masterService.getJobStatus()
             if (resJobStatusOrError instanceof Error) throw resJobStatusOrError
@@ -55,7 +55,7 @@ class QuickActionHandler {
                 resProfileStatusOrError.map((statusObj) => [statusObj.profile_status_code, statusObj])
             )
         } catch (error) {
-            console.log('catch on initStatusCodeList : QuickActionHandler', error)
+            console.log('🔴 initStatusCodeList:error: QuickActionHandler', error)
             throw error
         }
     }

@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
         if (checkURL(event.node.req.url, authRoutes)) {
             try {
                 console.log(
-                    `=============`,
+                    `\n\n=============`,
                     ' ',
                     `middleware:authentication: ${event.node.req.url}`,
                     ' ',
@@ -32,7 +32,7 @@ export default defineEventHandler(async (event) => {
 
                 const userOrNull = await getUserFromAccessToken(event)
                 if (userOrNull === null) {
-                    console.log('Unauthorized. Missing access token')
+                    console.log('🔴 Unauthorized. Missing access token')
                     throw UnauthorizedError('Unauthorized. Missing access token')
                 }
 
@@ -42,17 +42,16 @@ export default defineEventHandler(async (event) => {
                 const userInfoOrError = await getUserInfo(event)
                 if (userInfoOrError instanceof H3Error) throw userInfoOrError
                 event.context.user.role = userInfoOrError.role
-
-                console.log(`++++++++++context.user+++++++++++`)
-                console.log(event.context.user)
-                console.log(`++++++++++++++++++++++++++++++`)
-
             } catch (error: H3Error | any) {
-                console.log(`Error: authentication middleware: ${error}`)
+                console.log(`🔴 Error: authentication middleware: ${error}`)
                 throw error
             } finally {
-                console.log(`=======================================================================`)
+                console.log(`======= end middleware:authentication======\n\n`)
             }
+        } else {
+            console.log(`==`, ' ', `middleware:authentication:out of range: ${event.node.req.url}`, ' ', `==`)
+            console.log('👍 checkURL', checkURL(event.node.req.url, authRoutes))
+            console.log(`====middleware:authentication:out of range====`)
         }
     }
 })

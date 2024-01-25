@@ -18,7 +18,7 @@ export function canAccessCandidate(user: ContextUser<jwtCandidate>): boolean {
 export function hasPermission(user: ContextUser<any>, permission: Permission): boolean {
     // Check if user has the permission
 
-    console.log('hasPermission: Checking permission', permission)
+    console.log('😍 hasPermission: Checking permission', permission)
     const [isAdmin, isHR, isCandidate] = [canAccessAdmin(user), canAccessHR(user), canAccessCandidate(user)]
     const permissions = {
         'can-access-admin': isAdmin,
@@ -31,7 +31,7 @@ export function hasPermission(user: ContextUser<any>, permission: Permission): b
 
     // If permission does not exist, return false
     if (permission in permissions === false) {
-        console.log(`hasPermission: No such permission as "${permission}"`)
+        console.log(`😍 hasPermission: No such permission as "${permission}"`)
         return false
     } else {
         // @ts-ignore

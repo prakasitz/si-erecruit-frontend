@@ -50,23 +50,6 @@ export default defineNuxtConfig({
         transpile: ['vuetify', '@vuepic/vue-datepicker'],
     },
 
-    hooks: {
-        // 'vite:extendConfig': (config, { isClient, isServer }) => {
-        //     config.plugins?.push(
-        //         vuetify({
-        //             styles: {
-        //                 configFile: resolve('assets/settings.scss'),
-        //             },
-        //         })
-        //     )
-        // },
-        'nitro:config': (config) => {
-            console.log('======================nitro:config=========================')
-            console.log(config.runtimeConfig)
-            console.log('===================================================')
-        },
-    },
-
     vite: {
         define: {
             'process.env.DEBUG': false,
@@ -144,7 +127,7 @@ export default defineNuxtConfig({
 
     app: {
         head: {
-            title: 'Si-ERecruit',
+            titleTemplate: '%s · Si-ERecruit',
             charset: 'utf-8',
             viewport: 'width=device-width, initial-scale=1',
         },

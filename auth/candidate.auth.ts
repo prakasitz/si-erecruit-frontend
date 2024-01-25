@@ -18,7 +18,9 @@ export class CandidateAuth implements IAuth {
                     password: userLogin.password,
                 },
             })
-            cookie.setCookie('access_token', data)
+            cookie.setCookie('access_token', data, {
+                path: useRuntimeConfig().app.baseURL,
+            })
             this.getUser()
             return data
         } catch (err: any) {

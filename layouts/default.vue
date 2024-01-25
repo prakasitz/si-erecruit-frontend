@@ -154,11 +154,6 @@ const items4Admin: any = [
         ],
     },
 ]
-//hooks
-
-onUpdated(() => {
-    console.log(route.fullPath)
-})
 
 watch(group, () => {
     drawer.value = false

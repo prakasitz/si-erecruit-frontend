@@ -175,10 +175,10 @@ class ProfileExternal extends ExternalAPIService {
     public deleteFile = (filePath: any) => {
         fs.unlink(filePath, (error: any) => {
             if (error) {
-                console.error('Error deleting file:', error)
+                console.error('🔴 Error deleting file:', error)
                 throw error
             } else {
-                console.log('File deleted successfully:', filePath)
+                console.log('🟢 File deleted successfully:', filePath)
             }
         })
     }

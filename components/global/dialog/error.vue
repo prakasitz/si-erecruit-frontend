@@ -34,7 +34,6 @@ const context = dialogContext()
 const simpleHandler = (event:Event , buttonAction: DialogContext.ActionButton) => {
     dialog.value = !dialog.value
     if (typeof buttonAction.goBack === 'function') {
-        console.log('goBack', buttonAction.goBack)
         buttonAction.goBack()
     }
 }

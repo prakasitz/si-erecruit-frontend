@@ -161,7 +161,7 @@ definePageMeta({
     breadcrumbs: [
         {
             title: 'หน้าหลัก',
-            href: '/candidate/',
+            href: '/si-erecruit/candidate/',
         },
         {
             title: 'จัดการข้อมูลผู้สมัคร',

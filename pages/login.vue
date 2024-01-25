@@ -71,7 +71,9 @@
 import { H3Error } from 'h3'
 import { useAuth } from '~/composables/auth/useAuth'
 
-useCookie('type').value = 'BACKEND'
+useCookie('type', {
+    path: useRuntimeConfig().app.baseURL,
+}).value = 'BACKEND'
 
 const username = ref('')
 const password = ref('')

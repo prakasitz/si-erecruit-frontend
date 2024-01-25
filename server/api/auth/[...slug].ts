@@ -55,6 +55,7 @@ router.get(
     '/userinfo',
     defineEventHandler(async (event) => {
         // ! CHECK USER FROM PAYLOAD
+        console.log('👍 route-get:context.user', event.context.user)
         if (!event.context.user) throw userNotFoundError()
         return getUserInfo(event)
     })
@@ -71,9 +72,10 @@ router.post(
     '/logout',
     defineEventHandler(async (event) => {
         const userType = getCookie(event, 'type') as UserType | undefined
-
-        let redirectUrl = userType == 'BACKEND' ? '/login' : '/login_candidate'
-        deleteCookie(event, 'access_token')
+        let redirectUrl = userType == 'BACKEND' ? `/login` : `/login_candidate`
+        deleteCookie(event, 'access_token', {
+            path: useRuntimeConfig().app.baseURL,
+        })
 
         return {
             status: 'success',
@@ -96,7 +98,7 @@ router.post(
         //remove query string
         referer = referer?.split('?')[0]
 
-        console.log('Route /login:referer', referer)
+        console.log('🏠 Route /login:referer', referer)
         try {
             if (!userType || !referer)
                 throw createError({
@@ -147,6 +149,7 @@ router.post(
 
             setCookieLogin(event, { token: dataOrError.access_token })
             setCookie(event, 'type', userType, {
+                path: useRuntimeConfig().app.baseURL,
                 httpOnly: false,
                 sameSite: 'strict',
                 maxAge: 60 * 60 * 24, // 1 day
@@ -157,7 +160,7 @@ router.post(
                 _: process.env.NODE_ENV !== 'production' ? devResult : undefined,
             }
         } catch (error: H3Error | any) {
-            console.log(error)
+            console.log('🔴 route:auth:login:error', error)
             return handleErrorRoute(error)
         }
     })

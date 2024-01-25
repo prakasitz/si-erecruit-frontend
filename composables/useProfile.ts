@@ -38,7 +38,7 @@ async function submit(id: string) {
         title: 'ด.ช.',
     })
 
-    return useApi(`/api/external/profile/draft/${parseInt(id)}`, {
+    return useApi(`/external/profile/draft/${parseInt(id)}`, {
         body: {
             ..._data,
         },
@@ -51,7 +51,7 @@ async function submit(id: string) {
 async function draft() {}
 
 function getProfileById(id: string) {
-    return useApi(`/api/external/profile/get/${parseInt(id)}`, {
+    return useApi(`/external/profile/get/${parseInt(id)}`, {
         method: 'POST',
         key: 'getProfileById',
         transform: ({ profile }: { profile: Profile }) => {
@@ -65,7 +65,7 @@ async function importProfile(files: File[]) {
     const file = files[0]
     const formData = new FormData()
     formData.append('file', file)
-    const { data, pending, error } = await useApi('/api/external/profile/import', {
+    const { data, pending, error } = await useApi('/external/profile/import', {
         method: 'POST',
         body: formData,
     })
@@ -92,7 +92,7 @@ const response = async (resp: any, data: DialogContext.ItemID): Promise<DialogCo
             ],
         }
     } else if (resp?.error?.value?.data) {
-        console.log({ a: resp.error.value })
+        console.log('🔴 importProfile:error', { a: resp.error.value })
         const route = useRoute()
         const { showTokenExpired } = useErrorHandler()
 
@@ -122,7 +122,7 @@ async function exportProfilesByJob(
 }
 
 async function waiveProfile(event: H3Event, data: DialogContext.ItemID): Promise<DialogContext.BtnActionCallBack> {
-    const resp = await useApi(`/api/external/profile/waive`, {
+    const resp = await useApi(`/external/profile/waive`, {
         headers: {
             Accept: 'application/json',
         },
@@ -135,7 +135,7 @@ async function waiveProfile(event: H3Event, data: DialogContext.ItemID): Promise
 }
 
 async function cancelProfile(event: H3Event, data: DialogContext.ItemID): Promise<DialogContext.BtnActionCallBack> {
-    const resp = await useApi(`/api/external/profile/cancel`, {
+    const resp = await useApi(`/external/profile/cancel`, {
         headers: {
             Accept: 'application/json',
         },
@@ -147,7 +147,7 @@ async function cancelProfile(event: H3Event, data: DialogContext.ItemID): Promis
 }
 
 async function verifyProfile(event: H3Event, data: DialogContext.ItemID): Promise<DialogContext.BtnActionCallBack> {
-    const resp = await useApi(`/api/external/profile/verify`, {
+    const resp = await useApi(`/external/profile/verify`, {
         headers: {
             Accept: 'application/json',
         },
@@ -159,7 +159,7 @@ async function verifyProfile(event: H3Event, data: DialogContext.ItemID): Promis
 }
 
 async function verifiedProfile(event: H3Event, data: DialogContext.ItemID): Promise<DialogContext.BtnActionCallBack> {
-    const resp = await useApi(`/api/external/profile/verified`, {
+    const resp = await useApi(`/external/profile/verified`, {
         headers: {
             Accept: 'application/json',
         },
@@ -171,7 +171,7 @@ async function verifiedProfile(event: H3Event, data: DialogContext.ItemID): Prom
 }
 
 async function deleteProfile(event: H3Event, data: DialogContext.ItemID): Promise<DialogContext.BtnActionCallBack> {
-    const resp = await useApi(`/api/external/profile/delete`, {
+    const resp = await useApi(`/external/profile/delete`, {
         headers: {
             Accept: 'application/json',
         },
@@ -183,7 +183,7 @@ async function deleteProfile(event: H3Event, data: DialogContext.ItemID): Promis
 }
 
 async function suspendedProfile(event: H3Event, data: DialogContext.ItemID): Promise<DialogContext.BtnActionCallBack> {
-    const resp = await useApi(`/api/external/profile/suspend`, {
+    const resp = await useApi(`/external/profile/suspend`, {
         headers: {
             Accept: 'application/json',
         },
@@ -199,7 +199,7 @@ async function publishableProfile(
     event: H3Event,
     data: DialogContext.ItemID
 ): Promise<DialogContext.BtnActionCallBack> {
-    const resp = await useApi(`/api/external/profile/publishable`, {
+    const resp = await useApi(`/external/profile/publishable`, {
         headers: {
             Accept: 'application/json',
         },

@@ -5,7 +5,7 @@ export default function useLogViewer() {
 }
 
 const fetchLogPaging = (data: LogPaging) => {
-    return useApi('/api/external/logs/paging', {
+    return useApi('/external/logs/paging', {
         headers: {
             Accept: 'application/json',
         },
@@ -30,7 +30,6 @@ const LogTableHandler = () => {
     const itemsPerPage = ref(25)
 
     const loadItems = async ({ page, itemsPerPage, sortBy, ...args }: any) => {
-        console.log(args)
         sortBy = 'DESC'
         loading.value = true
         const { data, error, pending } = await fetchLogPaging({

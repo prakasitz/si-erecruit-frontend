@@ -6,7 +6,7 @@ export const useFillRules = () => {
         if (formInstance) {
             const { valid, errors } = await formInstance.validate()
             if (valid) {
-                console.log('Form is valid')
+                console.log('🟢 Form is valid')
                 return true
             } else {
                 // console.error('errors', errors)

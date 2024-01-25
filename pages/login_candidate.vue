@@ -57,7 +57,9 @@
 <script setup lang="ts">
 import useCandidate from '~/composables/auth/useCandidate'
 
-useCookie('type').value = 'CANDIDATE'
+useCookie('type', {
+    path: useRuntimeConfig().app.baseURL,
+}).value = 'CANDIDATE'
 
 const { checkPID } = useCandidate()
 

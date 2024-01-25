@@ -90,7 +90,6 @@ const menuItem: MenuItem[] = [
         onClick: async (event: Event) => {
             console.log(event)
             if (event instanceof PointerEvent) {
-                console.log('hello')
                 return logout()
             }
         },

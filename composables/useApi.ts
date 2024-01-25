@@ -22,7 +22,7 @@ export const useApi = async (url: any, params: any | UseFetchOptions<HeadersInit
         },
 
         async onRequestError({ error }: any) {
-            console.log('onRequestError', error.message)
+            console.log('❌ onRequestError', error.message)
         },
 
         async onResponse({ request, response, options }: any) {
@@ -35,7 +35,7 @@ export const useApi = async (url: any, params: any | UseFetchOptions<HeadersInit
         },
 
         async onResponseError({ response }: FetchContext<any>) {
-            console.error('[nuxt] ==> useApi:onResponseError:', response?.status)
+            console.error('❌ [nuxt] ==> useApi:onResponseError:', response?.status)
             // const { showErrorOnDialog } = useErrorHandler()
 
             if (response?.status !== undefined) {

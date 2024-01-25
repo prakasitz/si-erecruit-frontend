@@ -321,7 +321,6 @@ async function fetchLevel() {
 }
 
 // async function fetchCertificate(level: Ref<string>) {
-//     console.log('level', level.value)
 //     const cache = useNuxtData('master/certificate-' + level.value)
 //     const refObj = {
 //         data: ref() as Ref<any>,
@@ -346,7 +345,6 @@ async function fetchLevel() {
 // }
 
 // async function fetchMajor(level: Ref<string>) {
-//     console.log('level', level.value)
 //     const cache = useNuxtData('master/major-' + level.value)
 //     const refObj = {
 //         data: ref() as Ref<any>,
@@ -371,7 +369,6 @@ async function fetchLevel() {
 // }
 
 // async function fetchInstitute(level: Ref<string>) {
-//     console.log('level', level.value)
 //     const cache = useNuxtData('master/institute-' + level.value)
 //     const refObj = {
 //         data: ref() as Ref<any>,

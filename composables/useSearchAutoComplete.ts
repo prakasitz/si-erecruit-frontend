@@ -16,7 +16,7 @@ export const useSearchAutoComplete = (items: any[], searchProp: string, defaultS
         // Simulated ajax query
 
         setTimeout(() => {
-            console.log('querySelections', items)
+            console.log('🚩 useSearchAutoComplete:querySelections', items)
             searchItems.value = items.filter((item: any) => {
                 return (item || '')[searchProp].toLowerCase().indexOf((v || '').toLowerCase()) > -1
             })

@@ -29,8 +29,5 @@ definePageMeta({
 const userStore = useUserStore()
 const { user } = userStore
 
-console.log('index', userStore.user.role)
-
 const route = useRoute()
-console.log(route.meta.title) // My home page
 </script>

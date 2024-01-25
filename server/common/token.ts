@@ -49,6 +49,7 @@ export function setCookieLogin(event: H3Event, { token }: { token: string }) {
     setCookie(event, 'access_token', 'Bearer ' + token, {
         httpOnly: true,
         sameSite: 'strict',
+        path: useRuntimeConfig().app.baseURL,
         // secure: true,
     })
 }
@@ -67,12 +68,10 @@ export async function verifyAccessToken(token: string): Promise<H3Error | JwtPay
             let isValid: boolean = false
             if (decoded.aud === audience) {
                 isValid = await verifyOauth2Token(token)
-                console.log('Jwt payload obtained successfully', `isValid is ${isValid}`)
-                console.log(`----| start: modify HR Payload |----`)
+                console.log('✅ Jwt payload obtained successfully', `isValid is ${isValid}`)
                 const modifiedPayload = {
                     ...decoded,
                 }
-                console.log(`----| end: modify HR Payload |----`)
                 if (isValid) return modifiedPayload
                 return UnauthorizedError('Token is not valid or expired')
             } else {
@@ -82,7 +81,7 @@ export async function verifyAccessToken(token: string): Promise<H3Error | JwtPay
 
                 jwt.verify(token, secret, (err, jwtPayload) => {
                     if (err) {
-                        console.log('Cannot Verify token: ', err)
+                        console.log('🔴 Cannot Verify token: ', err)
                         // If not, just return the error
                         if (err instanceof jwt.TokenExpiredError) {
                             throw UnauthorizedError('Token is expired')
@@ -95,7 +94,7 @@ export async function verifyAccessToken(token: string): Promise<H3Error | JwtPay
                 })
 
                 if (tempPayload) {
-                    console.log('Jwt payload obtained successfully')
+                    console.log('🟢 Jwt payload obtained successfully')
                     payload = tempPayload as JwtPayload
                     return payload
                 }
@@ -103,7 +102,7 @@ export async function verifyAccessToken(token: string): Promise<H3Error | JwtPay
                 throw new Error('  We should never reach here')
             }
         } else {
-            console.log('Invalid audience in token')
+            console.log('🔴 Invalid audience in token')
             throw new Error('Invalid audience in token')
         }
     } catch (error: jwt.JsonWebTokenError | H3Error | any) {
@@ -112,7 +111,7 @@ export async function verifyAccessToken(token: string): Promise<H3Error | JwtPay
         if (error instanceof jwt.JsonWebTokenError) {
             msg = error.message + ` [jwt.JsonWebTokenError]`
         }
-        console.log('Error decoding token:', error.message)
+        console.log('🔴 Error decoding token:', error.message)
         return createError({
             statusCode: 500,
             statusMessage: 'Internal Server Error',
@@ -126,7 +125,7 @@ export async function verifyAccessToken(token: string): Promise<H3Error | JwtPay
 
 export const decryptSecret = (secret?: string, key?: string) => {
     const { encryptKey } = useRuntimeConfig()
-    console.log('encryptKey', encryptKey, key)
+    console.log('🚩 encryptKey', encryptKey, key)
     try {
         if (key != encryptKey) throw new Error('key is invalid')
         if (!secret) throw new Error('secret is invalid')
@@ -139,7 +138,7 @@ export const decryptSecret = (secret?: string, key?: string) => {
 
         return decrypted.toString()
     } catch (err: any) {
-        console.log(err)
+        console.log('🔴 decryptSecret:error', err)
         return createError({
             statusCode: 500,
             statusMessage: 'Internal Server Error',

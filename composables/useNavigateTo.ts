@@ -1,5 +1,4 @@
 export const useNavigateTo = (role: any) => {
-    console.log('role', role)
     let url = ''
     switch (role) {
         case 'admin':

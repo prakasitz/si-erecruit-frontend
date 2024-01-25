@@ -176,7 +176,7 @@ const showForm = (item: SRC_User | undefined, type: 'edit' | 'create') => {
 }
 
 const updateDialog = (updateValue: boolean) => {
-    console.log('updateDialog', updateValue)
+    console.log('🚩 user_management:updateDialog', updateValue)
     dialog.value = updateValue
     form.value = ''
 }
@@ -235,5 +235,4 @@ watch([() => dialog.value, () => dialogConf.value], ([val1, val2]) => {
     }
 })
 
-console.log(route.meta.title) // My home page
 </script>

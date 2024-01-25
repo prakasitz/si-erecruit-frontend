@@ -47,7 +47,7 @@ export const useAuth = () => {
             userStore.$reset()
             return navigateTo(data.value.redirect)
         } catch (error: FetchError | any) {
-            console.log('error on logout', error)
+            console.log('🔴 logout:erorr', error)
             throw createError({
                 statusCode: error.statusCode,
                 message: error.data.message,

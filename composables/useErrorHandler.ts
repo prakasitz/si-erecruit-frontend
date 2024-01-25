@@ -74,9 +74,12 @@ function showErrorOnDialog({ error }: { error: FetchError<any> }) {
 }
 
 function showTokenExpired(to: any) {
-    const userType = useCookie('type').value
+    const userType = useCookie('type', {
+        path: useRuntimeConfig().app.baseURL,
+    }).value
+    const appBaseUrl = useRuntimeConfig().app.baseURL
 
-    let loginPath = userType === 'BACKEND' ? '/login' : '/login_candidate'
+    let loginPath = userType === 'BACKEND' ? `${appBaseUrl}login` : `${appBaseUrl}login_candidate`
     let query = '?redirect=' + to.fullPath
     let fullPath = loginPath + query
 

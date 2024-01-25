@@ -16,7 +16,7 @@ export default function useButtonAction() {
 
 const approveJob = async (event: any, item_id: number): Promise<DialogContext.BtnActionCallBack> => {
     try {
-        const resp = await useApi(`/api/external/jobs/approved/${item_id}`, {
+        const resp = await useApi(`/external/jobs/approved/${item_id}`, {
             headers: {
                 Accept: 'application/json',
             },
@@ -42,7 +42,6 @@ const approveJob = async (event: any, item_id: number): Promise<DialogContext.Bt
             }
         }
     } catch (e) {
-        console.log(e)
         return {
             status: false,
             message: `Sorry, something went wrong.`,
@@ -52,7 +51,7 @@ const approveJob = async (event: any, item_id: number): Promise<DialogContext.Bt
 
 const deleteJob = async (event: any, item_id: number) => {
     try {
-        const resp = await useApi(`/api/external/jobs/${item_id}`, {
+        const resp = await useApi(`/external/jobs/${item_id}`, {
             headers: {
                 Accept: 'application/json',
             },
@@ -77,7 +76,6 @@ const deleteJob = async (event: any, item_id: number) => {
             }
         }
     } catch (e) {
-        console.log(e)
         return {
             status: false,
             message: `Sorry, something went wrong.`,
@@ -113,7 +111,6 @@ const cancelJob = async (event: any, item_id: number) => {
             }
         }
     } catch (e) {
-        console.log(e)
         return {
             status: false,
             message: `Sorry, something went wrong.`,
@@ -122,7 +119,6 @@ const cancelJob = async (event: any, item_id: number) => {
 }
 const publishJob = async (event: any, item_id: number) => {
     try {
-        console.log(item_id)
         const resp = await useFetch(`/api/external/jobs/publish`, {
             headers: {
                 Accept: 'application/json',
@@ -152,7 +148,6 @@ const publishJob = async (event: any, item_id: number) => {
             }
         }
     } catch (e) {
-        console.log(e)
         return {
             status: false,
             message: `Sorry, something went wrong.`,
@@ -188,7 +183,6 @@ const suspendJob = async (event: any, item_id: number) => {
             }
         }
     } catch (e) {
-        console.log(e)
         return {
             status: false,
             message: `Sorry, something went wrong.`,
@@ -224,7 +218,6 @@ const republishJob = async (event: any, item_id: number) => {
             }
         }
     } catch (e) {
-        console.log(e)
         return {
             status: false,
             message: `Sorry, something went wrong.`,
@@ -260,7 +253,6 @@ const terminateJob = async (event: any, item_id: number) => {
             }
         }
     } catch (e) {
-        console.log(e)
         return {
             status: false,
             message: `Sorry, something went wrong.`,
@@ -296,7 +288,6 @@ const verifiedJob: DialogContext.FnActionCallback = async (event: any, item_id: 
             }
         }
     } catch (e) {
-        console.log(e)
         return {
             status: false,
             message: `Sorry, something went wrong.`,

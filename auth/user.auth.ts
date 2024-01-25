@@ -19,7 +19,9 @@ export class UserAuth implements IAuth {
                     password: userLogin.password,
                 },
             })
-            cookie.setCookie('access_token', data)
+            cookie.setCookie('access_token', data, {
+                path: useRuntimeConfig().app.baseURL,
+            })
             return data
         } catch (err: any) {
             console.log('signIn', err)

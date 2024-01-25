@@ -9,17 +9,18 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     const { isHR, isAdmin, pageLayout } = storeToRefs(useUserStore())
     const { me, decryptSecret } = useAuth()
     try {
+        console.log(`----- middleware admin-hr-only call me at ${process.server ? 'server' : 'client'} -----`)
         const userInfo = await me()
         userInfo.secret = await decryptSecret(userInfo.secret)
         await setUserInfo(userInfo, process.server)
 
         usePageLayout(pageLayout.value)
-        console.log(isHR.value, isAdmin.value)
+        console.log('\t',isHR.value, isAdmin.value)
         if (!isHR.value && !isAdmin.value) {
             throw createError({
                 statusCode: 403,
+                statusMessage: 'Forbidden',
                 message: 'You are not authorized to access this page. #T-01',
-                stack: undefined,
             })
         }
     } catch (error: NuxtError | any) {

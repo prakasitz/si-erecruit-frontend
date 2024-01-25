@@ -73,7 +73,6 @@ const levels: Ref<LanguageLevelOption[]> = ref([
 watch(
     skillsRadio,
     (newSkills) => {
-        console.log(newSkills)
         for (const skill of newSkills) {
             if (skill.selected != 'อื่น ๆ') {
                 skill.others = ''

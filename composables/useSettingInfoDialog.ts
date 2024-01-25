@@ -14,7 +14,7 @@ type DialogContext = {
 function showDialogInfo({ title, value }: DialogContext) {
     const dialogContext = useState<DialogContext>('dialogContext')
     const dialogInfo = useState('dialogSettings')
-    console.log(title, value, dialogContext)
+    console.log('📖 showDialogInfo', { title, value, dialogContext })
 
     dialogContext.value = { title, value }
 

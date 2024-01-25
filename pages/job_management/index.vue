@@ -180,10 +180,10 @@ const confirmForDeleteItem = (event: Event, item: any) => {
 const deleteJobItem = async (event: Event, itemId: any): Promise<{ status: boolean; message: unknown }> => {
     if (event instanceof PointerEvent) {
         try {
-            const resp = await deleteJob(itemId)
+            await deleteJob(itemId)
             return { status: true, message: `Job ID: ${itemId} deleted!` }
         } catch (error: FetchError | any) {
-            console.log(error)
+            console.log('🔴 job_management:deleteJobItem',error)
             if (error instanceof FetchError) {
                 const { statusCode, statusMessage } = error.data as NuxtError
                 let message = error.data.message + ` (${statusMessage}:${statusCode})` || error.message || error || ''
@@ -203,13 +203,4 @@ const deleteJobItem = async (event: Event, itemId: any): Promise<{ status: boole
     event.preventDefault()
     return { status: false, message: 'cancel to DELETE' }
 }
-
-onMounted(async () => {
-    // const { data, error, refresh, pending } = await useApi('/jobs/get', {
-    //     method: 'POST',
-    // })
-    // console.log(data.value)
-})
-
-console.log(route.meta.title, 1) // My home page
 </script>

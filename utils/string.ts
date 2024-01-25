@@ -14,9 +14,9 @@ export const isMatchRegex = (str: string, regex: RegExp): boolean => {
     const match = str?.match(regex)
     if (match) {
         const extractedPath = match[0]
-        console.log('isMatchRegex: Extracted path:', extractedPath)
+        console.log('🚩 isMatchRegex: Extracted path:', extractedPath)
     } else {
-        console.log(`isMatchRegex: Pattern not match. string: ${str}`)
+        console.log(`🚩 isMatchRegex: Pattern not match. string: ${str}`)
     }
     return !!match
 }

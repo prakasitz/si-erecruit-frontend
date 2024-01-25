@@ -137,7 +137,6 @@ router.delete(
 function parseMultipartNodeRequest(req: IncomingMessage): Promise<{
     file: any
 }> {
-    console.log('hello')
     //`C:\Users\Lijinx\AppData\Local\Temp\`
     return new Promise((resolve, reject) => {
         //require only one file
