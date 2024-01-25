@@ -52,7 +52,7 @@ export async function isAuthenticated(event: H3Event): Promise<boolean | H3Error
     let accessToken = getCookie(event, 'access_token') as string
 
     if (!accessToken) {
-        console.log('✅ isAuthenticated: No access token provided')
+        console.log('🔴❌ isAuthenticated: No access token provided')
         return TokenNotFoundError()
     }
 

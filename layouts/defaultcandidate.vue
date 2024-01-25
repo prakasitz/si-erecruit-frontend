@@ -58,7 +58,7 @@
             </v-list>
         </v-navigation-drawer>
 
-        <TopicBar :labels="(route.meta.breadcrumbs as any[])" />
+        <TopicBar/>
 
         <v-main :style="{ 'min-height': '90%', 'margin-top': '36px' }" class="bg-background-color">
             <slot> </slot>

@@ -158,17 +158,14 @@ definePageMeta({
         name: 'rotate',
     },
     layout: false,
-    breadcrumbs: [
-        {
-            title: 'หน้าหลัก',
-            href: '/si-erecruit/candidate/',
-        },
-        {
-            title: 'จัดการข้อมูลผู้สมัคร',
-        },
-    ],
     middleware: ['admin-hr-candidate-only'],
 })
+
+useBreadcrumb().setBreadcrumbs([
+    {
+        title: 'จัดการข้อมูลผู้สมัคร',
+    },
+])
 
 const route = useRoute()
 

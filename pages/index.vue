@@ -18,13 +18,10 @@ definePageMeta({
     pageTransition: {
         name: 'rotate',
     },
-    breadcrumbs: [
-        {
-            title: 'หน้าหลัก',
-        },
-    ],
     middleware: ['admin-hr-only'],
 })
+
+useBreadcrumb().setBreadcrumbs()
 
 const userStore = useUserStore()
 const { user } = userStore

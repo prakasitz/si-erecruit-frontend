@@ -46,7 +46,7 @@
                 </div>
             </v-list>
         </v-navigation-drawer>
-        <TopicBar :labels="(route.meta.breadcrumbs as any[])" />
+        <TopicBar/>
         <v-main :style="{ 'min-height': '90%', 'margin-top': '36px' }" class="bg-background-color">
             <slot></slot>
         </v-main>
@@ -54,6 +54,7 @@
 
         <v-footer app absolute style="font-size: 0.95rem" class="bg-footer-color text-center d-flex flex-column">
             <div class="pt-0">
+                {{ route.meta.breadcrumbs }}
                 ทดสอบ Si-ERecruit Nuxt3 <br />
                 V.0.0.1 ({{ $isDev ? 'Development' : 'Production' }})
             </div>

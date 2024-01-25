@@ -90,17 +90,14 @@ definePageMeta({
     pageTransition: {
         name: 'rotate',
     },
-    breadcrumbs: [
-        {
-            title: 'หน้าหลัก',
-            href: '/',
-        },
-        {
-            title: 'จัดการงาน',
-        },
-    ],
     middleware: ['admin-hr-only'],
 })
+
+useBreadcrumb().setBreadcrumbs([
+    {
+        title: 'จัดการงาน',
+    },
+])
 
 const { fetchJobs, deleteJob } = useJobManagement()
 const { dialogConfirm, showDialog } = useDialog()
@@ -183,7 +180,7 @@ const deleteJobItem = async (event: Event, itemId: any): Promise<{ status: boole
             await deleteJob(itemId)
             return { status: true, message: `Job ID: ${itemId} deleted!` }
         } catch (error: FetchError | any) {
-            console.log('🔴 job_management:deleteJobItem',error)
+            console.log('🔴 job_management:deleteJobItem', error)
             if (error instanceof FetchError) {
                 const { statusCode, statusMessage } = error.data as NuxtError
                 let message = error.data.message + ` (${statusMessage}:${statusCode})` || error.message || error || ''

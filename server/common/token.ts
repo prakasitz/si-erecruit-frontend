@@ -125,7 +125,6 @@ export async function verifyAccessToken(token: string): Promise<H3Error | JwtPay
 
 export const decryptSecret = (secret?: string, key?: string) => {
     const { encryptKey } = useRuntimeConfig()
-    console.log('🚩 encryptKey', encryptKey, key)
     try {
         if (key != encryptKey) throw new Error('key is invalid')
         if (!secret) throw new Error('secret is invalid')

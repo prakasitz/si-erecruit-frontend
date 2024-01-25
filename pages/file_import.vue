@@ -77,6 +77,20 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+    title: 'นำเข้าไฟล์',
+    pageTransition: {
+        name: 'rotate',
+    },
+    middleware: ['admin-hr-only'],
+})
+
+useBreadcrumb().setBreadcrumbs([
+    {
+        title: 'นำเข้าไฟล์',
+    },
+])
+
 const theadStyle = 'text-left text-white font-weight-bold'
 const tableStyle = {
     // border: '1px solid black !important',
@@ -89,23 +103,6 @@ const { showDialog, dialogInfo } = useDialog()
 const loading = ref(false)
 const importedData = ref<any[] | null>(null)
 const files = ref<File[]>([])
-
-definePageMeta({
-    title: 'นำเข้าไฟล์',
-    pageTransition: {
-        name: 'rotate',
-    },
-    breadcrumbs: [
-        {
-            title: 'หน้าหลัก',
-            href: '/',
-        },
-        {
-            title: 'นำเข้าไฟล์',
-        },
-    ],
-    middleware: ['admin-hr-only'],
-})
 
 const cntFiles = computed(() => {
     return files.value ? files.value.length : 0

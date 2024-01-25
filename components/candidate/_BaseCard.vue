@@ -34,7 +34,6 @@ import { CandidateForm, VuetifyForm } from '~/utils/types'
 
 export interface Props {
     candidateForm: CandidateForm
-    labels?: any[]
     formPage?: any
 }
 const props = defineProps<Props>()

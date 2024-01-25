@@ -49,17 +49,14 @@ definePageMeta({
     pageTransition: {
         name: 'rotate',
     },
-    breadcrumbs: [
-        {
-            title: 'หน้าหลัก',
-            href: '/',
-        },
-        {
-            title: 'ตั้งค่า',
-        },
-    ],
     middleware: ['admin-hr-only'],
 })
+
+useBreadcrumb().setBreadcrumbs([
+    {
+        title: 'ตั้งค่า',
+    },
+])
 
 const { fetchSettings, fetchBySettings, updateSetting } = useSettings()
 const { showDialogInfo } = useSettingInfoDialog()

@@ -149,22 +149,19 @@ definePageMeta({
     pageTransition: {
         name: 'rotate',
     },
-
-    breadcrumbs: [
-        {
-            title: 'หน้าหลัก',
-            href: '/',
-        },
-        {
-            title: 'จัดการงาน',
-            href: '/job_management/',
-        },
-        {
-            title: 'รายละเอียดงาน',
-        },
-    ],
     middleware: ['admin-hr-only'],
 })
+
+useBreadcrumb().setBreadcrumbs([
+    {
+        title: 'จัดการงาน',
+        href: 'job_management',
+    },
+    {
+        title: 'รายละเอียดงาน',
+    },
+])
+
 const route = useRoute()
 const pageLoad = ref(true)
 

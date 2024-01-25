@@ -87,17 +87,14 @@ definePageMeta({
     pageTransition: {
         name: 'rotate',
     },
-    breadcrumbs: [
-        {
-            title: 'หน้าหลัก',
-            href: '/',
-        },
-        {
-            title: 'จัดการผู้ใช้',
-        },
-    ],
     middleware: 'admin-hr-only',
 })
+
+useBreadcrumb().setBreadcrumbs([
+    {
+        title: 'จัดการผู้ใช้งาน',
+    },
+])
 
 const route = useRoute()
 
@@ -234,5 +231,4 @@ watch([() => dialog.value, () => dialogConf.value], ([val1, val2]) => {
         refreshNuxtData('fetchSRCUsers')
     }
 })
-
 </script>

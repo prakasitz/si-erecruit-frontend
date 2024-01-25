@@ -18,8 +18,6 @@
 import { useUserStore } from '~/stores/user.store'
 
 // This will work in both `<script setup>` and `<script>`
-const userStore = useUserStore()
-const { user } = userStore
 
 definePageMeta({
     title: 'หน้าหลัก',
@@ -27,11 +25,11 @@ definePageMeta({
         name: 'rotate',
     },
     layout: 'defaultcandidate',
-    breadcrumbs: [
-        {
-            title: 'หน้าหลัก',
-        },
-    ],
     middleware: ['candidate-only'],
 })
+
+useBreadcrumb().setBreadcrumbs()
+
+const userStore = useUserStore()
+const { user } = userStore
 </script>

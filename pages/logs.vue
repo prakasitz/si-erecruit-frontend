@@ -47,17 +47,14 @@ definePageMeta({
     pageTransition: {
         name: 'rotate',
     },
-    breadcrumbs: [
-        {
-            title: 'หน้าหลัก',
-            href: '/',
-        },
-        {
-            title: 'logs',
-        },
-    ],
     middleware: ['admin-hr-only'],
 })
+
+useBreadcrumb().setBreadcrumbs([
+    {
+        title: 'logs',
+    },
+])
 
 const { LogTableHandler } = useLogViewer()
 const { serverItems, totalItems, loading, loadItems, itemsPerPage } = LogTableHandler()

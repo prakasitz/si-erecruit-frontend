@@ -5,17 +5,21 @@
                 <v-sheet class="ma-0s pa-0" max-height="70">
                     <v-row>
                         <v-col cols="6" align-self="center">
-                            <v-breadcrumbs
-                                v-if="isCandidate"
-                                divider=">"
-                                :disabled="true"
-                                :items="props.labels"
-                            ></v-breadcrumbs>
-                            <div v-if="isCandidateLayout && (isHR || isAdmin)" class="mx-auto pl-5">
-                                <p class="text-h6">
-                                    ข้อมูลผู้สมัคร: {{ personal_info?.first_name_th }}
-                                    {{ personal_info?.last_name_th }} ({{ route.params.id }})
-                                </p>
+                            <div v-if="isCandidateLayout">
+                                <div v-if="isCandidate">
+                                    <v-breadcrumbs :items="breadcrumbState" divider=">"> </v-breadcrumbs>
+                                </div>
+                                <div v-else>
+                                    <div class="mx-auto pl-5">
+                                        <p class="text-h6">
+                                            ข้อมูลผู้สมัคร: {{ personal_info?.first_name_th }}
+                                            {{ personal_info?.last_name_th }} ({{ route.params.id }})
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-else>
+                                <v-breadcrumbs :items="breadcrumbState" divider=">"> </v-breadcrumbs>
                             </div>
                         </v-col>
                         <v-spacer></v-spacer>
@@ -60,24 +64,22 @@ type MenuItem = {
     onClick?: (event: Event) => Promise<any>
 }
 
-interface PropsTopicBar {
-    labels: any[]
-}
-
-const props = withDefaults(defineProps<PropsTopicBar>(), {
-    labels: () => [{ title: 'หนัาหลัก', href: '/' }],
-})
-
-// This will work in both `<script setup>` and `<script>`
 const route = useRoute()
-const isCandidateLayout = computed(() => route.name === 'candidate-form-id')
+const appBaseUrl = useRuntimeConfig().app.baseURL
 
 const userStore = useUserStore()
+const { isAdmin, isHR, isCandidate } = storeToRefs(userStore)
+const { user } = userStore
+
 const personalStore = usePersonalStore()
 const { personal_info } = personalStore
+
 const { logout } = useAuth()
-const { user } = userStore
-const { isAdmin, isHR, isCandidate } = storeToRefs(userStore)
+
+const { breadcrumbState } = useBreadcrumb()
+
+const isCandidateLayout = computed(() => route.name === 'candidate-form-id')
+
 const menuItem: MenuItem[] = [
     {
         title: 'ข้อมูลส่วนตัว',
