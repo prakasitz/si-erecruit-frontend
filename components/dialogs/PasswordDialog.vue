@@ -74,13 +74,11 @@
 </template>
 
 <script setup lang="ts">
-import { CandidateAuth } from '~/auth/candidate.auth'
 import { H3Error } from 'h3'
 import { useAuth } from '~/composables/auth/useAuth'
 
 const { $isDev } = useNuxtApp()
 const route = useRoute()
-const auth = new CandidateAuth()
 const props = defineProps(['id_card', 'btn_disabled', 'show', 'showError', 'error_detail'])
 const emit = defineEmits(['update:show', 'update:show_error'])
 const password = ref('')
@@ -96,7 +94,7 @@ async function loginCandidate(pid?: string | undefined, password?: string | unde
             await useAuth().login(pid, password, 'CANDIDATE')
             // await auth.signIn({ username: pid, password: password })
             let url = redirectOrNull || 'candidate'
-            return navigateTo(url, { external: true })
+            return navigateTo(url)
         } catch (error: H3Error | any) {
             console.log('🚩 PasswordDialog.vue', error)
             if (error instanceof H3Error) {
