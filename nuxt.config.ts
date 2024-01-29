@@ -113,7 +113,7 @@ export default defineNuxtConfig({
 
     app: {
         head: {
-            titleTemplate: '%s · Si-ERecruit',
+            // titleTemplate: '%s · Si-ERecruit',
             charset: 'utf-8',
             viewport: 'width=device-width, initial-scale=1',
         },

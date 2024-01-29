@@ -145,7 +145,6 @@ import { VDataTable } from 'vuetify/lib/labs/VDataTable/index.mjs'
 import { Job, ProfileWithQuickAction } from '~/utils/types'
 
 definePageMeta({
-    title: 'รายละเอียดงาน',
     pageTransition: {
         name: 'rotate',
     },
@@ -161,6 +160,10 @@ useBreadcrumb().setBreadcrumbs([
         title: 'รายละเอียดงาน',
     },
 ])
+
+useHead({
+    title: 'รายละเอียดงาน',
+})
 
 const route = useRoute()
 const pageLoad = ref(true)

@@ -68,9 +68,7 @@ const route = useRoute()
 const { $isDev } = useNuxtApp()
 
 useHead({
-    titleTemplate: (productCategory) => {
-        return productCategory ? `${productCategory} - ${route.meta.title}` : 'Site Title'
-    },
+    titleTemplate: '%s - BackOffice',
     // meta: [{ property: 'og:title', content: `App Name - ${route.meta.title}` }],
 })
 

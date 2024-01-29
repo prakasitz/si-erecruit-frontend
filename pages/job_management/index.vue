@@ -86,7 +86,6 @@ import { NuxtError } from 'nuxt/app'
 import { FetchError } from 'ofetch'
 
 definePageMeta({
-    title: 'จัดการงาน',
     pageTransition: {
         name: 'rotate',
     },
@@ -98,6 +97,11 @@ useBreadcrumb().setBreadcrumbs([
         title: 'จัดการงาน',
     },
 ])
+
+useHead({
+    title: 'จัดการงาน'
+})
+
 
 const { fetchJobs, deleteJob } = useJobManagement()
 const { dialogConfirm, showDialog } = useDialog()

@@ -83,7 +83,6 @@
 import { SRC_User } from '~/utils/types'
 
 definePageMeta({
-    title: 'จัดการผู้ใช้งาน',
     pageTransition: {
         name: 'rotate',
     },
@@ -95,6 +94,10 @@ useBreadcrumb().setBreadcrumbs([
         title: 'จัดการผู้ใช้งาน',
     },
 ])
+
+useHead({
+    title: 'จัดการผู้ใช้งาน',
+})
 
 const route = useRoute()
 

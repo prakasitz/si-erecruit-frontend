@@ -42,7 +42,6 @@
 
 <script setup lang="ts">
 definePageMeta({
-    title: 'Logs',
     name: 'Logs',
     pageTransition: {
         name: 'rotate',
@@ -55,6 +54,10 @@ useBreadcrumb().setBreadcrumbs([
         title: 'logs',
     },
 ])
+
+useHead({
+    title: 'Logs',
+})
 
 const { LogTableHandler } = useLogViewer()
 const { serverItems, totalItems, loading, loadItems, itemsPerPage } = LogTableHandler()

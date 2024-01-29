@@ -44,7 +44,6 @@
 
 <script setup lang="ts">
 definePageMeta({
-    title: 'ตั้งค่า',
     name: 'settings',
     pageTransition: {
         name: 'rotate',
@@ -57,6 +56,10 @@ useBreadcrumb().setBreadcrumbs([
         title: 'ตั้งค่า',
     },
 ])
+
+useHead({
+    title: 'ตั้งค่า',
+})
 
 const { fetchSettings, fetchBySettings, updateSetting } = useSettings()
 const { showDialogInfo } = useSettingInfoDialog()

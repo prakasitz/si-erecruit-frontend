@@ -90,6 +90,10 @@ definePageMeta({
     layout: 'custom',
 })
 
+useHead({
+    title: 'เข้าสู่ระบบ',
+})
+
 async function signIn() {
     try {
         overlay.value = true

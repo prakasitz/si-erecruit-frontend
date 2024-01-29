@@ -57,6 +57,19 @@
 <script setup lang="ts">
 import useCandidate from '~/composables/auth/useCandidate'
 
+// This will work in both `<script stup>` and `<script>`
+definePageMeta({
+    pageTransition: {
+        name: 'rotate',
+    },
+    layout: 'logincandidate',
+    name: 'login-candidate',
+})
+
+useHead({
+    title: 'เข้าสู่ระบบ',
+})
+
 useCookie('type', {
     path: useRuntimeConfig().app.baseURL,
 }).value = 'CANDIDATE'
@@ -80,15 +93,6 @@ const numberRule = [
             ? 'กรุณากรอกเลขบัตรประจำตัวประชาชนให้ครบ 13 หลัก'
             : true,
 ]
-
-// This will work in both `<script stup>` and `<script>`
-definePageMeta({
-    pageTransition: {
-        name: 'rotate',
-    },
-    layout: 'logincandidate',
-    name: 'login-candidate',
-})
 
 async function onClick_CheckingPID(_id: string) {
     const resp = await checkPID()

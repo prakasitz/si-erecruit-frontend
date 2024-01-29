@@ -58,7 +58,7 @@
             </v-list>
         </v-navigation-drawer>
 
-        <TopicBar/>
+        <TopicBar />
 
         <v-main :style="{ 'min-height': '90%', 'margin-top': '36px' }" class="bg-background-color">
             <slot> </slot>
@@ -87,9 +87,7 @@ import { CandidateNav } from '~/utils/types'
 const route = useRoute()
 
 useHead({
-    titleTemplate: (productCategory) => {
-        return productCategory ? `${productCategory} - ${route.meta.title}` : 'Site Title'
-    },
+    titleTemplate: '%s - Si-ERecruit',
     // meta: [{ property: 'og:title', content: `App Name - ${route.meta.title}` }],
 })
 

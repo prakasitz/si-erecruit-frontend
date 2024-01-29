@@ -20,12 +20,15 @@ import { useUserStore } from '~/stores/user.store'
 // This will work in both `<script setup>` and `<script>`
 
 definePageMeta({
-    title: 'หน้าหลัก',
     pageTransition: {
         name: 'rotate',
     },
     layout: 'defaultcandidate',
     middleware: ['candidate-only'],
+})
+
+useHead({
+    title: 'หน้าหลัก',
 })
 
 useBreadcrumb().setBreadcrumbs()

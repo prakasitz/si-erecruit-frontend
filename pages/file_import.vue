@@ -78,7 +78,6 @@
 
 <script setup lang="ts">
 definePageMeta({
-    title: 'นำเข้าไฟล์',
     pageTransition: {
         name: 'rotate',
     },
@@ -90,6 +89,10 @@ useBreadcrumb().setBreadcrumbs([
         title: 'นำเข้าไฟล์',
     },
 ])
+
+useHead({
+    title: 'นำเข้าไฟล์',
+})
 
 const theadStyle = 'text-left text-white font-weight-bold'
 const tableStyle = {

@@ -153,7 +153,6 @@ import { useUserStore } from '~/stores/user.store'
 import { Profile } from '~/utils/types'
 
 definePageMeta({
-    title: 'จัดการข้อมูลผู้สมัคร',
     pageTransition: {
         name: 'rotate',
     },
@@ -166,6 +165,10 @@ useBreadcrumb().setBreadcrumbs([
         title: 'จัดการข้อมูลผู้สมัคร',
     },
 ])
+
+useHead({
+    title: 'จัดการข้อมูลผู้สมัคร',
+})
 
 const route = useRoute()
 

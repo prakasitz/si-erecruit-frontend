@@ -14,11 +14,14 @@
 import { useUserStore } from '~/stores/user.store'
 
 definePageMeta({
-    title: 'หน้าหลัก',
     pageTransition: {
         name: 'rotate',
     },
     middleware: ['admin-hr-only'],
+})
+
+useHead({
+    title: 'หน้าหลัก',
 })
 
 useBreadcrumb().setBreadcrumbs()
