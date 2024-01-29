@@ -11,7 +11,7 @@ class UserExternal extends ExternalAPIService {
 
     public async getUsers(event: H3Event) {
         try {
-            this.checkPermission(event, 'can-access-hr')
+            this.checkPermission(event, 'can-access-admin-hr')
 
             await this.initializeToken()
             const resp = await this.baseAPI.get(`/${this.slug}/get`, {
