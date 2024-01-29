@@ -118,7 +118,8 @@ async function exportProfilesByJob(
     type: 'csv' | 'excel' | 'json' | string
 ): Promise<any> {
     const { job_ID } = data
-    window.open(`/api/external/profile/export/${job_ID}/${type}`, '_blank')
+    const appBaseUrl = useRuntimeConfig().app.baseURL
+    window.open(`${appBaseUrl}api/external/profile/export/${job_ID}/${type}`, '_blank')
 }
 
 async function waiveProfile(event: H3Event, data: DialogContext.ItemID): Promise<DialogContext.BtnActionCallBack> {
