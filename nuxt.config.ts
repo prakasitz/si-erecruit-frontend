@@ -111,20 +111,6 @@ export default defineNuxtConfig({
         },
     },
 
-    // routeRules: {
-    //     '/api/auth/check-pid': {
-    //         security: {
-    //             ...rateLimit300perDay,
-    //         },
-    //     },
-    //     '/api/auth/login': {
-    //         security: {
-    //             ...rateLimit300perDay,
-    //         },
-    //     },
-    //     '/api/proxy/example': { proxy: 'https://jsonplaceholder.typicode.com/todos/1' },
-    // },
-
     app: {
         head: {
             titleTemplate: '%s · Si-ERecruit',
