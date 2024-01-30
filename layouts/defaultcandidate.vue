@@ -69,7 +69,7 @@
         <v-footer app absolute style="font-size: 0.95rem" class="bg-footer-color text-center d-flex flex-column">
             <div class="pt-0">
                 ทดสอบ Si-ERecruit Nuxt3 <br />
-                V.0.0.1 (Development)
+                V.{{ $config.public.clientVersion }} ({{ $isDev ? 'Development' : 'Production' }})
             </div>
 
             <div>©{{ new Date().getFullYear() }} — <strong>HRIT</strong></div>
