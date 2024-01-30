@@ -293,17 +293,19 @@ const pending = computed(() => {
 const personalStore = usePersonalStore()
 const { marriage, useCurAddressOnRefAddress, useRegAddressOnRefAddress, setDefaultChildList } = personalStore
 
-watch(
-    marriage,
-    ({ status }) => {
-        if (status == '1') {
-            setDefaultChildList()
-        }
-    },
-    {
-        deep: true,
-    }
-)
+// ไม่ fix เพราะว่า โสด แต่อาจจะมีบุตรก็ได้
+// เช่น ไม่ได้แต่งงานกันแต่มีบุตร , ไปรับบุตรบุญธรรม และโสด
+// watch(
+//     marriage,
+//     ({ status }) => {
+//         if (status == '1' ) {
+//             setDefaultChildList()
+//         }
+//     },
+//     {
+//         deep: true,
+//     }
+// )
 watch(
     () => marriage.num_of_chlid,
     (newValue) => {

@@ -17,7 +17,7 @@
                         v-model="skill.others"
                         variant="outlined"
                         density="compact"
-                        :rules="skill.selected ? rules_fieldEmpty : undefined"
+                        :rules="skill.selected == 'อื่น ๆ' ? rules_fieldEmpty : undefined"
                         :disabled="skill.selected != 'อื่น ๆ'"
                     ></v-text-field>
                 </v-radio-group>
@@ -33,7 +33,7 @@
 </style>
 
 <script setup lang="ts">
-import { language } from  '~/utils/types'
+import { language } from '~/utils/types'
 import { LanguageLevelOption, Skill } from '~/utils/types'
 
 export interface Props {
