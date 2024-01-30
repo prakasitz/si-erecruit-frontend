@@ -1,6 +1,7 @@
 import { ContextUser, UserType, jwtAdfs, jwtCandidate } from '~/utils/types'
 import { FetchError } from 'ofetch'
 import { useUserStore } from '~/stores/user.store'
+import { error } from 'console'
 
 export const useAuth = () => {
     const userStore = useUserStore()
@@ -13,6 +14,7 @@ export const useAuth = () => {
     // Handles user login. Makes an API call to authenticate the user.
     const login = async (username: any, password: any, type: UserType) => {
         try {
+            const appBaseUrl = useRuntimeConfig().app.baseURL
             const pidOrUserName = type === 'CANDIDATE' ? 'pid' : 'username'
             const { data, error } = await useApi('/auth/login', {
                 method: 'POST',
@@ -24,8 +26,17 @@ export const useAuth = () => {
                     password,
                 },
             })
-
             if (error.value) throw error.value
+
+            const route = useRoute()
+            let redirectOrNull = route.query.redirect as string | null
+            let urlIndex = type === 'CANDIDATE' ? `${appBaseUrl}candidate` : `${appBaseUrl}`
+            await navigateTo(
+                { path: redirectOrNull || urlIndex },
+                {
+                    external: true,
+                }
+            )
         } catch (error: FetchError | any) {
             throw createError({
                 statusCode: error.statusCode,
@@ -64,28 +75,34 @@ export const useAuth = () => {
             })
 
             if (error.value) throw error.value
+            if (!data.value) throw createError({ statusCode: 401, message: 'Unauthorized' })
+
             return data.value
         } catch (error: FetchError | any) {
             throw createError({
                 statusCode: error.statusCode,
-                message: error.data.message ?? error,
+                message: error.message || error.data.message || error,
             })
         }
     }
 
-    const decryptSecret = async (secret: string | undefined) => {
-        if (!secret) return
+    const decryptSecret = async (userInfo: (jwtAdfs & jwtCandidate) | undefined) => {
+        if (!userInfo || !userInfo.secret) return
+
         if (process.client) return
+
         const { data } = await useApi('/auth/decrypt-secret', {
             method: 'POST',
             key: 'decrypt-secret',
             server: true,
             body: {
                 key: process.server ? process.env.NUXT_ENCRYPT_KEY : '',
-                secret,
+                secret: userInfo.secret,
             },
         })
-        return data.value?.decrypted || secret
+        userInfo.secret = data.value.decrypted || userInfo.secret
+
+        console.log('🚩 userInfo', userInfo)
     }
 
     return {

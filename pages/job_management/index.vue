@@ -138,7 +138,6 @@ const onRowClick = (event: Event, item: any) => {
             from = from || 'BUTTON'
             buttonElement = buttonElement || (target as HTMLButtonElement)
             if (buttonElement.id == buttonId) {
-                console.log('from', from, buttonElement.id, buttonId)
                 confirmForDeleteItem(event, item.item.raw)
             }
             break

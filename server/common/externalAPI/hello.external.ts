@@ -10,14 +10,15 @@ class HelloExternal extends ExternalAPIService {
 
     public async getHello(event: H3Event) {
         try {
-            console.log(this.baseAPI.defaults.baseURL)
-
             const resp = await this.baseAPI.get(`/`)
 
             if (!resp.data) throw new Error(`getHello: Data not found`)
 
             let result: any = resp.data
-            return result
+            return {
+                result,
+                baseAPI: this.baseAPI.defaults.baseURL,
+            }
         } catch (error: AxiosError | any) {
             return this.handleError(error)
         }

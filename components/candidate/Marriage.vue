@@ -329,7 +329,6 @@ watch(
                     // @ts-ignore
                     return curChild[key] === null || curChild[key] === ''
                 })
-                console.log(curChild, objIsNullorEmpty)
                 marriage.children_list.pop()
             }
         }

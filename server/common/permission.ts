@@ -18,12 +18,16 @@ export function canAccessCandidate(user: ContextUser<jwtCandidate>): boolean {
 export function hasPermission(user: ContextUser<any>, permission: Permission): boolean {
     // Check if user has the permission
 
-    console.log('😍 hasPermission: Checking permission', permission)
     const [isAdmin, isHR, isCandidate] = [canAccessAdmin(user), canAccessHR(user), canAccessCandidate(user)]
+    console.log('😍 hasPermission: Checking permission', permission, {
+        isAdmin,
+        isHR,
+        isCandidate,
+    })
     const permissions = {
         'can-access-admin': isAdmin,
         'can-access-hr': isHR,
-        'can-access-candidate': isHR,
+        'can-access-candidate': isCandidate,
         'can-access-hr-candidate': isHR || isCandidate,
         'can-access-admin-hr-candidate': isAdmin || isHR || isCandidate,
         'can-access-admin-hr': isAdmin || isHR,

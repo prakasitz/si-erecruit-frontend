@@ -46,7 +46,6 @@ const { prev, next } = useWindowsNav()
 const loading = ref(false)
 
 onMounted(() => {
-    console.log('onMounted--')
     loading.value = true
 })
 </script>

@@ -230,6 +230,4 @@ watch(
         profilesSelected.value = []
     }
 )
-
-console.log(route.meta.title) // My home page
 </script>

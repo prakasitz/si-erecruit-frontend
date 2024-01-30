@@ -107,7 +107,7 @@ const dialogConf = dialogConfirm()
 
 const { fetchSRCUsers, deleteSRCUserById } = useUserManagement()
 
-const { data: usersData, pending: usersPending } = fetchSRCUsers()
+const { data: usersData, pending: usersPending } = await fetchSRCUsers()
 
 const delItem = async (even: any, item: SRC_User) => {
     const resp = await deleteSRCUserById(item)

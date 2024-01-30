@@ -53,14 +53,14 @@ async function formValidate() {
 }
 
 onMounted(() => {
-    console.log('onMounted BaseCard')
+    console.log('🎃 onMounted BaseCard')
 })
 
 onUpdated(() => {
-    console.log('onUpdated BaseCard')
+    console.log('🎃 onUpdated BaseCard')
 })
 
 onUnmounted(() => {
-    console.log('onUnmounted BaseCard')
+    console.log('🎃 onUnmounted BaseCard')
 })
 </script>

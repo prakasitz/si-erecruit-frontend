@@ -63,14 +63,14 @@ const jobPositionDescription = 'กรุณาเลือกตำแหน่
 useFetch('/api/delay', { server: false }) //ใช้ await เมื่อต้องการ ssr
 
 onMounted(() => {
-    console.log('onMounted JobPosition')
+    console.log('🎇 onMounted JobPosition')
 })
 
 onUpdated(() => {
-    console.log('onUpdated JobPosition')
+    console.log('🎇 onUpdated JobPosition')
 })
 
 onUnmounted(() => {
-    console.log('onUnmounted JobPosition')
+    console.log('🎇 onUnmounted JobPosition')
 })
 </script>

@@ -442,7 +442,7 @@ export const usePersonalStore = defineStore('personal', {
 
                 job_list.push(jobObj)
             }
-            console.log('🚩 job_list', job_list)
+            console.log('🐛 mapJobList', job_list)
             return job_list
         },
     },

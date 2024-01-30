@@ -10,7 +10,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     const { me, decryptSecret } = useAuth()
     try {
         const userInfo = await me()
-        userInfo.secret = await decryptSecret(userInfo.secret)
+        await decryptSecret(userInfo)
         await setUserInfo(userInfo, process.server)
         usePageLayout(pageLayout.value)
     } catch (error: NuxtError | any) {

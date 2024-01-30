@@ -200,10 +200,6 @@ const { data: instituteData, pending: institutePending } = await useFetch('/api/
 })
 
 watch(currentEduLevel, (old_edu, new_edu) => {
-    console.log({
-        old_edu,
-        new_edu,
-    })
     if (new_edu) {
         let ind = props.index - 1
         education.education_list[ind].degree = ''

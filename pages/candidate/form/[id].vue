@@ -156,7 +156,7 @@ definePageMeta({
     pageTransition: {
         name: 'rotate',
     },
-    layout: false,
+    layout: 'defaultcandidate',
     middleware: ['admin-hr-candidate-only'],
 })
 
@@ -505,5 +505,4 @@ watchEffect(async () => {
     }
 })
 
-console.log(useRoute().name)
 </script>

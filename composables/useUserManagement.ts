@@ -13,7 +13,7 @@ export default function useUserManagement() {
 const fetchSRCUsers = () => {
     /*
      */
-    return useFetch('/api/external/users/get', {
+    return useApi('/external/users/get', {
         headers: {
             Accept: 'application/json',
         },
@@ -41,7 +41,7 @@ const fetchSRCUsers = () => {
 const fetchSRCUserById = (sap_id: any, type?: string) => {
     /*
      */
-    return useFetch(`/api/external/users/get/${sap_id}`, {
+    return useApi(`/external/users/get/${sap_id}`, {
         headers: {
             Accept: 'application/json',
         },

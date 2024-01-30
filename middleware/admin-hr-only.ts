@@ -11,11 +11,10 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     try {
         console.log(`----- middleware admin-hr-only call me at ${process.server ? 'server' : 'client'} -----`)
         const userInfo = await me()
-        userInfo.secret = await decryptSecret(userInfo.secret)
+        await decryptSecret(userInfo)
         await setUserInfo(userInfo, process.server)
 
         usePageLayout(pageLayout.value)
-        console.log('\t',isHR.value, isAdmin.value)
         if (!isHR.value && !isAdmin.value) {
             throw createError({
                 statusCode: 403,

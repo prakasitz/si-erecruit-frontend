@@ -545,7 +545,7 @@ function addeducation() {
         })
     }
 
-    console.log(education.education_list)
+    console.log('🏪 education.store', education.education_list)
 }
 
 function removeEducationByIndex(v: number) {

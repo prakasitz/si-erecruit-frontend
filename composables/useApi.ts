@@ -44,6 +44,7 @@ export const useApi = async (url: any, params: any | UseFetchOptions<HeadersInit
                 //     error: response._data,
                 // })
             }
+
             //if response.status == 403 throw showError
             // only api response
             // if (response?.headers.get('Accept') !== 'application/json') {

@@ -88,7 +88,4 @@ const pending = computed(() => {
 
 const parentDescription = 'ข้อมูลบิดา, มารดา ไว้ใช้ในการอ้างอิงกรณีการเบิกสวัสดิการให้แก่บุคคลดังกล่าว'
 
-// watch(formParents,(value) => {
-//     console.log('watch',value)
-// })
 </script>
