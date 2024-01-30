@@ -1,6 +1,7 @@
 import { CompensationOption, HavingOption, MarriageIncomeOption, TalentLevel, YesNo } from '~/utils/types'
 
 export interface IPersonalStore {
+    register_last_update: string
     job_position: any
     personal_info: IPersonalInfo
     address: IAddressInfo
@@ -13,6 +14,13 @@ export interface IPersonalStore {
     parent: IParent
     marriage: IMarriage
     tax: ITax
+    candidate_info: {
+        login_nID: string
+        candidate_status: number
+        last_login: string | null
+        job_ID: number | null
+        profile_ID: number
+    } | null
 }
 
 export interface IJobPosition {}

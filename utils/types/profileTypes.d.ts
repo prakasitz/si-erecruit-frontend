@@ -416,4 +416,5 @@ export type Profile = {
     PDPA_consent_date: any // null,
     foreigner_status: any // null,
     employee_type: any // null
+    candidate_info: any // null
 }

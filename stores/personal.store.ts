@@ -5,6 +5,7 @@ import { defineStore } from 'pinia'
 export const usePersonalStore = defineStore('personal', {
     state: (): IPersonalStore => {
         return {
+            register_last_update: '',
             job_position: {},
             personal_info: {
                 title_name_th: '',
@@ -291,6 +292,7 @@ export const usePersonalStore = defineStore('personal', {
                 marriage_insurance_amount: null,
                 parent_support: null,
             },
+            candidate_info: null
         }
     },
     getters: {

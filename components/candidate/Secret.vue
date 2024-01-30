@@ -57,7 +57,7 @@
                                 <v-divider :length="'90%'"></v-divider>
                             </v-row>
                             <v-row>
-                                <v-col cols="6">
+                                <v-col cols="6" v-if="personalStore.candidate_info?.last_login">
                                     <v-alert height="100%" border="start" variant="tonal">
                                         <div
                                             class="text-red-darken-1"
@@ -68,12 +68,19 @@
                                         >
                                             <v-row no-gutters>
                                                 <v-col><b>เข้าสู่ระบบครั้งล่าสุด</b></v-col>
-                                                <v-col cols="8">03/05/2566, 15:42</v-col>
+                                                <v-col cols="8"
+                                                    >{{
+                                                        dateToString(
+                                                            personalStore.candidate_info.last_login.toString(),
+                                                            DateFormatEnum.DATE_TIME_BUDDHIST_1
+                                                        )
+                                                    }}
+                                                </v-col>
                                             </v-row>
                                         </div>
                                     </v-alert>
                                 </v-col>
-                                <v-col cols="6">
+                                <v-col cols="6" v-if="personalStore.register_last_update">
                                     <v-alert height="100%" border="start" variant="tonal">
                                         <div
                                             class="text-blue-darken-1"
@@ -86,7 +93,12 @@
                                                 <v-col cols="3"><b>บันทึกครั้งล่าสุด</b></v-col>
                                                 <v-col cols="">
                                                     <v-row no-gutters>
-                                                        <v-col cols="12">03/05/2566, 15:45</v-col>
+                                                        <v-col cols="12">{{
+                                                            dateToString(
+                                                                personalStore.register_last_update!.toString(),
+                                                                DateFormatEnum.DATE_TIME_BUDDHIST_1
+                                                            )
+                                                        }}</v-col>
                                                         <v-col>ระบบจะทำการบันทึกให้อัตโนมัติทุก ๆ 3 นาที</v-col>
                                                     </v-row>
                                                 </v-col>
@@ -123,7 +135,7 @@ function handleCopyEvent(event: ClipboardEvent) {
     event.clipboardData?.setData('text/plain', pidValue)
 }
 
-const { isHR, secret } = storeToRefs(userStore)
+const { isHR, secret, last_login } = storeToRefs(userStore)
 const { personal_info } = personalStore
 
 const pidFormat = computed(() => {

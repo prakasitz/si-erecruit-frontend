@@ -1,4 +1,4 @@
-import { Roles } from "./authTypes"
+import { Roles } from './authTypes'
 
 export type UserData = {
     displayname: null | string
@@ -12,6 +12,7 @@ export type UserStore = {
     department: null | string
     commonid: null | string
     commonname: null | string
+    last_login: null | string
     secret: null | string
     exp: null | string
 }

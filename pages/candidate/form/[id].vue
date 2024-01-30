@@ -236,6 +236,8 @@ const mappingProfileToStore = async () => {
         )
     } else if (profile != null) {
         personalStore.$patch({
+            register_last_update: profile.register_last_update,
+            candidate_info: profile.candidate_info,
             personal_info: {
                 title_name_th: profile.title_name_th,
                 title_name_en: profile.title_name_en,
@@ -504,5 +506,4 @@ watchEffect(async () => {
         await mappingProfileToStore()
     }
 })
-
 </script>

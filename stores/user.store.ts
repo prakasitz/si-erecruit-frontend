@@ -12,7 +12,7 @@ export const useUserStore = defineStore('userinfo', {
             sub: null,
             employee_id: null,
             department: null,
-
+            last_login: null,
             commonid: null,
             commonname: null,
             secret: null,
@@ -50,6 +50,7 @@ export const useUserStore = defineStore('userinfo', {
             //Candidate
             this.commonid = data.commonid
             this.commonname = data.commonname
+            this.last_login = data.last_login
             this.exp = data.exp
         },
         async setUserInfo(data: any, isServer: boolean) {
@@ -68,6 +69,7 @@ export const useUserStore = defineStore('userinfo', {
                 //Candidate
                 this.commonid = data.commonid
                 this.commonname = data.commonname
+                this.last_login = data.last_login
                 this.exp = data.exp
 
                 if (isServer) {
