@@ -11,7 +11,14 @@
         <v-card v-else class="mx-auto" width="90%">
             <v-card-item>
                 <v-card-title :style="{ 'font-size': '18px !important' }"> </v-card-title>
-                <v-data-table :headers="(headers as any)" :items="data" class="elevation-1" hover :search="search">
+                <v-data-table
+                    :headers="(headers as any)"
+                    :items="data"
+                    class="elevation-1"
+                    hover
+                    :search="search"
+                    items-per-page="20"
+                >
                     <template v-slot:top>
                         <v-row class="d-flex justify-end">
                             <v-col class="ma-3">

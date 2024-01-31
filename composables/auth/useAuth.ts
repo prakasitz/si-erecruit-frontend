@@ -15,6 +15,8 @@ export const useAuth = () => {
     const login = async (username: any, password: any, type: UserType) => {
         try {
             const appBaseUrl = useRuntimeConfig().app.baseURL
+            console.log('🎈 appBaseURL:', appBaseUrl, type)
+
             const pidOrUserName = type === 'CANDIDATE' ? 'pid' : 'username'
             const { data, error } = await useApi('/auth/login', {
                 method: 'POST',
@@ -27,12 +29,18 @@ export const useAuth = () => {
                 },
             })
             if (error.value) throw error.value
-
             const route = useRoute()
             let redirectOrNull = route.query.redirect as string | null
-            let urlIndex = type === 'CANDIDATE' ? `${appBaseUrl}candidate` : `${appBaseUrl}`
+            let urlIndex = type === 'CANDIDATE' ? `candidate/` : ``
+            let URL_str = appBaseUrl
+            URL_str += redirectOrNull || urlIndex
+            console.log('🎈 redirectURL:', URL_str, {
+                redirectOrNull,
+                urlIndex,
+            })
+            // comment for check url_str
             await navigateTo(
-                { path: redirectOrNull || urlIndex },
+                { path: URL_str },
                 {
                     external: true,
                 }

@@ -22,22 +22,20 @@
 </template>
 
 <script setup lang="ts">
-import { DialogContext } from '~/utils/types/uiTypes';
+import { DialogContext } from '~/utils/types/uiTypes'
 
 const bgColor = 'red-darken-3'
 
-const { dialogError, dialogContext } = await useDialog()
+const { dialogError, dialogContext } = useDialog()
 const dialog = dialogError()
 const context = dialogContext()
 
-
-const simpleHandler = (event:Event , buttonAction: DialogContext.ActionButton) => {
+const simpleHandler = (event: Event, buttonAction: DialogContext.ActionButton) => {
     dialog.value = !dialog.value
     if (typeof buttonAction.goBack === 'function') {
         buttonAction.goBack()
     }
 }
-
 
 watch(dialog, (value) => {
     if (value == false) {

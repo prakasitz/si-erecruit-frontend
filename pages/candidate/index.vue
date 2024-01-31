@@ -4,10 +4,8 @@
             <v-card-title :style="{ 'font-size': '16px !important' }">
                 <b>ยินดีต้อนรับคุณ {{ user.displayname }}</b></v-card-title
             >
-            <v-card-text>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Necessitatibus, explicabo voluptas. Mollitia
-                quos dicta alias at porro nihil quis, eligendi odio voluptas est repudiandae ex nesciunt suscipit
-                consequuntur, quidem asperiores!
+            <v-card-text class="mx-2">
+                <span class="text-justify" v-html="welcomeData.value" style="white-space: pre-line"></span>
             </v-card-text>
         </v-card>
         <br />
@@ -35,4 +33,15 @@ useBreadcrumb().setBreadcrumbs()
 
 const userStore = useUserStore()
 const { user } = userStore
+
+const { data: welcomeData } = await useApi('/external/master/welcome', {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    transform: (data: any) => {
+        const welcome_user_msg = data.find((d: any) => d.setting_key === 'welcome_candidate_msg')
+        return welcome_user_msg
+    },
+})
 </script>

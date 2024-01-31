@@ -40,7 +40,7 @@
                         <v-card-actions class="justify-end">
                             <!-- <dev-only> -->
                             <v-btn v-if="$isDev" variant="text" @click="loginCandidate('1100201370643', '645631')"
-                                >Clike me</v-btn
+                                >Clice me</v-btn
                             >
                             <!-- </dev-only> -->
                             <v-btn variant="text" @click="loginCandidate(props.id_card, password)">เข้าสู่ระบบ</v-btn>
@@ -85,12 +85,15 @@ const password = ref('')
 const invalidPassword = ref(false)
 
 async function loginCandidate(pid?: string | undefined, password?: string | undefined) {
+    console.log('🎈 start loginCandidate')
     if (!pid || !password) {
         invalidPassword.value = !invalidPassword.value
     } else {
         try {
+            console.log('-- 🎈 start useAuth().login --')
             invalidPassword.value = false
             await useAuth().login(pid, password, 'CANDIDATE')
+            console.log('-- 🎈 end useAuth().login --')
             // await auth.signIn({ username: pid, password: password })
             // let url = redirectOrNull || 'candidate'
             // return navigateTo(url)
@@ -113,6 +116,8 @@ async function loginCandidate(pid?: string | undefined, password?: string | unde
                     message: error.message ?? error.data.message,
                 })
             }
+        } finally {
+            console.log('🎈 end loginCandidate')
         }
     }
 }

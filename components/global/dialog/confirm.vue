@@ -57,7 +57,7 @@
 <script setup lang="ts">
 import { DialogContext } from '~/utils/types'
 
-const { dialogConfirm, dialogContext } = await useDialog()
+const { dialogConfirm, dialogContext } = useDialog()
 const dialog = dialogConfirm()
 const context = dialogContext()
 const success = ref(false)

@@ -3,11 +3,6 @@ const props = defineProps({
     error: Object,
 })
 
-definePageMeta({
-    title: 'Error',
-    description: 'Error page',
-})
-
 const userTypeCookie = computed(() => {
     return useCookie('type', {
         path: useRuntimeConfig().app.baseURL,

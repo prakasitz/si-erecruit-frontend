@@ -1,4 +1,4 @@
-export default function useDialog() {
+export default function useSettingInfoDialog() {
     return {
         dialogSettings,
         dialogContext,

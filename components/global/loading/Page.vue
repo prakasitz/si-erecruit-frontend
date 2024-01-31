@@ -60,5 +60,7 @@
 }
 </style>
 <script setup lang="ts">
-const { loading } = usePageLoading()
+const props = defineProps({
+    loading: Boolean,
+})
 </script>

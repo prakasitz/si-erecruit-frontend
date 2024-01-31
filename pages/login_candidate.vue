@@ -97,6 +97,7 @@ const numberRule = [
 async function onClick_CheckingPID(_id: string) {
     const resp = await checkPID()
     if (resp.data.value) {
+        console.log('🎈 ✅ onClick_CheckingPID:success')
         show_dialog.value = true
     } else {
         error_detail.value = `กรุณาตรวจสอบหมายเลขบัตรประจำตัวประชาชนอีกครั้ง`

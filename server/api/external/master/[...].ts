@@ -12,6 +12,7 @@ router.get(
         const { j, p } = getQuery(event)
 
         const profile: Profile = {
+            candidate_info: null,
             profile_ID: 28,
             job_ID: 2,
             profile_status: parseInt(p as string) as number,
@@ -518,6 +519,14 @@ router.get(
     '/religion',
     defineEventHandler(async (event) => {
         const data = await masterService.getReligion(event)
+        return data
+    })
+)
+
+router.get(
+    '/welcome',
+    defineEventHandler(async (event) => {
+        const data = await masterService.getWelcome(event)
         return data
     })
 )

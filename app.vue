@@ -4,10 +4,10 @@
             <!-- <NuxtLoadingIndicator /> -->
             <LoadingPage :loading="loading" />
             <v-row class="mb-5">
-                <DialogInfo />
-                <DialogWarning />
-                <DialogError />
-                <DialogConfirm />
+                <LazyDialogInfo />
+                <LazyDialogWarning />
+                <LazyDialogError />
+                <LazyDialogConfirm />
             </v-row>
             <NuxtPage />
         </NuxtLayout>
