@@ -44,6 +44,4 @@ const { data: welcomeData } = await useApi('/external/master/welcome', {
         return welcome_user_msg
     },
 })
-
-console.log(welcomeData.value)
 </script>

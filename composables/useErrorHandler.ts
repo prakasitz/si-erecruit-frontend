@@ -83,6 +83,7 @@ function showTokenExpired(route: RouteLocationNormalizedLoaded) {
     const appBaseUrl = useRuntimeConfig().app.baseURL
 
     let loginPath = appBaseUrl + (userType === 'BACKEND' ? `login` : `login_candidate`)
+    console.log('🧨 route.fullPath', route.fullPath)
     let query = '?redirect=' + route.fullPath
     let fullPath = loginPath + query
 

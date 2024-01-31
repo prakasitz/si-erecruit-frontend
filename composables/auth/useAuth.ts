@@ -28,12 +28,20 @@ export const useAuth = () => {
                     password,
                 },
             })
+
             if (error.value) throw error.value
+
             const route = useRoute()
             let redirectOrNull = route.query.redirect as string | null
-            let urlIndex = type === 'CANDIDATE' ? `candidate/` : ``
-            let URL_str = appBaseUrl
-            URL_str += redirectOrNull || urlIndex
+            let urlIndex = type === 'CANDIDATE' ? 'candidate/' : ''
+
+            if (redirectOrNull && redirectOrNull.startsWith('/')) {
+                //remove '/' from redirect
+                redirectOrNull = redirectOrNull.slice(1)
+            }
+
+            let URL_str = `${appBaseUrl}${redirectOrNull || urlIndex}`
+
             console.log('🎈 redirectURL:', URL_str, {
                 redirectOrNull,
                 urlIndex,
