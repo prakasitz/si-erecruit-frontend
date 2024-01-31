@@ -34,7 +34,6 @@
                         density="compact"
                         accept=".pdf, application/pdf"
                         :loading="detail.uploading"
-                        readonly
                         @change="onFileInputChange($event, index, attach_personal_list)"
                         @click:clear="resetFileInput(index, attach_personal_list)"
                     >
@@ -187,12 +186,11 @@
 import { CandidateForm, AttachFile } from '~/utils/types'
 import { substrFilename } from '~/utils/string'
 import { FetchError } from 'ofetch'
-import usePreviewFiles from '@/composables/usePreviewFiles'
 const props = defineProps<{
     candidateForm: CandidateForm
 }>()
 
-const { handlePreview, uploadFile } = usePreviewFiles()
+const { handlePreview, uploadFile } = useFile()
 const { dialogInfo, dialogError, showDialog } = useDialog()
 const fileSizeRules = [
     (files: File[]) => !files || !files.some((file: File) => file.size > 5e6) || 'ไฟล์ต้องมีขนาดไม่เกิน 5 MB!',

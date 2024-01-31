@@ -1,4 +1,3 @@
-import { useRoute } from 'nuxt/app'
 import { masterService } from '../../../common/externalAPI/master.external'
 import { BadRequestError } from '../../../../utils/default'
 import { quickActionHandler } from '../../../common/profileAction/quick_action_handler'

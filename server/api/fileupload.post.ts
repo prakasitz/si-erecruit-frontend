@@ -7,6 +7,21 @@ import url from 'url'
 import { dateToString } from '../../utils/date'
 import * as bcrypt from 'bcrypt'
 import { FileUploadHandler } from '../../utils/types'
+import { DateFormatEnum } from '../../utils/enum'
+import { trimAllSpace } from '../../utils/string'
+
+export default defineEventHandler(async (event) => {
+    try {
+        await callNodeListener(handleFileUpload, event.node.req, event.node.res)
+        return { success: true }
+    } catch (e: any) {
+        return createError({
+            message: e.message,
+            statusCode: 422,
+            statusMessage: 'Unprocessable Entity',
+        })
+    }
+})
 
 const handleFileUpload = async (req: IncomingMessage, res: ServerResponse) => {
     try {
@@ -22,7 +37,9 @@ const handleFileUpload = async (req: IncomingMessage, res: ServerResponse) => {
             return
         }
 
-        const form = new formidable.IncomingForm()
+        const form = new formidable.IncomingForm({
+            multiples: false,
+        })
 
         form.parse(req, (err, fields, files) => {
             if (err) {
@@ -32,14 +49,24 @@ const handleFileUpload = async (req: IncomingMessage, res: ServerResponse) => {
                 return
             }
 
-            // Access the file using 'files.filetoupload'
-            const uploadedFile = files.filetoupload as formidable.File
-            const tag = fields.tag
-            //console.log('Uploaded file:', uploadedFile)
+            const uploadedFile = files.filetoupload as formidable.File[]
+
+            const tag: string = fields.tag[0]
+            const pid: string = fields.pid[0]
+
+            console.log('💋 fields:', { pid: pid, tag: tag })
 
             // Continue with file upload processing
-            // ...
-            const fileList = [{ file: uploadedFile, tag }] as FileUploadHandler[]
+            const fileList: FileUploadHandler[] = [
+                {
+                    file: uploadedFile,
+                    data: {
+                        pid: pid,
+                        tag: tag,
+                    },
+                },
+            ]
+
             // Call the function to upload the files
             uploadFiles(userId, fileList)
                 .then(() => {
@@ -63,76 +90,71 @@ const handleFileUpload = async (req: IncomingMessage, res: ServerResponse) => {
     }
 }
 
-export default defineEventHandler(async (event) => {
-    try {
-        await callNodeListener(handleFileUpload, event.node.req, event.node.res)
-        return { success: true }
-    } catch (e: any) {
-        return createError({
-            message: e.message,
-            statusCode: 422,
-            statusMessage: 'Unprocessable Entity',
-        })
+const uploadFiles = async (userId: string, list: any[]): Promise<void> => {
+    for (let i = 0; i < list.length; i++) {
+        try {
+            console.log('🔵🔴 start upload file')
+            await uploadFile(userId, i, list)
+            console.log('🔵🔴 end upload file')
+        } catch (error) {
+            console.error('❌ Error uploading file:', error)
+            // Handle error case, e.g., show an error message
+        }
     }
-})
+}
 
-async function uploadFile(userId: string, index: number, list: FileUploadHandler[]): Promise<void> {
-    console.log(list)
+const uploadFile = async (userId: string, index: number, list: FileUploadHandler[]): Promise<void> => {
+    if (!list[index]) return
+
     const fileInput = list[index].file
-    const tag = list[index].tag
-    if (!fileInput) {
-        console.error('No file input element found.')
+    const { tag, pid } = list[index].data
+
+    if (!fileInput || fileInput.length == 0) {
+        console.error('🔴 No file input element found.')
         return
     }
 
-    const file = fileInput
-    console.log('file:', file)
-    if (!file) {
-        console.error('No file selected.')
+    if (!tag || !pid) {
+        console.error('🔴 No tag or pid found.')
+        return
+    }
+
+    if (!fileInput[0].originalFilename) {
+        console.error('🔴 No file name found.')
         return
     }
 
     // If 'userId' is valid, create a directory with the userId as the destination
-    const directory = `./upload/candidate-id-${userId}`
+    const directory = `./upload/${pid}/profile-${userId}`
     if (!fs.existsSync(directory)) {
         fs.mkdirSync(directory, { recursive: true })
     }
-    const now = new Date()
+
     // Construct the new file path
-    const newFileName = `${tag}-${dateToString(now.toString(), 'YYYYMMDD')}-${file[0].originalFilename}`
+    const now = new Date()
+    const cleanFileName = trimAllSpace(fileInput[0].originalFilename)
+    const newFileName = `${tag}-${dateToString(now.toString(), DateFormatEnum.DATE_TIME_GENERAL_1)}-${cleanFileName}`
     const newPath = path.join(directory, newFileName)
-    console.log(file[0].filepath)
-    console.log(newPath)
+
     // Move the temporary file to the desired destination
-    fs.copyFile(file[0].filepath, newPath, (err) => {
+    fs.copyFile(fileInput[0].filepath, newPath, (err) => {
         if (err) {
-            console.error('Error moving file:', err)
+            console.error('❌ Error moving file:', err)
         } else {
-            console.log('File uploaded successfully at destination ', newPath)
-            deleteFileTemp(file[0].filepath)
+            console.log('✅ File uploaded successfully at destination ', newPath)
+            deleteFileTemp(fileInput[0].filepath)
         }
     })
-    // console.log(file[0].filepath)
 }
 
-function deleteFileTemp(filePath: any) {
+const deleteFileTemp = (filePath: any): void => {
+    console.log('🚕 Start Deleting file:', filePath)
     fs.unlink(filePath, (error: any) => {
         if (error) {
-            console.error('Error deleting file:', error)
+            console.error('🚕 End Error deleting file:', error)
             throw error
         } else {
-            console.log('File deleted successfully:', filePath)
+            console.log('🚕 End File deleted successfully:', filePath)
         }
     })
-}
-async function uploadFiles(userId: string, list: any[]): Promise<void> {
-    console.log(list, userId)
-    for (let i = 0; i < list.length; i++) {
-        try {
-            await uploadFile(userId, i, list)
-        } catch (error) {
-            console.error('Error uploading file:', error)
-            // Handle error case, e.g., show an error message
-        }
-    }
 }

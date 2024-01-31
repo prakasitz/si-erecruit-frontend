@@ -1,5 +1,3 @@
-import { useRoute } from 'nuxt/app'
-import { masterService } from '../../../common/externalAPI/master.external'
 import { BadRequestError, TokenNotFoundError } from '../../../../utils/default'
 import { jobService } from '../../../common/externalAPI/jobs.external'
 import { isStringNumber } from '../../../../utils/string'

@@ -1,4 +1,5 @@
-import { AttachFile } from "~/utils/types"
+import { useUserStore } from '~/stores/user.store'
+import { AttachFile } from '~/utils/types'
 
 export default function usePreviewFiles() {
     return {
@@ -32,12 +33,15 @@ function handlePreview(fileInput: File | null): void {
 
 // async function uploadFile(fileInput: HTMLInputElement | null): Promise<void> {
 async function uploadFile(index: number, list: AttachFile[]) {
-    const route = useRoute()
-    const userId = route.params.id
+    console.log('🔐 upload file', { index, list })
+    const { commonname: pid, commonid: userId } = useUserStore()
     const fileInput = list[index].file
     const tag = list[index].tag
 
+    console.log({ pid, tag })
+
     if (!userId) throw new Error('User id not found.')
+    if (!pid) throw new Error('User pid not found.')
     if (!fileInput) throw new Error('No file selected.')
 
     const file = fileInput
@@ -45,8 +49,9 @@ async function uploadFile(index: number, list: AttachFile[]) {
 
     const formData = new FormData()
     formData.append('tag', tag)
+    formData.append('pid', pid)
     formData.append('filetoupload', file)
-    return useFetch(`/api/fileupload?userId=${userId}`, {
+    return useApi(`/fileupload?userId=${userId}`, {
         method: 'POST',
         body: formData,
     })

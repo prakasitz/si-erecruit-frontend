@@ -1,3 +1,5 @@
+import * as formidable from 'formidable'
+
 export type JSONResponse = {
     status: 'success' | 'fail'
     data?: any
@@ -14,8 +16,11 @@ export type FileUpload = {
 }
 
 export type FileUploadHandler = {
-    file: formidable.File
-    tag: string
+    file: formidable.File[]
+    data: {
+        tag: string
+        pid: string
+    }
 }
 
 export type AttachFile = {

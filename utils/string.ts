@@ -10,6 +10,10 @@ export const substrFilename = (_str: string) => {
     return _str
 }
 
+export const trimAllSpace = (str: string) => {
+    return str.replace(/\s/g, '')
+}
+
 export const isMatchRegex = (str: string, regex: RegExp): boolean => {
     const match = str?.match(regex)
     if (match) {

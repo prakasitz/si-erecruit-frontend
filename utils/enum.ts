@@ -94,6 +94,7 @@ export enum ProfileStatusColorEnum {
 export enum DateFormatEnum {
     DATE_TIME_BUDDHIST_1 = 'DD MMM BBBB, HH:mm',
     DATE_TIME_GENERAL = 'DD/MMM/YYYY HH:mm',
+    DATE_TIME_GENERAL_1 = 'YYYYMMDDHHmmss',
     DATE_ONLY = 'DD/MM/YYYY',
     DATE_ONLY_BUDDHIST = 'DD/MM/BBBB',
     TIME_ONLY_12_HOUR = 'h:mm A',
