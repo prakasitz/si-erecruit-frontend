@@ -15,8 +15,6 @@ export interface ProfileStatusAndID {
     profile_status: number
 }
 
-// To represent the array:
-
 export type ProfileActionMethod = 'publishable' | 'suspend' | 'cancel' | 'waive' | 'verify' | 'verified' | 'delete'
 
 export type ActionStatusIdMappingType = {
