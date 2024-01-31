@@ -12,3 +12,18 @@ export type FileUpload = {
     mtime: string
     originalFilename: string
 }
+
+export type FileUploadHandler = {
+    file: formidable.File
+    tag: string
+}
+
+export type AttachFile = {
+    menu: string
+    tag: string
+    sub_menu?: string[]
+    filename: string
+    file: File | undefined
+    uploading: boolean
+    uploaded: boolean
+}
