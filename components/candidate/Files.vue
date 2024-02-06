@@ -15,14 +15,13 @@
                 text="*** กรุณาแนบเอกสารเฉพาะไฟล์ PDF เท่านั้น ***"
             ></v-label>
 
-            <p class="pb-4 text-h6">เอกสารแนบส่วนตัว</p>
+            <p class="pb-4 text-h6">เอกสารแนบส่วนตัว <v-btn @click="fileDetailRefresh()">asda</v-btn></p>
             <v-divider></v-divider>
-            <v-row class="px-2 mt-2" v-for="(detail, index) in attach_personal_list" :key="index" :title="detail.menu">
+            <v-row class="px-2 mt-2" v-for="(detail, index) in attach_personal_list" :key="index">
+                <v-col cols="6"> {{ detail.menu }}</v-col>
                 <v-col cols="6">
-                    {{ detail.menu }}
-                </v-col>
-                <v-col>
                     <v-file-input
+                        v-if="!detail.uploadedData"
                         clearable
                         chips
                         show-size
@@ -33,6 +32,11 @@
                         label="File input"
                         density="compact"
                         accept=".pdf, application/pdf"
+                        @update:modelValue="
+                            (val) => {
+                                console.log('This is val: ', val)
+                            }
+                        "
                         :loading="detail.uploading"
                         @change="onFileInputChange($event, index, attach_personal_list)"
                         @click:clear="resetFileInput(index, attach_personal_list)"
@@ -56,6 +60,39 @@
                             ></v-btn>
                         </template>
                     </v-file-input>
+                    <v-row v-else no-gutters>
+                        <v-col cols="10" align-self="center">
+                            <v-tooltip :location="'bottom center'">
+                                <template v-slot:activator="{ props }">
+                                    <v-chip
+                                        v-bind="props"
+                                        prepend-icon="mdi-download-circle"
+                                        class="text-caption font-weight-black"
+                                        append-icon="mdi-pdf"
+                                        @click="''"
+                                    >
+                                        {{ detail.uploadedData.fileName }}
+                                    </v-chip>
+                                </template>
+                                <span>{{ detail.uploadedData.fileName }}</span>
+                            </v-tooltip>
+                        </v-col>
+                        <v-col cols="2" align-self="center" class="d-flex justify-start">
+                            <v-tooltip>
+                                <template v-slot:activator="{ props }">
+                                    <v-btn
+                                        v-bind="props"
+                                        class="ml-2"
+                                        density="compact"
+                                        :color="'error'"
+                                        :icon="'mdi-close-circle'"
+                                        variant="text"
+                                    ></v-btn>
+                                </template>
+                                <span>ลบไฟล์</span>
+                            </v-tooltip>
+                        </v-col>
+                    </v-row>
                 </v-col>
             </v-row>
             <p class="pb-4 text-h6">เอกสารแนบวุฒิการศึกษา (เรียงจาก ระดับการศึกษาสูงสุด)</p>
@@ -186,111 +223,6 @@
 import { CandidateForm, AttachFile } from '~/utils/types'
 import { substrFilename } from '~/utils/string'
 import { FetchError } from 'ofetch'
-const props = defineProps<{
-    candidateForm: CandidateForm
-}>()
-
-const { handlePreview, uploadFile } = useFile()
-const { dialogInfo, dialogError, showDialog } = useDialog()
-const fileSizeRules = [
-    (files: File[]) => !files || !files.some((file: File) => file.size > 5e6) || 'ไฟล์ต้องมีขนาดไม่เกิน 5 MB!',
-    (files: File[]) =>
-        !files || !files.some((file: File) => file.type != 'application/pdf') || 'ไฟล์ต้องเป็น pdf เท่านั้น!',
-]
-
-async function onClickUpload(index: number, list: AttachFile[]) {
-    let dialog = null
-    const section = list[index]
-    section.uploaded = false
-    section.uploading = false
-    try {
-        section.uploading = true
-        const { error } = await uploadFile(index, list)
-        if (error.value) throw error.value
-
-        section.uploaded = true
-        dialog = dialogInfo()
-        showDialog(
-            {
-                title: 'Upload Success',
-                message: `Upload successfully!.`,
-                actionButtons: [
-                    {
-                        text: 'Cancel',
-                        color: 'indigo',
-                    },
-                ],
-                persistent: false,
-            },
-            dialog
-        )
-    } catch (error: FetchError | any) {
-        section.uploaded = false
-        let errMsg = 'Api error: ' + error.data?.message || 'Unexpected error: ' + error.message
-        dialog = dialogError()
-        showDialog(
-            {
-                title: 'Upload Error',
-                message: `Upload failed, please try again later!, <br> ${errMsg}`,
-                actionButtons: [
-                    {
-                        text: 'Cancel',
-                        color: 'grey',
-                    },
-                ],
-                persistent: false,
-            },
-            dialog
-        )
-    } finally {
-        section.uploading = false
-    }
-}
-
-//function to check if there is change in the file input area to receive file
-function onFileInputChange(event: Event, index: number, list: AttachFile[]) {
-    console.log('This is list: OnFileInputChange', list, index)
-    const fileRef = (event.target as HTMLInputElement)?.files // Access the FileList from the input event
-    const fileIndex = fileRef?.[0] || null
-    console.log('this is fileIndex', fileIndex)
-    if (fileIndex && fileIndex.type == 'application/pdf') {
-        list[index].file = fileIndex
-    } else {
-        console.log('File does not exist')
-    }
-}
-
-//function to handle the preview: handlePreview -->> previewFile
-function onHandlePreView(index: number, list: AttachFile[]) {
-    console.log('This is list: OnHandlePreview', list)
-    const fileIndex = list[index].file
-    console.log('This is fileIndex: OnHandlePreview', fileIndex)
-    if (!fileIndex) {
-        console.log('There is no file attached. Cannot preview.')
-        return
-    }
-
-    if (fileIndex.name.length === 0) {
-        console.log('The file name is missing. Cannot preview.')
-        return
-    }
-
-    const fileSize = fileIndex.size
-
-    if (fileSize > 5e6) {
-        console.log('File size exceeds the limit. Cannot preview.')
-        return
-    }
-
-    handlePreview(fileIndex)
-}
-
-//reset file input at the index position
-function resetFileInput(index: number, list: AttachFile[]) {
-    list[index].file = undefined
-}
-
-const { data } = await useFetch('/api/delay', { server: false }) //ใช้ await เมื่อต้องการ ssr
 
 const attach_personal_list = ref<AttachFile[]>([
     {
@@ -421,4 +353,150 @@ const attach_private_list = ref<AttachFile[]>([
         uploading: false,
     },
 ])
+
+const props = defineProps<{
+    candidateForm: CandidateForm
+}>()
+
+const { handlePreview, uploadFile, getDetails } = useCandidateFile()
+const { dialogInfo, dialogError, showDialog } = useDialog()
+const { data: fileDetailData, error: fileDetailError, refresh: fileDetailRefresh } = await getDetails()
+
+const mappingFileDetailWithAttachList = () => {
+    const attachList = [attach_personal_list, attach_education_list, attach_family_list, attach_private_list]
+    const fileDetail = fileDetailData.value
+    if (!fileDetail) return
+
+    const traverseAttachList = (attachList: AttachFile[]) => {
+        attachList.forEach((attach) => {
+            let cnt = 0
+            attach.uploadedData = fileDetail.files.find((file) => {
+                cnt++
+                if (file.tag === attach.tag) {
+                    console.log('This is cnt: ', cnt, attach.tag)
+                    return file.tag === attach.tag
+                }
+            })
+        })
+    }
+
+    attachList.forEach((list) => {
+        traverseAttachList(list.value)
+    })
+}
+
+//on mounted
+mappingFileDetailWithAttachList()
+
+watch(
+    () => fileDetailData.value,
+    (newVal, oldVal) => {
+        if (newVal) {
+            mappingFileDetailWithAttachList()
+        }
+    }
+)
+
+const fileSizeRules = [
+    (files: File[]) => !files || !files.some((file: File) => file.size > 5e6) || 'ไฟล์ต้องมีขนาดไม่เกิน 5 MB!',
+    (files: File[]) =>
+        !files || !files.some((file: File) => file.type != 'application/pdf') || 'ไฟล์ต้องเป็น pdf เท่านั้น!',
+]
+
+async function onClickUpload(index: number, list: AttachFile[]) {
+    let dialog = null
+    const section = list[index]
+    section.uploaded = false
+    section.uploading = false
+    try {
+        section.uploading = true
+        const { data, error } = await uploadFile(index, list)
+        if (error.value) throw error.value
+
+        console.log(data.value)
+
+        section.uploaded = true
+        dialog = dialogInfo()
+        showDialog(
+            {
+                title: 'Upload Success',
+                message: `Upload successfully!.`,
+                actionButtons: [
+                    {
+                        text: 'Cancel',
+                        color: 'indigo',
+                    },
+                ],
+                persistent: false,
+            },
+            dialog
+        )
+    } catch (error: FetchError | any) {
+        section.uploaded = false
+        console.log('This is error: ', error)
+        let errMsg = 'Api error: ' + (error.data?.message || error || 'Unexpected error: ' + error.message)
+        dialog = dialogError()
+        showDialog(
+            {
+                title: 'Upload Error',
+                message: `Upload failed, please try again later!, <br> ${errMsg}`,
+                actionButtons: [
+                    {
+                        text: 'Cancel',
+                        color: 'grey',
+                    },
+                ],
+                persistent: false,
+            },
+            dialog
+        )
+    } finally {
+        section.uploading = false
+    }
+}
+
+//function to check if there is change in the file input area to receive file
+function onFileInputChange(event: Event, index: number, list: AttachFile[]) {
+    console.log('This is list: OnFileInputChange', list, index)
+    const fileRef = (event.target as HTMLInputElement)?.files // Access the FileList from the input event
+    const fileIndex = fileRef?.[0] || null
+    console.log('this is fileIndex', fileIndex)
+    if (fileIndex && fileIndex.type == 'application/pdf') {
+        list[index].file = fileIndex
+    } else {
+        console.log('File does not exist')
+    }
+}
+
+//function to handle the preview: handlePreview -->> previewFile
+function onHandlePreView(index: number, list: AttachFile[]) {
+    console.log('This is list: OnHandlePreview', list)
+    const fileIndex = list[index].file
+    console.log('This is fileIndex: OnHandlePreview', fileIndex)
+    if (!fileIndex) {
+        console.log('There is no file attached. Cannot preview.')
+        return
+    }
+
+    if (fileIndex.name.length === 0) {
+        console.log('The file name is missing. Cannot preview.')
+        return
+    }
+
+    const fileSize = fileIndex.size
+
+    if (fileSize > 5e6) {
+        console.log('File size exceeds the limit. Cannot preview.')
+        return
+    }
+
+    handlePreview(fileIndex)
+}
+
+//reset file input at the index position
+function resetFileInput(index: number, list: AttachFile[]) {
+    list[index].file = undefined
+}
+
+// const { data } = await useFetch('/api/delay', { server: false }) //ใช้ await เมื่อต้องการ ssr
 </script>
