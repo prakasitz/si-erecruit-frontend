@@ -5,6 +5,7 @@ import { BadRequestError, TokenNotFoundError, UnauthorizedError } from '../../..
 
 import { H3Error } from 'h3'
 import { generateProfileJSON } from '../../../utils/profile'
+import { parseMultipartNodeRequest } from '../../../utils/multipartNodeRequest'
 
 const router = createRouter()
 
@@ -57,7 +58,7 @@ router.post(
         try {
             const headers = getRequestHeaders(event)
             if (headers['content-type']?.includes('multipart/form-data')) {
-                bodyFormData = await parseMultipartNodeRequest(event.node.req)
+                bodyFormData = await parseMultipartNodeRequest(event.node.req, { file: 'file' })
             } else {
                 throw createError({
                     statusCode: 400,
@@ -134,34 +135,34 @@ router.delete(
     })
 )
 
-function parseMultipartNodeRequest(req: IncomingMessage): Promise<{
-    file: any
-}> {
-    //`C:\Users\Lijinx\AppData\Local\Temp\`
-    return new Promise((resolve, reject) => {
-        //require only one file
-        let cancelUploads = false // create variable at the same scope as form
-        const options: Options = {
-            filter: function ({ name, originalFilename, mimetype }: any) {
-                const valid = name && name == 'file'
-                if (!valid) {
-                    //@ts-ignore
-                    form.emit('error', new errors.default('File name is not valid', 0, 400)) // optional make form.parse error
-                    cancelUploads = true //variable to make filter return false after the first problem
-                }
-                return valid && !cancelUploads
-            },
-            multiples: false,
-        }
-        const form = formidable(options)
-        form.parse(req, (err, fields, file) => {
-            if (err) {
-                reject(err)
-                return
-            }
-            resolve({ ...file })
-        })
-    }) as any
-}
+// function parseMultipartNodeRequest(req: IncomingMessage): Promise<{
+//     file: any
+// }> {
+//     //`C:\Users\Lijinx\AppData\Local\Temp\`
+//     return new Promise((resolve, reject) => {
+//         //require only one file
+//         let cancelUploads = false // create variable at the same scope as form
+//         const options: Options = {
+//             filter: function ({ name, originalFilename, mimetype }: any) {
+//                 const valid = name && name == 'file'
+//                 if (!valid) {
+//                     //@ts-ignore
+//                     form.emit('error', new errors.default('File name is not valid', 0, 400)) // optional make form.parse error
+//                     cancelUploads = true //variable to make filter return false after the first problem
+//                 }
+//                 return valid && !cancelUploads
+//             },
+//             multiples: false,
+//         }
+//         const form = formidable(options)
+//         form.parse(req, (err, fields, file) => {
+//             if (err) {
+//                 reject(err)
+//                 return
+//             }
+//             resolve({ ...file })
+//         })
+//     }) as any
+// }
 
 export default useBase('/api/external/profile', router.handler)
