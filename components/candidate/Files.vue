@@ -29,14 +29,9 @@
                         type="file"
                         :rules="fileSizeRules"
                         :ref="`fileInput-${index}`"
-                        label="File input"
+                        :label="substrFilename(detail.filename)"
                         density="compact"
                         accept=".pdf, application/pdf"
-                        @update:modelValue="
-                            (val) => {
-                                console.log('This is val: ', val)
-                            }
-                        "
                         :loading="detail.uploading"
                         @change="onFileInputChange($event, index, attach_personal_list)"
                         @click:clear="resetFileInput(index, attach_personal_list)"
@@ -67,11 +62,13 @@
                                     <v-chip
                                         v-bind="props"
                                         prepend-icon="mdi-download-circle"
-                                        class="text-caption font-weight-black"
+                                        class="text-caption font-weight-black w-100"
                                         append-icon="mdi-pdf"
                                         @click="''"
                                     >
-                                        {{ detail.uploadedData.fileName }}
+                                        <template #>
+                                            {{ substrFilename(detail.uploadedData.fileName, 39) }}
+                                        </template>
                                     </v-chip>
                                 </template>
                                 <span>{{ detail.uploadedData.fileName }}</span>
@@ -95,113 +92,245 @@
                     </v-row>
                 </v-col>
             </v-row>
+
             <p class="pb-4 text-h6">เอกสารแนบวุฒิการศึกษา (เรียงจาก ระดับการศึกษาสูงสุด)</p>
             <v-divider></v-divider>
-
-            <v-list lines="two" density="compact">
-                <v-list-item v-for="detail in attach_education_list" :title="detail.menu">
-                    <v-list-item-subtitle class="py-2 px-6" v-for="i in detail.sub_menu"> {{ i }}</v-list-item-subtitle>
-
-                    <template v-slot:append>
-                        <v-label :text="substrFilename(detail.filename)"></v-label>
-                        <v-col cols="5">
-                            <v-file-input
-                                clearable
-                                chips
-                                show-size
-                                counter
-                                type="file"
-                                :rules="fileSizeRules"
-                                :ref="`fileInput-${0}`"
-                                label="File input"
-                                density="compact"
-                                accept=".pdf, application/pdf"
-                                @change="onFileInputChange($event, 0, attach_education_list)"
-                                @click:clear="resetFileInput(0, attach_education_list)"
-                            ></v-file-input>
-                        </v-col>
-                        <v-col cols="1">
+            <v-row v-for="(detail, index) in attach_education_list">
+                <v-col cols="6">
+                    <p class="mt-2 text-body-1 font-weight-black text-no-wrap">{{ detail.menu }}</p>
+                    <v-row no-gutters class="py-2 px-6" v-for="menu in detail.sub_menu">
+                        <v-col cols="12">{{ menu }}</v-col>
+                    </v-row>
+                </v-col>
+                <v-col align-self="center">
+                    <v-file-input
+                        v-if="!detail.uploadedData"
+                        clearable
+                        chips
+                        show-size
+                        counter
+                        type="file"
+                        :rules="fileSizeRules"
+                        :ref="`fileInput-${index}`"
+                        :label="substrFilename(detail.filename)"
+                        density="compact"
+                        accept=".pdf, application/pdf"
+                        :loading="detail.uploading"
+                        @change="onFileInputChange($event, index, attach_education_list)"
+                        @click:clear="resetFileInput(index, attach_education_list)"
+                    >
+                        <template #append>
                             <v-btn
-                                @click="onHandlePreView(0, attach_education_list)"
-                                color="grey-lighten-1"
-                                icon="mdi-eye"
+                                @click="onHandlePreView(index, attach_education_list)"
+                                :color="!detail.file ? 'grey-darken-4' : 'blue'"
+                                :icon="!detail.file ? 'mdi-eye-off' : 'mdi-eye'"
+                                :disabled="!detail.file"
+                                :loading="detail.uploading"
                                 variant="text"
                             ></v-btn>
+                            <v-btn
+                                variant="text"
+                                :color="!detail.file ? 'grey-darken-4' : 'success'"
+                                :disabled="!detail.file"
+                                :icon="'mdi-upload'"
+                                :loading="detail.uploading"
+                                @click="onClickUpload(index, attach_education_list)"
+                            ></v-btn>
+                        </template>
+                    </v-file-input>
+                    <v-row v-else no-gutters>
+                        <v-col cols="10" align-self="center">
+                            <v-tooltip :location="'bottom center'">
+                                <template v-slot:activator="{ props }">
+                                    <v-chip
+                                        v-bind="props"
+                                        prepend-icon="mdi-download-circle"
+                                        class="text-caption font-weight-black w-100"
+                                        append-icon="mdi-pdf"
+                                        @click="''"
+                                    >
+                                        {{ substrFilename(detail.uploadedData.fileName, 35) }}
+                                    </v-chip>
+                                </template>
+                                <span>{{ detail.uploadedData.fileName }}</span>
+                            </v-tooltip>
                         </v-col>
-                    </template>
-                </v-list-item>
-            </v-list>
+                        <v-col cols="2" align-self="center" class="d-flex justify-start">
+                            <v-tooltip>
+                                <template v-slot:activator="{ props }">
+                                    <v-btn
+                                        v-bind="props"
+                                        class="ml-2"
+                                        density="compact"
+                                        :color="'error'"
+                                        :icon="'mdi-close-circle'"
+                                        variant="text"
+                                    ></v-btn>
+                                </template>
+                                <span>ลบไฟล์</span>
+                            </v-tooltip>
+                        </v-col>
+                    </v-row>
+                </v-col>
+            </v-row>
 
             <p class="pb-4 text-h6">เอกสารแนบข้อมูลญาติ</p>
             <v-divider></v-divider>
-
-            <v-list lines="two" density="compact">
-                <v-list-item v-for="(detail, index) in attach_family_list" :key="index" :title="detail.menu">
-                    <v-list-item-subtitle class="py-2 px-6" v-for="i in detail.sub_menu"> {{ i }}</v-list-item-subtitle>
-                    <template v-slot:append>
-                        <v-label :text="substrFilename(detail.filename)"></v-label>
-
-                        <v-col cols="5">
-                            <v-file-input
-                                clearable
-                                chips
-                                show-size
-                                counter
-                                type="file"
-                                :rules="fileSizeRules"
-                                :ref="`fileInput-${index}`"
-                                label="File input"
-                                density="compact"
-                                accept=".pdf, application/pdf"
-                                @change="onFileInputChange($event, index, attach_family_list)"
-                                @click:clear="resetFileInput(index, attach_family_list)"
-                            ></v-file-input>
-                        </v-col>
-                        <v-col cols="1">
+            <v-row v-for="(detail, index) in attach_family_list">
+                <v-col cols="6">
+                    <p class="mt-2 text-body-1 font-weight-black text-no-wrap">{{ detail.menu }}</p>
+                    <v-row no-gutters class="py-2 px-6" v-for="menu in detail.sub_menu">
+                        <v-col cols="12">{{ menu }}</v-col>
+                    </v-row>
+                </v-col>
+                <v-col align-self="center">
+                    <v-file-input
+                        v-if="!detail.uploadedData"
+                        clearable
+                        chips
+                        show-size
+                        counter
+                        type="file"
+                        :rules="fileSizeRules"
+                        :ref="`fileInput-${index}`"
+                        :label="substrFilename(detail.filename)"
+                        density="compact"
+                        accept=".pdf, application/pdf"
+                        :loading="detail.uploading"
+                        @change="onFileInputChange($event, index, attach_family_list)"
+                        @click:clear="resetFileInput(index, attach_family_list)"
+                    >
+                        <template #append>
                             <v-btn
                                 @click="onHandlePreView(index, attach_family_list)"
-                                color="grey-lighten-1"
-                                icon="mdi-eye"
+                                :color="!detail.file ? 'grey-darken-4' : 'blue'"
+                                :icon="!detail.file ? 'mdi-eye-off' : 'mdi-eye'"
+                                :disabled="!detail.file"
+                                :loading="detail.uploading"
                                 variant="text"
                             ></v-btn>
+                            <v-btn
+                                variant="text"
+                                :color="!detail.file ? 'grey-darken-4' : 'success'"
+                                :disabled="!detail.file"
+                                :icon="'mdi-upload'"
+                                :loading="detail.uploading"
+                                @click="onClickUpload(index, attach_family_list)"
+                            ></v-btn>
+                        </template>
+                    </v-file-input>
+                    <v-row v-else no-gutters>
+                        <v-col cols="10" align-self="center">
+                            <v-tooltip :location="'bottom center'">
+                                <template v-slot:activator="{ props }">
+                                    <v-chip
+                                        v-bind="props"
+                                        prepend-icon="mdi-download-circle"
+                                        class="text-caption font-weight-black w-100"
+                                        append-icon="mdi-pdf"
+                                        @click="''"
+                                    >
+                                        {{ substrFilename(detail.uploadedData.fileName, 36) }}
+                                    </v-chip>
+                                </template>
+                                <span>{{ detail.uploadedData.fileName }}</span>
+                            </v-tooltip>
                         </v-col>
-                    </template>
-                </v-list-item>
-            </v-list>
+                        <v-col cols="2" align-self="center" class="d-flex justify-start">
+                            <v-tooltip>
+                                <template v-slot:activator="{ props }">
+                                    <v-btn
+                                        v-bind="props"
+                                        class="ml-2"
+                                        density="compact"
+                                        :color="'error'"
+                                        :icon="'mdi-close-circle'"
+                                        variant="text"
+                                    ></v-btn>
+                                </template>
+                                <span>ลบไฟล์</span>
+                            </v-tooltip>
+                        </v-col>
+                    </v-row>
+                </v-col>
+            </v-row>
+
             <p class="pb-4 text-h6">เอกสารแนบส่วนบุคคล</p>
             <v-divider></v-divider>
-
-            <v-list lines="two" density="compact">
-                <v-list-item v-for="(detail, index) in attach_private_list" :key="index" :title="detail.menu">
-                    <template v-slot:append>
-                        <v-label :text="substrFilename(detail.filename)"></v-label>
-                        <v-col cols="5">
-                            <v-file-input
-                                clearable
-                                chips
-                                show-size
-                                counter
-                                type="file"
-                                :rules="fileSizeRules"
-                                :ref="`fileInput-${index}`"
-                                label="File input"
-                                density="compact"
-                                accept=".pdf, application/pdf"
-                                @change="onFileInputChange($event, index, attach_private_list)"
-                                @click:clear="resetFileInput(index, attach_private_list)"
-                            ></v-file-input>
-                        </v-col>
-                        <v-col cols="1">
+            <v-row class="px-2 mt-2" v-for="(detail, index) in attach_private_list" :key="index">
+                <v-col cols="6"> {{ detail.menu }}</v-col>
+                <v-col cols="6">
+                    <v-file-input
+                        v-if="!detail.uploadedData"
+                        clearable
+                        chips
+                        show-size
+                        counter
+                        type="file"
+                        :rules="fileSizeRules"
+                        :ref="`fileInput-${index}`"
+                        :label="substrFilename(detail.filename)"
+                        density="compact"
+                        accept=".pdf, application/pdf"
+                        :loading="detail.uploading"
+                        @change="onFileInputChange($event, index, attach_private_list)"
+                        @click:clear="resetFileInput(index, attach_private_list)"
+                    >
+                        <template #append>
                             <v-btn
                                 @click="onHandlePreView(index, attach_private_list)"
-                                color="grey-lighten-1"
-                                icon="mdi-eye"
+                                :color="!detail.file ? 'grey-darken-4' : 'blue'"
+                                :icon="!detail.file ? 'mdi-eye-off' : 'mdi-eye'"
+                                :disabled="!detail.file"
+                                :loading="detail.uploading"
                                 variant="text"
                             ></v-btn>
+                            <v-btn
+                                variant="text"
+                                :color="!detail.file ? 'grey-darken-4' : 'success'"
+                                :disabled="!detail.file"
+                                :icon="'mdi-upload'"
+                                :loading="detail.uploading"
+                                @click="onClickUpload(index, attach_private_list)"
+                            ></v-btn>
+                        </template>
+                    </v-file-input>
+                    <v-row v-else no-gutters>
+                        <v-col cols="10" align-self="center">
+                            <v-tooltip :location="'bottom center'">
+                                <template v-slot:activator="{ props }">
+                                    <v-chip
+                                        v-bind="props"
+                                        prepend-icon="mdi-download-circle"
+                                        class="text-caption font-weight-black w-100"
+                                        append-icon="mdi-pdf"
+                                        @click="''"
+                                    >
+                                        {{ substrFilename(detail.uploadedData.fileName, 38) }}
+                                    </v-chip>
+                                </template>
+                                <span>{{ detail.uploadedData.fileName }}</span>
+                            </v-tooltip>
                         </v-col>
-                    </template>
-                </v-list-item>
-            </v-list>
+                        <v-col cols="2" align-self="center" class="d-flex justify-start">
+                            <v-tooltip>
+                                <template v-slot:activator="{ props }">
+                                    <v-btn
+                                        v-bind="props"
+                                        class="ml-2"
+                                        density="compact"
+                                        :color="'error'"
+                                        :icon="'mdi-close-circle'"
+                                        variant="text"
+                                    ></v-btn>
+                                </template>
+                                <span>ลบไฟล์</span>
+                            </v-tooltip>
+                        </v-col>
+                    </v-row>
+                </v-col>
+            </v-row>
+
             <v-label class="text-red-darken-1 font-weight-black" text="หมายเหตุ"></v-label>
             <div class="px-2 py-2">
                 <v-label
@@ -251,7 +380,7 @@ const attach_personal_list = ref<AttachFile[]>([
     },
     {
         menu: 'สำเนาใบทะเบียนการสมรส/หย่าสมรสตนเอง',
-        filename: 'สำเนาใบทะเบียนการสมรส/หย่าสมรสตนเอง',
+        filename: 'สำเนาใบทะเบียนการสมรส/หย่าสมรสตนเอง.pdf',
         tag: '04-marriage',
         file: undefined,
         uploading: false,
@@ -347,7 +476,7 @@ const attach_private_list = ref<AttachFile[]>([
     {
         menu: 'ใบตรวจสุขภาพ/รับรองแพทย์',
         tag: '11-health',
-        filename: 'ใบตรวจสุขภาพ/รับรองแพทย์.pdf',
+        filename: 'ใบตรวจสุขภาพ-รับรองแพทย์.pdf',
         file: undefined,
         uploaded: false,
         uploading: false,

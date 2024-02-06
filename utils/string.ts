@@ -1,8 +1,9 @@
-export const substrFilename = (_str: string) => {
+export const substrFilename = (_str: string, maxChar = 15) => {
     if (_str != '') {
         let lst = _str.split('.')
-        if (lst[0].length > 15) {
-            _str = `${lst[0].substr(0, 13)}.. .${lst[1]}`
+        console.log(lst)
+        if (lst[0].length > maxChar) {
+            _str = `${lst[0].substr(0, maxChar - 2)}...${lst[1]}`
         }
     } else {
         _str = 'ไม่พบการแนบไฟล์'
