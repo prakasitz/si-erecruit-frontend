@@ -1,4 +1,6 @@
 import * as formidable from 'formidable'
+import { CandidateFile, CandidateFileDetail } from './candidateTypes'
+import { Candidate } from './authTypes'
 
 export type JSONResponse = {
     status: 'success' | 'fail'
@@ -31,4 +33,5 @@ export type AttachFile = {
     file: File | undefined
     uploading: boolean
     uploaded: boolean
+    uploadedData?: CandidateFile
 }
