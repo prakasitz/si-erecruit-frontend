@@ -10,6 +10,7 @@ export * from './authTypes'
 export * from './masterTypes'
 export * from './jobTypes'
 export * from './profileTypes'
+export * from './candidateTypes'
 
 export * from './quickActionTypes'
 export * from './userTypes'
