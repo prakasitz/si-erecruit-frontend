@@ -1,11 +1,11 @@
 import { UseFetchOptions } from 'nuxt/app'
 import { FetchResponse, FetchContext } from 'ofetch'
 
-export const useApi = async (url: any, params: any | UseFetchOptions<HeadersInit>) => {
+export const useApi = async <T>(url: any, params: any | UseFetchOptions<HeadersInit>) => {
     const cookie = useCookie('token')
 
     const config = useRuntimeConfig()
-    const opts: UseFetchOptions<any> = {
+    const opts: any = {
         ...params,
         key: params?.key || url,
         baseURL: config.public.baseApi,
@@ -80,7 +80,7 @@ export const useApi = async (url: any, params: any | UseFetchOptions<HeadersInit
         },
     }
 
-    const { data, pending, error, refresh, execute } = await useFetch(url, opts)
+    const { data, pending, error, refresh, execute } = await useFetch<T>(url, opts)
     return {
         data: data,
         pending: pending,
