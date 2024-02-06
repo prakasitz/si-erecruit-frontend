@@ -1,5 +1,5 @@
 import { useUserStore } from '~/stores/user.store'
-import { AttachFile, CandidateFileDetail } from '~/utils/types'
+import { AttachFile, CandidateFileDetail, DialogContext } from '~/utils/types'
 
 export default function useCandidateFile() {
     return {
@@ -55,23 +55,21 @@ async function uploadFile(index: number, list: AttachFile[]) {
     })
 }
 
-async function downloadFile(path: string) {
+function downloadFile(path: string) {
     const { commonid: profileId } = useUserStore()
     if (!profileId) throw new Error('Profile id not found.')
-    return useApi(`/external/candidate/file/download/${path}?profileId=${profileId}`, {
-        headers: {
-            Accept: 'application/json',
-        },
-        key: 'CandidateFileDownload',
-        method: 'GET',
-    })
+    const appBaseURL = useRuntimeConfig().app.baseURL
+    window.open(`${appBaseURL}api/external/candidate/file/download/${path}?profileId=${profileId}`, '_blank')
 }
 
-async function deleteFile(tag: string) {
+async function deleteFile(
+    event: any,
+    { tag, refreshDataCallBack }: { tag: string; refreshDataCallBack: () => Promise<void> }
+): Promise<DialogContext.BtnActionCallBack> {
     const { commonname: pid, commonid: profileId } = useUserStore()
     if (!profileId) throw new Error('Profile id not found.')
     if (!pid) throw new Error('User pid not found.')
-    return useApi(`/external/candidate/file/delete/?profileId=${profileId}`, {
+    const { data, error } = await useApi(`/external/candidate/file/delete/?profileId=${profileId}`, {
         headers: {
             Accept: 'application/json',
         },
@@ -79,6 +77,18 @@ async function deleteFile(tag: string) {
         method: 'DELETE',
         body: { pid, profileId, tag },
     })
+    if (error.value) {
+        return {
+            status: false,
+            message: `ลบไฟล์ไม่สำเร็จ, <br>
+                        <pre>${error.value.data.message ?? error.value.message}</pre>`,
+        }
+    }
+    refreshDataCallBack()
+    return {
+        status: true,
+        message: `ลบไฟล์สำเร็จ`,
+    }
 }
 
 async function getDetails() {

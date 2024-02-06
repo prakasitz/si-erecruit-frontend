@@ -15,7 +15,7 @@
                 text="*** กรุณาแนบเอกสารเฉพาะไฟล์ PDF เท่านั้น ***"
             ></v-label>
 
-            <p class="pb-4 text-h6">เอกสารแนบส่วนตัว <v-btn @click="fileDetailRefresh()">asda</v-btn></p>
+            <p class="pb-4 text-h6">เอกสารแนบส่วนตัว</p>
             <v-divider></v-divider>
             <v-row class="px-2 mt-2" v-for="(detail, index) in attach_personal_list" :key="index">
                 <v-col cols="6"> {{ detail.menu }}</v-col>
@@ -63,8 +63,7 @@
                                         v-bind="props"
                                         prepend-icon="mdi-download-circle"
                                         class="text-caption font-weight-black w-100"
-                                        append-icon="mdi-pdf"
-                                        @click="''"
+                                        @click="downloadFile(detail.uploadedData.path)"
                                     >
                                         <template #>
                                             {{ substrFilename(detail.uploadedData.fileName, 39) }}
@@ -84,6 +83,7 @@
                                         :color="'error'"
                                         :icon="'mdi-close-circle'"
                                         variant="text"
+                                        @click="onConfirmDeleteFile(detail)"
                                     ></v-btn>
                                 </template>
                                 <span>ลบไฟล์</span>
@@ -147,7 +147,7 @@
                                         prepend-icon="mdi-download-circle"
                                         class="text-caption font-weight-black w-100"
                                         append-icon="mdi-pdf"
-                                        @click="''"
+                                        @click="downloadFile(detail.uploadedData.path)"
                                     >
                                         {{ substrFilename(detail.uploadedData.fileName, 35) }}
                                     </v-chip>
@@ -165,6 +165,7 @@
                                         :color="'error'"
                                         :icon="'mdi-close-circle'"
                                         variant="text"
+                                        @click="onConfirmDeleteFile(detail)"
                                     ></v-btn>
                                 </template>
                                 <span>ลบไฟล์</span>
@@ -228,7 +229,7 @@
                                         prepend-icon="mdi-download-circle"
                                         class="text-caption font-weight-black w-100"
                                         append-icon="mdi-pdf"
-                                        @click="''"
+                                        @click="downloadFile(detail.uploadedData.path)"
                                     >
                                         {{ substrFilename(detail.uploadedData.fileName, 36) }}
                                     </v-chip>
@@ -246,6 +247,7 @@
                                         :color="'error'"
                                         :icon="'mdi-close-circle'"
                                         variant="text"
+                                        @click="onConfirmDeleteFile(detail)"
                                     ></v-btn>
                                 </template>
                                 <span>ลบไฟล์</span>
@@ -304,7 +306,7 @@
                                         prepend-icon="mdi-download-circle"
                                         class="text-caption font-weight-black w-100"
                                         append-icon="mdi-pdf"
-                                        @click="''"
+                                        @click="downloadFile(detail.uploadedData.path)"
                                     >
                                         {{ substrFilename(detail.uploadedData.fileName, 38) }}
                                     </v-chip>
@@ -322,6 +324,7 @@
                                         :color="'error'"
                                         :icon="'mdi-close-circle'"
                                         variant="text"
+                                        @click="onConfirmDeleteFile(detail)"
                                     ></v-btn>
                                 </template>
                                 <span>ลบไฟล์</span>
@@ -349,7 +352,7 @@
 </template>
 
 <script setup lang="ts">
-import { CandidateForm, AttachFile } from '~/utils/types'
+import { CandidateForm, AttachFile, CandidateFile } from '~/utils/types'
 import { substrFilename } from '~/utils/string'
 import { FetchError } from 'ofetch'
 
@@ -487,8 +490,8 @@ const props = defineProps<{
     candidateForm: CandidateForm
 }>()
 
-const { handlePreview, uploadFile, getDetails } = useCandidateFile()
-const { dialogInfo, dialogError, showDialog } = useDialog()
+const { handlePreview, uploadFile, getDetails, deleteFile, downloadFile } = useCandidateFile()
+const { dialogInfo, dialogError, dialogConfirm, showDialog } = useDialog()
 const { data: fileDetailData, error: fileDetailError, refresh: fileDetailRefresh } = await getDetails()
 
 const mappingFileDetailWithAttachList = () => {
@@ -532,6 +535,38 @@ const fileSizeRules = [
         !files || !files.some((file: File) => file.type != 'application/pdf') || 'ไฟล์ต้องเป็น pdf เท่านั้น!',
 ]
 
+const onConfirmDeleteFile = (attachFileData: AttachFile) => {
+    const { menu, uploadedData } = attachFileData
+    const dialog = dialogConfirm()
+    showDialog(
+        {
+            title: `Confirm to delete file, ${menu}`,
+            dialogColor: 'amber',
+            message: `ต้องการลบไฟล์ <br>• <b>${menu || ''}</b><br> ออกจากระบบ ใช่หรือไม่?`,
+            item: {
+                id: {
+                    tag: attachFileData.tag,
+                    refreshDataCallBack: fileDetailRefresh,
+                },
+            },
+            actionButtons: [
+                {
+                    text: `Delete`,
+                    variant: 'elevated',
+                    color: 'red-darken-1',
+                    cb: deleteFile,
+                },
+                {
+                    text: 'Cancel',
+                    color: 'gray',
+                },
+            ],
+            persistent: true,
+        },
+        dialog
+    )
+}
+
 async function onClickUpload(index: number, list: AttachFile[]) {
     let dialog = null
     const section = list[index]
@@ -560,6 +595,7 @@ async function onClickUpload(index: number, list: AttachFile[]) {
             },
             dialog
         )
+        fileDetailRefresh()
     } catch (error: FetchError | any) {
         section.uploaded = false
         console.log('This is error: ', error)
