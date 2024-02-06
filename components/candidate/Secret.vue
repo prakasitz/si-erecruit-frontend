@@ -140,9 +140,9 @@ const { personal_info } = personalStore
 
 const pidFormat = computed(() => {
     // Convert the personalID to a string (in case it's a number)
-    const idString = personal_info?.id_card_number.toString() ?? pidDefualt
-    if (idString.length == 0) return pidDefualt
-    if (idString.length !== 13) return pidDefualt
+    const idString = personal_info?.id_card_number.toString() ?? pidDefualt ?? ''
+    if (idString.length == 0) return pidDefualt ?? ''
+    if (idString.length !== 13) return pidDefualt ?? ''
 
     // Split the ID into chunks of 1, 4, 5, 2, and 1 digits
     const formattedID = `${idString.substring(0, 1)} ${idString.substring(1, 5)} ${idString.substring(
