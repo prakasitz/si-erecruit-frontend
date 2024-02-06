@@ -1,7 +1,6 @@
 export const substrFilename = (_str: string, maxChar = 15) => {
     if (_str != '') {
         let lst = _str.split('.')
-        console.log(lst)
         if (lst[0].length > maxChar) {
             _str = `${lst[0].substr(0, maxChar - 2)}...${lst[1]}`
         }

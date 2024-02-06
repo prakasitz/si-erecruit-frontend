@@ -153,13 +153,13 @@ export class ExternalAPIService {
         }
     }
 
-    public async CandidateFileDelete(event: H3Event, profileId: string, tag: string) {
+    public async CandidateFileDelete(event: H3Event, profileId: string, pid: string, tag: string) {
         try {
             const accessToken = this.getAccessToken(event)
             const resp = await this.baseAPI.delete(`/${this.candidateInfoSlug}/file/delete`, {
                 data: {
                     profileId: profileId,
-                    pid: event.context?.user?.pid,
+                    pid: pid,
                     tag: tag,
                 },
                 headers: {

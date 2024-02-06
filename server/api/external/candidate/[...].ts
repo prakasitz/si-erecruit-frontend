@@ -67,8 +67,8 @@ router.delete(
         const body = await readBody(event)
         try {
             if (body?.pid && body?.tag && body?.profileId) {
-                const { tag, profileId } = body
-                const data = await externalAPIService.CandidateFileDelete(event, profileId, tag)
+                const { tag, profileId, pid } = body
+                const data = await externalAPIService.CandidateFileDelete(event, profileId, pid, tag)
                 return data
             }
         } catch (e: any) {

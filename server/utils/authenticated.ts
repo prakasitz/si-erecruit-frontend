@@ -23,6 +23,7 @@ export function getAuthenticatedRoutes(): Array<string> {
 
         //candidate routes
         `/api/external/profile/**`,
+        `/api/external/candidate/**`,
 
         //admin route
         `/api/external/logs/**`,
