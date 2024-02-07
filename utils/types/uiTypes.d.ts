@@ -74,9 +74,11 @@ export namespace DialogContext {
 
     export type ActionButton = {
         text: string
+        prependIcon?: string
         variant?: 'elevated' | 'outlined' | 'text'
         color?: string
         href?: string
+        to?: string
         cb?: FnActionCallback
         goBack?: VoidFunction
     }

@@ -122,6 +122,7 @@ async function onClickUpload(files: File[]) {
     if (resp?.data) {
         importedData.value = resp.data.data
         const dialog = dialogInfo()
+        const appBaseUrl = useRuntimeConfig().app.baseURL
         showDialog(
             {
                 title: 'Imported',
@@ -130,13 +131,13 @@ async function onClickUpload(files: File[]) {
                     {
                         text: 'Upload again',
                         prependIcon: 'mdi-reload',
-                        href: '/file_import',
+                        href: `${appBaseUrl}file_import`,
                     },
                     {
                         text: 'Check Job Data',
                         prependIcon: 'mdi-clipboard-check',
                         color: 'indigo',
-                        to: '/job_management',
+                        to: `${appBaseUrl}job_management`,
                     },
                 ],
                 persistent: true,
