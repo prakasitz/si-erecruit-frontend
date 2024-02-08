@@ -52,6 +52,34 @@ router.put(
 )
 
 router.post(
+    '/read-profile-file',
+    defineEventHandler(async (event) => {
+        let bodyFormData: any
+        try {
+            const headers = getRequestHeaders(event)
+            if (headers['content-type']?.includes('multipart/form-data')) {
+                bodyFormData = await parseMultipartNodeRequest(event.node.req, { file: 'file' })
+            } else {
+                throw createError({
+                    statusCode: 400,
+                    message: 'Invalid content-type',
+                })
+            }
+            const resp = await profileService.readfile(event, bodyFormData)
+
+            return resp
+        } catch (error: H3Error | any) {
+            throw error
+        } finally {
+            //delete file
+            if (bodyFormData && bodyFormData.file && bodyFormData!.file[0].filepath) {
+                profileService.deleteFile(bodyFormData!.file![0].filepath)
+            }
+        }
+    })
+)
+
+router.post(
     '/import',
     defineEventHandler(async (event) => {
         let bodyFormData: any

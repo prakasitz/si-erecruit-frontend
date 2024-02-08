@@ -9,6 +9,7 @@ export default function useProfile() {
         submit,
         draft,
         importProfile,
+        readProfileFile,
         getProfileById,
         suspendedProfile,
         publishableProfile,
@@ -60,6 +61,26 @@ function getProfileById(id: string) {
     })
 }
 
+async function readProfileFile(files: File[]) {
+    if (files.length == 0) return
+    const file = files[0]
+    const formData = new FormData()
+    formData.append('file', file)
+    const { data, pending, error } = await useApi('/external/profile/read-profile-file', {
+        method: 'POST',
+        body: formData,
+        key: 'readProfileFile',
+    })
+    if (error.value) {
+        throw showError({
+            statusCode: error.value?.statusCode,
+            message: error.value?.data?.message || 'Sorry, something went wrong.',
+        })
+    }
+    const resp = { data: data.value, pending: pending.value, error: error.value }
+    return resp
+}
+
 async function importProfile(files: File[]) {
     if (files.length == 0) return
     const file = files[0]
@@ -68,13 +89,15 @@ async function importProfile(files: File[]) {
     const { data, pending, error } = await useApi('/external/profile/import', {
         method: 'POST',
         body: formData,
+        key: 'importProfile',
     })
 
-    if (error.value?.data)
+    if (error.value) {
         throw showError({
             statusCode: error.value?.statusCode,
-            message: error.value?.message,
+            message: error.value?.data?.message || 'Sorry, something went wrong.',
         })
+    }
     return { data: data.value, pending: pending.value, error: error.value }
 }
 

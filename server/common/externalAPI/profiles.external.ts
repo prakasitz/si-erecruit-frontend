@@ -146,6 +146,36 @@ class ProfileExternal extends ExternalAPIService {
         }
     }
 
+    public async readfile(event: H3Event, { file }: { file: FileUpload[] }) {
+        try {
+            console.log('============= profiles: method => readfile =======================')
+
+            if (!file) throw new Error('file is required')
+
+            const { originalFilename, filepath } = file[0]
+            const fileStream: fs.ReadStream = fs.createReadStream(filepath)
+
+            //create formData
+            const formData = new FormData()
+            formData.append('file', fileStream, originalFilename)
+
+            const accessToken = this.getAccessToken(event)
+            const resp = await this.baseAPI.post(`/${this.slug}/read-profile-file`, formData, {
+                headers: {
+                    ...formData.getHeaders(),
+                    Authorization: 'Bearer ' + accessToken,
+                },
+            })
+
+            if (!resp.data) throw new Error(`readProfileFile: Error Unexpected`)
+            return resp.data
+        } catch (error: AxiosError | any) {
+            return this.handleError(error)
+        } finally {
+            console.log('=================================================')
+        }
+    }
+
     public async import(event: H3Event, { file }: { file: FileUpload[] }) {
         try {
             console.log('============= profiles: method => import =======================')
