@@ -1,4 +1,4 @@
-import { DialogContext, Profile } from '~/utils/types'
+import { DialogContext, Profile, ReadImportProfileResponse } from '~/utils/types'
 import { H3Event, H3Error } from 'h3'
 import { usePersonalStore } from '~/stores/personal.store'
 
@@ -66,19 +66,12 @@ async function readProfileFile(files: File[]) {
     const file = files[0]
     const formData = new FormData()
     formData.append('file', file)
-    const { data, pending, error } = await useApi('/external/profile/read-profile-file', {
+    const { data, pending, error } = await useApi<ReadImportProfileResponse>('/external/profile/read-profile-file', {
         method: 'POST',
         body: formData,
         key: 'readProfileFile',
     })
-    if (error.value) {
-        throw showError({
-            statusCode: error.value?.statusCode,
-            message: error.value?.data?.message || 'Sorry, something went wrong.',
-        })
-    }
-    const resp = { data: data.value, pending: pending.value, error: error.value }
-    return resp
+    return { data: data.value, pending: pending.value, error: error.value }
 }
 
 async function importProfile(files: File[]) {
@@ -93,7 +86,7 @@ async function importProfile(files: File[]) {
     })
 
     if (error.value) {
-        throw showError({
+        showError({
             statusCode: error.value?.statusCode,
             message: error.value?.data?.message || 'Sorry, something went wrong.',
         })
