@@ -80,7 +80,7 @@ export namespace DialogContext {
         href?: string
         to?: string
         cb?: FnActionCallback
-        goBack?: VoidFunction
+        fnVoid?: VoidFunction
     }
 
     export interface BtnActionCallBack {

@@ -10,6 +10,17 @@ export type ProfileStatusCode = {
     zprofile_status_color: `${ProfileStatusColor}`
 }
 
+export type ReadImportProfileResponse = {
+    headers: string[]
+    isValid: boolean
+    data: any[]
+    errors: {
+        no: number
+        id_card_number: string
+        errors: { property: string; value: string | null }[]
+    }[]
+}
+
 export interface ProfileStatusAndID {
     profile_ID: number
     profile_status: number

@@ -26,7 +26,7 @@ function middlewareError(error: H3Error, { to, from }: any) {
     }
 }
 
-function showErrorOnDialog({ error }: { error: FetchError<any> }) {
+function showErrorOnDialog({ error, customShowDialog }: { error: FetchError<any>, customShowDialog?: any}) {
     const { dialogError, showDialog } = useDialog()
     const dialog = dialogError()
     const { statusCode, data, message } = error
@@ -48,7 +48,7 @@ function showErrorOnDialog({ error }: { error: FetchError<any> }) {
                     actionButtons: [
                         {
                             text: 'close',
-                            goBack: router.back,
+                            fnVoid: router.back,
                         },
                     ],
                     persistent: true,
@@ -57,6 +57,19 @@ function showErrorOnDialog({ error }: { error: FetchError<any> }) {
             )
             break
         case 400:
+            showDialog(
+                customShowDialog || {
+                    title: titleStr,
+                    message: messageStr,
+                    actionButtons: [
+                        {
+                            text: 'close',
+                        },
+                    ],
+                    persistent: false,
+                },
+                dialog
+            )
             break
         default:
             showDialog(
