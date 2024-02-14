@@ -66,8 +66,12 @@
                                         :key="item.name"
                                         :class="addClassRowInvalidData(item)"
                                     >
-                                        <td v-for="header in profileDataFromFileHeaders" :key="header">
-                                            {{ item[header] }}
+                                        <td
+                                            v-for="header in profileDataFromFileHeaders"
+                                            :key="header"
+                                            :class="addClassFieldInvalidData(item, header)"
+                                        >
+                                            <p>{{ item[header] }}</p>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -145,6 +149,7 @@
 
 #showData .row-invalid .field-invalid {
     color: red;
+    font-weight: bold;
 }
 </style>
 
@@ -173,9 +178,10 @@ const addClassRowInvalidData = (item: any) => {
     return invalid ? 'row-invalid' : ''
 }
 
-const addClassFieldInvalidData = (item: any) => {
+const addClassFieldInvalidData = (item: any, header: any) => {
     const invalid = invalidData.value.find((x) => x.no === item.no)
-    return invalid ? 'row-invalid' : ''
+    const error = invalid?.errors.find((x) => x.property === header)
+    return error ? 'field-invalid' : ''
 }
 
 const theadStyle = 'text-center text-white font-weight-bold pa-2'
@@ -209,9 +215,33 @@ type InvalidProfileData = {
 type ValidateError = {
     property: string
     value: string | null
+    constraints: any
 }
 
 const invalidData = ref<InvalidProfileData[]>([])
+
+const generateInvalidDetail = (invalidData: InvalidProfileData[]) => {
+    let html = ''
+    for (let i = 0; i < invalidData.length; i++) {
+        const item = invalidData[i]
+        //using details tag
+        html += '<details>'
+        html += `<summary>no: ${item.no}, pid: ${item.id_card_number}</summary>`
+        html += '<blockquote><code>'
+        for (let j = 0; j < item.errors.length; j++) {
+            const error = item.errors[j]
+            html += `<p>${error.property}: ${error.value}</p>`
+            for (const key in error.constraints) {
+                if (Object.prototype.hasOwnProperty.call(error.constraints, key)) {
+                    const value = error.constraints[key]
+                    html += `<p>${key}: ${value}</p>`
+                }
+            }
+        }
+        html += '</code></blockquote></details><br>'
+    }
+    return html
+}
 
 async function onFilesDropped(f: File[]) {
     files.value = f
@@ -230,7 +260,9 @@ async function onFilesDropped(f: File[]) {
             showDialog(
                 {
                     title: `Invalid Profile Data`,
-                    message: `🚨 ข้อมูลที่นำเข้าไม่ถูกต้อง, โปรดตรวจสอบข้อมูลและนำเข้าให้ถูกต้อง`,
+                    message: `🚨 ข้อมูลที่นำเข้าไม่ถูกต้อง, โปรดตรวจสอบข้อมูลและนำเข้าให้ถูกต้อง,<br><br> ${generateInvalidDetail(
+                        errors
+                    )}`,
                     actionButtons: [
                         {
                             text: `close`,

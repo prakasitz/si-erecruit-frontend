@@ -17,7 +17,13 @@ export type ReadImportProfileResponse = {
     errors: {
         no: number
         id_card_number: string
-        errors: { property: string; value: string | null }[]
+        errors: {
+            property: string
+            value: string | null
+            constraints: {
+                [key: string]: string
+            }
+        }[]
     }[]
 }
 
