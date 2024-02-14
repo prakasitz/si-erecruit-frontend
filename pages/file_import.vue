@@ -99,7 +99,7 @@
                     color="indigo"
                     @click="onClickUpload(files)"
                     :loading="loading"
-                    :disabled="cntFiles == 0"
+                    :disabled="cntFiles == 0 || !isProfileValid"
                 >
                     <b>Upload File</b>
                 </v-btn>
@@ -290,6 +290,7 @@ async function onFilesDropped(f: File[]) {
                 ],
             },
         })
+        onClickReset()
     }
 }
 
